@@ -69,6 +69,9 @@ if (!ctx) {
   throw new Error("2D context missing");
 }
 
+const canvasEl = canvas;
+const ctxEl = ctx;
+
 const particles: Particle[] = [];
 const total = 80;
 let energy = 1;
@@ -77,19 +80,19 @@ let mouseY = 0;
 let tick = 0;
 
 function resizeCanvas() {
-  const { width, height } = canvas.getBoundingClientRect();
+  const { width, height } = canvasEl.getBoundingClientRect();
   const ratio = window.devicePixelRatio || 1;
-  canvas.width = width * ratio;
-  canvas.height = height * ratio;
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  canvasEl.width = width * ratio;
+  canvasEl.height = height * ratio;
+  ctxEl.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
 function spawnParticles() {
   particles.length = 0;
   for (let i = 0; i < total; i += 1) {
     particles.push({
-      x: Math.random() * canvas.clientWidth,
-      y: Math.random() * canvas.clientHeight,
+      x: Math.random() * canvasEl.clientWidth,
+      y: Math.random() * canvasEl.clientHeight,
       vx: (Math.random() - 0.5) * 0.9,
       vy: (Math.random() - 0.5) * 0.9,
       size: 2 + Math.random() * 3,
@@ -99,9 +102,9 @@ function spawnParticles() {
 }
 
 function step() {
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  ctx.clearRect(0, 0, width, height);
+  const width = canvasEl.clientWidth;
+  const height = canvasEl.clientHeight;
+  ctxEl.clearRect(0, 0, width, height);
 
   tick += 0.01 * energy;
 
@@ -121,10 +124,10 @@ function step() {
     if (p.x < 0 || p.x > width) p.vx *= -1;
     if (p.y < 0 || p.y > height) p.vy *= -1;
 
-    ctx.beginPath();
-    ctx.fillStyle = `hsla(${p.hue + Math.sin(tick) * 20}, 80%, 60%, 0.8)`;
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    ctx.fill();
+    ctxEl.beginPath();
+    ctxEl.fillStyle = `hsla(${p.hue + Math.sin(tick) * 20}, 80%, 60%, 0.8)`;
+    ctxEl.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctxEl.fill();
   });
 
   requestAnimationFrame(step);
@@ -135,7 +138,7 @@ function setEnergy(value: number) {
 }
 
 document.addEventListener("pointermove", (event) => {
-  const rect = canvas.getBoundingClientRect();
+  const rect = canvasEl.getBoundingClientRect();
   mouseX = event.clientX - rect.left;
   mouseY = event.clientY - rect.top;
 });
