@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vierte Seite — Kinetik</title>
+    <meta
+      name="description"
+      content="Eine moderne Seite mit JavaScript-Interaktionen, dynamischem Grid und Motion."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&family=Gloock&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0d1017;
+        --fog: #f3f6ff;
+        --glow: #63f7c3;
+        --plasma: #ff7a59;
+        --blue: #6aa2ff;
+        --glass: rgba(255, 255, 255, 0.62);
+        --shadow: 0 24px 70px rgba(13, 16, 23, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Urbanist", system-ui, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 15% 15%, #ffffff 0%, #f4f7ff 35%, #e9f2ff 70%);
+        min-height: 100vh;
+      }
+
+      .glowfield {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(circle at 25% 20%, rgba(99, 247, 195, 0.35), transparent 55%),
+          radial-gradient(circle at 80% 25%, rgba(255, 122, 89, 0.3), transparent 55%),
+          radial-gradient(circle at 60% 80%, rgba(106, 162, 255, 0.28), transparent 60%);
+        filter: blur(2px);
+      }
+
+      header {
+        padding: 28px 8vw 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        font-family: "Gloock", serif;
+        font-size: 1.4rem;
+        letter-spacing: 0.04em;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        font-weight: 500;
+        margin-left: 14px;
+      }
+
+      main {
+        padding: 6vh 8vw 12vh;
+        display: grid;
+        gap: 40px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 26px;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-family: "Gloock", serif;
+        font-size: clamp(2.4rem, 4vw + 1.2rem, 4.8rem);
+        margin: 0;
+      }
+
+      .hero p {
+        max-width: 38ch;
+        color: #2c3347;
+        font-size: 1.05rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .controls button {
+        border: none;
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+        background: white;
+        box-shadow: 0 12px 24px rgba(13, 16, 23, 0.12);
+        transition: transform 0.3s ease;
+      }
+
+      .controls button:hover {
+        transform: translateY(-2px);
+      }
+
+      .kinetic {
+        position: relative;
+        min-height: 360px;
+        border-radius: 28px;
+        background: var(--glass);
+        border: 1px solid rgba(13, 16, 23, 0.08);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .node {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        border-radius: 24px;
+        background: white;
+        display: grid;
+        place-items: center;
+        font-weight: 600;
+        box-shadow: 0 16px 40px rgba(13, 16, 23, 0.12);
+        transition: transform 0.6s ease, background 0.6s ease;
+      }
+
+      .node[data-tone="glow"] {
+        background: rgba(99, 247, 195, 0.6);
+      }
+
+      .node[data-tone="plasma"] {
+        background: rgba(255, 122, 89, 0.6);
+      }
+
+      .node[data-tone="blue"] {
+        background: rgba(106, 162, 255, 0.6);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        padding: 20px;
+        border-radius: 20px;
+        background: white;
+        border: 1px solid rgba(13, 16, 23, 0.08);
+      }
+
+      .card h3 {
+        margin: 0 0 8px;
+      }
+
+      .meter {
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--glow), var(--plasma), var(--blue));
+        width: 0%;
+        transition: width 1s ease;
+      }
+
+      footer {
+        padding: 0 8vw 6vh;
+        color: #2c3347;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glowfield" aria-hidden="true"></div>
+    <header>
+      <div class="logo">Kinetik</div>
+      <nav class="nav">
+        <a href="/">Start</a>
+        <a href="/andereseite">Andereseite</a>
+        <a href="/dritte">Dritte</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>Bewegung, die du steuerst.</h1>
+          <p>
+            Diese vierte Seite nutzt JavaScript, um Layout, Farben und Motion dynamisch zu
+            verändern. Kein Framework, nur reiner JS.
+          </p>
+          <div class="controls">
+            <button type="button" data-action="shuffle">Layout neu mischen</button>
+            <button type="button" data-action="energize">Energie pushen</button>
+            <button type="button" data-action="calm">Beruhigen</button>
+          </div>
+        </div>
+        <div class="kinetic" id="kinetic-area" aria-live="polite"></div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h3>Live Layout</h3>
+          <p>Die Elemente ordnen sich per Klick neu an.</p>
+          <div class="meter" data-meter></div>
+        </article>
+        <article class="card">
+          <h3>Pulse</h3>
+          <p>Ein Energie-Boost zeigt dir den Effekt sofort.</p>
+          <div class="meter" data-meter></div>
+        </article>
+        <article class="card">
+          <h3>Sanfte Ruhe</h3>
+          <p>Reduziere die Intensität für eine calmere Stimmung.</p>
+          <div class="meter" data-meter></div>
+        </article>
+      </section>
+    </main>
+
+    <footer>GitHub Pages · Vierte Seite</footer>
+
+    <script>
+      const area = document.getElementById("kinetic-area");
+      const tones = ["glow", "plasma", "blue"];
+      const nodes = Array.from({ length: 6 }, (_, i) => {
+        const node = document.createElement("div");
+        node.className = "node";
+        node.textContent = `K${i + 1}`;
+        node.dataset.tone = tones[i % tones.length];
+        area.appendChild(node);
+        return node;
+      });
+
+      const meters = document.querySelectorAll("[data-meter]");
+
+      function randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function layoutNodes() {
+        const rect = area.getBoundingClientRect();
+        nodes.forEach((node) => {
+          const x = randomBetween(20, rect.width - 110);
+          const y = randomBetween(20, rect.height - 110);
+          node.style.transform = `translate(${x}px, ${y}px)`;
+        });
+      }
+
+      function setEnergy(level) {
+        const scale = level === "high" ? 1.12 : level === "low" ? 0.96 : 1.0;
+        nodes.forEach((node, index) => {
+          node.style.transform += ` scale(${scale}) rotate(${index * (level === "high" ? 6 : 2)}deg)`;
+        });
+        meters.forEach((meter, index) => {
+          const base = level === "high" ? 82 : level === "low" ? 38 : 58;
+          meter.style.width = `${base + index * 6}%`;
+        });
+      }
+
+      function shuffle() {
+        layoutNodes();
+        setEnergy("mid");
+      }
+
+      function energize() {
+        layoutNodes();
+        setEnergy("high");
+      }
+
+      function calm() {
+        layoutNodes();
+        setEnergy("low");
+      }
+
+      document.querySelectorAll("[data-action]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const action = button.dataset.action;
+          if (action === "shuffle") shuffle();
+          if (action === "energize") energize();
+          if (action === "calm") calm();
+        });
+      });
+
+      window.addEventListener("resize", layoutNodes);
+
+      layoutNodes();
+      setEnergy("mid");
+    </script>
+  </body>
+</html>
