@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Audio Reaktor — Newbobb Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="ui-layer">
+      <header>
+        <a href="../index.html" class="back-link">← Zurück</a>
+        <div class="logo">Audio Reaktor</div>
+      </header>
+      
+      <div class="controls" id="controls">
+        <div class="upload-container">
+          <label for="audio-upload" class="upload-btn">
+            <span class="icon">♫</span>
+            <span class="text">Upload Track</span>
+          </label>
+          <input type="file" id="audio-upload" accept="audio/*" />
+          <p class="hint">Wähle eine MP3 oder WAV Datei</p>
+        </div>
+        
+        <div class="playback-controls" style="display: none;" id="playback-ui">
+          <div class="track-info" id="track-name">Track Name</div>
+          <button id="play-pause-btn">Pause</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="canvas-container"></div>
+    <div class="overlay"></div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
