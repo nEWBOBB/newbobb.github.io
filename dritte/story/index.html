@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dritte Seite · Story</title>
+    <meta name="description" content="Narrative Unterseite der dritten Seite." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;600&family=Work+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #1b1d1f;
+        --cream: #fff8ef;
+        --rust: #b96c4d;
+        --shadow: rgba(27, 29, 31, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Work Sans", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--cream);
+      }
+
+      header {
+        padding: 32px 8vw 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        font-family: "Spectral", serif;
+        font-size: 1.4rem;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        margin-left: 12px;
+      }
+
+      main {
+        padding: 4vh 8vw 10vh;
+        display: grid;
+        gap: 24px;
+      }
+
+      .story {
+        background: white;
+        border-radius: 22px;
+        padding: 26px;
+        box-shadow: 0 20px 50px var(--shadow);
+      }
+
+      .story h1 {
+        font-family: "Spectral", serif;
+        margin: 0 0 12px;
+      }
+
+      .story p {
+        margin: 0 0 10px;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        border-left: 4px solid var(--rust);
+        padding-left: 14px;
+        font-style: italic;
+        color: #5a3b2d;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">Story</div>
+      <nav class="nav">
+        <a href="/dritte">Zuruck</a>
+        <a href="/dritte/lab">Labor</a>
+        <a href="/dritte/kontakt">Kontakt</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="story">
+        <h1>Der dritte Raum erzahlt.</h1>
+        <p>
+          Jede Unterseite ist wie ein Kapitel. Diese Story-Seite setzt auf Ruhe, Textur und einen
+          klaren Rhythmus.
+        </p>
+        <p class="highlight">
+          Design ist nicht nur Form, sondern eine Abfolge von Entscheidungen, die sich wie eine
+          Geschichte anfühlen.
+        </p>
+        <p>
+          Nutze diesen Bereich, um ein Manifest, eine Projektgeschichte oder eine Launch-Story zu
+          erzählen.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

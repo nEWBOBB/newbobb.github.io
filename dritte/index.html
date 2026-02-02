@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dritte Seite — Galerie der Wege</title>
+    <meta
+      name="description"
+      content="Eine dritte Seite mit eigenem Stil und verlinkten Unterseiten."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Unbounded:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0c111d;
+        --paper: #f7f3ec;
+        --ink-soft: #2d3445;
+        --clay: #e7d7c1;
+        --sky: #b3d8ff;
+        --leaf: #8ad2a3;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Hanken Grotesk", system-ui, sans-serif;
+        color: var(--ink);
+        background: linear-gradient(135deg, #f9f4ed, #f1f6ff);
+        min-height: 100vh;
+      }
+
+      header {
+        padding: 28px 8vw 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .logo {
+        font-family: "Unbounded", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-size: 1rem;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        margin-left: 12px;
+        font-weight: 600;
+      }
+
+      main {
+        padding: 6vh 8vw 10vh;
+        display: grid;
+        gap: 32px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-family: "Unbounded", sans-serif;
+        font-size: clamp(2.4rem, 3.6vw + 1.2rem, 4.6rem);
+        margin: 0;
+      }
+
+      .hero p {
+        max-width: 40ch;
+        color: var(--ink-soft);
+        font-size: 1.05rem;
+      }
+
+      .portal {
+        background: var(--paper);
+        border: 1px solid rgba(12, 17, 29, 0.08);
+        border-radius: 26px;
+        padding: 22px;
+        box-shadow: 0 30px 60px rgba(12, 17, 29, 0.1);
+      }
+
+      .portal h2 {
+        margin: 0 0 12px;
+        font-family: "Unbounded", sans-serif;
+        font-size: 1.3rem;
+      }
+
+      .portal p {
+        margin: 0 0 16px;
+        color: var(--ink-soft);
+      }
+
+      .links {
+        display: grid;
+        gap: 12px;
+      }
+
+      .links a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: none;
+        color: var(--ink);
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: white;
+        border: 1px solid rgba(12, 17, 29, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .links a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 40px rgba(12, 17, 29, 0.12);
+      }
+
+      .tag {
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+      }
+
+      .tiles {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      }
+
+      .tile {
+        padding: 18px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(179, 216, 255, 0.35), rgba(138, 210, 163, 0.3));
+        border: 1px solid rgba(12, 17, 29, 0.08);
+      }
+
+      footer {
+        padding: 0 8vw 6vh;
+        color: var(--ink-soft);
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">Dritte Seite</div>
+      <nav class="nav">
+        <a href="/">Start</a>
+        <a href="/andereseite">Andereseite</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>Galerie der Wege</h1>
+          <p>
+            Willkommen im dritten Raum. Von hier aus kannst du gezielt in kleinere Unterseiten
+            springen. Jede Unterseite hat einen eigenen Fokus.
+          </p>
+        </div>
+        <div class="portal">
+          <h2>Unterseiten</h2>
+          <p>Wahle deinen Pfad:</p>
+          <div class="links">
+            <a href="/dritte/lab">Labor <span class="tag">Experimente</span></a>
+            <a href="/dritte/story">Story <span class="tag">Narrativ</span></a>
+            <a href="/dritte/kontakt">Kontakt <span class="tag">Signal senden</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="tiles">
+        <div class="tile">Jede Unterseite ist eigenstandig gestylt.</div>
+        <div class="tile">Navigation bleibt klar und direkt.</div>
+        <div class="tile">Ideal fur Projekte, Kapitel oder Microsites.</div>
+      </section>
+    </main>
+
+    <footer>GitHub Pages · Dritte Seite</footer>
+  </body>
+</html>

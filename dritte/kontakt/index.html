@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dritte Seite · Kontakt</title>
+    <meta name="description" content="Kontaktseite der dritten Seite." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f1318;
+        --paper: #f6f4f1;
+        --accent: #7c57ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Barlow", system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      header {
+        padding: 32px 8vw 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        margin-left: 12px;
+      }
+
+      main {
+        padding: 4vh 8vw 10vh;
+        display: grid;
+        gap: 22px;
+        max-width: 720px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 22px;
+        padding: 24px;
+        box-shadow: 0 18px 40px rgba(15, 19, 24, 0.08);
+      }
+
+      .card h1 {
+        font-family: "Playfair Display", serif;
+        margin: 0 0 12px;
+      }
+
+      .card p {
+        margin: 0 0 10px;
+        line-height: 1.5;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: white;
+        background: var(--accent);
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">Kontakt</div>
+      <nav class="nav">
+        <a href="/dritte">Zuruck</a>
+        <a href="/dritte/lab">Labor</a>
+        <a href="/dritte/story">Story</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card">
+        <h1>Signal senden</h1>
+        <p>
+          Du kannst diesen Bereich als Kontakt- oder Booking-Seite nutzen. Ersetze Text und Link mit
+          deinen Daten.
+        </p>
+        <a class="button" href="mailto:hello@example.com">Mail starten</a>
+      </section>
+      <section class="card">
+        <p>Alternativ kannst du hier ein Formular oder Kalender-Embed platzieren.</p>
+      </section>
+    </main>
+  </body>
+</html>
