@@ -1,0 +1,374 @@
+:root {
+	--bg-color: #000000;
+	--text-main: #ffffff;
+	--text-muted: rgba(255, 255, 255, 0.5);
+	--accent: #00f2ff;
+	/* Cyan */
+	--accent-2: #ff0055;
+	/* Magenta */
+
+	--font-main: "Outfit", sans-serif;
+	--font-mono: "Space Mono", monospace;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: var(--bg-color);
+	color: var(--text-main);
+	font-family: var(--font-main);
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+}
+
+/* Canvas */
+#canvas-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+/* UI Layer */
+#ui-layer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	pointer-events: none;
+	/* Let clicks pass to canvas mostly */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+/* Header */
+header {
+	padding: 20px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	pointer-events: auto;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.header-left {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.back-link {
+	color: var(--text-muted);
+	transition: color 0.3s;
+	display: flex;
+	align-items: center;
+}
+
+.back-link:hover {
+	color: var(--text-main);
+}
+
+.logo {
+	font-family: var(--font-mono);
+	font-weight: 700;
+	font-size: 1.2rem;
+	letter-spacing: -0.05em;
+	user-select: none;
+}
+
+.x-mark {
+	color: var(--accent-2);
+	margin-left: 2px;
+}
+
+.icon-btn {
+	background: none;
+	border: none;
+	color: var(--text-main);
+	font-size: 1.5rem;
+	cursor: pointer;
+	opacity: 0.7;
+	transition: opacity 0.3s;
+}
+
+.icon-btn:hover {
+	opacity: 1;
+}
+
+/* Start Screen */
+.center-panel {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	pointer-events: auto;
+	opacity: 1;
+	transition: opacity 0.8s ease;
+}
+
+.center-panel.fade-out {
+	opacity: 0;
+	pointer-events: none;
+}
+
+h1.glitch-text {
+	font-family: var(--font-mono);
+	font-size: 4rem;
+	font-weight: 700;
+	letter-spacing: -0.05em;
+	margin-bottom: 10px;
+	position: relative;
+	text-transform: uppercase;
+}
+
+/* Simple glitch effect using text-shadow */
+h1.glitch-text::before,
+h1.glitch-text::after {
+	content: attr(data-text);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.8;
+}
+
+h1.glitch-text::before {
+	color: var(--accent);
+	z-index: -1;
+	animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+h1.glitch-text::after {
+	color: var(--accent-2);
+	z-index: -2;
+	animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+	0% {
+		clip-path: inset(20% 0 80% 0);
+		transform: translate(-2px, 1px);
+	}
+
+	20% {
+		clip-path: inset(60% 0 10% 0);
+		transform: translate(2px, -1px);
+	}
+
+	40% {
+		clip-path: inset(40% 0 50% 0);
+		transform: translate(-2px, 2px);
+	}
+
+	60% {
+		clip-path: inset(80% 0 5% 0);
+		transform: translate(2px, -2px);
+	}
+
+	80% {
+		clip-path: inset(10% 0 60% 0);
+		transform: translate(-1px, 1px);
+	}
+
+	100% {
+		clip-path: inset(30% 0 30% 0);
+		transform: translate(1px, -1px);
+	}
+}
+
+@keyframes glitch-anim-2 {
+	0% {
+		clip-path: inset(10% 0 60% 0);
+		transform: translate(2px, -1px);
+	}
+
+	20% {
+		clip-path: inset(80% 0 5% 0);
+		transform: translate(-2px, 2px);
+	}
+
+	40% {
+		clip-path: inset(30% 0 20% 0);
+		transform: translate(2px, -2px);
+	}
+
+	60% {
+		clip-path: inset(10% 0 80% 0);
+		transform: translate(-1px, 1px);
+	}
+
+	80% {
+		clip-path: inset(50% 0 30% 0);
+		transform: translate(1px, -1px);
+	}
+
+	100% {
+		clip-path: inset(70% 0 10% 0);
+		transform: translate(-2px, 1px);
+	}
+}
+
+.subtitle {
+	font-size: 1rem;
+	color: var(--text-muted);
+	margin-bottom: 40px;
+	font-weight: 300;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.upload-area {
+	margin-bottom: 20px;
+}
+
+.upload-btn {
+	display: inline-block;
+	padding: 16px 40px;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid var(--text-main);
+	font-family: var(--font-mono);
+	font-weight: 700;
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	backdrop-filter: blur(5px);
+}
+
+.upload-btn:hover {
+	background: var(--text-main);
+	color: var(--bg-color);
+	box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+	transform: scale(1.05);
+}
+
+input[type="file"] {
+	display: none;
+}
+
+.format-info {
+	font-size: 0.75rem;
+	color: var(--text-muted);
+	opacity: 0.5;
+}
+
+/* Playback Controls */
+.playback-bar {
+	pointer-events: auto;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 80%, transparent 100%);
+	padding: 20px 40px 40px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
+	transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.playback-bar.hidden {
+	transform: translateY(100%);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.track-info {
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+#track-name {
+	font-family: var(--font-mono);
+	font-size: 0.9rem;
+	color: var(--text-muted);
+	white-space: nowrap;
+}
+
+.control-buttons {
+	display: flex;
+	align-items: center;
+	gap: 30px;
+}
+
+.play-btn {
+	background: transparent;
+	border: 1px solid var(--accent);
+	color: var(--accent);
+	padding: 10px 30px;
+	border-radius: 0;
+	/* Boxy tech look */
+	font-family: var(--font-mono);
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.2s;
+	min-width: 100px;
+}
+
+.play-btn:hover {
+	background: var(--accent);
+	color: black;
+	box-shadow: 0 0 15px var(--accent);
+}
+
+.scene-btn {
+	background: none;
+	border: none;
+	color: var(--text-muted);
+	font-size: 1.5rem;
+	cursor: pointer;
+	transition: color 0.2s;
+}
+
+.scene-btn:hover {
+	color: var(--text-main);
+}
+
+.scene-indicator {
+	font-family: var(--font-mono);
+	font-size: 0.7rem;
+	letter-spacing: 0.2em;
+	color: var(--accent-2);
+	text-transform: uppercase;
+	margin-top: 5px;
+}
+
+.progress-container {
+	width: 100%;
+	max-width: 600px;
+	height: 4px;
+	background: rgba(255, 255, 255, 0.1);
+	cursor: pointer;
+	border-radius: 2px;
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+.progress-bar {
+	height: 100%;
+	width: 0%;
+	background: var(--accent);
+	box-shadow: 0 0 10px var(--accent);
+	transition: width 0.1s linear;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+	h1.glitch-text {
+		font-size: 2.5rem;
+	}
+
+	.subtitle {
+		font-size: 0.9rem;
+	}
+}

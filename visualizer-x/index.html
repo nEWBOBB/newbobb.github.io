@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<title>VISUALIZER X — Newbobb Lab</title>
+
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+		rel="stylesheet" />
+
+	<link rel="stylesheet" href="style.css" />
+
+	<!-- Import Map for Three.js & Addons -->
+	<script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+</head>
+
+<body>
+	<!-- UI Layer -->
+	<div id="ui-layer">
+		<header>
+			<div class="header-left">
+				<a href="../index.html" class="back-link">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
+						<path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							stroke-linejoin="round" />
+					</svg>
+				</a>
+				<div class="logo">
+					<span>VISUALIZER</span><span class="x-mark">X</span>
+				</div>
+			</div>
+			<div class="header-right">
+				<button id="fullscreen-btn" class="icon-btn" title="Fullscreen">⛶</button>
+			</div>
+		</header>
+
+		<!-- Central Overlay (Start Screen) -->
+		<div id="start-screen" class="center-panel">
+			<h1 class="glitch-text" data-text="DROP YOUR BEAT">DROP YOUR BEAT</h1>
+			<p class="subtitle">Upload Audio for Immersive Experience</p>
+
+			<div class="upload-area" id="drop-zone">
+				<label for="audio-upload" class="upload-btn">
+					SELECT FILE
+				</label>
+				<input type="file" id="audio-upload" accept="audio/*" />
+			</div>
+			<p class="format-info">Support: MP3, WAV, OGG</p>
+		</div>
+
+		<!-- Playback Controls (Hidden initially) -->
+		<div id="playback-controls" class="playback-bar hidden">
+			<div class="track-info">
+				<div class="scrolling-text" id="track-name">No Track Selected</div>
+			</div>
+
+			<div class="control-buttons">
+				<button id="prev-scene-btn" class="scene-btn" title="Prev Scene">❮</button>
+				<button id="play-pause-btn" class="play-btn">PAUSE</button>
+				<button id="next-scene-btn" class="scene-btn" title="Next Scene">❯</button>
+			</div>
+
+			<div class="scene-indicator" id="scene-name">CORE</div>
+
+			<div class="progress-container" id="progress-container">
+				<div class="progress-bar" id="progress-bar"></div>
+			</div>
+		</div>
+
+		<!-- Performance Stats (Optional) -->
+		<div id="stats-container"></div>
+	</div>
+
+	<!-- Canvas Container -->
+	<div id="canvas-container"></div>
+
+	<!-- Experience Script -->
+	<script type="module" src="main.js"></script>
+</body>
+
+</html>
