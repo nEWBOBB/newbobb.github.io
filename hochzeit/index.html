@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meryem & Christopher — Hochzeitseinladung</title>
+    <meta
+      name="description"
+      content="Einladung zur Hochzeit von Meryem und Christopher am 27.06.2026 um 14:00 Uhr."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Parisienne&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #2a2118;
+        --gold: #b58b2a;
+        --gold-soft: rgba(181, 139, 42, 0.2);
+        --ivory: #fbf8f3;
+        --shadow: 0 24px 60px rgba(33, 25, 15, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Cinzel", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 20% 10%, #fffdf8 0%, #f6efe3 55%, #f2eadf 100%);
+        min-height: 100vh;
+      }
+
+      .peonies {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.9), transparent 40%),
+          radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.8), transparent 45%),
+          radial-gradient(circle at 20% 85%, rgba(255, 255, 255, 0.85), transparent 40%),
+          radial-gradient(circle at 80% 75%, rgba(255, 255, 255, 0.85), transparent 40%);
+        opacity: 0.9;
+      }
+
+      header {
+        padding: 28px 8vw 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        font-family: "Parisienne", cursive;
+        font-size: 2rem;
+        color: var(--gold);
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        margin-left: 14px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      main {
+        padding: 6vh 8vw 12vh;
+        display: grid;
+        gap: 32px;
+      }
+
+      .hero {
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid var(--gold-soft);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 20px;
+        text-align: center;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-family: "Parisienne", cursive;
+        font-size: clamp(2.8rem, 4vw + 1.4rem, 5rem);
+        color: var(--gold);
+      }
+
+      .hero p {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .gold {
+        color: var(--gold);
+      }
+
+      .details {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid var(--gold-soft);
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: 0 18px 40px rgba(33, 25, 15, 0.08);
+      }
+
+      .card h2 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+        color: var(--gold);
+      }
+
+      .countdown {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .countdown div {
+        min-width: 92px;
+        text-align: center;
+        border: 1px solid var(--gold-soft);
+        border-radius: 16px;
+        padding: 12px;
+        background: white;
+      }
+
+      .countdown strong {
+        font-size: 1.6rem;
+        color: var(--gold);
+      }
+
+      .rsvp {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .button {
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        border: 1px solid transparent;
+      }
+
+      .button.yes {
+        background: linear-gradient(120deg, #d9b45a, #b58b2a);
+        color: #2b1f10;
+      }
+
+      .button.no {
+        background: white;
+        color: var(--gold);
+        border-color: var(--gold-soft);
+      }
+
+      .upload {
+        display: grid;
+        gap: 14px;
+      }
+
+      .upload input[type="file"] {
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px dashed var(--gold-soft);
+        background: white;
+      }
+
+      .gallery {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+
+      .gallery img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 1px solid var(--gold-soft);
+      }
+
+      footer {
+        text-align: center;
+        padding: 0 8vw 6vh;
+        color: #5d4a2a;
+      }
+
+      @media (max-width: 720px) {
+        header {
+          padding-inline: 6vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="peonies" aria-hidden="true"></div>
+    <header>
+      <div class="logo">Meryem & Christopher</div>
+      <nav class="nav">
+        <a href="#details">Details</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#rsvp">Zu/Absage</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Wir heiraten</h1>
+        <p>Samstag, <span class="gold">27.06.2026</span> · Beginn <span class="gold">14:00 Uhr</span></p>
+        <p>Wir freuen uns, diesen Tag mit euch zu feiern.</p>
+        <div class="countdown" id="countdown" aria-live="polite"></div>
+      </section>
+
+      <section class="details" id="details">
+        <article class="card">
+          <h2>Wann</h2>
+          <p>Samstag, 27. Juni 2026</p>
+          <p>Beginn um 14:00 Uhr</p>
+        </article>
+        <article class="card">
+          <h2>Wo</h2>
+          <p>Location: <strong>Hier den Ort eintragen</strong></p>
+          <p>Adresse: Straße, PLZ, Stadt</p>
+        </article>
+        <article class="card">
+          <h2>Dresscode</h2>
+          <p>Elegant · Gold & Creme willkommen</p>
+        </article>
+      </section>
+
+      <section class="card upload" id="fotos">
+        <h2>Fotos</h2>
+        <p>
+          Ladet eure Bilder hier hoch. Diese Vorschau bleibt lokal im Browser. Für echte Uploads
+          kann ich euch eine einfache Upload‑Lösung anbinden.
+        </p>
+        <input id="photoInput" type="file" accept="image/*" multiple />
+        <div class="gallery" id="gallery"></div>
+      </section>
+
+      <section class="card" id="rsvp">
+        <h2>Zu- oder Absagen</h2>
+        <p>Bitte gebt uns bis zum 01.06.2026 Bescheid.</p>
+        <div class="rsvp">
+          <a
+            class="button yes"
+            href="mailto:hello@example.com?subject=Zusage%20Hochzeit%20Meryem%20%26%20Christopher&body=Wir%20kommen%20gerne%20und%20freuen%20uns!"
+            >Wir kommen</a
+          >
+          <a
+            class="button no"
+            href="mailto:hello@example.com?subject=Absage%20Hochzeit%20Meryem%20%26%20Christopher&body=Leider%20k%C3%B6nnen%20wir%20nicht%20kommen."
+            >Wir können nicht</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>Mit Liebe gestaltet · Meryem & Christopher</footer>
+
+    <script>
+      const countdownEl = document.getElementById("countdown");
+      const target = new Date("2026-06-27T14:00:00");
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = target.getTime() - now.getTime();
+        if (diff <= 0) {
+          countdownEl.innerHTML = "<div><strong>0</strong><br />Tage</div>";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        countdownEl.innerHTML = `
+          <div><strong>${days}</strong><br />Tage</div>
+          <div><strong>${hours}</strong><br />Stunden</div>
+          <div><strong>${minutes}</strong><br />Minuten</div>
+          <div><strong>${seconds}</strong><br />Sekunden</div>
+        `;
+      }
+
+      const gallery = document.getElementById("gallery");
+      const input = document.getElementById("photoInput");
+
+      input.addEventListener("change", () => {
+        gallery.innerHTML = "";
+        Array.from(input.files || []).forEach((file) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const img = document.createElement("img");
+            img.src = String(event.target?.result || "");
+            img.alt = "Hochzeitsfoto";
+            gallery.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    </script>
+  </body>
+</html>
