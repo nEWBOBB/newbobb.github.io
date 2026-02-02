@@ -239,35 +239,6 @@
 			animation: sweep 6s infinite ease-in-out;
 		}
 
-		.links {
-			display: grid;
-			gap: 16px;
-			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		}
-
-		.link-card {
-			padding: 18px;
-			border-radius: 18px;
-			background: rgba(255, 255, 255, 0.85);
-			border: 1px solid rgba(11, 15, 31, 0.08);
-			text-decoration: none;
-			color: var(--ink);
-			display: grid;
-			gap: 8px;
-			box-shadow: 0 18px 50px rgba(19, 24, 46, 0.1);
-			transition: transform 0.3s ease, box-shadow 0.3s ease;
-		}
-
-		.link-card:hover {
-			transform: translateY(-3px);
-			box-shadow: 0 24px 70px rgba(19, 24, 46, 0.18);
-		}
-
-		.link-card span {
-			color: #2a3550;
-			font-size: 0.95rem;
-		}
-
 		footer {
 			padding: 40px 8vw 60px;
 			display: flex;
@@ -405,35 +376,6 @@
 			</div>
 			<div class="pulse" aria-hidden="true"></div>
 		</section>
-
-		<section class="cards" id="seiten">
-			<article class="card">
-				<h3>Alle Unterseiten</h3>
-				<p>Direkte Links zu allen Bereichen deiner GitHub Pages.</p>
-			</article>
-			<div class="links">
-				<a class="link-card" href="/andereseite">
-					<strong>Andereseite</strong>
-					<span>Kontrastreiche Editorial-Optik</span>
-				</a>
-				<a class="link-card" href="/dritte">
-					<strong>Dritte Seite</strong>
-					<span>Hub mit mehreren Unterseiten</span>
-				</a>
-				<a class="link-card" href="/vierte">
-					<strong>Vierte Seite</strong>
-					<span>JS-Interaktionen & Kinetik</span>
-				</a>
-				<a class="link-card" href="/audio">
-					<strong>Audio-Reaktiv</strong>
-					<span>Visualizer mit Datei & Mikrofon</span>
-				</a>
-				<a class="link-card" href="/ts/">
-					<strong>TypeScript (Vite)</strong>
-					<span>TS Partikel-Visual im Build</span>
-				</a>
-			</div>
-		</section>
 	</main>
 
 	<footer>
@@ -448,46 +390,57 @@
 	</footer>
 
 	<script>
-		const canvas = document.getElementBy		bit");
+		const canvas = document.getElementById("orbit");
 		const ctx = canvas.getContext("2d");
-		const			Array.from({ length: 24 }, (_, 			
-			angle: (Math.PI * 2 * i) / 24,			us: 60 + Math.random() * 100,
-			speed		2 + Ma		dom() * 0.002,
+		const dots = Array.from({ length: 24 }, (_, i) => ({
+			angle: (Math.PI * 2 * i) / 24,
+			radius: 60 + Math.random() * 100,
+			speed: 0.002 + Math.random() * 0.002,
 		}));
 
-		f			resizeCanvas() {
-			const { width } = canvas.getBo			ientRect();
-			const ratio = window.devicePi			 || 1;
-			canvas.width = width			;
-			canvas.height = (width * 0.62) * ra			ctx.scale(ratio, ratio);
-			fu		 draw() {
-			const			, height } = canvas.getBoundingClientRect();
-			ctx.clearR			, width, height);
-			ctx.save();
-						slate(width 			ght / 2);
+		function resizeCanvas() {
+			const { width } = canvas.getBoundingClientRect();
+			const ratio = window.devicePixelRatio || 1;
+			canvas.width = width * ratio;
+			canvas.height = (width * 0.62) * ratio;
+			ctx.scale(ratio, ratio);
+		}
 
-			ctx.strokeStyle = "rgba(3			181, 0.35)";
+		function draw() {
+			const { width, height } = canvas.getBoundingClientRect();
+			ctx.clearRect(0, 0, width, height);
+			ctx.save();
+			ctx.translate(width / 2, height / 2);
+
+			ctx.strokeStyle = "rgba(35, 194, 181, 0.35)";
 			ctx.lineWidth = 1;
-			ctx.begi			
-			ctx.ellipse(0, 			 * 0.32, height *			, 0, Math.PI * 2);
+			ctx.beginPath();
+			ctx.ellipse(0, 0, width * 0.32, height * 0.22, 0, 0, Math.PI * 2);
 			ctx.stroke();
 
-			ctx.strokeStyle = "rgba(255			1, 0.25)";
-			c			Path();
-			ctx.ellipse(0, 0, width * 0.22, hei			34, 0.7, 0, Math.			
+			ctx.strokeStyle = "rgba(255, 106, 61, 0.25)";
+			ctx.beginPath();
+			ctx.ellipse(0, 0, width * 0.22, height * 0.34, 0.7, 0, Math.PI * 2);
 			ctx.stroke();
 
 			dots.forEach((dot) => {
-				dot.angle += dot.sp				const x = Math			.angle) * dot.radius;
-						= Math.sin(dot.angle) * 				 * 0.6;
-				ctx.fillStyle = "rgba(11, 15, 31								ctx.beginPath();
-				ctx.arc(x, y, 3.2, 0, Mat				
+				dot.angle += dot.speed;
+				const x = Math.cos(dot.angle) * dot.radius;
+				const y = Math.sin(dot.angle) * dot.radius * 0.6;
+				ctx.fillStyle = "rgba(11, 15, 31, 0.65)";
+				ctx.beginPath();
+				ctx.arc(x, y, 3.2, 0, Math.PI * 2);
 				ctx.fill();
 			});
 			ctx.restore();
-				AnimationFrame(dr						window.addEventListener("resize", 					resizeCanva			);
+			requestAnimationFrame(draw);
+		}
 
-			Canvas();
+		window.addEventListener("resize", () => {
+			resizeCanvas();
+		});
+
+		resizeCanvas();
 		draw();
 	</script>
 </body>
