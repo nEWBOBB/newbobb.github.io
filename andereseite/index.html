@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Andereseite — Signal im Nebel</title>
+    <meta
+      name="description"
+      content="Eine kontrastreiche, immersive Unterseite mit Editorial-Look, Neon-Nebel und ruhiger Typografie."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f1117;
+        --fog: #f3f4f8;
+        --ember: #ffb199;
+        --glow: #86f3ff;
+        --violet: #2b1a3a;
+        --glass: rgba(255, 255, 255, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Manrope", system-ui, sans-serif;
+        color: var(--fog);
+        background: radial-gradient(circle at 20% 20%, #1b2030 0%, #0f1117 50%, #08090e 100%);
+        min-height: 100vh;
+      }
+
+      .mist {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(circle at 80% 10%, rgba(134, 243, 255, 0.25), transparent 45%),
+          radial-gradient(circle at 30% 80%, rgba(255, 177, 153, 0.2), transparent 55%),
+          radial-gradient(circle at 60% 40%, rgba(78, 44, 107, 0.35), transparent 60%);
+        filter: blur(6px);
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 26px 8vw 10px;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        font-family: "Instrument Serif", serif;
+        font-size: 1.4rem;
+        letter-spacing: 0.04em;
+      }
+
+      .nav a {
+        color: var(--fog);
+        text-decoration: none;
+        font-size: 0.95rem;
+        opacity: 0.8;
+        margin-left: 14px;
+        transition: opacity 0.3s ease;
+      }
+
+      .nav a:hover {
+        opacity: 1;
+      }
+
+      main {
+        padding: 6vh 8vw 12vh;
+        display: grid;
+        gap: 6vh;
+      }
+
+      .hero {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(2.8rem, 4vw + 1.2rem, 5.2rem);
+        font-weight: 400;
+        margin: 0;
+        line-height: 1.02;
+      }
+
+      .hero p {
+        max-width: 38ch;
+        font-size: 1.05rem;
+        color: rgba(243, 244, 248, 0.75);
+      }
+
+      .hero .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: var(--fog);
+        text-decoration: none;
+        font-weight: 600;
+        width: max-content;
+      }
+
+      .panel {
+        padding: 26px;
+        border-radius: 26px;
+        background: rgba(16, 18, 27, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: grid;
+        gap: 14px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      .panel h2 {
+        font-family: "Instrument Serif", serif;
+        font-weight: 400;
+        margin: 0;
+      }
+
+      .panel p {
+        margin: 0;
+        color: rgba(243, 244, 248, 0.7);
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .chip {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 0.95rem;
+      }
+
+      .quote {
+        font-family: "Instrument Serif", serif;
+        font-size: 1.6rem;
+        text-align: right;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      footer {
+        padding: 0 8vw 6vh;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: rgba(243, 244, 248, 0.6);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mist" aria-hidden="true"></div>
+    <header>
+      <div class="brand">Andereseite</div>
+      <nav class="nav">
+        <a href="/">Start</a>
+        <a href="#kapitel">Kapitel</a>
+        <a href="#impuls">Impuls</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>Ein ruhiger Raum, der leuchtet.</h1>
+          <p>
+            Das hier ist die Gegenwelt zur Startseite: weniger Lautstärke, mehr Gefühl.
+            Ein Editorial-Layout, dunkle Flächen und Neon-Nebel für einen cineastischen Eindruck.
+          </p>
+          <a class="cta" href="#impuls">Sprung ins Kapitel</a>
+        </div>
+        <div class="panel" id="kapitel">
+          <h2>Drei Ebenen im Nebel</h2>
+          <p>Layer, die sich wie Szenen anfühlen. Alles bleibt bewusst langsam und fokussiert.</p>
+          <div class="grid">
+            <div class="chip">Cinematic Contrast</div>
+            <div class="chip">Editorial Rhythm</div>
+            <div class="chip">Soft Electric</div>
+            <div class="chip">Low Noise</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="impuls">
+        <h2>Impuls</h2>
+        <p>
+          Wenn du willst, passe ich diese Unterseite komplett auf ein Thema an: Portfolio,
+          Release-Page, Produkt-Preview oder Manifest. Sag einfach welches Gefühl du willst.
+        </p>
+        <div class="quote">„Weniger Elemente. Mehr Bedeutung.“</div>
+      </section>
+    </main>
+
+    <footer>
+      <div>Newbobb · Andereseite</div>
+      <div>GitHub Pages ready</div>
+    </footer>
+  </body>
+</html>
