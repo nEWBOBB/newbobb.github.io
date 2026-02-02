@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Neuebobb — Zukunft zum Anfassen</title>
+    <meta
+      name="description"
+      content="Eine experimentelle, interaktive Landingpage mit mutigem Typo-Design und atmosphärischer Bewegung."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0b0f1f;
+        --mist: #eef2ff;
+        --sun: #f8d64a;
+        --ember: #ff6a3d;
+        --tide: #23c2b5;
+        --night: #13182e;
+        --glass: rgba(255, 255, 255, 0.28);
+        --shadow: 0 20px 70px rgba(9, 14, 38, 0.22);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #fff8e6 0%, #f2f7ff 35%, #e9f4ff 60%, #f7f4ff 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        background: radial-gradient(circle at 20% 15%, rgba(255, 210, 98, 0.5), transparent 55%),
+          radial-gradient(circle at 80% 20%, rgba(35, 194, 181, 0.35), transparent 60%),
+          radial-gradient(circle at 60% 80%, rgba(255, 106, 61, 0.25), transparent 60%);
+        filter: blur(0.5px);
+      }
+
+      header {
+        padding: 28px 8vw 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.95rem;
+      }
+
+      .nav {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--ink);
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(11, 15, 31, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .nav a:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      main {
+        padding: 6vh 8vw 12vh;
+        display: grid;
+        gap: 6vw;
+      }
+
+      .hero {
+        display: grid;
+        gap: 32px;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: center;
+      }
+
+      .hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.6rem, 4vw + 1.4rem, 5.2rem);
+        line-height: 0.96;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+        max-width: 35ch;
+        margin: 18px 0 0;
+        color: #2a3550;
+      }
+
+      .cta {
+        margin-top: 28px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .cta a {
+        text-decoration: none;
+        font-weight: 600;
+        padding: 14px 22px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .cta .primary {
+        background: linear-gradient(120deg, var(--sun), var(--ember));
+        color: #251500;
+        box-shadow: var(--shadow);
+      }
+
+      .cta .secondary {
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--ink);
+        border-color: rgba(11, 15, 31, 0.1);
+      }
+
+      .cta a:hover {
+        transform: translateY(-3px);
+      }
+
+      .orbital {
+        background: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(11, 15, 31, 0.1);
+        border-radius: 30px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .orbital canvas {
+        width: 100%;
+        height: 320px;
+        display: block;
+      }
+
+      .orbital .tag {
+        position: absolute;
+        left: 22px;
+        bottom: 22px;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(11, 15, 31, 0.12);
+        backdrop-filter: blur(6px);
+      }
+
+      .cards {
+        display: grid;
+        gap: 22px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .card {
+        padding: 22px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(11, 15, 31, 0.08);
+        box-shadow: 0 20px 60px rgba(19, 24, 46, 0.08);
+        min-height: 180px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-family: "Syne", sans-serif;
+        font-size: 1.2rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: #2a3550;
+      }
+
+      .signal {
+        display: grid;
+        gap: 14px;
+        align-items: center;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        padding: 28px;
+        border-radius: 32px;
+        background: linear-gradient(130deg, rgba(19, 24, 46, 0.95), rgba(19, 24, 46, 0.75));
+        color: #f8f7ff;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .signal h2 {
+        font-family: "Syne", sans-serif;
+        margin: 0;
+        font-size: clamp(1.8rem, 2.4vw + 1rem, 3rem);
+      }
+
+      .signal .pulse {
+        height: 160px;
+        width: 100%;
+        border-radius: 20px;
+        background: linear-gradient(120deg, rgba(255, 106, 61, 0.2), rgba(35, 194, 181, 0.35));
+        position: relative;
+        overflow: hidden;
+      }
+
+      .signal .pulse::after {
+        content: "";
+        position: absolute;
+        inset: -60% 0;
+        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        animation: sweep 6s infinite ease-in-out;
+      }
+
+      footer {
+        padding: 40px 8vw 60px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: #2a3550;
+      }
+
+      .marquee {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        white-space: nowrap;
+        overflow: hidden;
+        mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      }
+
+      .marquee span {
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(11, 15, 31, 0.1);
+        background: rgba(255, 255, 255, 0.8);
+        animation: drift 18s linear infinite;
+      }
+
+      @keyframes drift {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-60%);
+        }
+      }
+
+      @keyframes sweep {
+        0%,
+        100% {
+          transform: translateX(-80%);
+        }
+        50% {
+          transform: translateX(80%);
+        }
+      }
+
+      @media (max-width: 960px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .signal {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        header {
+          padding-inline: 6vw;
+        }
+
+        main {
+          padding-inline: 6vw;
+        }
+
+        .orbital canvas {
+          height: 240px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="backdrop" aria-hidden="true"></div>
+    <header>
+      <div class="logo">Newbobb Lab</div>
+      <nav class="nav">
+        <a href="#vision">Vision</a>
+        <a href="#moments">Momente</a>
+        <a href="#signal">Signal</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="vision">
+        <div>
+          <h1>Wir bauen Räume, die sich wie Zukunft anfühlen.</h1>
+          <p>
+            Diese Seite ist ein lebendiges Experiment: mutige Typografie, fühlbare Tiefe, kleine
+            Interaktionen. Alles, was du hier siehst, kann dein nächster digitaler Raum sein.
+          </p>
+          <div class="cta">
+            <a class="primary" href="#signal">Starte den Impuls</a>
+            <a class="secondary" href="#moments">Zeig mir mehr</a>
+          </div>
+        </div>
+        <div class="orbital" aria-label="Interaktives Visual">
+          <canvas id="orbit" width="520" height="320"></canvas>
+          <div class="tag">Live Motion Field</div>
+        </div>
+      </section>
+
+      <section class="cards" id="moments">
+        <article class="card">
+          <h3>Neon Harmonie</h3>
+          <p>Warme Energie trifft kühle Klarheit. Eine Bühne für Ideen, die auffallen sollen.</p>
+        </article>
+        <article class="card">
+          <h3>Subtile Tiefe</h3>
+          <p>Glas, Licht und weiche Kanten geben deinem Projekt ein räumliches Gefühl.</p>
+        </article>
+        <article class="card">
+          <h3>Atmosphärische Bewegung</h3>
+          <p>Statt Standard-Animationen: leise, sinnvolle Bewegung mit Charakter.</p>
+        </article>
+        <article class="card">
+          <h3>Mobile First</h3>
+          <p>Alle Details bleiben klar, egal ob Smartphone, Tablet oder ultrabreit.</p>
+        </article>
+      </section>
+
+      <section class="signal" id="signal">
+        <div>
+          <h2>Ein Signal, das bleibt.</h2>
+          <p>
+            Wenn du willst, entwickeln wir daraus deine ganz eigene Marke oder Portfolio-Seite.
+            Sag nur Bescheid, und ich forme den nächsten Schritt.
+          </p>
+        </div>
+        <div class="pulse" aria-hidden="true"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div>Made for GitHub Pages · 2026</div>
+      <div class="marquee" aria-hidden="true">
+        <span>Bold Type</span>
+        <span>Soft Motion</span>
+        <span>Future Ready</span>
+        <span>Immersive Light</span>
+        <span>Human Scale</span>
+      </div>
+    </footer>
+
+    <script>
+      const canvas = document.getElementById("orbit");
+      const ctx = canvas.getContext("2d");
+      const dots = Array.from({ length: 24 }, (_, i) => ({
+        angle: (Math.PI * 2 * i) / 24,
+        radius: 60 + Math.random() * 100,
+        speed: 0.002 + Math.random() * 0.002,
+      }));
+
+      function resizeCanvas() {
+        const { width } = canvas.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        canvas.width = width * ratio;
+        canvas.height = (width * 0.62) * ratio;
+        ctx.scale(ratio, ratio);
+      }
+
+      function draw() {
+        const { width, height } = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, width, height);
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+
+        ctx.strokeStyle = "rgba(35, 194, 181, 0.35)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, width * 0.32, height * 0.22, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(255, 106, 61, 0.25)";
+        ctx.beginPath();
+        ctx.ellipse(0, 0, width * 0.22, height * 0.34, 0.7, 0, Math.PI * 2);
+        ctx.stroke();
+
+        dots.forEach((dot) => {
+          dot.angle += dot.speed;
+          const x = Math.cos(dot.angle) * dot.radius;
+          const y = Math.sin(dot.angle) * dot.radius * 0.6;
+          ctx.fillStyle = "rgba(11, 15, 31, 0.65)";
+          ctx.beginPath();
+          ctx.arc(x, y, 3.2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.restore();
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+      });
+
+      resizeCanvas();
+      draw();
+    </script>
+  </body>
+</html>
