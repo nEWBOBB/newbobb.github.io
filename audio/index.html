@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Audio-Reaktiv — Pulse Room</title>
+    <meta
+      name="description"
+      content="Eine audioreaktive Seite mit Web Audio API, Visualizer und Neon-Glow."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0a0b12;
+        --glow: #47ffd1;
+        --pulse: #ff7ad9;
+        --sky: #7aa6ff;
+        --fog: #f4f7ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Mono", ui-monospace, monospace;
+        color: var(--fog);
+        background: radial-gradient(circle at 20% 20%, #1f2438 0%, #0a0b12 55%, #05060a 100%);
+        min-height: 100vh;
+      }
+
+      .nebula {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(circle at 20% 15%, rgba(71, 255, 209, 0.25), transparent 50%),
+          radial-gradient(circle at 80% 25%, rgba(255, 122, 217, 0.25), transparent 55%),
+          radial-gradient(circle at 50% 80%, rgba(122, 166, 255, 0.2), transparent 60%);
+        filter: blur(6px);
+      }
+
+      header {
+        padding: 28px 8vw 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        font-family: "Syncopate", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 1rem;
+      }
+
+      .nav a {
+        color: var(--fog);
+        text-decoration: none;
+        margin-left: 12px;
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+      .nav a:hover {
+        opacity: 1;
+      }
+
+      main {
+        padding: 5vh 8vw 10vh;
+        display: grid;
+        gap: 28px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+      }
+
+      .hero h1 {
+        font-family: "Syncopate", sans-serif;
+        font-size: clamp(2rem, 3.4vw + 1.2rem, 4rem);
+        margin: 0;
+      }
+
+      .hero p {
+        max-width: 52ch;
+        color: rgba(244, 247, 255, 0.75);
+      }
+
+      .panel {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: center;
+      }
+
+      .controls {
+        display: grid;
+        gap: 12px;
+      }
+
+      .controls button,
+      .controls label {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--fog);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        padding: 12px 16px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .controls input[type="file"] {
+        display: none;
+      }
+
+      .controls small {
+        color: rgba(244, 247, 255, 0.6);
+      }
+
+      .viz {
+        position: relative;
+        min-height: 340px;
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .status {
+        position: absolute;
+        left: 18px;
+        bottom: 18px;
+        font-size: 0.85rem;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 8px 12px;
+        border-radius: 999px;
+      }
+
+      footer {
+        padding: 0 8vw 6vh;
+        color: rgba(244, 247, 255, 0.6);
+      }
+
+      @media (max-width: 900px) {
+        .panel {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nebula" aria-hidden="true"></div>
+    <header>
+      <div class="logo">Pulse Room</div>
+      <nav class="nav">
+        <a href="/">Start</a>
+        <a href="/vierte">Vierte</a>
+        <a href="/dritte">Dritte</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Audio wird zu Licht.</h1>
+        <p>
+          Wähle eine Audiodatei oder nutze dein Mikrofon. Die Visuals reagieren live auf Lautstärke
+          und Frequenzen.
+        </p>
+      </section>
+
+      <section class="panel">
+        <div class="controls">
+          <label for="fileInput">Audio-Datei laden</label>
+          <input id="fileInput" type="file" accept="audio/*" />
+          <button id="micButton" type="button">Mikrofon aktivieren</button>
+          <small id="note">Hinweis: Mikrofon braucht Browser-Erlaubnis.</small>
+        </div>
+        <div class="viz">
+          <canvas id="visualizer"></canvas>
+          <div class="status" id="status">Bereit</div>
+        </div>
+      </section>
+    </main>
+
+    <footer>GitHub Pages · Audio-Reaktiv</footer>
+
+    <script>
+      const canvas = document.getElementById("visualizer");
+      const ctx = canvas.getContext("2d");
+      const statusEl = document.getElementById("status");
+      const fileInput = document.getElementById("fileInput");
+      const micButton = document.getElementById("micButton");
+
+      let audioContext;
+      let analyser;
+      let sourceNode;
+      let animationId;
+
+      function resizeCanvas() {
+        const { width, height } = canvas.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        canvas.width = width * ratio;
+        canvas.height = height * ratio;
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      }
+
+      function setupAnalyser() {
+        if (!audioContext) {
+          audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.85;
+        return analyser;
+      }
+
+      function stopCurrent() {
+        if (animationId) cancelAnimationFrame(animationId);
+        if (sourceNode) sourceNode.disconnect();
+        sourceNode = null;
+      }
+
+      function draw() {
+        const bufferLength = analyser.frequencyBinCount;
+        const data = new Uint8Array(bufferLength);
+        const timeData = new Uint8Array(bufferLength);
+
+        function frame() {
+          analyser.getByteFrequencyData(data);
+          analyser.getByteTimeDomainData(timeData);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          const width = canvas.clientWidth;
+          const height = canvas.clientHeight;
+
+          // Frequency bars
+          const barWidth = width / bufferLength * 2.5;
+          let x = 0;
+          for (let i = 0; i < bufferLength; i += 12) {
+            const value = data[i] / 255;
+            const barHeight = value * height * 0.7;
+            const hue = 160 + value * 80;
+            ctx.fillStyle = `hsla(${hue}, 90%, 60%, 0.75)`;
+            ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+            x += barWidth + 2;
+          }
+
+          // Wave line
+          ctx.beginPath();
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+          const slice = width / bufferLength;
+          let waveX = 0;
+          for (let i = 0; i < bufferLength; i += 6) {
+            const v = timeData[i] / 128.0;
+            const y = (v * height) / 2;
+            if (i === 0) ctx.moveTo(waveX, y);
+            else ctx.lineTo(waveX, y);
+            waveX += slice * 6;
+          }
+          ctx.stroke();
+
+          animationId = requestAnimationFrame(frame);
+        }
+        frame();
+      }
+
+      async function useMicrophone() {
+        try {
+          stopCurrent();
+          const analyserNode = setupAnalyser();
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          sourceNode = audioContext.createMediaStreamSource(stream);
+          sourceNode.connect(analyserNode);
+          statusEl.textContent = "Mikrofon aktiv";
+          draw();
+        } catch (error) {
+          statusEl.textContent = "Mikrofon blockiert";
+        }
+      }
+
+      async function useFile(file) {
+        try {
+          stopCurrent();
+          const analyserNode = setupAnalyser();
+          const arrayBuffer = await file.arrayBuffer();
+          const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+          const bufferSource = audioContext.createBufferSource();
+          bufferSource.buffer = audioBuffer;
+          bufferSource.loop = true;
+          bufferSource.connect(analyserNode);
+          analyserNode.connect(audioContext.destination);
+          bufferSource.start();
+          sourceNode = bufferSource;
+          statusEl.textContent = "Audio Datei aktiv";
+          draw();
+        } catch (error) {
+          statusEl.textContent = "Audio konnte nicht geladen werden";
+        }
+      }
+
+      fileInput.addEventListener("change", (event) => {
+        const [file] = event.target.files || [];
+        if (file) useFile(file);
+      });
+
+      micButton.addEventListener("click", () => {
+        useMicrophone();
+      });
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+    </script>
+  </body>
+</html>
