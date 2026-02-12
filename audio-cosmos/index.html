@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio Cosmos - Newbobb Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="back" href="../index.html">Zur Startseite</a>
+    <div class="brand">Audio Cosmos</div>
+    <div class="stat" id="scene-label">Scene 1 / 10</div>
+  </header>
+
+  <main class="shell">
+    <section class="panel controls">
+      <h1>Audio Driven Scene Lab</h1>
+      <p class="intro">Upload eine Datei und wechsle durch 10 aufwendige Visual-Szenen. Alle Szenen reagieren auf Bass, Mid, High und Gesamtenergie.</p>
+
+      <label class="upload" for="audio-file">Audio Datei auswahlen</label>
+      <input id="audio-file" type="file" accept="audio/*" />
+      <p class="track" id="track-name">Keine Datei aktiv</p>
+
+      <div class="row buttons">
+        <button id="play-btn" disabled>Play</button>
+        <button id="pause-btn" disabled>Pause</button>
+      </div>
+
+      <div class="row buttons">
+        <button id="prev-btn" disabled>Vorherige</button>
+        <button id="next-btn" disabled>Nächste</button>
+      </div>
+
+      <div class="stack">
+        <label for="scene-select">Szene direkt wahlen</label>
+        <select id="scene-select" disabled></select>
+      </div>
+
+      <div class="stack">
+        <label for="intensity">Visual Intensitat</label>
+        <input id="intensity" type="range" min="0.6" max="2.2" step="0.05" value="1.25" />
+      </div>
+
+      <div class="toggles">
+        <label><input id="auto-cycle" type="checkbox" checked /> Auto Cycle (17s)</label>
+        <label><input id="beat-jump" type="checkbox" checked /> Beat Jump aktiv</label>
+      </div>
+
+      <div class="chips" id="chip-list"></div>
+    </section>
+
+    <section class="panel stage">
+      <canvas id="viz"></canvas>
+      <div class="hud">
+        <span id="hud-name">Prism Bloom</span>
+        <span id="hud-energy">Energy 0%</span>
+      </div>
+    </section>
+  </main>
+
+  <audio id="player" preload="auto"></audio>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

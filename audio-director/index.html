@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio Director - Export Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="back" href="../index.html">Zur Startseite</a>
+    <div class="brand">
+      <strong>Audio Director</strong>
+      <span>Realtime Visual Studio</span>
+    </div>
+    <div class="status" id="recording-state">Idle</div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel controls">
+      <section>
+        <h1>Upload + Scene Design + Export</h1>
+        <p>Kein Prototyp mehr: 10 hochwertige, audio-reaktive Szenen mit Smooth-Transitions und direktem Video-Export inkl. Audio.</p>
+      </section>
+
+      <section class="stack">
+        <label class="upload" for="audio-file">Audio-Datei waehlen</label>
+        <input id="audio-file" type="file" accept="audio/*" />
+        <p id="track-name" class="meta">Keine Datei geladen</p>
+      </section>
+
+      <section class="grid2">
+        <button id="play-btn" disabled>Play</button>
+        <button id="pause-btn" disabled>Pause</button>
+        <button id="prev-scene-btn" disabled>Scene -</button>
+        <button id="next-scene-btn" disabled>Scene +</button>
+      </section>
+
+      <section class="stack">
+        <label for="scene-select">Szene</label>
+        <select id="scene-select" disabled></select>
+        <div id="scene-chips" class="chips"></div>
+      </section>
+
+      <section class="stack">
+        <label for="intensity">Intensity</label>
+        <input id="intensity" type="range" min="0.6" max="2.4" step="0.05" value="1.3" />
+
+        <label for="transition-speed">Transition Speed</label>
+        <input id="transition-speed" type="range" min="0.6" max="2.5" step="0.1" value="1.4" />
+
+        <label for="glow">Glow</label>
+        <input id="glow" type="range" min="0" max="1" step="0.02" value="0.56" />
+      </section>
+
+      <section class="toggles">
+        <label><input id="auto-cycle" type="checkbox" checked /> Auto Cycle (15s)</label>
+        <label><input id="beat-jump" type="checkbox" checked /> Beat Jump</label>
+      </section>
+
+      <section class="export panel-inner">
+        <h2>Export</h2>
+        <div class="grid2 export-grid">
+          <div>
+            <label for="fps-select">FPS</label>
+            <select id="fps-select">
+              <option value="30">30</option>
+              <option value="60" selected>60</option>
+            </select>
+          </div>
+          <div>
+            <label for="bitrate-select">Bitrate</label>
+            <select id="bitrate-select">
+              <option value="6000000">6 Mbps</option>
+              <option value="10000000" selected>10 Mbps</option>
+              <option value="14000000">14 Mbps</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <button id="record-btn" disabled>Record</button>
+          <button id="stop-record-btn" disabled>Stop</button>
+        </div>
+
+        <a id="download-link" class="download disabled" href="#" download="audio-director-export.webm" aria-disabled="true">Download Export</a>
+        <p id="recording-time" class="meta">Noch keine Aufnahme</p>
+      </section>
+    </aside>
+
+    <section class="panel stage">
+      <canvas id="viz" aria-label="Audio Visual Output"></canvas>
+      <div class="hud">
+        <div>
+          <strong id="scene-name">Scene</strong>
+          <span id="scene-index">1 / 10</span>
+        </div>
+        <div id="energy-label">Energy 0%</div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="player" preload="auto"></audio>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
