@@ -1,0 +1,58 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio Morph - Newbobb Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Syne:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="back" href="../index.html">Zuruck</a>
+    <h1>Audio Morph</h1>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls">
+      <h2>Datei laden</h2>
+      <label class="upload" for="audio-file">Audio auswahlen</label>
+      <input id="audio-file" type="file" accept="audio/*" />
+
+      <div class="row">
+        <button id="play-btn" disabled>Play</button>
+        <button id="pause-btn" disabled>Pause</button>
+      </div>
+
+      <div class="row">
+        <button id="prev-btn" disabled>Effekt zuruck</button>
+        <button id="next-btn" disabled>Effekt weiter</button>
+      </div>
+
+      <label for="effect-select">Effekt</label>
+      <select id="effect-select" disabled>
+        <option value="rings">Neon Rings</option>
+        <option value="wave">Ribbon Wave</option>
+        <option value="particles">Dust Field</option>
+      </select>
+
+      <label class="auto-switch">
+        <input id="auto-switch" type="checkbox" checked />
+        Auto-Switch alle 14s
+      </label>
+
+      <p id="track-name" class="meta">Keine Datei geladen.</p>
+    </section>
+
+    <section class="panel stage">
+      <canvas id="viz" width="1280" height="720" aria-label="Audio Visualizer"></canvas>
+    </section>
+  </main>
+
+  <audio id="player" preload="auto"></audio>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
