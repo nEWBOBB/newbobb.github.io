@@ -1,0 +1,95 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Audio Masterpiece - Timeline Visual Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="back" href="../index.html">Zur Startseite</a>
+    <div class="brand">
+      <strong>Audio Masterpiece</strong>
+      <span>Timeline Directed Visual Performance</span>
+    </div>
+    <div class="pill" id="scene-indicator">Scene 1 / 20</div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel controls">
+      <section class="intro">
+        <h1>20 Szenen. Voll audio-reaktiv. Timeline-gesteuert.</h1>
+        <p>Lade einen Track, setze Cues auf der Zeitskala und bestimme exakt, wann welcher Stil startet. Alles laeuft mit smoothen Transitions in Echtzeit.</p>
+      </section>
+
+      <section class="stack">
+        <label class="upload" for="audio-file">Audio Datei laden</label>
+        <input id="audio-file" type="file" accept="audio/*" />
+        <p id="track-name" class="meta">Keine Datei geladen</p>
+      </section>
+
+      <section class="grid2">
+        <button id="play-btn" disabled>Play</button>
+        <button id="pause-btn" disabled>Pause</button>
+        <button id="prev-btn" disabled>Scene -</button>
+        <button id="next-btn" disabled>Scene +</button>
+      </section>
+
+      <section class="stack">
+        <label for="scene-select">Scene waehlen</label>
+        <select id="scene-select" disabled></select>
+        <button id="add-cue-btn" disabled>Cue an aktueller Zeit setzen</button>
+        <div id="scene-chips" class="chips"></div>
+      </section>
+
+      <section class="stack">
+        <label for="intensity">Intensity</label>
+        <input id="intensity" type="range" min="0.6" max="2.6" step="0.05" value="1.35" />
+
+        <label for="transition">Transition Speed</label>
+        <input id="transition" type="range" min="0.5" max="2.8" step="0.1" value="1.5" />
+
+        <label for="glow">Glow</label>
+        <input id="glow" type="range" min="0" max="1" step="0.02" value="0.58" />
+      </section>
+
+      <section class="timeline panel-inner">
+        <div class="timeline-head">
+          <strong>Timeline Cues</strong>
+          <span id="time-readout">00:00 / 00:00</span>
+        </div>
+
+        <input id="scrubber" type="range" min="0" max="100" value="0" step="0.01" disabled />
+        <div class="rail" id="rail"></div>
+
+        <div class="timeline-actions">
+          <button id="remove-cue-btn" disabled>Cue an aktueller Zeit entfernen</button>
+          <button id="clear-cues-btn" disabled>Alle Cues resetten</button>
+        </div>
+
+        <ul id="cue-list" class="cue-list"></ul>
+      </section>
+    </aside>
+
+    <section class="panel stage">
+      <canvas id="viz" aria-label="Audio reactive visual output"></canvas>
+      <div class="hud">
+        <div>
+          <strong id="scene-name">Prism Cathedral</strong>
+          <span id="scene-sub">Cue controlled</span>
+        </div>
+        <div id="energy">Energy 0%</div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="player" preload="auto"></audio>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
