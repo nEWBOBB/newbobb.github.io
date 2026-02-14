@@ -8,10 +8,18 @@ if (envelope && seal) {
   const openEnvelope = () => {
     if (opened) return;
     opened = true;
-    envelope.classList.add("open");
+    envelope.classList.add("is-unsealing");
     envelope.style.setProperty("--tilt-x", "0deg");
     envelope.style.setProperty("--tilt-y", "0deg");
     seal.setAttribute("aria-label", "Siegel geöffnet");
+
+    window.setTimeout(() => {
+      envelope.classList.add("is-opening");
+    }, 240);
+
+    window.setTimeout(() => {
+      envelope.classList.add("is-revealed");
+    }, 980);
   };
 
   seal.addEventListener("click", openEnvelope);
