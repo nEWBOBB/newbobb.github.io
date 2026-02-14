@@ -3,11 +3,14 @@ const seal = document.getElementById("seal");
 
 if (envelope && seal) {
   let opened = false;
+  const maxTilt = 4.5;
 
   const openEnvelope = () => {
     if (opened) return;
     opened = true;
     envelope.classList.add("open");
+    envelope.style.setProperty("--tilt-x", "0deg");
+    envelope.style.setProperty("--tilt-y", "0deg");
     seal.setAttribute("aria-label", "Siegel geöffnet");
   };
 
@@ -22,8 +25,8 @@ if (envelope && seal) {
   window.addEventListener("pointermove", (event) => {
     if (opened) return;
     const { innerWidth, innerHeight } = window;
-    const x = (event.clientX / innerWidth - 0.5) * 6;
-    const y = (event.clientY / innerHeight - 0.5) * -6;
+    const x = (event.clientX / innerWidth - 0.5) * maxTilt * 2;
+    const y = (event.clientY / innerHeight - 0.5) * -maxTilt * 2;
     envelope.style.setProperty("--tilt-y", `${x.toFixed(2)}deg`);
     envelope.style.setProperty("--tilt-x", `${y.toFixed(2)}deg`);
   });
