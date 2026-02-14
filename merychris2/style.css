@@ -30,8 +30,10 @@ body {
 }
 
 .envelope-scene {
+  --scene-width: min(94vw, 1120px);
   position: relative;
-  width: min(94vw, 1120px);
+  width: var(--scene-width);
+  height: calc(var(--scene-width) * 1024 / 1536);
   aspect-ratio: 1536 / 1024;
   border-radius: 2px;
   overflow: hidden;
@@ -51,8 +53,14 @@ body {
 
 .closed-photo {
   z-index: 6;
-  background: url("./vorlage/template.png") center / cover no-repeat;
   transition: opacity 700ms ease, transform 860ms cubic-bezier(0.2, 0.77, 0.24, 1), filter 600ms ease;
+}
+
+.template-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .opened-envelope {
