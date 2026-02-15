@@ -43,58 +43,31 @@ body {
   opacity: 0.82;
 }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.8rem 1rem;
-  backdrop-filter: blur(10px);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 250, 233, 0.85));
-  border-bottom: 1px solid rgba(184, 138, 60, 0.25);
-}
-
-.brand {
-  color: var(--gold);
-  text-decoration: none;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.nav {
-  display: flex;
-  gap: 0.4rem;
-  overflow-x: auto;
-  padding-bottom: 0.1rem;
-}
-
-.nav-link {
-  color: #6f5f43;
-  text-decoration: none;
-  font-size: 0.95rem;
-  padding: 0.3rem 0.65rem;
+.music-button {
+  position: fixed;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  z-index: 30;
+  background: linear-gradient(135deg, #f3e2bc, #d4ae63);
+  color: #2f220c;
+  border: 1px solid rgba(170, 124, 41, 0.45);
   border-radius: 999px;
-  white-space: nowrap;
-  transition: all 0.25s ease;
-}
-
-.nav-link.active {
-  background: linear-gradient(135deg, #f5e5bf, #dfc180);
-  color: #3f2f10;
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 main {
-  width: min(960px, 100% - 1.5rem);
-  margin: 1rem auto 3rem;
+  width: 100%;
+  margin: 0 0 3rem;
   display: grid;
   gap: 1.1rem;
 }
 
 .section {
+  width: min(960px, 100% - 1.5rem);
+  margin: 0 auto;
   background: linear-gradient(145deg, var(--surface-strong), var(--surface));
   border: 1px solid rgba(184, 138, 60, 0.2);
   border-radius: 1.3rem;
@@ -102,27 +75,62 @@ main {
   box-shadow: var(--shadow);
 }
 
-.hero {
-  text-align: center;
+.startscreen {
+  width: 100%;
+  min-height: 100svh;
+  margin: 0;
 }
 
-.photo-frame {
-  width: min(420px, 100%);
-  margin: 0 auto 1.1rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(184, 138, 60, 0.35);
-  box-shadow: 0 10px 26px rgba(113, 86, 41, 0.18);
-  overflow: hidden;
+.startscreen-image {
+  min-height: 100svh;
   position: relative;
-  aspect-ratio: 4 / 5;
+  border-radius: 0;
+  overflow: hidden;
   background: linear-gradient(140deg, #f5e4be 0%, #fffdfa 50%, #f3e5c5 100%);
 }
 
-.photo-frame img {
+.startscreen-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.35) 52%,
+    rgba(0, 0, 0, 0.52) 100%
+  );
+}
+
+.hero-text {
+  position: absolute;
+  z-index: 2;
+  inset: auto 1.2rem 2.4rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.hero-text p {
+  margin: 0;
+  font-size: clamp(1.2rem, 5.2vw, 1.8rem);
+}
+
+.hero-text h1 {
+  margin-top: 0.35rem;
+  color: #fff;
+  font-size: clamp(2.2rem, 9vw, 4rem);
+}
+
+.hero {
+  text-align: center;
 }
 
 .photo-fallback {
@@ -137,11 +145,13 @@ main {
   color: #6d5733;
 }
 
-.photo-frame.missing-image img {
+.startscreen-image.missing-image img,
+.startscreen-image.missing-image .hero-overlay,
+.startscreen-image.missing-image .hero-text {
   display: none;
 }
 
-.photo-frame.missing-image .photo-fallback {
+.startscreen-image.missing-image .photo-fallback {
   display: flex;
 }
 
@@ -163,17 +173,9 @@ h2 {
   margin-bottom: 0.45rem;
 }
 
-.subline,
 .wedding-date,
 .location-note {
   margin: 0.28rem 0;
-}
-
-.subline {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.8rem;
-  color: #806439;
 }
 
 .wedding-date {
@@ -314,16 +316,16 @@ fieldset {
 }
 
 @media (min-width: 760px) {
-  .topbar {
-    padding: 0.85rem 1.4rem;
-  }
-
   main {
-    width: min(980px, 100% - 2.5rem);
     gap: 1.4rem;
   }
 
+  .hero-text {
+    inset: auto 2rem 3.2rem;
+  }
+
   .section {
+    width: min(980px, 100% - 2.5rem);
     padding: 1.6rem;
   }
 

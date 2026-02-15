@@ -12,28 +12,28 @@
   </head>
   <body>
     <div class="pearl-overlay" aria-hidden="true"></div>
-
-    <header class="topbar">
-      <a class="brand" href="#einladung">M & C</a>
-      <nav class="nav" aria-label="Hauptnavigation">
-        <a href="#einladung" data-section="einladung" class="nav-link active">Einladung</a>
-        <a href="#location" data-section="location" class="nav-link">Location</a>
-        <a href="#tagesablauf" data-section="tagesablauf" class="nav-link">Tagesablauf</a>
-        <a href="#rueckmeldung" data-section="rueckmeldung" class="nav-link">Rückmeldung</a>
-      </nav>
-    </header>
+    <audio id="backgroundMusic" loop autoplay preload="auto">
+      <source src="./audio/hochzeit.mp3" type="audio/mpeg" />
+    </audio>
+    <button id="musicButton" class="music-button" type="button" hidden>Musik starten</button>
 
     <main>
-      <section id="einladung" class="section hero section-observe">
-        <div class="photo-frame" id="photoFrame" role="img" aria-label="Paarfoto von Meryem und Christopher">
-          <img id="couplePhoto" src="./paarfoto.jpg" alt="Meryem und Christopher" />
-          <div class="photo-fallback">Paarfoto hier platzieren (`merychris3/paarfoto.jpg`)</div>
+      <section id="start" class="startscreen">
+        <div class="startscreen-image" id="photoFrame" role="img" aria-label="Paarfoto von Meryem und Christopher">
+          <img id="couplePhoto" src="./images/tipps-hochzeitsfotos_02.jpg" alt="Meryem und Christopher" />
+          <div class="photo-fallback">Bild hier platzieren: `merychris3/images/`</div>
+          <div class="hero-overlay"></div>
+          <div class="hero-text">
+            <p>Wir heiraten!</p>
+            <h1>Meryem und Christopher</h1>
+            <p class="wedding-date">27. Juni 2026</p>
+          </div>
         </div>
+      </section>
 
-        <p class="subline">Wir heiraten</p>
-        <h1>Meryem & Christopher</h1>
-        <p class="wedding-date">27. Juni 2026</p>
-
+      <section id="einladung" class="section hero">
+        <h2>Einladung</h2>
+        <p>Wir freuen uns sehr, diesen besonderen Tag mit euch gemeinsam zu feiern.</p>
         <div class="countdown" aria-live="polite">
           <div class="unit">
             <span id="days">0</span>
@@ -52,11 +52,10 @@
             <small>Sekunden</small>
           </div>
         </div>
-
         <p class="location-note">Schloss Dachau, München</p>
       </section>
 
-      <section id="location" class="section section-observe">
+      <section id="location" class="section">
         <h2>Location</h2>
         <p>
           Wir feiern unsere Hochzeit im stilvollen Ambiente von
@@ -81,7 +80,7 @@
         >
       </section>
 
-      <section id="tagesablauf" class="section section-observe">
+      <section id="tagesablauf" class="section">
         <h2>Tagesablauf</h2>
         <ul class="timeline">
           <li><span>14:00</span> Ankunft der Gäste</li>
@@ -93,7 +92,7 @@
         <p class="hint">Feinabstimmung folgt, ihr werdet hier aktuell informiert.</p>
       </section>
 
-      <section id="rueckmeldung" class="section section-observe">
+      <section id="rueckmeldung" class="section">
         <h2>Rückmeldung</h2>
         <p>Bitte gebt uns kurz Bescheid, ob ihr dabei seid.</p>
 

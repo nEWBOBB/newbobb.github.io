@@ -34,32 +34,53 @@ if (couplePhoto && photoFrame) {
   couplePhoto.addEventListener("error", markMissingImage);
 }
 
-const sections = [...document.querySelectorAll(".section-observe")];
-const navLinks = [...document.querySelectorAll(".nav-link")];
+const music = document.getElementById("backgroundMusic");
+const musicButton = document.getElementById("musicButton");
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const id = entry.target.id;
-      navLinks.forEach((link) => {
-        link.classList.toggle("active", link.dataset.section === id);
-      });
-    });
-  },
-  {
-    threshold: 0.38,
+async function attemptAutoPlay() {
+  if (!music) return;
+  try {
+    await music.play();
+    if (musicButton) musicButton.hidden = true;
+  } catch {
+    if (musicButton) musicButton.hidden = false;
   }
-);
+}
 
-sections.forEach((section) => observer.observe(section));
+attemptAutoPlay();
+
+if (musicButton && music) {
+  musicButton.addEventListener("click", async () => {
+    try {
+      await music.play();
+      musicButton.hidden = true;
+    } catch {
+      musicButton.textContent = "Musik konnte nicht gestartet werden";
+    }
+  });
+}
+
+document.addEventListener(
+  "click",
+  () => {
+    if (music && music.paused) {
+      music
+        .play()
+        .then(() => {
+          if (musicButton) musicButton.hidden = true;
+        })
+        .catch(() => {});
+    }
+  },
+  { once: true }
+);
 
 const form = document.getElementById("rsvp-form");
 const status = document.getElementById("form-status");
 const storageKey = "merychris3-rsvp";
 
 const saved = localStorage.getItem(storageKey);
-if (saved) {
+if (saved && form) {
   try {
     const data = JSON.parse(saved);
     if (data.guestName) form.guestName.value = data.guestName;
@@ -74,28 +95,30 @@ if (saved) {
   }
 }
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
+if (form) {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  const formData = new FormData(form);
-  const guestName = String(formData.get("guestName") || "").trim();
-  const guestCount = String(formData.get("guestCount") || "").trim();
-  const attendance = String(formData.get("attendance") || "").trim();
-  const message = String(formData.get("message") || "").trim();
+    const formData = new FormData(form);
+    const guestName = String(formData.get("guestName") || "").trim();
+    const guestCount = String(formData.get("guestCount") || "").trim();
+    const attendance = String(formData.get("attendance") || "").trim();
+    const message = String(formData.get("message") || "").trim();
 
-  const payload = { guestName, guestCount, attendance, message };
-  localStorage.setItem(storageKey, JSON.stringify(payload));
+    const payload = { guestName, guestCount, attendance, message };
+    localStorage.setItem(storageKey, JSON.stringify(payload));
 
-  const subject = encodeURIComponent("Rückmeldung Hochzeit Meryem & Christopher");
-  const body = encodeURIComponent(
-    [
-      `Name: ${guestName}`,
-      `Anzahl Personen: ${guestCount}`,
-      `Antwort: ${attendance}`,
-      `Nachricht: ${message || "-"}`,
-    ].join("\n")
-  );
+    const subject = encodeURIComponent("Rückmeldung Hochzeit Meryem & Christopher");
+    const body = encodeURIComponent(
+      [
+        `Name: ${guestName}`,
+        `Anzahl Personen: ${guestCount}`,
+        `Antwort: ${attendance}`,
+        `Nachricht: ${message || "-"}`,
+      ].join("\n")
+    );
 
-  window.location.href = `mailto:meryem-und-christopher@example.com?subject=${subject}&body=${body}`;
-  status.textContent = "Rückmeldung gespeichert. E-Mail-Entwurf wurde geöffnet.";
-});
+    window.location.href = `mailto:meryem-und-christopher@example.com?subject=${subject}&body=${body}`;
+    if (status) status.textContent = "Rückmeldung gespeichert. E-Mail-Entwurf wurde geöffnet.";
+  });
+}
