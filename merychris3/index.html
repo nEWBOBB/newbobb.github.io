@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meryem & Christopher | Hochzeit</title>
+    <meta
+      name="description"
+      content="Hochzeitswebseite von Meryem und Christopher. Alle Infos zu Einladung, Location, Tagesablauf und Rückmeldung."
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="pearl-overlay" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#einladung">M & C</a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="#einladung" data-section="einladung" class="nav-link active">Einladung</a>
+        <a href="#location" data-section="location" class="nav-link">Location</a>
+        <a href="#tagesablauf" data-section="tagesablauf" class="nav-link">Tagesablauf</a>
+        <a href="#rueckmeldung" data-section="rueckmeldung" class="nav-link">Rückmeldung</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="einladung" class="section hero section-observe">
+        <div class="photo-frame" id="photoFrame" role="img" aria-label="Paarfoto von Meryem und Christopher">
+          <img id="couplePhoto" src="./paarfoto.jpg" alt="Meryem und Christopher" />
+          <div class="photo-fallback">Paarfoto hier platzieren (`merychris3/paarfoto.jpg`)</div>
+        </div>
+
+        <p class="subline">Wir heiraten</p>
+        <h1>Meryem & Christopher</h1>
+        <p class="wedding-date">27. Juni 2026</p>
+
+        <div class="countdown" aria-live="polite">
+          <div class="unit">
+            <span id="days">0</span>
+            <small>Tage</small>
+          </div>
+          <div class="unit">
+            <span id="hours">0</span>
+            <small>Stunden</small>
+          </div>
+          <div class="unit">
+            <span id="minutes">0</span>
+            <small>Minuten</small>
+          </div>
+          <div class="unit">
+            <span id="seconds">0</span>
+            <small>Sekunden</small>
+          </div>
+        </div>
+
+        <p class="location-note">Schloss Dachau, München</p>
+      </section>
+
+      <section id="location" class="section section-observe">
+        <h2>Location</h2>
+        <p>
+          Wir feiern unsere Hochzeit im stilvollen Ambiente von
+          <strong>Schloss Dachau</strong> bei München.
+        </p>
+
+        <div class="map-wrap">
+          <iframe
+            title="Google Maps - Schloss Dachau"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Schloss%20Dachau%2C%20Dachau%2C%20M%C3%BCnchen&output=embed"
+          ></iframe>
+        </div>
+
+        <a
+          class="button"
+          href="https://www.google.com/maps/search/?api=1&query=Schloss+Dachau"
+          target="_blank"
+          rel="noreferrer"
+          >In Google Maps öffnen</a
+        >
+      </section>
+
+      <section id="tagesablauf" class="section section-observe">
+        <h2>Tagesablauf</h2>
+        <ul class="timeline">
+          <li><span>14:00</span> Ankunft der Gäste</li>
+          <li><span>15:00</span> Trauung</li>
+          <li><span>16:00</span> Sektempfang</li>
+          <li><span>18:30</span> Dinner</li>
+          <li><span>20:30</span> Eröffnungstanz & Feier</li>
+        </ul>
+        <p class="hint">Feinabstimmung folgt, ihr werdet hier aktuell informiert.</p>
+      </section>
+
+      <section id="rueckmeldung" class="section section-observe">
+        <h2>Rückmeldung</h2>
+        <p>Bitte gebt uns kurz Bescheid, ob ihr dabei seid.</p>
+
+        <form id="rsvp-form" class="rsvp-form">
+          <label for="guestName">Name</label>
+          <input id="guestName" name="guestName" type="text" required />
+
+          <label for="guestCount">Anzahl Personen</label>
+          <input id="guestCount" name="guestCount" type="number" min="1" value="1" required />
+
+          <fieldset>
+            <legend>Teilnahme</legend>
+            <label class="radio">
+              <input type="radio" name="attendance" value="Wir kommen" required />
+              <span>Wir kommen</span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="attendance" value="Wir kommen nicht" />
+              <span>Wir kommen nicht</span>
+            </label>
+          </fieldset>
+
+          <label for="message">Nachricht (optional)</label>
+          <textarea id="message" name="message" rows="4"></textarea>
+
+          <button type="submit" class="button">Per E-Mail senden</button>
+          <p class="small">
+            Die Rückmeldung wird lokal im Browser gespeichert und per E-Mail vorbereitet.
+          </p>
+          <p id="form-status" class="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Wir freuen uns auf euch.</p>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
