@@ -15,7 +15,31 @@
     <audio id="backgroundMusic" loop autoplay preload="auto">
       <source src="./audio/audio.mp3" type="audio/mpeg" />
     </audio>
-    <button id="musicButton" class="music-button" type="button" hidden>Musik starten</button>
+    <button id="musicToggle" class="music-toggle" type="button" aria-label="Musik stummschalten">
+      <span class="icon-sound-on" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="presentation">
+          <path d="M3 10h4l5-4v12l-5-4H3z"></path>
+          <path d="M15 9a4 4 0 010 6"></path>
+          <path d="M17.5 6.5a7.5 7.5 0 010 11"></path>
+        </svg>
+      </span>
+      <span class="icon-sound-off" aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="presentation">
+          <path d="M3 10h4l5-4v12l-5-4H3z"></path>
+          <path d="M15 9a4 4 0 010 6"></path>
+          <path d="M6 6l12 12"></path>
+        </svg>
+      </span>
+    </button>
+
+    <header class="topbar">
+      <nav class="nav" aria-label="Bereiche">
+        <a href="#location" data-section="location" class="nav-link">Location</a>
+        <a href="#tagesablauf" data-section="tagesablauf" class="nav-link">Tagesablauf</a>
+        <a href="#dresscode" data-section="dresscode" class="nav-link">Dresscode</a>
+        <a href="#rueckmeldung" data-section="rueckmeldung" class="nav-link">Rückmeldung</a>
+      </nav>
+    </header>
 
     <main>
       <section id="start" class="startscreen">
@@ -32,7 +56,6 @@
       </section>
 
       <section id="einladung" class="section hero">
-        <h2>Einladung</h2>
         <p>Wir freuen uns sehr, diesen besonderen Tag mit euch gemeinsam zu feiern.</p>
         <div class="countdown" aria-live="polite">
           <div class="unit">
@@ -55,7 +78,7 @@
         <p class="location-note">Schloss Dachau, München</p>
       </section>
 
-      <section id="location" class="section">
+      <section id="location" class="section section-observe">
         <h2>Location</h2>
         <p>
           Wir feiern unsere Hochzeit im stilvollen Ambiente von
@@ -80,7 +103,7 @@
         >
       </section>
 
-      <section id="tagesablauf" class="section">
+      <section id="tagesablauf" class="section section-observe">
         <h2>Tagesablauf</h2>
         <ul class="timeline">
           <li><span>14:00</span> Ankunft der Gäste</li>
@@ -92,7 +115,13 @@
         <p class="hint">Feinabstimmung folgt, ihr werdet hier aktuell informiert.</p>
       </section>
 
-      <section id="rueckmeldung" class="section">
+      <section id="dresscode" class="section section-observe">
+        <h2>Dresscode</h2>
+        <p>Elegant festlich in hellen und warmen Tönen. Goldene Details sind herzlich willkommen.</p>
+        <p class="hint">Beispiele: Anzug/Abendkleid in Creme, Beige, Champagner oder klassisch Schwarz.</p>
+      </section>
+
+      <section id="rueckmeldung" class="section section-observe">
         <h2>Rückmeldung</h2>
         <p>Bitte gebt uns kurz Bescheid, ob ihr dabei seid.</p>
 

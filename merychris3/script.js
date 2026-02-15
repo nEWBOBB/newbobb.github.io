@@ -35,28 +35,42 @@ if (couplePhoto && photoFrame) {
 }
 
 const music = document.getElementById("backgroundMusic");
-const musicButton = document.getElementById("musicButton");
+const musicToggle = document.getElementById("musicToggle");
+
+const sections = [...document.querySelectorAll(".section-observe")];
+const navLinks = [...document.querySelectorAll(".nav-link")];
+
+function syncMusicUi() {
+  if (!musicToggle || !music) return;
+  const isMutedState = music.muted || music.paused;
+  musicToggle.classList.toggle("muted", isMutedState);
+  musicToggle.setAttribute("aria-label", isMutedState ? "Musik aktivieren" : "Musik stummschalten");
+}
 
 async function attemptAutoPlay() {
   if (!music) return;
   try {
     await music.play();
-    if (musicButton) musicButton.hidden = true;
+    music.muted = false;
+    syncMusicUi();
   } catch {
-    if (musicButton) musicButton.hidden = false;
+    syncMusicUi();
   }
 }
 
 attemptAutoPlay();
 
-if (musicButton && music) {
-  musicButton.addEventListener("click", async () => {
-    try {
-      await music.play();
-      musicButton.hidden = true;
-    } catch {
-      musicButton.textContent = "Musik konnte nicht gestartet werden";
+if (musicToggle && music) {
+  musicToggle.addEventListener("click", async () => {
+    if (music.paused) {
+      try {
+        await music.play();
+      } catch {
+        return;
+      }
     }
+    music.muted = !music.muted;
+    syncMusicUi();
   });
 }
 
@@ -67,13 +81,31 @@ document.addEventListener(
       music
         .play()
         .then(() => {
-          if (musicButton) musicButton.hidden = true;
+          music.muted = false;
+          syncMusicUi();
         })
         .catch(() => {});
     }
   },
   { once: true }
 );
+
+syncMusicUi();
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.dataset.section === id);
+      });
+    });
+  },
+  { threshold: 0.38 }
+);
+
+sections.forEach((section) => observer.observe(section));
 
 const form = document.getElementById("rsvp-form");
 const status = document.getElementById("form-status");

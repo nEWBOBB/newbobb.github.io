@@ -1,3 +1,16 @@
-also die erste seite soll komplett vom foto eingenommen werden, ohne überschrift, ohne diese reiter und so, und mit weißer Schrift im Bild so über dem Foto bzw im vordergrund: "Wir heiraten! Meryem und Christopher" und dann drunter das Datum. ich packe ein beispielbild in den ordner images
+ich will dass die schrift besonders beim anfang der seite edler ist und hochwertiger aussieht. 
 
-Zudem soll beim besuchen der webseite musik abgespielt werden
+und ich will dass die musik automatisch losgeht und man soll über ein icon irgendwie die musik muten können. der mute button soll egal wo man auf der webseite ist angezeigt werden an einer festen stelle.
+
+beim ersten reiter soll nicht "Einladung" stehen, das einfach weg.
+
+und es soll einen weiteren reiter geben mit "Dresscode"
+
+
+-------------
+
+Da wo der Reiter für Einladung ist soll das hier rein:
+"Wir sagen Ja - und möchten diesen besonderen Tag mit euch feiern. Es bedeutet uns sehr viel, die Menschen um uns zu haben, die uns begleiten, unterstützen und unser Leben schöner machen. 
+Deshalb freuen wir uns riesig, wenn ihr dabei seid und diesen Moment mit uns teilt. 
+
+Lasst uns gemeinsam anstoßen, lachen und einfach eine gute Zeit miteinander verbringen. 
