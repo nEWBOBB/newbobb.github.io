@@ -36,22 +36,25 @@ if (couplePhoto && photoFrame) {
 
 const music = document.getElementById("backgroundMusic");
 const musicToggle = document.getElementById("musicToggle");
+const topbar = document.querySelector(".topbar");
+const heroSection = document.getElementById("start");
 
 const sections = [...document.querySelectorAll(".section-observe")];
 const navLinks = [...document.querySelectorAll(".nav-link")];
 
 function syncMusicUi() {
   if (!musicToggle || !music) return;
-  const isMutedState = music.muted || music.paused;
+  const isMutedState = music.muted;
   musicToggle.classList.toggle("muted", isMutedState);
   musicToggle.setAttribute("aria-label", isMutedState ? "Musik aktivieren" : "Musik stummschalten");
 }
 
 async function attemptAutoPlay() {
   if (!music) return;
+  music.muted = false;
+  syncMusicUi();
   try {
     await music.play();
-    music.muted = false;
     syncMusicUi();
   } catch {
     syncMusicUi();
@@ -59,6 +62,31 @@ async function attemptAutoPlay() {
 }
 
 attemptAutoPlay();
+
+if (music) {
+  ["pointerdown", "touchstart", "scroll"].forEach((eventName) => {
+    document.addEventListener(
+      eventName,
+      () => {
+        if (music.paused) {
+          attemptAutoPlay();
+        }
+      },
+      { once: true, passive: true }
+    );
+  });
+  ["keydown", "visibilitychange"].forEach((eventName) => {
+    document.addEventListener(
+      eventName,
+      () => {
+        if (music.paused) {
+          attemptAutoPlay();
+        }
+      },
+      { once: true }
+    );
+  });
+}
 
 if (musicToggle && music) {
   musicToggle.addEventListener("click", async () => {
@@ -91,6 +119,16 @@ document.addEventListener(
 );
 
 syncMusicUi();
+
+if (topbar && heroSection) {
+  const heroObserver = new IntersectionObserver(
+    ([entry]) => {
+      topbar.classList.toggle("visible", !entry.isIntersecting);
+    },
+    { threshold: 0.05 }
+  );
+  heroObserver.observe(heroSection);
+}
 
 const observer = new IntersectionObserver(
   (entries) => {
