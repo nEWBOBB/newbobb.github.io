@@ -656,7 +656,7 @@ input[type="range"]::-moz-range-thumb {
 
 @media (max-width: 880px) {
 	.chapter {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
 	}
 
 	.chapter.flip .chapter-text {

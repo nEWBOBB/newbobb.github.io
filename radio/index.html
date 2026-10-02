@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Radio funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Radio funktioniert: Antennen, elektromagnetische Wellen, Wellenlänge, AM und FM und das Abstimmen auf einen Sender." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #c79bff;
+			--accent-2: #ff6fb1;
+			--accent-ink: #1b0f2a;
+		}
+
+		.seg {
+			display: inline-flex;
+			padding: 3px;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: var(--panel-2);
+		}
+
+		.seg button {
+			font: inherit;
+			font-size: 0.9rem;
+			color: var(--muted);
+			background: transparent;
+			border: 0;
+			border-radius: 999px;
+			padding: 8px 16px;
+			cursor: pointer;
+		}
+
+		.seg button[aria-pressed="true"] {
+			color: var(--accent-ink);
+			background: var(--accent);
+			font-weight: 600;
+		}
+
+		.seg button:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		#tuneCanvas {
+			cursor: ew-resize;
+			touch-action: pan-y;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/" aria-current="page">Radio</a>
+			<a href="../internet/">Internet</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 4</p>
+			<h1>Wie <em>Radio</em><br />funktioniert</h1>
+			<p class="v-lede">Der Telegraf brauchte noch einen Draht. 1888 zeigte Heinrich Hertz, dass es auch ohne
+				geht: Schwingende Elektronen schicken unsichtbare Wellen durch den Raum, die anderswo wieder Elektronen
+				zum Schwingen bringen. Daraus wurden Radio, Fernsehen, Handy und WLAN.</p>
+			<ol class="v-toc">
+				<li><a href="#welle">Wellen ohne Draht</a></li>
+				<li><a href="#laenge">Frequenz und Wellenlänge</a></li>
+				<li><a href="#modulation">Musik auf der Welle</a></li>
+				<li><a href="#abstimmen">Den Sender finden</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Welle -->
+		<section class="chapter" id="welle">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · 1888</span>
+				<h2>Wellen ohne Draht</h2>
+				<p>Eine <strong>Antenne</strong> ist nur ein Stück Draht. Schiebt man die Elektronen darin schnell auf
+					und ab, entsteht um sie herum ein elektrisches und magnetisches Feld, das sich ständig umpolt. Diese
+					Störung löst sich von der Antenne und breitet sich aus, wie Wellen um einen Stein im Teich.</p>
+				<p>Trifft die Welle auf eine zweite Antenne, schiebt sie dort die Elektronen im selben Takt hin und her.
+					Es fließt ein winziger Strom, und der Empfänger weiß: Da ist etwas angekommen.</p>
+				<div class="fact">
+					<b>Es ist Licht</b>
+					<p>Radiowellen sind dasselbe wie Licht, nur mit viel größerer Wellenlänge. Deshalb sind sie auch
+						genauso schnell: 300 000 km pro Sekunde. In der Simulation ist das stark verlangsamt.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="waveCanvas" aria-label="Sender- und Empfängerantenne mit sich ausbreitenden Wellen"></canvas>
+					<span class="stage-tag">Sender → Empfänger · Zeitlupe</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnTx" type="button" aria-pressed="false">Senden</button>
+					<label class="range">
+						<span class="range-head"><span>Schwingung</span><output id="txFreqOut">langsam</output></span>
+						<input type="range" id="txFreq" min="0" max="100" value="35" />
+					</label>
+					<p class="stage-note" id="waveNote">Der Sender ist aus. Die Elektronen in beiden Antennen ruhen.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Wellenlänge -->
+		<section class="chapter flip" id="laenge">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Das Spektrum</span>
+				<h2>Frequenz und Wellenlänge</h2>
+				<p>Wie oft die Elektronen pro Sekunde hin- und herschwingen, ist die <strong>Frequenz</strong>. Weil die
+					Welle immer gleich schnell ist, legt sie bei schneller Schwingung zwischen zwei Wellenbergen weniger
+					Strecke zurück. Das ist die <strong>Wellenlänge</strong>.</p>
+				<div class="formula">Wellenlänge = Lichtgeschwindigkeit ÷ Frequenz
+					<small>300 000 000 m/s geteilt durch 100 000 000 Schwingungen pro Sekunde (UKW, 100 MHz) ergibt 3
+						Meter.</small>
+				</div>
+				<p>Eine gute Antenne ist etwa eine viertel oder halbe Wellenlänge lang. Darum hatten Mittelwellen-Sender
+					riesige Masten, während die Antenne im Handy unsichtbar im Gehäuse steckt.</p>
+				<div class="quiz" data-answer="1"
+					data-why="2,45 GHz ergibt eine Wellenlänge von etwa 12 cm. Mikrowelle, WLAN und Bluetooth teilen sich genau dieses Band, deshalb kann ein laufender Mikrowellenherd das WLAN stören.">
+					<p class="quiz-q">Was haben WLAN und ein Mikrowellenherd gemeinsam?</p>
+					<div class="quiz-options">
+						<button type="button">Nichts, Mikrowellen sind keine Radiowellen</button>
+						<button type="button">Beide nutzen Wellen um 2,4 GHz, also rund 12 cm Wellenlänge</button>
+						<button type="button">Beide senden mit Ultraschall</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="lambdaCanvas" aria-label="Welle mit Wellenlänge im Größenvergleich"></canvas>
+					<span class="stage-tag" id="bandTag">UKW-Radio</span>
+					<span class="stage-readout" id="lambdaOut">λ = 3 m</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Frequenz</span><output id="fOut">100 MHz</output></span>
+						<input type="range" id="f" min="0" max="1000" value="623" />
+					</label>
+					<p class="stage-note" id="lambdaNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Modulation -->
+		<section class="chapter" id="modulation">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Modulation</span>
+				<h2>Musik auf der Welle</h2>
+				<p>Eine Radiowelle schwingt Millionen Mal pro Sekunde, Musik nur ein paar hundert bis tausend Mal. Man
+					kann die Musik also nicht direkt senden. Stattdessen nimmt man eine schnelle <strong>Trägerwelle</strong>
+					und prägt ihr die Musik auf. Dafür gibt es zwei klassische Tricks:</p>
+				<ul>
+					<li><strong>AM (Amplitudenmodulation):</strong> Die Musik ändert, wie <em>stark</em> die Welle ist.
+						Einfach, reicht um die halbe Welt, aber jeder Blitz und jeder Elektromotor knackt mit.</li>
+					<li><strong>FM (Frequenzmodulation):</strong> Die Musik ändert, wie <em>schnell</em> die Welle
+						schwingt. Die Stärke ist egal, deshalb rauscht FM viel weniger. Darum klingt UKW besser als
+						Mittelwelle.</li>
+				</ul>
+				<p>Schalte das Gewitter ein und vergleiche, was beim Empfänger ankommt.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="modCanvas" aria-label="Nachricht, Träger, modulierte Welle und Empfang"></canvas>
+					<span class="stage-tag" id="modTag">AM</span>
+				</div>
+				<div class="stage-controls">
+					<div class="seg" role="group" aria-label="Modulationsart">
+						<button type="button" id="btnAM" aria-pressed="true">AM</button>
+						<button type="button" id="btnFM" aria-pressed="false">FM</button>
+					</div>
+					<button class="btn" id="btnStorm" type="button" aria-pressed="false">⚡ Gewitter</button>
+					<button class="btn primary" id="btnModPlay" type="button">▶ Anhören</button>
+					<p class="stage-note" id="modNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Abstimmen -->
+		<section class="chapter wide" id="abstimmen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Empfang</span>
+				<h2>Den Sender finden</h2>
+				<p>Deine Antenne fängt alle Sender gleichzeitig ein, dazu das Rauschen aus dem All und von jedem Gerät in
+					der Nähe. Wie hört man da genau einen heraus? Mit einem <strong>Schwingkreis</strong>: einer Spule
+					und einem Kondensator, die zusammen nur bei einer einzigen Frequenz stark mitschwingen.</p>
+				<p>Das ist wie eine Schaukel: Schubst du im richtigen Takt, schwingt sie immer höher. Im falschen Takt
+					passiert fast nichts. Drehst du am Radio, veränderst du den Kondensator und damit den Takt, auf den
+					der Kreis hört. Schalte das Radio ein und zieh an der Skala.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="tuneCanvas" aria-label="Radioskala von 87,5 bis 108 MHz"></canvas>
+					<span class="stage-tag">UKW · zum Abstimmen ziehen</span>
+					<span class="stage-readout" id="tuneOut">87,5 MHz</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnRadio" type="button" aria-pressed="false">⏻ Radio einschalten</button>
+					<label class="range">
+						<span class="range-head"><span>Frequenz</span><output id="tuneFreqOut">88,0 MHz</output></span>
+						<input type="range" id="tune" min="87.5" max="108" step="0.05" value="88" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Lautstärke</span><output id="volOut">60 %</output></span>
+						<input type="range" id="vol" min="0" max="100" value="60" />
+					</label>
+					<p class="stage-note" id="tuneNote">Vier Sender sind irgendwo auf der Skala versteckt.</p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="2"
+					data-why="Die Funkwelle braucht für 100 km nur eine drittel Millisekunde, der Schall für 170 m eine halbe Sekunde. Bei Digitalradio und Streams ist es übrigens umgekehrt: Dort sorgen Kodierung und Puffer für mehrere Sekunden Verzögerung.">
+					<p class="quiz-q">Ein Reporter steht mit Mikrofon direkt am Tor. Du hörst ihn über klassisches UKW,
+						100 km entfernt. Ein Fan sitzt 170 m vom Tor entfernt im Stadion. Wer hört den Torschrei zuerst?</p>
+					<div class="quiz-options">
+						<button type="button">Der Fan im Stadion, er ist ja viel näher dran</button>
+						<button type="button">Beide gleichzeitig</button>
+						<button type="button">Du am Radio</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe</p>
+		<a href="../internet/">Wie das Internet funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./radio.js"></script>
+</body>
+
+</html>

@@ -524,8 +524,17 @@
 
 		.learn-grid {
 			display: grid;
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(6, minmax(0, 1fr));
 			gap: 16px;
+		}
+
+		/* 3 oben, 2 breitere unten */
+		.lesson {
+			grid-column: span 2;
+		}
+
+		.lesson:nth-child(n + 4) {
+			grid-column: span 3;
 		}
 
 		.lesson {
@@ -680,6 +689,145 @@
 
 			to {
 				transform: translateX(-60%);
+			}
+		}
+
+		/* Radio: Wellenringe */
+		.lesson--radio {
+			--c: #c79bff;
+		}
+
+		.lesson--radio .lesson-art::before {
+			content: "";
+			position: absolute;
+			left: 50%;
+			bottom: 18%;
+			width: 4px;
+			height: 46%;
+			margin-left: -2px;
+			background: #9aa0a8;
+			border-radius: 2px;
+		}
+
+		.lesson--radio .lesson-art i {
+			position: absolute;
+			left: 50%;
+			top: 36%;
+			width: 40px;
+			height: 40px;
+			margin: -20px 0 0 -20px;
+			border-radius: 50%;
+			border: 2px solid #c79bff;
+			opacity: 0;
+			animation: ring 3s linear infinite;
+		}
+
+		.lesson--radio .lesson-art i:nth-child(2) {
+			animation-delay: 1s;
+		}
+
+		.lesson--radio .lesson-art i:nth-child(3) {
+			animation-delay: 2s;
+		}
+
+		@keyframes ring {
+			0% {
+				transform: scale(0.3);
+				opacity: 0.9;
+			}
+
+			100% {
+				transform: scale(7);
+				opacity: 0;
+			}
+		}
+
+		/* Internet: Knoten mit wanderndem Paket */
+		.lesson--net {
+			--c: #6fe3a3;
+		}
+
+		.lesson--net .lesson-art {
+			background:
+				radial-gradient(circle at 15% 50%, #6fe3a3 0 6px, transparent 7px),
+				radial-gradient(circle at 38% 28%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+				radial-gradient(circle at 38% 72%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+				radial-gradient(circle at 62% 28%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+				radial-gradient(circle at 62% 72%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+				radial-gradient(circle at 85% 50%, #6fe3a3 0 6px, transparent 7px),
+				#050404;
+		}
+
+		.lesson--net .lesson-art i {
+			position: absolute;
+			width: 14px;
+			height: 10px;
+			margin: -5px 0 0 -7px;
+			border-radius: 3px;
+			background: hsl(calc(var(--k) * 70), 70%, 68%);
+			animation: hop 3.2s ease-in-out infinite;
+			animation-delay: calc(var(--k) * -0.8s);
+		}
+
+		.lesson--net .lesson-art i:nth-child(1) {
+			--k: 1;
+		}
+
+		.lesson--net .lesson-art i:nth-child(2) {
+			--k: 2;
+			animation-name: hop-low;
+		}
+
+		.lesson--net .lesson-art i:nth-child(3) {
+			--k: 3;
+		}
+
+		.lesson--net .lesson-art i:nth-child(4) {
+			--k: 4;
+			animation-name: hop-low;
+		}
+
+		@keyframes hop {
+			0% {
+				left: 15%;
+				top: 50%;
+			}
+
+			33% {
+				left: 38%;
+				top: 28%;
+			}
+
+			66% {
+				left: 62%;
+				top: 28%;
+			}
+
+			100% {
+				left: 85%;
+				top: 50%;
+			}
+		}
+
+		@keyframes hop-low {
+			0% {
+				left: 15%;
+				top: 50%;
+			}
+
+			33% {
+				left: 38%;
+				top: 72%;
+			}
+
+			66% {
+				left: 62%;
+				top: 72%;
+			}
+
+			100% {
+				left: 85%;
+				top: 50%;
 			}
 		}
 
@@ -855,6 +1003,11 @@
 				grid-template-columns: 1fr;
 			}
 
+			.lesson,
+			.lesson:nth-child(n + 4) {
+				grid-column: auto;
+			}
+
 			.lesson {
 				min-height: 0;
 			}
@@ -924,11 +1077,11 @@
 			<p class="eyebrow">Newbobb Lab · seit 2026</p>
 			<h1>Code,<br />der <span class="outline">leuchtet.</span></h1>
 			<div class="hero-foot">
-				<p>Ein Spielplatz zum Ausprobieren und Verstehen: wie Feuer brennt, wie ein Telegraf funkt, wie Strom
-					fließt. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
+				<p>Ein Spielplatz zum Ausprobieren und Verstehen: wie Feuer brennt, wie Strom fließt, wie Radio und
+					Internet Nachrichten um die Welt schicken. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
 				<div class="stats">
 					<div class="stat"><strong id="countAll">18</strong><span>Projekte</span></div>
-					<div class="stat"><strong>3</strong><span>zum Verstehen</span></div>
+					<div class="stat"><strong>5</strong><span>zum Verstehen</span></div>
 					<div class="stat"><strong>1</strong><span>Schwarzes Loch</span></div>
 				</div>
 			</div>
@@ -971,6 +1124,26 @@
 						<p>Elektronen beobachten, Spannung und Widerstand regeln, Sicherungen sprengen und selbst einen
 							Generator drehen.</p>
 						<span class="lesson-go">Einschalten →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--radio reveal" href="./radio/">
+					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">04</span>
+						<h3>Wie Radio funktioniert</h3>
+						<p>Wellen aussenden und empfangen, Wellenlängen vergleichen, AM gegen FM im Gewitter und ein Radio
+							zum Selbst-Abstimmen.</p>
+						<span class="lesson-go">Sender suchen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--net reveal" href="./internet/">
+					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">05</span>
+						<h3>Wie das Internet funktioniert</h3>
+						<p>Text wird zu Bits, Pakete suchen sich Wege durch kaputte Router, DNS schlägt Adressen nach,
+							und Licht ist zu langsam.</p>
+						<span class="lesson-go">Pakete schicken →</span>
 					</div>
 				</a>
 			</div>
@@ -1102,6 +1275,23 @@
 						<div class="card-meta"><span>Verstehen · Physik</span><span class="pill">Neu</span></div>
 						<h3>Wie Strom funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Stromkreis, Ohmsches Gesetz, Reihe und parallel, Generator zum Kurbeln.</p>
+					</div>
+				</a>
+
+				<a class="card reveal" data-cat="learn" href="./radio/" style="--h: 275">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Funk</span><span class="pill">Neu</span></div>
+						<h3>Wie Radio funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Antennen, Wellenlänge, AM und FM und ein Radio mit vier versteckten Sendern.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./internet/" style="--h: 145">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Netze</span><span class="pill">Neu</span></div>
+						<h3>Wie das Internet funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Bits, Datenpakete, Router, DNS und der Ping bis zum Mars.</p>
 					</div>
 				</a>
 

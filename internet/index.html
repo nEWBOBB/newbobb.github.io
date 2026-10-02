@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie das Internet funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie das Internet funktioniert: Bits, Datenpakete und Router, DNS-Adressen und warum Lichtgeschwindigkeit manchmal zu langsam ist." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #6fe3a3;
+			--accent-2: #59d0ff;
+			--accent-ink: #04210f;
+		}
+
+		.text-in {
+			width: 100%;
+			font: inherit;
+			font-size: 1.05rem;
+			color: var(--ink);
+			background: #0a0908;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 12px 14px;
+		}
+
+		.text-in:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		.bytes {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			padding: 16px;
+			min-height: 120px;
+			max-height: 300px;
+			overflow-y: auto;
+		}
+
+		.char {
+			display: grid;
+			gap: 4px;
+			padding: 8px 10px;
+			border-radius: 12px;
+			background: var(--panel-2);
+			border: 1px solid var(--line);
+			text-align: center;
+		}
+
+		.char b {
+			font-size: 1.3rem;
+			line-height: 1.2;
+			min-height: 1.2em;
+		}
+
+		.char code {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.72rem;
+			color: var(--accent);
+			letter-spacing: 0.04em;
+		}
+
+		.char small {
+			font-size: 0.66rem;
+			color: var(--faint);
+		}
+
+		.char.multi {
+			border-color: rgba(89, 208, 255, 0.5);
+		}
+
+		.char.multi code {
+			color: var(--accent-2);
+		}
+
+		.packet-out {
+			width: 100%;
+			display: grid;
+			gap: 6px;
+		}
+
+		.packet-line {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			min-height: 40px;
+			padding: 8px 12px;
+			border-radius: 12px;
+			background: #0a0908;
+			border: 1px solid var(--line);
+			overflow-x: auto;
+		}
+
+		.packet-line small {
+			flex: none;
+			width: 84px;
+			font-size: 0.7rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--faint);
+		}
+
+		.slots {
+			display: flex;
+			gap: 4px;
+		}
+
+		.slot {
+			min-width: 30px;
+			padding: 4px 6px;
+			border-radius: 8px;
+			text-align: center;
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.82rem;
+			color: #0b0a09;
+			background: rgba(255, 255, 255, 0.08);
+			white-space: pre;
+		}
+
+		.slot.empty {
+			color: var(--faint);
+		}
+
+		.slot sup {
+			font-size: 0.6rem;
+			opacity: 0.7;
+		}
+
+		.dest {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.dns-row {
+			display: flex;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.dns-row input {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.log {
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			display: grid;
+			gap: 4px;
+			font-size: 0.86rem;
+			color: var(--muted);
+			counter-reset: lg;
+		}
+
+		.log li {
+			display: flex;
+			gap: 8px;
+			animation: rise 0.3s ease;
+		}
+
+		.log li::before {
+			counter-increment: lg;
+			content: counter(lg);
+			flex: none;
+			width: 20px;
+			height: 20px;
+			display: grid;
+			place-items: center;
+			border-radius: 50%;
+			font-size: 0.7rem;
+			color: var(--accent-ink);
+			background: var(--accent);
+		}
+
+		@keyframes rise {
+			from {
+				opacity: 0;
+				transform: translateY(4px);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/" aria-current="page">Internet</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 5</p>
+			<h1>Wie das <em>Internet</em><br />funktioniert</h1>
+			<p class="v-lede">Diese Seite ist gerade über tausende Kilometer Kabel zu dir gereist, zerlegt in hunderte
+				kleine Päckchen, die teils verschiedene Wege genommen haben. Hier siehst du, wie das klappt: von der
+				ersten Eins und Null bis zum Licht im Seekabel.</p>
+			<ol class="v-toc">
+				<li><a href="#bits">Alles wird zu Bits</a></li>
+				<li><a href="#pakete">Pakete auf Reisen</a></li>
+				<li><a href="#dns">Das Adressbuch</a></li>
+				<li><a href="#ping">Licht ist zu langsam</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Bits -->
+		<section class="chapter" id="bits">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Grundlagen</span>
+				<h2>Alles wird zu Bits</h2>
+				<p>Erinnerst du dich an den Telegrafen? Das Internet funktioniert im Grunde genauso: Strom an, Strom aus.
+					Oder in der Glasfaser: Licht an, Licht aus. Jedes An oder Aus ist ein <strong>Bit</strong>, eine 1
+					oder eine 0.</p>
+				<p>Acht Bits ergeben ein <strong>Byte</strong>, und mit einem Byte kann man 256 verschiedene Dinge
+					unterscheiden, zum Beispiel alle Buchstaben, Ziffern und Satzzeichen. Für jeden Buchstaben gibt es
+					eine feste Nummer: Das große A ist die 65, also 01000001.</p>
+				<p>Tipp etwas ein. Probier auch ein ä oder ein Emoji: Die brauchen mehr als ein Byte. Das regelt der
+					Standard <strong>UTF-8</strong>, mit dem fast jede Webseite der Welt arbeitet.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="bitCanvas" aria-label="Bits als Lichtsignal in einer Glasfaser"></canvas>
+					<span class="stage-tag">Glasfaser · Licht an = 1</span>
+				</div>
+				<div class="bytes" id="bytes" aria-live="polite"></div>
+				<div class="stage-controls">
+					<input class="text-in" id="bitText" type="text" maxlength="24" value="Hallo 👋" aria-label="Text"
+						autocomplete="off" />
+					<p class="stage-note" id="bitNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Pakete -->
+		<section class="chapter wide" id="pakete">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Paketvermittlung</span>
+				<h2>Pakete auf Reisen</h2>
+				<p>Beim Telefon gehörte dir während des Gesprächs eine ganze Leitung. Das Internet macht es anders: Jede
+					Nachricht wird in kleine <strong>Pakete</strong> zerlegt. Jedes bekommt einen Zettel mit Absender,
+					Ziel und laufender Nummer. Dann reisen sie einzeln los.</p>
+				<p>Unterwegs stehen <strong>Router</strong>, kleine Weichen. Jeder schaut auf die Zieladresse und
+					schickt das Paket einen Schritt näher ans Ziel, gerne über den Weg, der gerade frei ist. So kommen
+					Pakete manchmal in falscher Reihenfolge an. Der Empfänger sortiert sie anhand der Nummern wieder.</p>
+				<p><strong>Klick auf einen Router, um ihn kaputtzumachen.</strong> Die anderen finden sofort einen Umweg.
+					Pakete, die gerade dort waren, gehen verloren. Weil für sie keine Empfangsbestätigung kommt, schickt der Absender sie einfach noch einmal.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="netCanvas" aria-label="Netz aus Routern zwischen dir und dem Server"></canvas>
+					<span class="stage-tag">Tippe auf Router</span>
+					<span class="stage-readout" id="netReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="dns-row">
+						<input class="text-in" id="netText" type="text" maxlength="24" value="HALLO INTERNET!"
+							aria-label="Nachricht" autocomplete="off" />
+						<button class="btn primary" id="btnSendNet" type="button">Senden</button>
+					</div>
+					<button class="btn" id="btnBreak" type="button">Zufälligen Router ausfallen lassen</button>
+					<button class="btn" id="btnRepair" type="button">Alles reparieren</button>
+					<div class="packet-out">
+						<div class="packet-line"><small>Ankunft</small>
+							<div class="slots" id="arrivalSlots"></div>
+						</div>
+						<div class="packet-line"><small>Sortiert</small>
+							<div class="slots" id="sortedSlots"></div>
+						</div>
+					</div>
+					<p class="stage-note" id="netNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="0"
+					data-why="Das Internet wurde so gebaut, dass es keine Zentrale gibt. Fällt ein Knoten aus, rechnen die Nachbarn einfach neue Wege. Das Protokoll TCP sorgt dafür, dass verlorene Pakete neu geschickt werden.">
+					<p class="quiz-q">Was passiert, wenn mitten im Netz ein Router ausfällt?</p>
+					<div class="quiz-options">
+						<button type="button">Die Pakete nehmen einen anderen Weg, verlorene werden neu geschickt</button>
+						<button type="button">Die ganze Verbindung bricht ab und muss neu gestartet werden</button>
+						<button type="button">Die Pakete warten, bis der Router repariert ist</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 DNS -->
+		<section class="chapter flip" id="dns">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · DNS</span>
+				<h2>Das Adressbuch</h2>
+				<p>Router kennen keine Namen wie <em>newbobb.github.io</em>. Sie arbeiten mit Nummern, den
+					<strong>IP-Adressen</strong>, etwa 185.199.108.153. Bevor dein Browser irgendetwas laden kann, muss er
+					also nachschlagen, welche Nummer zum Namen gehört.</p>
+				<p>Das erledigt das <strong>Domain Name System</strong>. Niemand kennt alle Adressen. Stattdessen wird
+					von hinten nach vorne gefragt: Die Root-Server wissen, wer für <em>.io</em> zuständig ist. Der weiß,
+					wer für <em>github.io</em> zuständig ist. Und der kennt die Nummer.</p>
+				<p>Dein Provider merkt sich die Antwort eine Weile. Frag ein zweites Mal und schau, wie viel schneller es
+					geht.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="dnsCanvas" aria-label="Ablauf einer DNS-Anfrage"></canvas>
+					<span class="stage-tag">DNS-Anfrage</span>
+					<span class="stage-readout" id="dnsReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="dns-row">
+						<input class="text-in" id="dnsName" type="text" value="newbobb.github.io" aria-label="Domain"
+							autocomplete="off" spellcheck="false" />
+						<button class="btn primary" id="btnDns" type="button">Nachschlagen</button>
+					</div>
+					<ol class="log" id="dnsLog" aria-live="polite"></ol>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Ping -->
+		<section class="chapter" id="ping">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Physik</span>
+				<h2>Licht ist zu langsam</h2>
+				<p>In der Glasfaser reist Licht mit rund 200 000 km pro Sekunde. Das klingt nach unendlich schnell.
+					Aber für Spiele, Videocalls oder den Börsenhandel zählt jede Millisekunde. Die Zeit, bis eine Antwort
+					zurück ist, heißt <strong>Ping</strong>.</p>
+				<p>Kein Trick der Welt macht einen Ping von Frankfurt nach Sydney kürzer als etwa 160 Millisekunden. Das
+					ist reine Physik: Hin und zurück sind es über 30 000 km Kabel.</p>
+				<div class="fact">
+					<b>Unter dem Meer</b>
+					<p>Fast der gesamte Datenverkehr zwischen den Kontinenten läuft nicht über Satelliten, sondern durch
+						rund 600 Seekabel, die auf dem Meeresgrund liegen. Manche sind kaum dicker als ein Gartenschlauch.
+					</p>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Funksignale brauchen zum Mars je nach Abstand 3 bis 22 Minuten, pro Richtung. Ein Rover kann deshalb nicht ferngesteuert werden. Er bekommt Befehle für den ganzen Tag und fährt dann selbstständig.">
+					<p class="quiz-q">Warum kann man einen Mars-Rover nicht live mit einem Controller steuern?</p>
+					<div class="quiz-options">
+						<button type="button">Weil das Signal zu schwach ist</button>
+						<button type="button">Weil jeder Befehl mehrere Minuten unterwegs ist</button>
+						<button type="button">Weil es auf dem Mars kein Internet gibt</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="pingCanvas" aria-label="Lichtpuls von Frankfurt zum Ziel und zurück"></canvas>
+					<span class="stage-tag" id="pingTag">Ab Frankfurt</span>
+					<span class="stage-readout" id="pingOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="dest" id="dest" role="group" aria-label="Ziel wählen"></div>
+					<p class="stage-note" id="pingNote">Wähle ein Ziel.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Das war die Reihe. Zurück zum Anfang:</p>
+		<a href="../feuer/">Wie Feuer funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./internet.js"></script>
+</body>
+
+</html>
