@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Ereignishorizont — Newbobb Lab</title>
+	<meta name="description"
+		content="Ein Schwarzes Loch, in Echtzeit im Browser geraytraced. Gravitationslinse, Akkretionsscheibe, Doppler-Beaming und Zeitdilatation zum Anfassen." />
+	<meta name="theme-color" content="#000000" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+	<canvas id="scene" aria-label="Echtzeit-Simulation eines Schwarzen Lochs"></canvas>
+
+	<a class="back" href="../">← Lab</a>
+
+	<header class="intro" id="intro">
+		<p class="kicker">Newbobb Lab · Experiment 017</p>
+		<h1>Ereignis&shy;horizont</h1>
+		<p class="lede">
+			Ein Schwarzes Loch, live in deinem Browser geraytraced. Jeder Pixel ist ein Lichtstrahl,
+			den die Gravitation auf seinem Weg zu dir verbiegt.
+		</p>
+		<p class="hint" id="hint">Ziehen zum Umkreisen · Scrollen oder Pinch zum Annähern</p>
+	</header>
+
+	<aside class="hud" aria-live="polite">
+		<div class="hud-row">
+			<span class="hud-label">Abstand</span>
+			<span class="hud-value" id="hudDist">–</span>
+		</div>
+		<div class="hud-row">
+			<span class="hud-label">1 Stunde hier</span>
+			<span class="hud-value" id="hudTime">–</span>
+		</div>
+		<div class="hud-row">
+			<span class="hud-label">Fluchtgeschw.</span>
+			<span class="hud-value" id="hudEscape">–</span>
+		</div>
+		<div class="hud-bar"><span id="hudBar"></span></div>
+		<p class="hud-note" id="hudNote">Maßstab: Sagittarius A*, Zentrum der Milchstraße</p>
+	</aside>
+
+	<nav class="controls" aria-label="Steuerung">
+		<button type="button" class="ctl" id="btnFlight">
+			<span class="dot"></span>Kinoflug
+		</button>
+		<button type="button" class="ctl is-on" id="btnGravity" aria-pressed="true">
+			<span class="dot"></span>Gravitation
+		</button>
+		<button type="button" class="ctl is-on" id="btnDoppler" aria-pressed="true">
+			<span class="dot"></span>Doppler
+		</button>
+		<button type="button" class="ctl" id="btnSound" aria-pressed="false">
+			<span class="dot"></span>Ton
+		</button>
+		<button type="button" class="ctl ctl-round" id="btnInfo" aria-expanded="false" aria-controls="info"
+			aria-label="Was sehe ich?">?</button>
+	</nav>
+
+	<section class="info" id="info" hidden>
+		<button type="button" class="info-close" id="btnInfoClose" aria-label="Schließen">×</button>
+		<h2>Was du siehst</h2>
+		<dl>
+			<dt>Der Schatten</dt>
+			<dd>Die schwarze Fläche ist etwa 2,6-mal größer als der Ereignishorizont selbst. Licht, das zu nah
+				vorbeikommt, fällt hinein und kommt nie wieder heraus.</dd>
+			<dt>Der Bogen über dem Loch</dt>
+			<dd>Das ist die <em>Rückseite</em> der Scheibe. Ihr Licht wird über das Loch hinweg zu dir gebogen.
+				Schalte „Gravitation“ aus, um den Unterschied zu sehen.</dd>
+			<dt>Der Photonenring</dt>
+			<dd>Die dünne, helle Linie am Rand des Schattens. Dort umrunden Lichtstrahlen das Loch ein- oder
+				mehrmals, bevor sie entkommen.</dd>
+			<dt>Eine Seite gleißend, die andere matt</dt>
+			<dd>Doppler-Beaming: Das Gas rast mit bis zu 50 % der Lichtgeschwindigkeit. Die Seite, die auf dich
+				zukommt, leuchtet heller und blauer.</dd>
+			<dt>Der Ton</dt>
+			<dd>Der Drone wird tiefer, je näher du kommst. So klingt die Zeitdilatation: Für dich laufen alle
+				Uhren draußen schneller.</dd>
+		</dl>
+	</section>
+
+	<div class="fallback" id="fallback" hidden>
+		<p>Dein Browser unterstützt leider kein WebGL. Das Schwarze Loch bleibt heute unsichtbar.</p>
+		<a href="../">Zurück zum Lab</a>
+	</div>
+
+	<script src="./main.js"></script>
+</body>
+
+</html>
