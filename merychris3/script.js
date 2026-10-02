@@ -42,81 +42,60 @@ const heroSection = document.getElementById("start");
 const sections = [...document.querySelectorAll(".section-observe")];
 const navLinks = [...document.querySelectorAll(".nav-link")];
 
+// Browser erlauben Ton erst nach einer echten Geste (Tippen, Klicken, Taste).
+// Solange der Gast die Musik nicht bewusst ausschaltet, versuchen wir bei jeder Geste zu starten.
+let wantsMusic = true;
+
 function syncMusicUi() {
   if (!musicToggle || !music) return;
-  const isMutedState = music.muted;
-  musicToggle.classList.toggle("muted", isMutedState);
-  musicToggle.setAttribute("aria-label", isMutedState ? "Musik aktivieren" : "Musik stummschalten");
+  const silent = music.paused || music.muted;
+  musicToggle.classList.toggle("muted", silent);
+  musicToggle.classList.toggle("waiting", wantsMusic && music.paused);
+  musicToggle.setAttribute("aria-label", silent ? "Musik abspielen" : "Musik stummschalten");
+  musicToggle.setAttribute("aria-pressed", String(!silent));
 }
 
-async function attemptAutoPlay() {
+async function startMusic() {
   if (!music) return;
   music.muted = false;
-  syncMusicUi();
   try {
     await music.play();
-    syncMusicUi();
   } catch {
-    syncMusicUi();
+    // Noch keine Geste erlaubt; beim nächsten Tippen erneut versuchen.
   }
+  syncMusicUi();
 }
 
-attemptAutoPlay();
+const gestureEvents = ["click", "touchend", "keydown"];
+
+function onGesture(event) {
+  if (!wantsMusic || !music.paused) return;
+  if (musicToggle && musicToggle.contains(event.target)) return;
+  startMusic().then(() => {
+    if (!music.paused) gestureEvents.forEach((e) => document.removeEventListener(e, onGesture));
+  });
+}
 
 if (music) {
-  ["pointerdown", "touchstart", "scroll"].forEach((eventName) => {
-    document.addEventListener(
-      eventName,
-      () => {
-        if (music.paused) {
-          attemptAutoPlay();
-        }
-      },
-      { once: true, passive: true }
-    );
-  });
-  ["keydown", "visibilitychange"].forEach((eventName) => {
-    document.addEventListener(
-      eventName,
-      () => {
-        if (music.paused) {
-          attemptAutoPlay();
-        }
-      },
-      { once: true }
-    );
-  });
+  music.addEventListener("play", syncMusicUi);
+  music.addEventListener("pause", syncMusicUi);
+  startMusic();
+  gestureEvents.forEach((e) => document.addEventListener(e, onGesture, { passive: true }));
 }
 
 if (musicToggle && music) {
-  musicToggle.addEventListener("click", async () => {
-    if (music.paused) {
-      try {
-        await music.play();
-      } catch {
-        return;
-      }
+  musicToggle.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (music.paused || music.muted) {
+      wantsMusic = true;
+      startMusic();
+    } else {
+      wantsMusic = false;
+      music.pause();
+      syncMusicUi();
     }
-    music.muted = !music.muted;
-    syncMusicUi();
   });
 }
-
-document.addEventListener(
-  "click",
-  () => {
-    if (music && music.paused) {
-      music
-        .play()
-        .then(() => {
-          music.muted = false;
-          syncMusicUi();
-        })
-        .catch(() => {});
-    }
-  },
-  { once: true }
-);
 
 syncMusicUi();
 
@@ -125,25 +104,48 @@ if (topbar && heroSection) {
     ([entry]) => {
       topbar.classList.toggle("visible", !entry.isIntersecting);
     },
-    { threshold: 0.05 }
+    // Der Streifen hinter der Leiste zählt nicht: Ist nur er noch Foto, gilt das Bild als vorbei.
+    { threshold: 0, rootMargin: "-96px 0px 0px 0px" }
   );
   heroObserver.observe(heroSection);
 }
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const id = entry.target.id;
-      navLinks.forEach((link) => {
-        link.classList.toggle("active", link.dataset.section === id);
-      });
+// Aktiv ist der letzte Abschnitt, dessen Oberkante das obere Drittel erreicht hat.
+let activeId = "";
+
+function updateActiveSection() {
+  const line = window.innerHeight * 0.35;
+  let current = sections[0] ? sections[0].id : "";
+  sections.forEach((section) => {
+    if (section.getBoundingClientRect().top <= line) current = section.id;
+  });
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4 && sections.length) {
+    current = sections[sections.length - 1].id;
+  }
+  if (current === activeId) return;
+  activeId = current;
+  navLinks.forEach((link) => {
+    const isActive = link.dataset.section === current;
+    link.classList.toggle("active", isActive);
+    if (isActive) link.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+  });
+}
+
+let activeTicking = false;
+window.addEventListener(
+  "scroll",
+  () => {
+    if (activeTicking) return;
+    activeTicking = true;
+    requestAnimationFrame(() => {
+      activeTicking = false;
+      updateActiveSection();
     });
   },
-  { threshold: 0.38 }
+  { passive: true }
 );
-
-sections.forEach((section) => observer.observe(section));
+window.addEventListener("resize", updateActiveSection);
+updateActiveSection();
 
 const form = document.getElementById("rsvp-form");
 const status = document.getElementById("form-status");

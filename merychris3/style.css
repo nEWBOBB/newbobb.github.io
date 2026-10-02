@@ -92,6 +92,26 @@ body {
   display: grid;
 }
 
+.music-toggle.waiting {
+  animation: music-invite 2.2s ease-in-out infinite;
+}
+
+@keyframes music-invite {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 174, 99, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(212, 174, 99, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle.waiting {
+    animation: none;
+  }
+}
+
 .topbar {
   position: fixed;
   top: 0.8rem;
@@ -111,9 +131,11 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.4rem;
   overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
   padding: 0.35rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.7);
@@ -129,6 +151,19 @@ body {
   border-radius: 999px;
   white-space: nowrap;
   transition: all 0.25s ease;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Zentriert, solange alles passt; sonst links beginnend scrollbar */
+.nav-link:first-child {
+  margin-left: auto;
+}
+
+.nav-link:last-child {
+  margin-right: auto;
 }
 
 .nav-link.active {
