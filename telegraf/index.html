@@ -161,6 +161,9 @@
 			<a href="../strom/">Strom</a>
 			<a href="../radio/">Radio</a>
 			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
 		</nav>
 	</header>
 
@@ -194,6 +197,7 @@
 					<li>Am Hebel sitzt ein Stift, der auf einen laufenden <strong>Papierstreifen</strong> drückt.</li>
 				</ol>
 				<p>Halte die Taste rechts gedrückt und beobachte, was in welcher Reihenfolge passiert.</p>
+				<p class="merke"><b>Merke</b>Ein Telegraf ist ein sehr langer Stromkreis: ein Schalter auf der einen Seite, ein Elektromagnet auf der anderen.</p>
 				<div class="fact">
 					<b>Zwei Drähte? Einer reicht</b>
 					<p>Für den Rückweg des Stroms nutzte man einfach den Erdboden. Deshalb sieht man an alten
@@ -201,6 +205,7 @@
 				</div>
 			</div>
 			<div class="stage reveal" id="morse">
+				<p class="task">Halte die Taste gedrückt, tippe kurz und lang, oder lass ihn „SOS“ morsen.</p>
 				<div class="stage-view">
 					<canvas id="telCanvas" aria-label="Telegraf zwischen Berlin und Hamburg"></canvas>
 					<span class="stage-tag">Berlin → Hamburg · 290 km</span>
@@ -234,6 +239,7 @@
 				<p>Ein Strich ist dreimal so lang wie ein Punkt. Zwischen Buchstaben macht man eine Pause von drei
 					Punkten, zwischen Wörtern von sieben. Tippe oben mit der Taste, der Empfänger übersetzt live.</p>
 				<div class="morse-table" id="morseTable" aria-label="Morse-Alphabet"></div>
+				<p class="merke"><b>Merke</b>Morse übersetzt jeden Buchstaben in kurze und lange Signale. Häufige Buchstaben bekommen die kürzesten Codes.</p>
 				<div class="quiz" data-answer="0"
 					data-why="S ist ··· und O ist −−−. SOS wurde gewählt, weil es so leicht zu senden und zu erkennen ist, nicht weil es für etwas steht.">
 					<p class="quiz-q">Wie klingt SOS?</p>
@@ -265,6 +271,7 @@
 				</ol>
 				<p>Schau dir unten an, dass alle drei Kurven dieselbe Form haben. Das nennt man <strong>analog</strong>:
 					Der Strom ist ein Abbild des Schalls.</p>
+				<p class="merke"><b>Merke</b>Beim Telefon schwankt der Strom genau wie die Luft beim Sprechen. Der Strom ist ein elektrisches Abbild deiner Stimme.</p>
 				<div class="fact">
 					<b>Warum Ferngespräche teuer waren</b>
 					<p>Je länger der Draht, desto schwächer und verrauschter das Signal. Erst mit Verstärkern
@@ -272,6 +279,7 @@
 				</div>
 			</div>
 			<div class="stage reveal">
+				<p class="task">Tippe auf „Stimme senden“ und dreh danach die Leitungslänge hoch.</p>
 				<div class="stage-view">
 					<canvas id="phoneCanvas" aria-label="Mikrofon, Leitung und Hörer mit Signalkurven"></canvas>
 					<span class="stage-tag">Telefon · Zeitlupe</span>
@@ -309,6 +317,7 @@
 					<li>Wenig Abtastungen: Hohe Töne gehen verloren oder klingen falsch.</li>
 					<li>Wenig Bits: Die Treppenstufen werden grob, es rauscht und kratzt.</li>
 				</ul>
+				<p class="merke"><b>Merke</b>Digital heißt: Der Schall wird tausende Male pro Sekunde gemessen und als Zahl verschickt. Mehr Messungen und mehr Bits klingen besser.</p>
 				<div class="quiz" data-answer="1"
 					data-why="Der Mensch hört bis etwa 20 000 Hz. Nach dem Abtasttheorem braucht man mindestens doppelt so viele Messungen pro Sekunde, also gut 40 000. Daher die 44 100 Hz der CD.">
 					<p class="quiz-q">Warum misst eine CD 44 100-mal pro Sekunde?</p>
@@ -321,6 +330,7 @@
 				</div>
 			</div>
 			<div class="stage reveal">
+				<p class="task">Probier Telefon, CD und Kaputt aus und hör dir jede Einstellung an.</p>
 				<div class="stage-view">
 					<canvas id="digCanvas" aria-label="Abtastung und Quantisierung eines Tons"></canvas>
 					<span class="stage-tag">5 Millisekunden Klang</span>

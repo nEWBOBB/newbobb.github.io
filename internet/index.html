@@ -205,6 +205,9 @@
 			<a href="../strom/">Strom</a>
 			<a href="../radio/">Radio</a>
 			<a href="../internet/" aria-current="page">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
 		</nav>
 	</header>
 
@@ -236,8 +239,10 @@
 					eine feste Nummer: Das große A ist die 65, also 01000001.</p>
 				<p>Tipp etwas ein. Probier auch ein ä oder ein Emoji: Die brauchen mehr als ein Byte. Das regelt der
 					Standard <strong>UTF-8</strong>, mit dem fast jede Webseite der Welt arbeitet.</p>
+				<p class="merke"><b>Merke</b>Alles im Internet, ob Text, Bild oder Video, besteht aus Einsen und Nullen, die als Licht- oder Stromimpulse reisen.</p>
 			</div>
 			<div class="stage reveal">
+				<p class="task">Tipp etwas ein, zum Beispiel deinen Namen oder ein Emoji.</p>
 				<div class="stage-view">
 					<canvas id="bitCanvas" aria-label="Bits als Lichtsignal in einer Glasfaser"></canvas>
 					<span class="stage-tag">Glasfaser · Licht an = 1</span>
@@ -264,8 +269,10 @@
 					Pakete manchmal in falscher Reihenfolge an. Der Empfänger sortiert sie anhand der Nummern wieder.</p>
 				<p><strong>Klick auf einen Router, um ihn kaputtzumachen.</strong> Die anderen finden sofort einen Umweg.
 					Pakete, die gerade dort waren, gehen verloren. Weil für sie keine Empfangsbestätigung kommt, schickt der Absender sie einfach noch einmal.</p>
+				<p class="merke"><b>Merke</b>Nachrichten werden in nummerierte Pakete zerlegt, die eigene Wege gehen. Fällt etwas aus, findet das Netz einen Umweg.</p>
 			</div>
 			<div class="stage reveal">
+				<p class="task">Schick eine Nachricht los und tippe währenddessen auf einen Router in der Mitte.</p>
 				<div class="stage-view">
 					<canvas id="netCanvas" aria-label="Netz aus Routern zwischen dir und dem Server"></canvas>
 					<span class="stage-tag">Tippe auf Router</span>
@@ -316,8 +323,10 @@
 					wer für <em>github.io</em> zuständig ist. Und der kennt die Nummer.</p>
 				<p>Dein Provider merkt sich die Antwort eine Weile. Frag ein zweites Mal und schau, wie viel schneller es
 					geht.</p>
+				<p class="merke"><b>Merke</b>DNS ist das Adressbuch des Internets: Es übersetzt Namen wie newbobb.github.io in Nummern, mit denen Router etwas anfangen können.</p>
 			</div>
 			<div class="stage reveal">
+				<p class="task">Schlag eine Adresse nach und frag danach ein zweites Mal.</p>
 				<div class="stage-view">
 					<canvas id="dnsCanvas" aria-label="Ablauf einer DNS-Anfrage"></canvas>
 					<span class="stage-tag">DNS-Anfrage</span>
@@ -344,6 +353,7 @@
 					zurück ist, heißt <strong>Ping</strong>.</p>
 				<p>Kein Trick der Welt macht einen Ping von Frankfurt nach Sydney kürzer als etwa 160 Millisekunden. Das
 					ist reine Physik: Hin und zurück sind es über 30 000 km Kabel.</p>
+				<p class="merke"><b>Merke</b>Selbst Licht braucht Zeit. Je weiter weg ein Server steht, desto länger dauert jede Antwort.</p>
 				<div class="fact">
 					<b>Unter dem Meer</b>
 					<p>Fast der gesamte Datenverkehr zwischen den Kontinenten läuft nicht über Satelliten, sondern durch
@@ -361,6 +371,7 @@
 				</div>
 			</div>
 			<div class="stage reveal">
+				<p class="task">Wähle nacheinander ein nahes und ein weit entferntes Ziel.</p>
 				<div class="stage-view">
 					<canvas id="pingCanvas" aria-label="Lichtpuls von Frankfurt zum Ziel und zurück"></canvas>
 					<span class="stage-tag" id="pingTag">Ab Frankfurt</span>
@@ -375,8 +386,8 @@
 	</main>
 
 	<footer class="v-next">
-		<p>Das war die Reihe. Zurück zum Anfang:</p>
-		<a href="../feuer/">Wie Feuer funktioniert <span>→</span></a>
+		<p>Weiter in der Reihe</p>
+		<a href="../magnet/">Wie Magnete funktionieren <span>→</span></a>
 	</footer>
 
 	<script src="../assets/verstehen.js"></script>

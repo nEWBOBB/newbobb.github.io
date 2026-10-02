@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Musik und Schall funktionieren — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Schall und Musik funktionieren: Schallwellen in der Luft, Tonhöhe und Lautstärke, Obertöne, schwingende Saiten und Harmonie." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ff9f6b;
+			--accent-2: #b5e86b;
+			--accent-ink: #2a1205;
+		}
+
+		#harmCanvas,
+		#stringCanvas {
+			touch-action: none;
+			cursor: pointer;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.hear {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 12px;
+			background: #0a0908;
+			border: 1px solid var(--line);
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 10px;
+			font-size: 0.9rem;
+			color: var(--muted);
+		}
+
+		.hear strong {
+			color: var(--ink);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/" aria-current="page">Schall</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 8</p>
+			<h1>Wie <em>Musik</em> und<br />Schall funktionieren</h1>
+			<p class="v-lede">Jeder Ton, den du je gehört hast, war nur Luft, die ein bisschen hin- und hergeschubst
+				wurde. Wie wird daraus eine Stimme, eine Gitarre oder ein ganzes Orchester? Mach am besten den Ton an,
+				diese Seite ist zum Hören gebaut.</p>
+			<ol class="v-toc">
+				<li><a href="#luft">Schall ist drängelnde Luft</a></li>
+				<li><a href="#ton">Hoch, tief, laut, leise</a></li>
+				<li><a href="#klang">Die Klangfarbe</a></li>
+				<li><a href="#saite">Die schwingende Saite</a></li>
+				<li><a href="#harmonie">Warum Musik schön klingt</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Luft -->
+		<section class="chapter" id="luft">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Grundlagen</span>
+				<h2>Schall ist drängelnde Luft</h2>
+				<p>Ein Lautsprecher hat eine Membran, die vor- und zurückzuckt. Schiebt sie nach vorn, drückt sie die
+					Luftteilchen davor zusammen. Die schubsen ihre Nachbarn, die wieder ihre Nachbarn, und so weiter. Es
+					entsteht eine Welle aus <strong>dichter</strong> und <strong>dünner</strong> Luft.</p>
+				<p>Das Verblüffende: Die Luftteilchen selbst reisen gar nicht mit. Jedes wackelt nur ein winziges Stück
+					vor und zurück. Weitergereicht wird nur das Drängeln, wie bei einer La-Ola-Welle im Stadion.</p>
+				<p class="merke"><b>Merke</b>Schall ist Druck, der von Teilchen zu Teilchen weitergereicht wird. Ohne Luft
+					(oder Wasser, Holz, Metall) gibt es keinen Schall, im Weltall ist es völlig still.</p>
+				<div class="fact">
+					<b>Wie schnell ist Schall?</b>
+					<p>In Luft etwa 343 Meter pro Sekunde, fast eine Million Mal langsamer als Licht. Deshalb hörst du den
+						Donner später, als du den Blitz siehst: Pro drei Sekunden Pause ist das Gewitter etwa einen Kilometer
+						weit weg.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Beobachte das rote Luftteilchen. Reist es mit der Welle mit?</p>
+				<div class="stage-view">
+					<canvas id="airCanvas" aria-label="Luftteilchen vor einem Lautsprecher"></canvas>
+					<span class="stage-tag">Luft in Zeitlupe</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnAirSound" type="button" aria-pressed="false">🔊 Ton an</button>
+					<label class="range">
+						<span class="range-head"><span>Tonhöhe</span><output id="airFOut">mittel</output></span>
+						<input type="range" id="airF" min="0" max="100" value="40" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Lautstärke</span><output id="airAOut">mittel</output></span>
+						<input type="range" id="airA" min="0" max="100" value="55" />
+					</label>
+					<p class="stage-note" id="airNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Ton -->
+		<section class="chapter flip" id="ton">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Tonhöhe und Lautstärke</span>
+				<h2>Hoch, tief, laut, leise</h2>
+				<p>Wie <strong>hoch</strong> ein Ton klingt, hängt davon ab, wie oft die Luft pro Sekunde hin- und
+					herschwingt. Das ist die <strong>Frequenz</strong>, gemessen in Hertz. Der Kammerton A, nach dem
+					Orchester stimmen, schwingt 440-mal pro Sekunde.</p>
+				<p>Wie <strong>laut</strong> ein Ton ist, hängt davon ab, wie stark die Luft gedrückt wird, also wie hoch
+					die Wellenberge sind.</p>
+				<p>Menschen hören etwa von 20 bis 20 000 Hertz. Mit dem Alter rutscht die obere Grenze nach unten. Mach
+					den Hörtest und finde deine.</p>
+				<p class="merke"><b>Merke</b>Schnelle Schwingung = hoher Ton. Große Schwingung = lauter Ton. Doppelte
+					Frequenz klingt genau eine Oktave höher.</p>
+				<div class="fact">
+					<b>Der Krankenwagen-Effekt</b>
+					<p>Fährt ein Martinshorn auf dich zu, werden die Wellen vor ihm zusammengestaucht, und es klingt höher.
+						Fährt es weg, werden sie auseinandergezogen, und es klingt tiefer. Das ist der Doppler-Effekt.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh an der Tonhöhe und hör zu. Mach danach den Hörtest (Lautstärke vorher leise
+					stellen!).</p>
+				<div class="stage-view">
+					<canvas id="scopeCanvas" aria-label="Oszilloskop mit dem erzeugten Ton"></canvas>
+					<span class="stage-tag">Oszilloskop</span>
+					<span class="stage-readout" id="toneOut">440 Hz · A</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnTone" type="button" aria-pressed="false">🔊 Ton an</button>
+					<label class="range">
+						<span class="range-head"><span>Frequenz</span><output id="freqOut">440 Hz</output></span>
+						<input type="range" id="freq" min="0" max="1000" step="0.01" value="447.48" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Lautstärke</span><output id="volOut">40 %</output></span>
+						<input type="range" id="vol" min="0" max="100" value="40" />
+					</label>
+					<div class="hear" id="hear">
+						<button class="btn" id="btnHear" type="button">👂 Hörtest starten</button>
+						<span id="hearText">Der Ton steigt von 8 000 bis 20 000 Hz. Tippe, sobald du nichts mehr hörst.</span>
+					</div>
+					<p class="stage-note" id="toneNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Klang -->
+		<section class="chapter" id="klang">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Obertöne</span>
+				<h2>Die Klangfarbe</h2>
+				<p>Ein Klavier und eine Geige können denselben Ton spielen, und trotzdem erkennst du sofort, welches
+					Instrument es ist. Warum?</p>
+				<p>Weil kein Instrument nur einen einzigen Ton erzeugt. Zum <strong>Grundton</strong> schwingen immer
+					leise <strong>Obertöne</strong> mit: das Doppelte, Dreifache, Vierfache der Frequenz und so weiter.
+					Wie laut jeder Oberton ist, macht den Charakter des Instruments aus. Das heißt
+					<strong>Klangfarbe</strong>.</p>
+				<p class="merke"><b>Merke</b>Die Tonhöhe kommt vom Grundton, der Klang vom Mischungsverhältnis der
+					Obertöne. Jedes Instrument hat sein eigenes Rezept.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Probier die Instrumente durch. Dann zieh die Balken selbst hoch und runter.</p>
+				<div class="stage-view">
+					<canvas id="harmCanvas" aria-label="Obertöne als Balken und die entstehende Welle"></canvas>
+					<span class="stage-tag">Grundton 220 Hz</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnHarm" type="button" aria-pressed="false">🔊 Ton an</button>
+					<div class="chips" id="presets"></div>
+					<p class="stage-note" id="harmNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Saite -->
+		<section class="chapter flip" id="saite">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Instrumente</span>
+				<h2>Die schwingende Saite</h2>
+				<p>Zupfst du eine Gitarrensaite, schwingt sie hin und her, und zwar nicht irgendwie: Sie schwingt als
+					Ganzes, gleichzeitig in zwei Hälften, in drei Dritteln und so weiter. Genau daher kommen die
+					Obertöne aus dem letzten Kapitel.</p>
+				<p>Drückst du die Saite auf ein Bundstäbchen, wird der schwingende Teil kürzer, und der Ton steigt. Bei
+					der halben Länge schwingt die Saite doppelt so schnell: eine Oktave höher. Pythagoras hat das vor 2500
+					Jahren schon an einem einfachen Saiteninstrument herausgefunden.</p>
+				<p class="merke"><b>Merke</b>Kürzere, straffere oder dünnere Saite = höherer Ton. Halbe Länge = doppelte
+					Frequenz.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe irgendwo auf die Saite, um sie zu zupfen. Probier verschiedene Stellen und Längen.</p>
+				<div class="stage-view">
+					<canvas id="stringCanvas" aria-label="Gitarrensaite zum Zupfen"></canvas>
+					<span class="stage-tag">Saite in Zeitlupe</span>
+					<span class="stage-readout" id="stringOut">110 Hz</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="frets"></div>
+					<p class="stage-note" id="stringNote">Zupf in der Mitte für einen weichen, am Rand für einen hellen
+						Klang.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Harmonie -->
+		<section class="chapter wide" id="harmonie">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Harmonie</span>
+				<h2>Warum Musik schön klingt</h2>
+				<p>Manche Töne klingen zusammen wunderbar rund, andere reiben sich. Das liegt an ihren Frequenzen. Stehen
+					sie in einem <strong>einfachen Verhältnis</strong> wie 2 zu 1 oder 3 zu 2, passen die Wellen
+					regelmäßig zusammen, und ihr gemeinsames Muster wiederholt sich schnell. Bei krummen Verhältnissen
+					entsteht ein unruhiges, ständig wechselndes Muster.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Intervall, hör es dir an und schau, wie schnell sich die gelbe Summenkurve
+					wiederholt.</p>
+				<div class="stage-view">
+					<canvas id="intCanvas" aria-label="Zwei Töne und ihre Summe"></canvas>
+					<span class="stage-tag" id="intTag">Quinte · 3 : 2</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="intervals"></div>
+					<button class="btn primary" id="btnInt" type="button">▶ Anhören</button>
+					<p class="stage-note" id="intNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Einfache Verhältnisse klingen harmonisch, weil sich die Wellen regelmäßig
+					treffen. Fast gleiche Töne erzeugen ein Wummern, die Schwebung. Daran stimmen Musiker ihre
+					Instrumente.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Eine Oktave ist das Verhältnis 2 zu 1. Das A über dem Kammerton schwingt also 880-mal, das A darunter 220-mal pro Sekunde.">
+					<p class="quiz-q">Der Kammerton A hat 440 Hz. Wie viele Hertz hat das A eine Oktave höher?</p>
+					<div class="quiz-options">
+						<button type="button">660 Hz</button>
+						<button type="button">880 Hz</button>
+						<button type="button">452 Hz</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Das war die Reihe. Zurück zum Anfang:</p>
+		<a href="../feuer/">Wie Feuer funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./schall.js"></script>
+</body>
+
+</html>

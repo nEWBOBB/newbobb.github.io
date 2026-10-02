@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Magnetismus funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Magnete und Elektromotoren funktionieren: Feldlinien, Eisen magnetisieren, Strom macht Magnetfeld und der Motor mit Kommutator." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ff6b6b;
+			--accent-2: #6b8bff;
+			--accent-ink: #2a0707;
+		}
+
+		#fieldCanvas,
+		#domainCanvas {
+			touch-action: none;
+			cursor: grab;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/" aria-current="page">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 6</p>
+			<h1>Wie <em>Magnete</em><br />funktionieren</h1>
+			<p class="v-lede">Magnete ziehen durch Luft, Papier und deine Hand hindurch, ohne irgendetwas zu berühren.
+				Wie geht das? Und wie bringt man so eine Kraft dazu, ein Auto, eine Bohrmaschine oder eine elektrische
+				Zahnbürste anzutreiben?</p>
+			<ol class="v-toc">
+				<li><a href="#feld">Unsichtbare Kraftlinien</a></li>
+				<li><a href="#eisen">Warum Eisen?</a></li>
+				<li><a href="#oersted">Strom macht Magnet</a></li>
+				<li><a href="#motor">Der Elektromotor</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Feld -->
+		<section class="chapter" id="feld">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Das Magnetfeld</span>
+				<h2>Unsichtbare Kraftlinien</h2>
+				<p>Jeder Magnet hat zwei Enden: einen <strong>Nordpol</strong> (rot) und einen <strong>Südpol</strong>
+					(blau). Um ihn herum liegt ein <strong>Magnetfeld</strong>, das man nicht sieht, aber messen kann.
+					Eine Kompassnadel ist selbst ein winziger Magnet und dreht sich immer entlang dieses Felds.</p>
+				<p>Zeichnet man nach, wohin die Nadeln zeigen, entstehen <strong>Feldlinien</strong>. Sie laufen außen
+					vom Nordpol zum Südpol. Wo sie dicht liegen, ist die Kraft stark.</p>
+				<p class="merke"><b>Merke</b>Ungleiche Pole ziehen sich an, gleiche Pole stoßen sich ab. Die Feldlinien
+					zeigen dir, wohin die Kraft wirkt.</p>
+				<div class="fact">
+					<b>Die Erde ist ein Magnet</b>
+					<p>Tief in der Erde fließt flüssiges Eisen und erzeugt ein riesiges Magnetfeld. Deshalb zeigt jeder
+						Kompass nach Norden. Kurios: Weil sich ungleiche Pole anziehen, liegt bei der Arktis eigentlich ein
+						magnetischer <em>Südpol</em>.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den Magneten herum. Hol dann einen zweiten dazu und dreh ihn um.</p>
+				<div class="stage-view">
+					<canvas id="fieldCanvas" aria-label="Magnetfeld mit Kompassnadeln, Magnete sind verschiebbar"></canvas>
+					<span class="stage-tag">Magnetfeld</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSecond" type="button">Zweiten Magneten dazu</button>
+					<button class="btn" id="btnFlip" type="button">Magnet umdrehen</button>
+					<button class="btn" id="btnLines" type="button" aria-pressed="true">Feldlinien</button>
+					<p class="stage-note" id="fieldNote">Die Nadeln zeigen überall in Richtung des Felds.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Eisen -->
+		<section class="chapter flip" id="eisen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Im Inneren</span>
+				<h2>Warum gerade Eisen?</h2>
+				<p>Jedes Elektron ist selbst ein klitzekleiner Magnet. In den meisten Stoffen heben sie sich gegenseitig
+					auf. In <strong>Eisen</strong>, Nickel und Kobalt aber richten sich viele Milliarden davon gemeinsam
+					aus und bilden kleine Bereiche, die <strong>Weiss-Bezirke</strong>.</p>
+				<p>Normalerweise zeigen diese Bezirke kreuz und quer. Ihre Wirkungen heben sich auf, und das Eisen ist
+					nicht magnetisch. Streicht man mit einem Magneten darüber, drehen sie sich in eine Richtung, und
+					plötzlich ist das Eisen selbst ein Magnet.</p>
+				<p class="merke"><b>Merke</b>Ein Magnet ist Eisen, in dem die winzigen Magnetbezirke alle in dieselbe
+					Richtung zeigen. Hitze und Schläge bringen sie wieder durcheinander.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Aluminium hat keine Weiss-Bezirke, die sich ausrichten könnten. Nur Eisen, Nickel und Kobalt (und Legierungen daraus) werden von Magneten richtig angezogen. Deshalb sortiert man im Recycling Eisen mit Magneten aus und Alu nicht.">
+					<p class="quiz-q">Warum hält ein Kühlschrankmagnet nicht an einer Alu-Leiter?</p>
+					<div class="quiz-options">
+						<button type="button">Weil Alu zu glatt ist</button>
+						<button type="button">Weil Aluminium keine Bezirke hat, die sich ausrichten können</button>
+						<button type="button">Weil die Leiter selbst ein Magnet mit falscher Richtung ist</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Fahr mit Maus oder Finger von links nach rechts über das Eisen. Dann heiz es auf.</p>
+				<div class="stage-view">
+					<canvas id="domainCanvas" aria-label="Weiss-Bezirke in einem Eisenstab"></canvas>
+					<span class="stage-tag">Eisenstab unter dem Mikroskop</span>
+					<span class="stage-readout" id="domainOut">0 % magnetisch</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Temperatur</span><output id="tempOut">20 °C</output></span>
+						<input type="range" id="temp" min="20" max="900" step="10" value="20" />
+					</label>
+					<button class="btn" id="btnHammer" type="button">🔨 Draufhauen</button>
+					<button class="btn" id="btnReset" type="button">Neues Eisen</button>
+					<p class="stage-note" id="domainNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Ørsted -->
+		<section class="chapter" id="oersted">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · 1820</span>
+				<h2>Strom macht Magnet</h2>
+				<p>Hans Christian Ørsted bemerkte 1820 bei einer Vorlesung etwas Merkwürdiges: Eine Kompassnadel neben
+					einem Draht zuckte, sobald Strom floss. Das war der Beweis, dass <strong>Elektrizität und Magnetismus
+						zusammengehören</strong>.</p>
+				<p>Fließender Strom erzeugt ein Magnetfeld, das sich <strong>ringförmig um den Draht</strong> legt. Je
+					stärker der Strom und je näher am Draht, desto stärker das Feld. Dreht man den Strom um, dreht sich
+					auch das Feld.</p>
+				<p>Wickelt man den Draht zu einer Spule, addieren sich die Felder aller Windungen. So entsteht ein
+					<strong>Elektromagnet</strong>, wie im <a href="../telegraf/">Telegrafen</a>.</p>
+				<p class="merke"><b>Merke</b>Wo Strom fließt, entsteht ein Magnetfeld. Und umgekehrt erzeugt ein
+					bewegter Magnet Strom, so funktioniert der <a href="../strom/#generator">Generator</a>.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte den Strom ein und dreh ihn dann um. Achte auf die inneren und äußeren Nadeln.</p>
+				<div class="stage-view">
+					<canvas id="wireCanvas" aria-label="Draht von oben gesehen mit Kompassnadeln drumherum"></canvas>
+					<span class="stage-tag">Draht von oben</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnCurrent" type="button" aria-pressed="false">Strom einschalten</button>
+					<button class="btn" id="btnReverse" type="button">Richtung umdrehen</button>
+					<label class="range">
+						<span class="range-head"><span>Stromstärke</span><output id="ampOut">5 A</output></span>
+						<input type="range" id="amp" min="1" max="20" value="5" />
+					</label>
+					<p class="stage-note" id="wireNote">Ohne Strom zeigen alle Nadeln einfach nach Norden.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Motor -->
+		<section class="chapter flip" id="motor">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Anwendung</span>
+				<h2>Der Elektromotor</h2>
+				<p>Ein Motor nutzt genau diese Kräfte. In der Mitte sitzt eine drehbare Drahtschleife, der
+					<strong>Rotor</strong>. Außen sitzen feste Magnete. Fließt Strom durch die Schleife, wird sie auf
+					einer Seite nach oben und auf der anderen nach unten gedrückt. Sie dreht sich.</p>
+				<p>Nach einer halben Drehung gäbe es ein Problem: Die Kräfte würden jetzt <em>zurück</em> drücken. Die
+					Lösung ist der <strong>Kommutator</strong>, ein geteilter Ring auf der Achse. Er polt den Strom bei
+					jeder halben Drehung um, sodass die Kraft immer in Drehrichtung schiebt.</p>
+				<p>Schalte den Kommutator aus und schau, was dann passiert.</p>
+				<p class="merke"><b>Merke</b>Ein Motor ist ein Generator rückwärts: Beim Generator wird aus Drehung
+					Strom, beim Motor wird aus Strom Drehung.</p>
+				<div class="fact">
+					<b>Überall um dich herum</b>
+					<p>In einem normalen Haushalt arbeiten oft über 50 Elektromotoren: im Kühlschrank, in der
+						Waschmaschine, im Föhn, in Lüftern, Festplatten und im Vibrationsalarm deines Handys.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte den Strom ein. Dann probier den Motor ohne Kommutator.</p>
+				<div class="stage-view">
+					<canvas id="motorCanvas" aria-label="Gleichstrommotor mit Rotor, Magneten und Kommutator"></canvas>
+					<span class="stage-tag">Gleichstrommotor</span>
+					<span class="stage-readout" id="motorOut">0 U/min</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnMotor" type="button" aria-pressed="false">Strom einschalten</button>
+					<button class="btn toggle" id="btnComm" type="button" aria-pressed="true">Kommutator</button>
+					<label class="range">
+						<span class="range-head"><span>Spannung</span><output id="voltOut">6 V</output></span>
+						<input type="range" id="volt" min="1" max="12" step="0.5" value="6" />
+					</label>
+					<p class="stage-note" id="motorNote"></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe</p>
+		<a href="../licht/">Licht und Farben <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./magnet.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Licht und Farben funktionieren — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Licht und Farben funktionieren: Wellenlänge, Prisma und Regenbogen, Farben mischen, warum ein Apfel rot und der Himmel blau ist." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ffd166;
+			--accent-2: #7ad7ff;
+			--accent-ink: #261b02;
+		}
+
+		.v-hero h1 em {
+			background: linear-gradient(90deg, #ff5a5a, #ffb04d, #ffe14d, #6fe3a3, #59b8ff, #a77bff);
+			-webkit-background-clip: text;
+			background-clip: text;
+		}
+
+		#mixCanvas,
+		#prismCanvas {
+			touch-action: none;
+		}
+
+		.seg {
+			display: inline-flex;
+			flex-wrap: wrap;
+			padding: 3px;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: var(--panel-2);
+		}
+
+		.seg button {
+			font: inherit;
+			font-size: 0.86rem;
+			color: var(--muted);
+			background: transparent;
+			border: 0;
+			border-radius: 999px;
+			padding: 8px 14px;
+			cursor: pointer;
+		}
+
+		.seg button[aria-pressed="true"] {
+			color: var(--accent-ink);
+			background: var(--accent);
+			font-weight: 600;
+		}
+
+		.seg button:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		.lamps {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.lamps .btn i {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			display: inline-block;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/" aria-current="page">Licht</a>
+			<a href="../schall/">Schall</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 7</p>
+			<h1>Wie <em>Licht</em> und<br />Farben funktionieren</h1>
+			<p class="v-lede">Farben gibt es eigentlich gar nicht, jedenfalls nicht in den Dingen selbst. Sie entstehen
+				erst in deinem Kopf. Hier siehst du, wie aus unsichtbaren Wellen ein Regenbogen, ein roter Apfel und ein
+				blauer Himmel werden.</p>
+			<ol class="v-toc">
+				<li><a href="#welle">Farbe ist Wellenlänge</a></li>
+				<li><a href="#prisma">Der Regenbogen im Licht</a></li>
+				<li><a href="#mischen">Farben mischen</a></li>
+				<li><a href="#apfel">Warum ein Apfel rot ist</a></li>
+				<li><a href="#himmel">Warum der Himmel blau ist</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Wellenlänge -->
+		<section class="chapter" id="welle">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Grundlagen</span>
+				<h2>Farbe ist Wellenlänge</h2>
+				<p>Licht ist eine Welle, genau wie die <a href="../radio/">Radiowellen</a>, nur viel kürzer: Zwischen zwei
+					Wellenbergen liegen weniger als ein Tausendstel Millimeter. Wie lang die Welle ist, entscheidet über
+					die Farbe. Lange Wellen sehen wir als <strong>Rot</strong>, kurze als <strong>Blau und
+						Violett</strong>.</p>
+				<p>Dein Auge misst die Wellenlänge nicht direkt. Es hat nur <strong>drei Sorten Farbsensoren</strong>,
+					die Zapfen: einen für eher kurze, einen für mittlere und einen für lange Wellen. Dein Gehirn vergleicht,
+					wie stark jeder Sensor reagiert, und macht daraus eine Farbe.</p>
+				<p class="merke"><b>Merke</b>Farbe ist die Länge der Lichtwelle. Kurz = blau, lang = rot. Alles
+					außerhalb von etwa 380 bis 750 Nanometern ist für uns unsichtbar.</p>
+				<div class="fact">
+					<b>Tiere sehen anders</b>
+					<p>Bienen sehen Ultraviolett und erkennen dadurch Muster auf Blüten, die für uns unsichtbar sind.
+						Viele Hunde haben nur zwei Sorten Zapfen und können Rot und Grün kaum unterscheiden.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schieb den Regler von Rot nach Violett und schau, welcher Sensor im Auge reagiert.</p>
+				<div class="stage-view">
+					<canvas id="waveCanvas" aria-label="Lichtwelle mit Farbe und Zapfen-Reaktion"></canvas>
+					<span class="stage-tag" id="waveName">Grün</span>
+					<span class="stage-readout" id="waveOut">530 nm</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Wellenlänge</span><output id="lambdaOut">530 nm</output></span>
+						<input type="range" id="lambda" min="300" max="850" value="530" />
+					</label>
+					<p class="stage-note" id="waveNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Prisma -->
+		<section class="chapter flip" id="prisma">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · 1666</span>
+				<h2>Der Regenbogen im Licht</h2>
+				<p>Isaac Newton ließ 1666 Sonnenlicht durch ein Glasprisma fallen und sah dahinter einen Regenbogen. Er
+					schloss daraus: <strong>Weißes Licht ist eine Mischung aus allen Farben.</strong></p>
+				<p>Beim Übergang von Luft in Glas wird Licht langsamer und knickt ab, das heißt
+					<strong>Brechung</strong>. Blaues Licht wird dabei etwas stärker gebremst als rotes und knickt
+					stärker ab. So fächern sich die Farben auf.</p>
+				<p>Ein Regenbogen am Himmel ist genau dasselbe, nur mit Millionen Regentropfen statt einem Prisma.</p>
+				<p class="merke"><b>Merke</b>Weiß ist keine eigene Farbe, sondern alle Farben zusammen. Ein Prisma
+					sortiert sie, weil jede Farbe unterschiedlich stark abknickt.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Taschenlampe nach oben und unten. Schalte dann auf den roten Laser um.</p>
+				<div class="stage-view">
+					<canvas id="prismCanvas" aria-label="Lichtstrahl durch ein Prisma"></canvas>
+					<span class="stage-tag">Prisma aus Flintglas</span>
+				</div>
+				<div class="stage-controls">
+					<div class="seg" role="group" aria-label="Lichtquelle">
+						<button type="button" id="btnWhite" aria-pressed="true">Weißes Licht</button>
+						<button type="button" id="btnLaser" aria-pressed="false">Roter Laser</button>
+					</div>
+					<p class="stage-note" id="prismNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Mischen -->
+		<section class="chapter" id="mischen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Additiv und subtraktiv</span>
+				<h2>Farben mischen</h2>
+				<p>Weil dein Auge nur drei Sensoren hat, reichen <strong>drei Lichtfarben</strong>, um fast jede Farbe
+					vorzutäuschen: Rot, Grün und Blau. Dein Handydisplay besteht nur aus winzigen roten, grünen und blauen
+					Lämpchen. Gelb ist dort einfach Rot und Grün gleichzeitig.</p>
+				<p>Mit Farbe aus dem Malkasten ist es umgekehrt. Farbe <em>schluckt</em> Licht. Jede Schicht nimmt etwas
+					weg, bis am Ende nur Dunkelbraun übrig bleibt. Darum druckt dein Drucker mit Cyan, Magenta und Gelb.
+				</p>
+				<p class="merke"><b>Merke</b>Licht mischen addiert: Rot + Grün + Blau = Weiß. Farbe mischen zieht ab:
+					Cyan + Magenta + Gelb = fast Schwarz.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schieb die drei Kreise übereinander. Schalte dann auf Malfarbe um.</p>
+				<div class="stage-view">
+					<canvas id="mixCanvas" aria-label="Drei verschiebbare Farbkreise"></canvas>
+					<span class="stage-tag" id="mixTag">Licht (Bildschirm)</span>
+				</div>
+				<div class="stage-controls">
+					<div class="seg" role="group" aria-label="Mischart">
+						<button type="button" id="btnAdd" aria-pressed="true">Licht</button>
+						<button type="button" id="btnSub" aria-pressed="false">Malfarbe</button>
+					</div>
+					<button class="btn" id="btnMixReset" type="button">Zurücksetzen</button>
+					<p class="stage-note" id="mixNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Apfel -->
+		<section class="chapter flip" id="apfel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Körperfarben</span>
+				<h2>Warum ein Apfel rot ist</h2>
+				<p>Ein Apfel leuchtet nicht selbst. Er wird von weißem Licht angestrahlt, das alle Farben enthält. Seine
+					Schale <strong>schluckt</strong> fast alles davon und wirft nur das rote Licht zurück. Dieses rote Licht
+					landet in deinem Auge.</p>
+				<p>Was passiert also, wenn gar kein rotes Licht da ist? Probier es mit der blauen Lampe aus. Unter dem
+					orangen Licht alter Straßenlaternen sehen Autos deshalb alle gleich grau aus.</p>
+				<p class="merke"><b>Merke</b>Ein Gegenstand hat die Farbe des Lichts, das er zurückwirft. Fehlt diese
+					Farbe in der Lampe, sieht er dunkel aus.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Ein Blatt wirft vor allem grünes Licht zurück. Rotes Licht schluckt es, also kommt unter einer rein roten Lampe kaum etwas zurück. Es wirkt fast schwarz.">
+					<p class="quiz-q">Welche Farbe hat ein grünes Blatt unter rein rotem Licht?</p>
+					<div class="quiz-options">
+						<button type="button">Gelb, weil Rot und Grün Gelb ergibt</button>
+						<button type="button">Immer noch grün</button>
+						<button type="button">Fast schwarz</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Lampe und schau, wie sich die Farben verändern.</p>
+				<div class="stage-view">
+					<canvas id="appleCanvas" aria-label="Obst und Papier unter verschiedenen Lampen"></canvas>
+					<span class="stage-tag" id="lampTag">Weißes Licht</span>
+				</div>
+				<div class="stage-controls">
+					<div class="lamps" id="lamps"></div>
+					<p class="stage-note" id="appleNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Himmel -->
+		<section class="chapter wide" id="himmel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Atmosphäre</span>
+				<h2>Warum der Himmel blau ist</h2>
+				<p>Sonnenlicht ist weiß. Auf dem Weg durch die Luft trifft es auf unzählige Luftmoleküle. Die werfen
+					einen Teil des Lichts kreuz und quer durch die Gegend, das nennt man <strong>Streuung</strong>. Kurze,
+					blaue Wellen werden dabei viel stärker gestreut als lange, rote: etwa fünfmal so stark.</p>
+				<p>Wenn du in den Himmel schaust, siehst du also nicht direkt die Sonne, sondern dieses gestreute Licht,
+					und das ist vor allem blau. Abends steht die Sonne tief, und ihr Licht muss einen viel längeren Weg
+					durch die Luft nehmen. Unterwegs wird fast alles Blau herausgestreut. Übrig bleiben Orange und Rot.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Lass die Sonne vom Mittag bis zum Sonnenuntergang wandern.</p>
+				<div class="stage-view">
+					<canvas id="skyCanvas" aria-label="Himmel und Sonne bei verschiedenem Sonnenstand"></canvas>
+					<span class="stage-tag" id="skyTag">Mittag</span>
+					<span class="stage-readout" id="skyOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Sonnenhöhe</span><output id="sunOut">60°</output></span>
+						<input type="range" id="sun" min="-6" max="70" step="0.5" value="60" />
+					</label>
+					<button class="btn" id="btnSunset" type="button">▶ Sonnenuntergang abspielen</button>
+					<p class="stage-note" id="skyNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Die Luft streut blaues Licht am stärksten, deshalb kommt es aus allen
+					Richtungen. Abends ist der Weg so lang, dass das Blau unterwegs verloren geht.</p>
+				<div class="fact">
+					<b>Auf dem Mars ist es umgekehrt</b>
+					<p>Dort schwebt feiner rötlicher Staub in der dünnen Luft. Tagsüber ist der Marshimmel deshalb
+						beige-orange, und der Sonnenuntergang leuchtet blau.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe</p>
+		<a href="../schall/">Musik und Schall <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./licht.js"></script>
+</body>
+
+</html>
