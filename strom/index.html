@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Strom funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Strom funktioniert: Elektronen, Spannung, Widerstand, Reihen- und Parallelschaltung und wie ein Generator Strom erzeugt." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ffe14d;
+			--accent-2: #59b8ff;
+			--accent-ink: #1d1a05;
+		}
+
+		.ohm {
+			width: 100%;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 8px;
+		}
+
+		.ohm div {
+			padding: 10px 12px;
+			border-radius: 12px;
+			background: #0a0908;
+			border: 1px solid var(--line);
+			font-variant-numeric: tabular-nums;
+		}
+
+		.ohm small {
+			display: block;
+			font-size: 0.7rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--faint);
+		}
+
+		.ohm strong {
+			font-size: 1.15rem;
+		}
+
+		.compare {
+			display: grid;
+			grid-template-columns: auto 1fr 1fr;
+			gap: 1px;
+			margin: 18px 0;
+			border-radius: 14px;
+			overflow: hidden;
+			border: 1px solid var(--line);
+			font-size: 0.9rem;
+		}
+
+		.compare>div {
+			padding: 10px 12px;
+			background: var(--panel);
+			color: var(--muted);
+		}
+
+		.compare>.h {
+			background: var(--panel-2);
+			color: var(--ink);
+			font-weight: 600;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/" aria-current="page">Strom</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 3</p>
+			<h1>Wie <em>Strom</em><br />funktioniert</h1>
+			<p class="v-lede">Strom ist unsichtbar, und genau deshalb fühlt er sich wie Magie an. Dabei ist die Idee
+				einfach: Winzige Teilchen werden durch einen Draht geschoben. Hier siehst du sie, kannst sie
+				antreiben, bremsen und am Ende selbst Strom erzeugen.</p>
+			<ol class="v-toc">
+				<li><a href="#kreis">Der Stromkreis</a></li>
+				<li><a href="#ohm">Spannung und Widerstand</a></li>
+				<li><a href="#schaltung">Reihe oder parallel</a></li>
+				<li><a href="#generator">Strom erzeugen</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Stromkreis -->
+		<section class="chapter" id="kreis">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Grundlagen</span>
+				<h2>Der Stromkreis</h2>
+				<p>Jedes Metall ist voller <strong>Elektronen</strong>, die sich frei bewegen können. Ein Draht ist also
+					schon randvoll damit, bevor überhaupt Strom fließt. Eine Batterie bringt nichts Neues hinein. Sie
+					<strong>schiebt</strong> die Elektronen, die schon da sind, im Kreis herum: Am Minuspol drückt sie
+					welche hinaus, am Pluspol saugt sie gleich viele wieder an.</p>
+				<p>Deshalb braucht Strom einen geschlossenen <strong>Kreis</strong>. Öffnest du den Schalter, staut sich
+					alles, und alle Elektronen stehen auf einmal still.</p>
+				<div class="fact">
+					<b>Langsam und trotzdem sofort</b>
+					<p>Elektronen kriechen nur etwa 0,1 mm pro Sekunde durch ein Kabel, langsamer als eine Schnecke.
+						Trotzdem geht das Licht sofort an, weil sich alle gleichzeitig in Bewegung setzen, wie Wasser in
+						einem vollen Gartenschlauch. Schalte unten die Zeitlupe um und schau genau hin.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="circuitCanvas" aria-label="Stromkreis mit Batterie, Schalter und Lampe"></canvas>
+					<span class="stage-tag">Stromkreis</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSwitch" type="button" aria-pressed="false">Schalter schließen</button>
+					<button class="btn" id="btnReal" type="button" aria-pressed="false">Echte Geschwindigkeit</button>
+					<p class="stage-note" id="circuitNote">Der Kreis ist offen. Die Elektronen sind da, bewegen sich aber
+						nicht.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Ohm -->
+		<section class="chapter flip" id="ohm">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Das Ohmsche Gesetz</span>
+				<h2>Spannung und Widerstand</h2>
+				<p>Drei Größen beschreiben jeden Stromkreis. Am leichtesten versteht man sie mit Wasser:</p>
+				<div class="compare" role="table" aria-label="Vergleich Strom und Wasser">
+					<div class="h" role="columnheader"></div>
+					<div class="h" role="columnheader">Strom</div>
+					<div class="h" role="columnheader">Wasser</div>
+					<div class="h" role="rowheader">Spannung U</div>
+					<div role="cell">Wie stark die Batterie schiebt (Volt)</div>
+					<div role="cell">Wie hoch der Wassertank steht</div>
+					<div class="h" role="rowheader">Widerstand R</div>
+					<div role="cell">Wie schwer es der Draht macht (Ohm)</div>
+					<div role="cell">Wie eng das Rohr ist</div>
+					<div class="h" role="rowheader">Stromstärke I</div>
+					<div role="cell">Wie viel pro Sekunde fließt (Ampere)</div>
+					<div role="cell">Wie viel Wasser pro Sekunde fließt</div>
+				</div>
+				<div class="formula">I = U ÷ R
+					<small>Mehr Druck heißt mehr Fluss, ein engeres Rohr heißt weniger. Die Leistung, also wie hell
+						die Lampe leuchtet, ist P = U × I.</small>
+				</div>
+				<p>Schieb die Regler bis zum Anschlag: Zu viel Strom macht Drähte heiß, und genau davor schützt die
+					<strong>Sicherung</strong>. Sie ist ein absichtlich dünnes Stück Draht, das zuerst durchbrennt.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="ohmCanvas" aria-label="Wasser-Vergleich und Stromkreis nebeneinander"></canvas>
+					<span class="stage-tag">Wasser · Strom</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Spannung U</span><output id="uOut">6 V</output></span>
+						<input type="range" id="u" min="0" max="24" step="0.5" value="6" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Widerstand R</span><output id="rOut">12 Ω</output></span>
+						<input type="range" id="r" min="1" max="60" step="1" value="12" />
+					</label>
+					<div class="ohm">
+						<div><small>Strom I</small><strong id="iOut">0,50 A</strong></div>
+						<div><small>Leistung P</small><strong id="pOut">3,0 W</strong></div>
+						<div><small>Sicherung</small><strong id="fuseOut">ok</strong></div>
+					</div>
+					<button class="btn" id="btnFuse" type="button" hidden>Neue Sicherung einsetzen</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Schaltung -->
+		<section class="chapter" id="schaltung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Schaltungen</span>
+				<h2>Reihe oder parallel</h2>
+				<p>Zwei Lampen kann man auf zwei Arten anschließen:</p>
+				<ul>
+					<li><strong>In Reihe:</strong> Der Strom muss durch beide nacheinander. Sie teilen sich die
+						Spannung und leuchten schwächer. Fällt eine aus, ist der Kreis unterbrochen, und beide sind dunkel.
+						So funktionierten alte Lichterketten, bei denen eine kaputte Birne alles lahmlegte.</li>
+					<li><strong>Parallel:</strong> Jede Lampe hat ihren eigenen Weg. Beide bekommen die volle Spannung.
+						Fällt eine aus, leuchtet die andere weiter.</li>
+				</ul>
+				<p>Deshalb ist in deiner Wohnung alles parallel geschaltet: Der Kühlschrank läuft weiter, auch wenn du
+					das Licht ausmachst.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Strom fließt nur, wenn zwischen zwei Punkten eine Spannung liegt und der Kreis geschlossen ist. Beide Füße des Vogels sitzen auf demselben Draht mit derselben Spannung. Berührt er gleichzeitig einen zweiten Draht oder den Mast, wird es tödlich.">
+					<p class="quiz-q">Warum überlebt ein Vogel auf einer Hochspannungsleitung?</p>
+					<div class="quiz-options">
+						<button type="button">Federn sind ein perfekter Isolator</button>
+						<button type="button">Vögel sind zu leicht, um Strom zu leiten</button>
+						<button type="button">Er berührt nur einen Draht, also gibt es keinen Spannungsunterschied und keinen
+							Kreis durch seinen Körper</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="seriesCanvas" aria-label="Zwei Lampen in Reihe oder parallel"></canvas>
+					<span class="stage-tag" id="seriesTag">In Reihe</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnMode" type="button">Auf parallel umbauen</button>
+					<button class="btn" id="btnBulb" type="button" aria-pressed="true">Lampe 2 herausdrehen</button>
+					<p class="stage-note" id="seriesNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Generator -->
+		<section class="chapter flip" id="generator">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Induktion</span>
+				<h2>Strom erzeugen</h2>
+				<p>1831 entdeckte Michael Faraday etwas Verblüffendes: Bewegt man einen <strong>Magneten</strong> an
+					einer Drahtspule vorbei, fließt in der Spule Strom. Das heißt <strong>Induktion</strong>, und so wird
+					bis heute fast aller Strom erzeugt.</p>
+				<p>Dreh den Magneten mit dem Finger oder mit der Turbine. Achte auf die Kurve: Mal zeigt der Nordpol
+					zur Spule, mal der Südpol. Der Strom wechselt dabei ständig die Richtung. Das ist
+					<strong>Wechselstrom</strong>, und genau der kommt aus deiner Steckdose.</p>
+				<div class="fact">
+					<b>Ein Kraftwerk ist ein großer Dreh-Magnet</b>
+					<p>Kohle, Gas und Atom machen Dampf, Wasserkraft und Wind drücken direkt: Am Ende treiben alle eine
+						Turbine an, die einen Magneten in Spulen dreht. In Europa genau 50-mal pro Sekunde. Daher kommen
+						die 50 Hertz im Stromnetz. Nur Solarzellen funktionieren ganz ohne Drehung.</p>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Strom entsteht nur, wenn sich das Magnetfeld in der Spule ändert. Ein Magnet, der still daliegt, ändert nichts, egal wie stark er ist.">
+					<p class="quiz-q">Ein riesiger Magnet liegt ruhig in einer Spule. Wie viel Strom fließt?</p>
+					<div class="quiz-options">
+						<button type="button">Gar keiner</button>
+						<button type="button">Viel, weil der Magnet so stark ist</button>
+						<button type="button">Ein kleiner, gleichmäßiger Strom</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="genCanvas" aria-label="Generator: drehbarer Magnet zwischen zwei Spulen"></canvas>
+					<span class="stage-tag">Zum Drehen ziehen</span>
+					<span class="stage-readout" id="genReadout">0 Umdrehungen/s</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Turbine</span><output id="turbOut">aus</output></span>
+						<input type="range" id="turb" min="0" max="100" value="0" />
+					</label>
+					<p class="stage-note" id="genNote">Zieh den Magneten im Kreis herum.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Das war die Reihe. Zurück zu allen Experimenten:</p>
+		<a href="../">Newbobb Lab <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./strom.js"></script>
+</body>
+
+</html>

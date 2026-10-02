@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Telegraf und Telefon — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Telegraf und Telefon funktionieren: Elektromagnet, Morsecode, Mikrofon, Hörer und Digitalisierung." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #4fd6c0;
+			--accent-2: #d9a548;
+			--accent-ink: #04201b;
+		}
+
+		.morse-out {
+			width: 100%;
+			display: grid;
+			gap: 6px;
+		}
+
+		.morse-line {
+			display: flex;
+			align-items: baseline;
+			gap: 12px;
+			min-height: 2.2em;
+			padding: 10px 14px;
+			border-radius: 12px;
+			background: #0a0908;
+			border: 1px solid var(--line);
+			font-family: "JetBrains Mono", monospace;
+			overflow-x: auto;
+			white-space: nowrap;
+		}
+
+		.morse-line small {
+			flex: none;
+			font-family: "Space Grotesk", sans-serif;
+			font-size: 0.72rem;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: var(--faint);
+		}
+
+		#morseText {
+			font-size: 1.15rem;
+			color: var(--ink);
+			letter-spacing: 0.08em;
+		}
+
+		#morseCurrent {
+			font-size: 1.15rem;
+			color: var(--accent);
+		}
+
+		.key-big {
+			flex: 1 1 100%;
+			justify-content: center;
+			padding: 18px;
+			font-size: 1rem;
+			touch-action: none;
+		}
+
+		.key-big.is-down {
+			background: var(--accent);
+			color: var(--accent-ink);
+			border-color: var(--accent);
+		}
+
+		@media (pointer: coarse) {
+			.kbd-hint {
+				display: none;
+			}
+		}
+
+		.send-row {
+			width: 100%;
+			display: flex;
+			gap: 8px;
+		}
+
+		.send-row input {
+			flex: 1;
+			min-width: 0;
+			font: inherit;
+			font-size: 0.95rem;
+			color: var(--ink);
+			background: #0a0908;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			padding: 10px 16px;
+			text-transform: uppercase;
+		}
+
+		.send-row input:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		.morse-table {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+			gap: 6px;
+			margin-top: 14px;
+		}
+
+		.morse-table div {
+			display: flex;
+			justify-content: space-between;
+			gap: 6px;
+			padding: 6px 10px;
+			border-radius: 10px;
+			background: var(--panel);
+			border: 1px solid var(--line);
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.85rem;
+		}
+
+		.morse-table b {
+			color: var(--ink);
+		}
+
+		.morse-table span {
+			color: var(--accent);
+		}
+
+		.morse-table div.is-hit {
+			border-color: var(--accent);
+			background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+		}
+
+		.presets {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		#telefon .stage-note,
+		#digital .stage-note {
+			font-variant-numeric: tabular-nums;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/" aria-current="page">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 2</p>
+			<h1>Wie <em>Telegraf</em><br />und Telefon funktionieren</h1>
+			<p class="v-lede">Vor 1840 reiste eine Nachricht so schnell wie das schnellste Pferd. Dann merkte man: Strom
+				ist in Sekundenbruchteilen am anderen Ende eines Drahts, egal wie lang er ist. Man musste ihn nur
+				schalten und am anderen Ende etwas bewegen lassen.</p>
+			<ol class="v-toc">
+				<li><a href="#telegraf">Der Telegraf</a></li>
+				<li><a href="#morse">Morse selbst funken</a></li>
+				<li><a href="#telefon">Das Telefon</a></li>
+				<li><a href="#digital">Heute: alles digital</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 + 2 Telegraf und Morse -->
+		<section class="chapter" id="telegraf">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · 1837</span>
+				<h2>Der Telegraf</h2>
+				<p>Der Trick heißt <strong>Elektromagnet</strong>: Wickelt man Draht um ein Stück Eisen und schickt
+					Strom hindurch, wird das Eisen zum Magneten. Schaltet man ab, ist der Magnet sofort weg.</p>
+				<p>Ein Telegraf ist also nur ein sehr langer Stromkreis:</p>
+				<ol class="steps">
+					<li>In Berlin drückt jemand eine <strong>Taste</strong> und schließt damit den Stromkreis.</li>
+					<li>Der Strom fließt durch den Draht bis nach Hamburg.</li>
+					<li>Dort wird ein Elektromagnet aktiv und zieht einen Eisenhebel an. Klack!</li>
+					<li>Am Hebel sitzt ein Stift, der auf einen laufenden <strong>Papierstreifen</strong> drückt.</li>
+				</ol>
+				<p>Halte die Taste rechts gedrückt und beobachte, was in welcher Reihenfolge passiert.</p>
+				<div class="fact">
+					<b>Zwei Drähte? Einer reicht</b>
+					<p>Für den Rückweg des Stroms nutzte man einfach den Erdboden. Deshalb sieht man an alten
+						Telegrafenmasten oft nur einen einzelnen Draht pro Leitung.</p>
+				</div>
+			</div>
+			<div class="stage reveal" id="morse">
+				<div class="stage-view">
+					<canvas id="telCanvas" aria-label="Telegraf zwischen Berlin und Hamburg"></canvas>
+					<span class="stage-tag">Berlin → Hamburg · 290 km</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn key-big" id="btnKey" type="button">Taste gedrückt halten<span class="kbd-hint">&nbsp;(oder Leertaste)</span></button>
+					<div class="morse-out">
+						<div class="morse-line"><small>Empfangen</small><span id="morseText"></span><span
+								id="morseCurrent"></span></div>
+					</div>
+					<div class="send-row">
+						<input id="sendText" type="text" maxlength="40" value="SOS" aria-label="Text zum Morsen"
+							autocomplete="off" />
+						<button class="btn primary" id="btnSend" type="button">Morsen</button>
+					</div>
+					<button class="btn" id="btnSound" type="button" aria-pressed="true">Ton: Piepen</button>
+					<button class="btn" id="btnClear" type="button">Streifen leeren</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter wide">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Code</span>
+				<h2>Morse: Sprache aus kurz und lang</h2>
+				<p>Ein Draht kann nur zwei Zustände: Strom an oder aus. Samuel Morse und Alfred Vail brauchten also
+					einen Code, der alle Buchstaben aus <strong>kurzen und langen Signalen</strong> zusammensetzt. Ihr
+					Kniff: Häufige Buchstaben bekommen kurze Codes. E, der häufigste Buchstabe im Englischen, ist nur
+					ein einziger Punkt. Vail soll dafür in einer Druckerei gezählt haben, wie viele Lettern von jedem
+					Buchstaben im Setzkasten lagen.</p>
+				<p>Ein Strich ist dreimal so lang wie ein Punkt. Zwischen Buchstaben macht man eine Pause von drei
+					Punkten, zwischen Wörtern von sieben. Tippe oben mit der Taste, der Empfänger übersetzt live.</p>
+				<div class="morse-table" id="morseTable" aria-label="Morse-Alphabet"></div>
+				<div class="quiz" data-answer="0"
+					data-why="S ist ··· und O ist −−−. SOS wurde gewählt, weil es so leicht zu senden und zu erkennen ist, nicht weil es für etwas steht.">
+					<p class="quiz-q">Wie klingt SOS?</p>
+					<div class="quiz-options">
+						<button type="button">··· −−− ···</button>
+						<button type="button">−−− ··· −−−</button>
+						<button type="button">·−· ·−· ·−·</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Telefon -->
+		<section class="chapter flip" id="telefon">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · 1876</span>
+				<h2>Das Telefon</h2>
+				<p>Der Telegraf kennt nur an und aus. Für Sprache braucht man mehr: Der Strom muss genau so schwanken,
+					wie die Luft beim Sprechen schwingt. Das schafft man mit zwei Membranen und einem Elektromagneten.
+				</p>
+				<ol class="steps">
+					<li><strong>Mikrofon:</strong> Deine Stimme drückt eine dünne Membran vor und zurück. Dahinter
+						liegen Kohlekörnchen. Werden sie zusammengedrückt, leiten sie besser, und es fließt mehr Strom.
+					</li>
+					<li><strong>Leitung:</strong> Der Strom schwankt jetzt im Takt deiner Stimme, bis zu einigen
+						tausend Mal pro Sekunde.</li>
+					<li><strong>Hörer:</strong> Ein Elektromagnet zieht eine Eisenmembran mal stärker, mal schwächer
+						an. Sie bewegt die Luft genau so wie deine Stimme. Am anderen Ende hört man dich.</li>
+				</ol>
+				<p>Schau dir unten an, dass alle drei Kurven dieselbe Form haben. Das nennt man <strong>analog</strong>:
+					Der Strom ist ein Abbild des Schalls.</p>
+				<div class="fact">
+					<b>Warum Ferngespräche teuer waren</b>
+					<p>Je länger der Draht, desto schwächer und verrauschter das Signal. Erst mit Verstärkern
+						(ab 1913) waren Gespräche quer durch Amerika möglich. Dreh an der Leitungslänge und hör selbst.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="phoneCanvas" aria-label="Mikrofon, Leitung und Hörer mit Signalkurven"></canvas>
+					<span class="stage-tag">Telefon · Zeitlupe</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnVoice" type="button" aria-pressed="false">▶ Stimme senden</button>
+					<button class="btn" id="btnMic" type="button" aria-pressed="false">🎙 Eigenes Mikrofon</button>
+					<label class="range">
+						<span class="range-head"><span>Tonhöhe</span><output id="pitchOut">160 Hz</output></span>
+						<input type="range" id="pitch" min="80" max="400" value="160" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Leitungslänge</span><output id="lineOut">5 km</output></span>
+						<input type="range" id="line" min="1" max="100" value="5" />
+					</label>
+					<p class="stage-note" id="phoneNote">Tippe auf „Stimme senden“. Mit Kopfhörern hörst du das andere
+						Ende.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Digital -->
+		<section class="chapter" id="digital">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Heute</span>
+				<h2>Heute: alles digital</h2>
+				<p>Moderne Telefone schicken keine schwankenden Ströme mehr, sondern <strong>Zahlen</strong>. Das
+					Handy misst den Schall tausende Male pro Sekunde (die <strong>Abtastrate</strong>) und schreibt jede
+					Messung als Zahl auf. Wie fein diese Zahl sein darf, bestimmen die <strong>Bits</strong>.</p>
+				<p>Zahlen haben einen riesigen Vorteil: Rauschen macht aus einer 1 keine 2. Ein digitales Gespräch
+					klingt nach 10 000 km genauso wie nach 10 Metern. Und es ist im Grunde wieder Morse: nur noch an
+					und aus, aber Millionen Mal pro Sekunde.</p>
+				<h3>Spiel mit den Reglern</h3>
+				<ul>
+					<li>Wenig Abtastungen: Hohe Töne gehen verloren oder klingen falsch.</li>
+					<li>Wenig Bits: Die Treppenstufen werden grob, es rauscht und kratzt.</li>
+				</ul>
+				<div class="quiz" data-answer="1"
+					data-why="Der Mensch hört bis etwa 20 000 Hz. Nach dem Abtasttheorem braucht man mindestens doppelt so viele Messungen pro Sekunde, also gut 40 000. Daher die 44 100 Hz der CD.">
+					<p class="quiz-q">Warum misst eine CD 44 100-mal pro Sekunde?</p>
+					<div class="quiz-options">
+						<button type="button">Weil CDs sich 44 100-mal pro Minute drehen</button>
+						<button type="button">Um Töne bis 20 000 Hz sauber zu erfassen, braucht man mehr als doppelt so
+							viele Messungen</button>
+						<button type="button">Das ist zufällig so festgelegt worden</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="digCanvas" aria-label="Abtastung und Quantisierung eines Tons"></canvas>
+					<span class="stage-tag">5 Millisekunden Klang</span>
+				</div>
+				<div class="stage-controls">
+					<div class="presets">
+						<button class="btn" type="button" data-preset="8000,8">Telefon</button>
+						<button class="btn" type="button" data-preset="44100,16">CD</button>
+						<button class="btn" type="button" data-preset="3000,3">Kaputt</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Abtastrate</span><output id="rateOut">8.000 Hz</output></span>
+						<input type="range" id="rate" min="0" max="100" step="0.01" value="53.72" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Bits pro Messung</span><output id="bitsOut">8 Bit</output></span>
+						<input type="range" id="bits" min="1" max="16" value="8" />
+					</label>
+					<button class="btn primary" id="btnPlayDig" type="button">▶ Anhören</button>
+					<p class="stage-note" id="digNote"></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe</p>
+		<a href="../strom/">Wie Strom funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./telegraf.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Feuer funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Feuer funktioniert: Feuerdreieck, Kerzenflamme, Flammenfarben und die Kettenreaktion der Moleküle." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ffb04d;
+			--accent-2: #ff5a2a;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/" aria-current="page">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 1</p>
+			<h1>Wie <em>Feuer</em><br />funktioniert</h1>
+			<p class="v-lede">Feuer ist keine Sache, sondern ein Vorgang: eine chemische Reaktion, die sich selbst
+				am Laufen hält. Hier kannst du sie anzünden, ersticken, vermessen und bis auf die Moleküle
+				herunterzoomen.</p>
+			<ol class="v-toc">
+				<li><a href="#dreieck">Das Feuerdreieck</a></li>
+				<li><a href="#kerze">Was brennt da eigentlich?</a></li>
+				<li><a href="#farbe">Warum Feuer leuchtet</a></li>
+				<li><a href="#molekuele">Die Kettenreaktion</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Feuerdreieck -->
+		<section class="chapter" id="dreieck">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Grundlagen</span>
+				<h2>Das Feuerdreieck</h2>
+				<p>Ein Feuer braucht genau drei Dinge gleichzeitig: <strong>Brennstoff</strong>,
+					<strong>Sauerstoff</strong> und genug <strong>Wärme</strong>. Fehlt eine Seite des Dreiecks, geht
+					es aus.</p>
+				<p>Das Spannende ist die Wärme: Ein Feuer erzeugt sie selbst. Die Reaktion setzt Energie frei, die den
+					nächsten Brennstoff auf Zündtemperatur bringt. Deshalb reicht ein einziges Streichholz für ein
+					ganzes Lagerfeuer.</p>
+				<h3>Probier es aus</h3>
+				<ol class="steps">
+					<li>Zünde das Feuer mit dem <strong>Streichholz</strong>.</li>
+					<li>Nimm den <strong>Sauerstoff</strong> weg (Glasglocke drüber) und sofort wieder ab. Die Glut
+						ist noch heiß genug, das Feuer kommt von selbst zurück.</li>
+					<li>Kühle es mit <strong>Wasser</strong>. Jetzt ist die Glut zu kalt: Auch mit Sauerstoff und Holz
+						bleibt es aus, bis du wieder zündest.</li>
+				</ol>
+				<div class="fact">
+					<b>Feuerwehr-Wissen</b>
+					<p>Jedes Löschmittel greift eine Seite an: Wasser kühlt, Schaum und Löschdecken ersticken, und bei
+						Waldbränden schlägt man Schneisen, um den Brennstoff zu entziehen.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="fireCanvas" aria-label="Simulation eines Lagerfeuers"></canvas>
+					<span class="stage-tag">Lagerfeuer</span>
+					<span class="stage-readout" id="fireTemp">20 °C</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnMatch" type="button">🔥 Streichholz</button>
+					<button class="btn toggle" id="btnFuel" type="button" aria-pressed="true">Brennstoff</button>
+					<button class="btn toggle" id="btnOxygen" type="button" aria-pressed="true">Sauerstoff</button>
+					<button class="btn" id="btnWater" type="button" aria-pressed="false">💧 Wasser</button>
+					<p class="stage-note" id="fireNote">Noch zu kalt. Holz entzündet sich erst bei etwa 300 °C.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Kerze -->
+		<section class="chapter flip" id="kerze">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Die Kerze</span>
+				<h2>Was brennt da eigentlich?</h2>
+				<p>Überraschung: Festes Wachs brennt nicht, und Holz eigentlich auch nicht. Es brennen
+					<strong>Gase</strong>. Die Hitze der Flamme schmilzt das Wachs, der Docht saugt es nach oben wie ein
+					Schwamm, und dort verdampft es. Erst dieser Wachsdampf verbrennt mit dem Sauerstoff der Luft.</p>
+				<p>Beim Holz ist es ähnlich: Die Hitze zerlegt das Holz in brennbare Gase (das nennt man
+					<strong>Pyrolyse</strong>). Die Flammen, die du siehst, sind brennende Holzgase. Was übrig bleibt,
+					ist Holzkohle, die nur noch glüht.</p>
+				<h3>Fahr mit dem Finger durch die Flamme</h3>
+				<p>Die Flamme ist nicht überall gleich heiß. Innen ist sie am kühlsten, weil dort noch kaum Sauerstoff
+					ist. Außen, wo Gas und Luft sich mischen, ist sie am heißesten.</p>
+				<div class="fact">
+					<b>Der Trick mit dem Rauch</b>
+					<p>Puste die Kerze aus und halte sofort ein Streichholz in den weißen Rauch. Die Flamme springt
+						durch die Luft zurück auf den Docht. Der Rauch ist nämlich noch Wachsdampf, also Brennstoff.</p>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Der Docht ist nur die Pumpe. Brennen tut der Wachsdampf, der an seiner Spitze aus dem flüssigen Wachs aufsteigt.">
+					<p class="quiz-q">Was verbrennt bei einer Kerze?</p>
+					<div class="quiz-options">
+						<button type="button">Der Docht</button>
+						<button type="button">Das feste Wachs</button>
+						<button type="button">Verdampftes Wachs</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="candleCanvas" aria-label="Kerzenflamme mit Thermometer"></canvas>
+					<span class="stage-tag">Kerze · Thermometer</span>
+					<span class="stage-readout" id="candleTemp">Zeig auf die Flamme</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn" id="btnBlow" type="button">💨 Auspusten</button>
+					<button class="btn primary" id="btnSmoke" type="button" disabled>🔥 Streichholz in den Rauch</button>
+					<p class="stage-note" id="candleNote">Fahr mit Maus oder Finger über die Flamme.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Farbe -->
+		<section class="chapter" id="farbe">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Licht</span>
+				<h2>Warum Feuer leuchtet</h2>
+				<p>Das gelbe Leuchten einer Kerze kommt von winzigen <strong>Rußteilchen</strong>: Kohlenstoff, der noch
+					nicht verbrannt ist. In der Flamme werden sie über 1000 °C heiß und glühen, genau wie der Draht in
+					einer Glühbirne oder Eisen beim Schmied.</p>
+				<p>Bekommt die Flamme mehr Luft, verbrennt der Kohlenstoff vollständig, bevor er glühen kann. Der Ruß
+					verschwindet, die Flamme wird <strong>blau</strong>, kleiner und heißer. Das Blau kommt nicht vom
+					Glühen, sondern von angeregten Molekülen, die beim Reagieren Licht abgeben.</p>
+				<h3>Dreh am Luftventil</h3>
+				<p>Unten am Bunsenbrenner ist ein Ring, der Luft ins Gas mischt. Zu ist die Flamme gelb und rußt. Offen
+					rauscht sie blau. Darunter siehst du, welche Farbe etwas bei welcher Temperatur glüht.</p>
+				<div class="fact">
+					<b>Rot ist kälter als Blau</b>
+					<p>Sterne funktionieren genauso: Rote Sterne haben etwa 3000 °C an der Oberfläche, die Sonne gut
+						5500 °C, blauweiße Sterne über 10 000 °C.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="burnerCanvas" aria-label="Bunsenbrenner mit Luftventil"></canvas>
+					<span class="stage-tag">Bunsenbrenner</span>
+					<span class="stage-readout" id="burnerTemp">–</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Luftzufuhr</span><output id="airOut">20 %</output></span>
+						<input type="range" id="air" min="0" max="100" value="20" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Glühfarbe bei</span><output id="glowOut">1000 °C</output></span>
+						<input type="range" id="glow" min="400" max="2600" step="20" value="1000" />
+					</label>
+					<div class="glow-strip" aria-hidden="true">
+						<span id="glowSwatch"></span>
+						<p id="glowText">Orange: so glüht Ruß in einer Kerzenflamme.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Moleküle -->
+		<section class="chapter wide" id="molekuele">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Chemie</span>
+				<h2>Die Kettenreaktion</h2>
+				<p>Zoomen wir ganz nah ran. Erdgas besteht aus Methan-Molekülen (CH₄). Die Luft enthält Sauerstoff
+					(O₂). Beide fliegen ständig herum und stoßen zusammen, aber bei Zimmertemperatur passiert nichts:
+					Die Stöße sind zu sanft, um die Bindungen aufzubrechen.</p>
+				<p>Erst ein <strong>Funke</strong> macht ein paar Moleküle so schnell, dass ihre Stöße reichen. Sie
+					reagieren zu CO₂ und Wasser. Dabei wird Energie frei: Die neuen Moleküle fliegen noch schneller
+					davon, treffen die nächsten, und so weiter. Diese Welle ist die Flamme.</p>
+			</div>
+			<div class="formula reveal">CH₄ + 2 O₂ → CO₂ + 2 H₂O + Energie
+				<small>Methan und Sauerstoff werden zu Kohlendioxid und Wasser. Die Energie steckte in den Bindungen
+					und wird als Wärme und Licht frei.</small>
+			</div>
+			<div class="stage reveal">
+				<div class="stage-view">
+					<canvas id="molCanvas" aria-label="Molekül-Simulation: Tippe für einen Funken"></canvas>
+					<span class="stage-tag">Tippe ins Feld für einen Funken</span>
+					<span class="stage-readout" id="molReadout">–</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSpark" type="button">⚡ Funke</button>
+					<button class="btn" id="btnMix" type="button">Neu mischen</button>
+					<label class="range">
+						<span class="range-head"><span>Anteil Gas in der Luft</span><output id="mixOut">33 %</output></span>
+						<input type="range" id="mix" min="5" max="80" value="33" />
+					</label>
+					<div class="legend" aria-hidden="true">
+						<span><i class="m-ch4"></i>CH₄ Methan</span>
+						<span><i class="m-o2"></i>O₂ Sauerstoff</span>
+						<span><i class="m-co2"></i>CO₂</span>
+						<span><i class="m-h2o"></i>H₂O</span>
+					</div>
+					<p class="stage-note" id="molNote">Alles kalt. Die Moleküle prallen nur voneinander ab.</p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<h3>Experiment: das richtige Mischverhältnis</h3>
+				<p>Stell den Gasanteil sehr niedrig oder sehr hoch, misch neu und zünde. Bei zu wenig Gas findet die
+					Reaktion keinen nächsten Partner, bei zu viel fehlt der Sauerstoff. Deshalb explodiert Erdgas nur
+					zwischen etwa 4 und 17 % in der Luft. In dieser Simulation ist das Fenster der Anschaulichkeit
+					halber breiter.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Wasser sinkt unter das über 300 °C heiße Fett, verdampft schlagartig zum 1700-fachen Volumen und reißt brennendes Fett als Feuerball mit. Fettbrände erstickt man mit einem Deckel.">
+					<p class="quiz-q">Warum darf man brennendes Fett nie mit Wasser löschen?</p>
+					<div class="quiz-options">
+						<button type="button">Wasser ist selbst brennbar</button>
+						<button type="button">Das Wasser verdampft explosionsartig und schleudert brennendes Fett
+							heraus</button>
+						<button type="button">Fett und Wasser reagieren chemisch zu Gas</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe</p>
+		<a href="../telegraf/">Telegraf &amp; Telefon <span>→</span></a>
+	</footer>
+
+	<style>
+		.glow-strip {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.glow-strip span {
+			flex: none;
+			width: 48px;
+			height: 48px;
+			border-radius: 12px;
+			box-shadow: 0 0 24px currentColor;
+		}
+
+		.glow-strip p {
+			margin: 0;
+			font-size: 0.86rem;
+			color: var(--muted);
+		}
+
+		.legend {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px 16px;
+			font-size: 0.8rem;
+			color: var(--muted);
+		}
+
+		.legend span {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.legend i {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+		}
+
+		.m-ch4 {
+			background: #ffb04d;
+		}
+
+		.m-o2 {
+			background: #5fa8ff;
+		}
+
+		.m-co2 {
+			background: #8a8a8a;
+		}
+
+		.m-h2o {
+			background: #e8f3ff;
+		}
+
+		#candleTemp {
+			top: auto;
+			bottom: 10px;
+			left: 12px;
+			right: 12px;
+			text-align: left;
+		}
+
+		#molekuele .formula,
+		#molekuele .stage {
+			max-width: 100%;
+		}
+	</style>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./feuer.js"></script>
+</body>
+
+</html>
