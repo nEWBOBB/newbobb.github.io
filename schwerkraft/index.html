@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Schwerkraft funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Schwerkraft funktioniert: freier Fall mit und ohne Luft, Würfe treffen, Newtons Kanonenkugel in die Umlaufbahn schießen, auf anderen Planeten springen und ein eigenes Sonnensystem bauen." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #8fd3ff;
+			--accent-2: #b78bff;
+			--accent-ink: #061826;
+		}
+
+		#throwCanvas,
+		#sandCanvas {
+			touch-action: none;
+			cursor: crosshair;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.score {
+			display: inline-flex;
+			gap: 6px;
+			align-items: baseline;
+			font-size: 0.86rem;
+			color: var(--muted);
+		}
+
+		.score strong {
+			color: var(--ink);
+			font-variant-numeric: tabular-nums;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
+			<a href="../schwerkraft/" aria-current="page">Schwerkraft</a>
+			<a href="../energie/">Energie</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../atom/">Atome</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 9</p>
+			<h1>Wie <em>Schwerkraft</em><br />funktioniert</h1>
+			<p class="v-lede">Ein Apfel fällt vom Baum, und der Mond fällt nicht auf die Erde. Dabei zieht an beiden
+				genau dieselbe Kraft. Wirf Kugeln, schieß eine Kanone in die Umlaufbahn und bau dir dein eigenes
+				Sonnensystem.</p>
+			<ol class="v-toc">
+				<li><a href="#fall">Alles fällt gleich schnell</a></li>
+				<li><a href="#wurf">Der Wurf</a></li>
+				<li><a href="#kanone">Newtons Kanone</a></li>
+				<li><a href="#planeten">Springen auf dem Mond</a></li>
+				<li><a href="#sandkasten">Dein Sonnensystem</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Fall -->
+		<section class="chapter" id="fall">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Freier Fall</span>
+				<h2>Alles fällt gleich schnell</h2>
+				<p>Lass eine Feder und eine Kugel gleichzeitig los. Die Kugel ist natürlich zuerst unten. Fast 2000
+					Jahre lang glaubten deshalb alle: <strong>Schwere Dinge fallen schneller.</strong></p>
+				<p>Galileo Galilei zweifelte daran. Er vermutete, dass nur die <strong>Luft</strong> die Feder bremst.
+					Nimmt man die Luft weg, fallen Feder und Kugel exakt gleich schnell. 1971 hat der Astronaut David
+					Scott das auf dem Mond ausprobiert, wo es keine Luft gibt. Galilei hatte recht.</p>
+				<p>Und noch etwas siehst du an den Blitzlicht-Spuren: Der Abstand zwischen den Bildern wird
+					<strong>immer größer</strong>. Ein fallender Gegenstand wird jede Sekunde um 9,81 Meter pro Sekunde
+					schneller.</p>
+				<p class="merke"><b>Merke</b>Ohne Luft fallen alle Dinge gleich schnell, egal wie schwer sie sind. Die
+					Schwerkraft beschleunigt sie, sie werden beim Fallen ständig schneller.</p>
+				<div class="formula">Fallstrecke = ½ · g · t²
+					<small>g = 9,81 m/s² auf der Erde. Nach 1 Sekunde bist du 4,9 m gefallen, nach 2 Sekunden schon 19,6
+						m, viermal so weit.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Lass Feder und Kugel fallen. Dann pump die Luft ab und versuch es nochmal.</p>
+				<div class="stage-view">
+					<canvas id="fallCanvas" aria-label="Fallrohr mit Feder und Kugel"></canvas>
+					<span class="stage-tag" id="fallTag">Mit Luft</span>
+					<span class="stage-readout" id="fallOut">0,00 s</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnDrop" type="button">⬇ Fallen lassen</button>
+					<button class="btn" id="btnAir" type="button" aria-pressed="false">💨 Luft abpumpen</button>
+					<button class="btn" id="btnStrobe" type="button" aria-pressed="true">📸 Blitzlicht-Spuren</button>
+					<p class="stage-note" id="fallNote">Mit Luft wird die Feder stark gebremst.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Wurf -->
+		<section class="chapter flip" id="wurf">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Wurfbahn</span>
+				<h2>Der Wurf</h2>
+				<p>Wirfst du einen Ball, fliegt er in einem schönen Bogen. Das Geheimnis dieses Bogens: Er besteht aus
+					<strong>zwei Bewegungen, die sich nicht stören</strong>.</p>
+				<ul>
+					<li><strong>Waagerecht</strong> fliegt der Ball einfach gleichmäßig weiter (blaue Pfeile bleiben
+						gleich lang).</li>
+					<li><strong>Senkrecht</strong> zieht die Schwerkraft ihn nach unten. Erst wird er beim Steigen
+						langsamer, dann beim Fallen schneller (lila Pfeile).</li>
+				</ul>
+				<p>Zusammen ergibt das eine <strong>Parabel</strong>. Ohne Luftwiderstand fliegt ein Wurf unter 45° am
+					weitesten.</p>
+				<p class="merke"><b>Merke</b>Ein Wurf ist eine gleichmäßige Bewegung nach vorn plus ein freier Fall nach
+					unten. Zusammen ergibt das die Wurfparabel.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Triff die Zielscheibe! Stell Winkel und Tempo ein oder ziehe direkt vom Werfer aus.</p>
+				<div class="stage-view">
+					<canvas id="throwCanvas" aria-label="Wurfbahn mit Zielscheibe"></canvas>
+					<span class="stage-tag">Wurfparabel</span>
+					<span class="stage-readout" id="throwOut">Weite –</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Winkel</span><output id="angOut">45°</output></span>
+						<input type="range" id="ang" min="5" max="85" value="45" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="spdOut">20 m/s</output></span>
+						<input type="range" id="spd" min="5" max="32" value="20" />
+					</label>
+					<button class="btn primary" id="btnThrow" type="button">🎯 Werfen</button>
+					<button class="btn" id="btnVec" type="button" aria-pressed="true">↗ Pfeile</button>
+					<span class="score">Treffer <strong id="hits">0</strong> von <strong id="tries">0</strong></span>
+					<p class="stage-note" id="throwNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Kanone -->
+		<section class="chapter" id="kanone">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Umlaufbahn</span>
+				<h2>Newtons Kanone</h2>
+				<p>Isaac Newton stellte sich vor: Auf einem riesigen Berg steht eine Kanone. Je schneller die Kugel
+					fliegt, desto weiter kommt sie, bevor sie auf den Boden fällt.</p>
+				<p>Aber die Erde ist rund! Schießt man schnell genug, krümmt sich der Boden unter der Kugel genauso
+					schnell weg, wie sie fällt. Sie <strong>fällt dann ewig, ohne je anzukommen</strong>. Das ist eine
+					Umlaufbahn.</p>
+				<p>Genau so fliegen die Raumstation ISS und der Mond: Sie fallen ständig um die Erde herum. Die
+					Astronauten in der ISS schweben nicht, weil dort keine Schwerkraft ist, sondern weil sie mitsamt der
+					Station fallen.</p>
+				<p class="merke"><b>Merke</b>Eine Umlaufbahn ist ein Fall, der nie endet. Dafür braucht man in
+					Erdnähe etwa 7,9 km pro Sekunde, das sind 28 000 km/h.</p>
+				<div class="fact">
+					<b>Und noch schneller?</b>
+					<p>Ab 11,2 km/s ist man so schnell, dass die Erde einen nicht mehr zurückholen kann. Das ist die
+						Fluchtgeschwindigkeit, mit der Raumsonden zu anderen Planeten fliegen.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Erhöhe das Tempo Schritt für Schritt. Bei welcher Geschwindigkeit fällt die Kugel nie
+					mehr herunter?</p>
+				<div class="stage-view">
+					<canvas id="cannonCanvas" aria-label="Kanone auf einem Berg der Erde"></canvas>
+					<span class="stage-tag">Gedankenexperiment</span>
+					<span class="stage-readout" id="cannonOut">4,0 km/s</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Mündungsgeschwindigkeit</span><output id="vOut">4,0 km/s</output></span>
+						<input type="range" id="vCannon" min="20" max="120" value="40" />
+					</label>
+					<button class="btn primary" id="btnFire" type="button">💥 Feuer</button>
+					<button class="btn" id="btnClearOrbit" type="button">Spuren löschen</button>
+					<p class="stage-note" id="cannonNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Planeten -->
+		<section class="chapter flip" id="planeten">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Masse und Gewicht</span>
+				<h2>Springen auf dem Mond</h2>
+				<p>Schwerkraft gibt es nicht nur auf der Erde. <strong>Alles, was Masse hat, zieht alles andere
+						an.</strong> Auch du ziehst an der Erde, nur merkt sie davon nichts. Je mehr Masse ein Planet hat,
+					desto stärker zieht er.</p>
+				<p>Deshalb musst du zwei Dinge unterscheiden: Deine <strong>Masse</strong> (wie viel von dir da ist) ist
+					überall gleich. Dein <strong>Gewicht</strong> (wie stark der Planet an dir zieht) ändert sich. Auf dem
+					Mond wiegst du nur ein Sechstel, und springst sechsmal so hoch.</p>
+				<p class="merke"><b>Merke</b>Masse bleibt gleich, Gewicht hängt vom Planeten ab. Auf dem Mond ist die
+					Schwerkraft sechsmal schwächer als auf der Erde.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle einen Himmelskörper und lass das Männchen springen. Stell auch deine eigene Masse
+					ein.</p>
+				<div class="stage-view">
+					<canvas id="jumpCanvas" aria-label="Figur springt auf verschiedenen Planeten"></canvas>
+					<span class="stage-tag" id="jumpTag">Erde</span>
+					<span class="stage-readout" id="jumpOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="worlds"></div>
+					<label class="range">
+						<span class="range-head"><span>Deine Masse</span><output id="massOut">40 kg</output></span>
+						<input type="range" id="mass" min="15" max="120" value="40" />
+					</label>
+					<button class="btn primary" id="btnJump" type="button">⤒ Springen</button>
+					<p class="stage-note" id="jumpNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Sandkasten -->
+		<section class="chapter wide" id="sandkasten">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Gravitation</span>
+				<h2>Bau dein Sonnensystem</h2>
+				<p>Newton erkannte: Dieselbe Kraft, die den Apfel fallen lässt, hält den Mond auf seiner Bahn und die
+					Erde um die Sonne. Die Kraft wird schwächer, je weiter man entfernt ist: <strong>doppelter Abstand,
+						nur noch ein Viertel der Kraft</strong>. Planeten nahe an der Sonne flitzen deshalb schnell, ferne
+					schleichen langsam.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Ziehe im Bild, um einen Planeten mit Schwung loszuschicken. Die Länge des Zugs bestimmt
+					das Tempo. Schaffst du eine runde Bahn?</p>
+				<div class="stage-view">
+					<canvas id="sandCanvas" aria-label="Gravitations-Sandkasten mit Sonne und Planeten"></canvas>
+					<span class="stage-tag">Sandkasten</span>
+					<span class="stage-readout" id="sandOut">0 Planeten</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn" id="btnSun2" type="button" aria-pressed="false">☀☀ Doppelstern</button>
+					<button class="btn" id="btnPreset" type="button">🪐 Mini-Sonnensystem</button>
+					<button class="btn" id="btnClearSand" type="button">Alles löschen</button>
+					<label class="range">
+						<span class="range-head"><span>Masse der Sonne</span><output id="sunOut">100 %</output></span>
+						<input type="range" id="sunMass" min="20" max="250" value="100" />
+					</label>
+					<p class="stage-note" id="sandNote">Tipp: Zieh ungefähr quer zur Richtung der Sonne, dann entsteht
+						eine Umlaufbahn statt eines Absturzes.</p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Alles zieht alles an. Die Kraft wächst mit der Masse und nimmt mit dem
+					Quadrat des Abstands ab. Daraus entstehen Ellipsen-Bahnen, Monde, Kometen und ganze Galaxien.</p>
+				<div class="quiz" data-answer="2"
+					data-why="In der ISS gibt es fast so viel Schwerkraft wie am Boden (rund 90 %). Die Astronauten schweben, weil sie zusammen mit der Station ständig um die Erde herumfallen.">
+					<p class="quiz-q">Warum schweben Astronauten in der Raumstation ISS?</p>
+					<div class="quiz-options">
+						<button type="button">Im Weltall gibt es keine Schwerkraft.</button>
+						<button type="button">Die ISS ist zu weit weg, die Erde zieht dort nicht mehr.</button>
+						<button type="button">Sie fallen zusammen mit der Station ständig um die Erde herum.</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe:</p>
+		<a href="../energie/">Wie Energie funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./schwerkraft.js"></script>
+</body>
+
+</html>

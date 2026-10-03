@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Energie funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Energie funktioniert: ein Pendel, eine selbst gebaute Achterbahn, der Hebel, ein Wasserkraftwerk und wie hoch dich ein Gummibärchen bringt." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #c6f16b;
+			--accent-2: #ffcf5a;
+			--accent-ink: #182405;
+		}
+
+		#pendCanvas,
+		#coasterCanvas,
+		#leverCanvas {
+			touch-action: none;
+			cursor: grab;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.legend {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px 14px;
+			width: 100%;
+			font-size: 0.8rem;
+			color: var(--muted);
+		}
+
+		.legend i {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-radius: 3px;
+			margin-right: 6px;
+			vertical-align: -1px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../energie/" aria-current="page">Energie</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../atom/">Atome</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 10</p>
+			<h1>Wie <em>Energie</em><br />funktioniert</h1>
+			<p class="v-lede">Energie steckt in einem hochgehobenen Stein, in einem rollenden Wagen, in Wasser hinter
+				einer Staumauer und in jedem Gummibärchen. Sie geht nie verloren, sie wechselt nur ihre Form. Bau eine
+				Achterbahn und finde heraus, was das bedeutet.</p>
+			<ol class="v-toc">
+				<li><a href="#pendel">Energie wechselt die Form</a></li>
+				<li><a href="#achterbahn">Bau eine Achterbahn</a></li>
+				<li><a href="#hebel">Kraft sparen, Weg bezahlen</a></li>
+				<li><a href="#wasser">Strom aus Wasser</a></li>
+				<li><a href="#essen">Energie im Essen</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Pendel -->
+		<section class="chapter" id="pendel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Energieerhaltung</span>
+				<h2>Energie wechselt die Form</h2>
+				<p>Zieh ein Pendel zur Seite und heb es dabei an. Jetzt steckt in ihm <strong>Lageenergie</strong>: Es
+					ist oben und kann herunterfallen.</p>
+				<p>Lässt du los, saust es nach unten. Die Lageenergie verwandelt sich in
+					<strong>Bewegungsenergie</strong>. Ganz unten ist es am schnellsten. Auf der anderen Seite steigt es
+					wieder, wird langsamer, und die Bewegung wird wieder zu Lageenergie.</p>
+				<p>Schau auf die Balken: Die Summe bleibt immer gleich. Nur mit Reibung wird nach und nach ein Teil zu
+					<strong>Wärme</strong>, und das Pendel kommt zur Ruhe. Weg ist die Energie aber nicht.</p>
+				<p class="merke"><b>Merke</b>Energie kann nicht entstehen und nicht verschwinden. Sie wird nur von einer
+					Form in eine andere umgewandelt. Das ist der Energieerhaltungssatz.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Pendelkugel zur Seite und lass los. Beobachte die drei Balken.</p>
+				<div class="stage-view">
+					<canvas id="pendCanvas" aria-label="Pendel mit Energiebalken"></canvas>
+					<span class="stage-tag">Pendel</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Reibung</span><output id="fricOut">wenig</output></span>
+						<input type="range" id="fric" min="0" max="100" value="12" />
+					</label>
+					<button class="btn" id="btnPendReset" type="button">↺ Neu anstoßen</button>
+					<div class="legend">
+						<span><i style="background:#6bb8ff"></i>Lageenergie</span>
+						<span><i style="background:#c6f16b"></i>Bewegungsenergie</span>
+						<span><i style="background:#ff7a59"></i>Wärme</span>
+					</div>
+					<p class="stage-note" id="pendNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Achterbahn -->
+		<section class="chapter wide" id="achterbahn">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Lage und Bewegung</span>
+				<h2>Bau eine Achterbahn</h2>
+				<p>Eine Achterbahn hat keinen Motor, der sie über die Hügel schiebt. Nur am Anfang wird der Wagen
+					einmal ganz nach oben gezogen. Von da an lebt er allein von dieser <strong>Lageenergie</strong>.</p>
+				<p>Daraus folgt eine einfache, strenge Regel: <strong>Kein Hügel darf höher sein als der Start.</strong>
+					Die gestrichelte Linie zeigt diese Grenze. Mit Reibung wird es sogar noch knapper, denn bei jeder
+					Fahrt geht ein Teil der Energie als Wärme an Schienen und Luft.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die gelben Punkte, um die Strecke zu formen. Dann starte den Wagen. Schafft er es bis
+					ins Ziel?</p>
+				<div class="stage-view">
+					<canvas id="coasterCanvas" aria-label="Achterbahn-Baukasten"></canvas>
+					<span class="stage-tag">Achterbahn-Baukasten</span>
+					<span class="stage-readout" id="coasterOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnRide" type="button">▶ Losfahren</button>
+					<button class="btn" id="btnCoastFric" type="button" aria-pressed="true">🔥 Reibung</button>
+					<button class="btn" id="btnCoastReset" type="button">↺ Strecke zurücksetzen</button>
+					<button class="btn" id="btnCoastRandom" type="button">🎲 Zufallsstrecke</button>
+					<div class="legend">
+						<span><i style="background:#6bb8ff"></i>Lageenergie</span>
+						<span><i style="background:#c6f16b"></i>Bewegungsenergie</span>
+						<span><i style="background:#ff7a59"></i>Wärme durch Reibung</span>
+					</div>
+					<p class="stage-note" id="coasterNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Bergab wird Lageenergie zu Bewegungsenergie, bergauf umgekehrt. Höher als
+					der Start kommt der Wagen nie, denn dafür bräuchte er mehr Energie, als er hat.</p>
+			</div>
+		</section>
+
+		<!-- 3 Hebel -->
+		<section class="chapter" id="hebel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Hebel</span>
+				<h2>Kraft sparen, Weg bezahlen</h2>
+				<p>„Gebt mir einen festen Punkt, und ich hebe die Welt aus den Angeln“, soll Archimedes gesagt haben. Er
+					meinte den <strong>Hebel</strong>.</p>
+				<p>Auf einer Wippe kann ein leichtes Kind ein schweres anheben, wenn es weiter außen sitzt. Es gilt:
+					<strong>Gewicht mal Abstand</strong> muss auf beiden Seiten gleich sein.</p>
+				<p>Aber Energie bekommt man nicht geschenkt. Wer weiter außen sitzt, muss einen <strong>längeren
+						Weg</strong> zurücklegen. Halbe Kraft heißt doppelter Weg. Am Ende ist die Arbeit, Kraft mal Weg,
+					auf beiden Seiten genau gleich.</p>
+				<div class="formula">Gewicht links × Abstand links = Gewicht rechts × Abstand rechts</div>
+				<p class="merke"><b>Merke</b>Hebel, Flaschenzug und Gangschaltung sparen Kraft, aber nie Energie. Was du
+					an Kraft sparst, musst du an Weg drauflegen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle, was links auf der Wippe sitzt. Dann zieh das Kind rechts so weit nach außen, bis die Wippe
+					im Gleichgewicht ist.</p>
+				<div class="stage-view">
+					<canvas id="leverCanvas" aria-label="Wippe mit Last und Kind"></canvas>
+					<span class="stage-tag">Wippe</span>
+					<span class="stage-readout" id="leverOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="leverLoads"></div>
+					<p class="stage-note" id="leverNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Wasserkraft -->
+		<section class="chapter flip" id="wasser">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Kraftwerk</span>
+				<h2>Strom aus Wasser</h2>
+				<p>Hinter einer Staumauer liegt ein riesiger Vorrat an Lageenergie: Millionen Tonnen Wasser, die nach
+					unten wollen. Lässt man sie durch ein Rohr hinabstürzen, treiben sie eine <strong>Turbine</strong>
+					an, die einen Generator dreht. So wird Lageenergie zu Strom.</p>
+				<p>Wie viel Strom herauskommt, hängt von genau zwei Dingen ab: <strong>wie tief</strong> das Wasser
+					fällt und <strong>wie viel</strong> Wasser pro Sekunde durchfließt.</p>
+				<div class="formula">Leistung = Wassermenge × g × Fallhöhe
+					<small>1 Kubikmeter Wasser, der 100 Meter tief fällt, liefert fast 1 Million Joule, genug, um einen
+						Wasserkocher acht Minuten laufen zu lassen.</small>
+				</div>
+				<p class="merke"><b>Merke</b>Doppelte Fallhöhe oder doppelte Wassermenge ergibt doppelt so viel Strom.
+					Ein Kraftwerk erzeugt keine Energie, es wandelt sie nur um.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Stell Fallhöhe und Wassermenge ein. Wie viele Häuser kannst du mit Strom versorgen?</p>
+				<div class="stage-view">
+					<canvas id="damCanvas" aria-label="Wasserkraftwerk mit Häusern"></canvas>
+					<span class="stage-tag">Wasserkraftwerk</span>
+					<span class="stage-readout" id="damOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Fallhöhe</span><output id="headOut">60 m</output></span>
+						<input type="range" id="head" min="5" max="120" value="60" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Wasser pro Sekunde</span><output id="flowOut">4 m³</output></span>
+						<input type="range" id="flow" min="0" max="10" step="0.5" value="4" />
+					</label>
+					<p class="stage-note" id="damNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Essen -->
+		<section class="chapter wide" id="essen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Energie im Alltag</span>
+				<h2>Wie hoch bringt dich ein Gummibärchen?</h2>
+				<p>Auch dein Körper ist eine Energie-Umwandlungsmaschine. Essen enthält chemische Energie, gemessen in
+					Kilokalorien oder Kilojoule. Dein Körper wandelt etwa ein Viertel davon in Bewegung um, der Rest wird
+					Wärme. Darum wird dir beim Sport warm.</p>
+				<p>Aber wie viel ist eine Kalorie eigentlich? Rechnen wir es in etwas Anschauliches um: <strong>Wie viele
+						Stockwerke kannst du mit einem Snack hochsteigen?</strong></p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle einen Snack und stell dein Gewicht ein. Dann sieh zu, wie weit du kommst.</p>
+				<div class="stage-view">
+					<canvas id="foodCanvas" aria-label="Figur steigt in einem Hochhaus nach oben"></canvas>
+					<span class="stage-tag" id="foodTag">Gummibärchen</span>
+					<span class="stage-readout" id="foodOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="foods"></div>
+					<label class="range">
+						<span class="range-head"><span>Dein Gewicht</span><output id="bodyOut">40 kg</output></span>
+						<input type="range" id="body" min="15" max="110" value="40" />
+					</label>
+					<p class="stage-note" id="foodNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Essen ist gespeicherte Energie. Ein einziges Gummibärchen hebt dich ein
+					ganzes Haus hoch, eine Pizza auf einen Berg. Energie ist überall und wechselt ständig die Form.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Die Lageenergie am Start ist alles, was der Wagen hat. Für einen höheren Hügel bräuchte er mehr Energie, als in ihm steckt. Mit Reibung reicht es sogar nur für deutlich weniger.">
+					<p class="quiz-q">Eine Achterbahn startet auf 40 m Höhe, ohne Motor. Wie hoch darf der nächste Hügel
+						höchstens sein?</p>
+					<div class="quiz-options">
+						<button type="button">Weniger als 40 m</button>
+						<button type="button">Bis 60 m, wenn der Wagen vorher schnell genug ist</button>
+						<button type="button">Egal, Hauptsache die Abfahrt ist steil genug</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe:</p>
+		<a href="../auftrieb/">Warum Dinge schwimmen <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./energie.js"></script>
+</body>
+
+</html>

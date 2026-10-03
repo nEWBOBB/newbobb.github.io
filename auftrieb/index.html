@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Warum Dinge schwimmen — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, warum Dinge schwimmen: Wasserdruck, das Prinzip des Archimedes, warum Stahlschiffe nicht untergehen, ein U-Boot steuern und mit Ballons abheben." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #4ee6c9;
+			--accent-2: #3f8cff;
+			--accent-ink: #032019;
+		}
+
+		#pressCanvas,
+		#tankCanvas {
+			touch-action: none;
+			cursor: grab;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.score {
+			font-size: 0.86rem;
+			color: var(--muted);
+		}
+
+		.score strong {
+			color: var(--ink);
+			font-variant-numeric: tabular-nums;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../energie/">Energie</a>
+			<a href="../auftrieb/" aria-current="page">Schwimmen</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../atom/">Atome</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 11</p>
+			<h1>Warum Dinge<br /><em>schwimmen</em></h1>
+			<p class="v-lede">Ein Kreuzfahrtschiff aus 100 000 Tonnen Stahl schwimmt, ein kleiner Kieselstein geht
+				sofort unter. Wie kann das sein? Wirf Dinge ins Wasser, bau ein Schiff, steuere ein U-Boot und heb mit
+				Luftballons ab.</p>
+			<ol class="v-toc">
+				<li><a href="#druck">Wasser drückt</a></li>
+				<li><a href="#archimedes">Der Trick des Archimedes</a></li>
+				<li><a href="#schiff">Warum Stahlschiffe schwimmen</a></li>
+				<li><a href="#uboot">Das U-Boot</a></li>
+				<li><a href="#ballon">Schwimmen in Luft</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Druck -->
+		<section class="chapter" id="druck">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Wasserdruck</span>
+				<h2>Wasser drückt</h2>
+				<p>Tauchst du im Schwimmbad tief, merkst du es in den Ohren: Das Wasser drückt. Und zwar umso stärker,
+					je tiefer du kommst. Kein Wunder, denn über dir liegt das <strong>Gewicht des ganzen Wassers</strong>
+					darüber.</p>
+				<p>Alle 10 Meter Wassertiefe kommt so viel Druck dazu, wie die gesamte Luft der Erdatmosphäre auf uns
+					ausübt: <strong>1 bar</strong>. Am tiefsten Punkt des Ozeans, 11 km unten, sind es über 1000 bar. Das
+					ist, als würde ein Elefant auf deinem Daumennagel stehen.</p>
+				<p>Und: Wasser drückt <strong>in alle Richtungen</strong> gleich, auch zur Seite und nach oben. Das
+					siehst du an den Löchern in der Flasche.</p>
+				<p class="merke"><b>Merke</b>Je tiefer, desto größer der Wasserdruck. Alle 10 m Tiefe kommt 1 bar
+					dazu.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den Taucher nach unten und beobachte den Druck. Achte auch auf die drei Wasserstrahlen
+					rechts.</p>
+				<div class="stage-view">
+					<canvas id="pressCanvas" aria-label="Wassertank mit Taucher und Flasche mit Löchern"></canvas>
+					<span class="stage-tag">Wassersäule</span>
+					<span class="stage-readout" id="pressOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnHoles" type="button" aria-pressed="false">💧 Löcher öffnen</button>
+					<button class="btn" id="btnRefill" type="button">↺ Flasche auffüllen</button>
+					<p class="stage-note" id="pressNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Archimedes -->
+		<section class="chapter wide" id="archimedes">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Auftrieb</span>
+				<h2>Der Trick des Archimedes</h2>
+				<p>Vor über 2000 Jahren stieg der griechische Gelehrte Archimedes in seine volle Badewanne, und das
+					Wasser lief über. Dabei soll ihm eine Idee gekommen sein, die so wichtig war, dass er „Heureka!“
+					(„Ich hab’s!“) rufend durch die Stadt lief:</p>
+				<p><strong>Jeder Gegenstand im Wasser wird mit genau der Kraft nach oben gedrückt, die das Gewicht des
+						verdrängten Wassers hat.</strong> Das ist der Auftrieb. Ist der Gegenstand leichter als die gleiche
+					Menge Wasser, schwimmt er. Ist er schwerer, sinkt er.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Dinge ins Becken. Der rote Pfeil ist das Gewicht, der blaue der Auftrieb. Schaffst
+					du es, das Ei schwimmen zu lassen?</p>
+				<div class="stage-view">
+					<canvas id="tankCanvas" aria-label="Wasserbecken mit verschiedenen Gegenständen"></canvas>
+					<span class="stage-tag" id="tankTag">Süßwasser</span>
+					<span class="stage-readout" id="tankOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn" id="btnSalt" type="button" aria-pressed="false">🧂 Salz ins Wasser</button>
+					<button class="btn" id="btnTankReset" type="button">↺ Alles raus</button>
+					<p class="stage-note" id="tankNote">Alle Würfel sind gleich groß. Sie unterscheiden sich nur darin, wie
+						viel Masse in ihnen steckt, ihrer Dichte.</p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Leichter als Wasser (bei gleicher Größe) schwimmt, schwerer sinkt. Was
+					schwimmt, taucht genau so weit ein, bis das verdrängte Wasser so viel wiegt wie der Gegenstand.</p>
+				<div class="fact">
+					<b>Das Tote Meer</b>
+					<p>Es ist so salzig, dass das Wasser ein Fünftel schwerer ist als normales. Dort kann man nicht
+						untergehen, selbst wenn man es versucht. Man liegt auf dem Wasser wie auf einer Luftmatratze.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Schiff -->
+		<section class="chapter" id="schiff">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Form</span>
+				<h2>Warum Stahlschiffe schwimmen</h2>
+				<p>Stahl ist fast achtmal schwerer als Wasser. Ein Stahlklumpen sinkt sofort. Aber wenn du denselben
+					Stahl zu einer <strong>dünnen, breiten Schale</strong> formst, verdrängt er plötzlich viel mehr
+					Wasser, denn jetzt ist innen <strong>Luft</strong> mit dabei.</p>
+				<p>Entscheidend ist also nicht das Material, sondern das Verhältnis von Gewicht zu verdrängtem Wasser.
+					Ein Schiff ist zum größten Teil hohle Luft. Darum schwimmt es, sogar mit Tausenden Containern an Bord.
+				</p>
+				<p>Aber Vorsicht: Lädst du zu viel auf, sinkt das Schiff tiefer und tiefer. Schwappt Wasser über den Rand,
+					ist es mit der Luft vorbei.</p>
+				<p class="merke"><b>Merke</b>Ein Schiff schwimmt, weil es mit seiner hohlen Form mehr Wasser verdrängt,
+					als es selbst wiegt. Die Luft im Rumpf macht es leicht.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Forme den Stahl vom Klumpen zur Schale. Dann belade das Schiff. Wie viele Kisten trägt
+					es?</p>
+				<div class="stage-view">
+					<canvas id="shipCanvas" aria-label="Stahl wird zum Schiff geformt und beladen"></canvas>
+					<span class="stage-tag">Gleich viel Stahl</span>
+					<span class="stage-readout" id="shipOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Form</span><output id="shapeOut">Klumpen</output></span>
+						<input type="range" id="shape" min="0" max="100" value="0" />
+					</label>
+					<button class="btn primary" id="btnCrate" type="button">📦 Kiste laden</button>
+					<button class="btn" id="btnUnload" type="button">Entladen</button>
+					<p class="stage-note" id="shipNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 U-Boot -->
+		<section class="chapter flip" id="uboot">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Tauchen</span>
+				<h2>Das U-Boot</h2>
+				<p>Ein U-Boot muss beides können: schwimmen <strong>und</strong> sinken. Der Trick sind große
+					<strong>Ballasttanks</strong>. Flutet man sie mit Wasser, wird das U-Boot schwerer und taucht ab.
+					Presst man das Wasser mit Druckluft wieder hinaus, wird es leichter und steigt.</p>
+				<p>Die Kunst ist, genau so viel Wasser in den Tanks zu haben, dass das U-Boot weder steigt noch sinkt.
+					Dann schwebt es. Fische machen es übrigens genauso: Sie haben eine <strong>Schwimmblase</strong>, die
+					sie mit mehr oder weniger Gas füllen.</p>
+				<p class="merke"><b>Merke</b>Tanks fluten: schwerer, sinken. Tanks leer blasen: leichter, steigen. Genau
+					dazwischen: schweben.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Halte das U-Boot im grünen Bereich, so lange du kannst! Regle dazu die Ballasttanks.</p>
+				<div class="stage-view">
+					<canvas id="subCanvas" aria-label="U-Boot mit Ballasttanks im Meer"></canvas>
+					<span class="stage-tag">Ballasttanks</span>
+					<span class="stage-readout" id="subOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Wasser in den Tanks</span><output id="ballastOut">0 %</output></span>
+						<input type="range" id="ballast" min="0" max="100" value="0" />
+					</label>
+					<span class="score">Im Ziel: <strong id="subScore">0,0 s</strong> · Rekord <strong id="subBest">0,0
+							s</strong></span>
+					<p class="stage-note" id="subNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Ballon -->
+		<section class="chapter wide" id="ballon">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Auftrieb in Luft</span>
+				<h2>Schwimmen in Luft</h2>
+				<p>Auftrieb gibt es nicht nur im Wasser. Auch Luft ist ein Stoff mit Gewicht: Ein Kubikmeter Luft wiegt
+					etwa 1,2 Kilogramm. Ein Ballon voll <strong>Helium</strong>, das viel leichter ist als Luft, wird
+					deshalb nach oben gedrückt. Er schwimmt in der Luft wie ein Korken im Wasser.</p>
+				<p>Allerdings ist Luft fast tausendmal leichter als Wasser. Der Auftrieb ist darum winzig. Ein normaler
+					Partyballon trägt gerade mal rund 10 Gramm.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wie viele Ballons brauchst du, um abzuheben? Wähle Gas und Last und dreh an der Anzahl.</p>
+				<div class="stage-view">
+					<canvas id="balloonCanvas" aria-label="Last an einem Bündel Luftballons"></canvas>
+					<span class="stage-tag" id="balloonTag">Helium</span>
+					<span class="stage-readout" id="balloonOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="gases"></div>
+					<div class="chips" id="loads"></div>
+					<label class="range">
+						<span class="range-head"><span>Anzahl Ballons</span><output id="countOut">10</output></span>
+						<input type="range" id="count" min="0" max="1000" value="250" />
+					</label>
+					<p class="stage-note" id="balloonNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Alles, was leichter ist als der Stoff um es herum, wird nach oben gedrückt.
+					Im Wasser wie in der Luft gilt dasselbe Prinzip des Archimedes.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Das Schiff verdrängt mit seinem hohlen Rumpf so viel Wasser, dass dieses Wasser schwerer ist als das ganze Schiff. Der Stahl allein würde sinken, die Luft im Rumpf macht den Unterschied.">
+					<p class="quiz-q">Warum schwimmt ein Schiff aus Stahl, obwohl Stahl schwerer ist als Wasser?</p>
+					<div class="quiz-options">
+						<button type="button">Weil der Motor es oben hält.</button>
+						<button type="button">Weil es durch seine hohle Form mehr Wasser verdrängt, als es wiegt.</button>
+						<button type="button">Weil Salzwasser Stahl abstößt.</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe:</p>
+		<a href="../waerme/">Wie Wärme funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./auftrieb.js"></script>
+</body>
+
+</html>

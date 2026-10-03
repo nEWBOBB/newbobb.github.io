@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Wärme funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Wärme funktioniert: Temperatur als Teilchenbewegung, Eis schmelzen und Wasser verdampfen, Wärmeleitung durch Metall und Holz, ein Heißluftballon und Badewasser mischen." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ff7a5c;
+			--accent-2: #5cc8ff;
+			--accent-ink: #2a0b05;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.btn.hold {
+			touch-action: none;
+		}
+
+		.btn.hold.is-on {
+			background: var(--accent);
+			color: var(--accent-ink);
+			border-color: var(--accent);
+		}
+
+		.btn.hold.cold.is-on {
+			background: var(--accent-2);
+			border-color: var(--accent-2);
+			color: #04202e;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../energie/">Energie</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../waerme/" aria-current="page">Wärme</a>
+			<a href="../atom/">Atome</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 12</p>
+			<h1>Wie <em>Wärme</em><br />funktioniert</h1>
+			<p class="v-lede">Was ist eigentlich der Unterschied zwischen heiß und kalt? Die Antwort ist winzig klein
+				und zappelt. Schmilz Eis, bring Butter zum Schmelzen, lass einen Heißluftballon steigen und mische dir
+				das perfekte Badewasser.</p>
+			<ol class="v-toc">
+				<li><a href="#zappeln">Temperatur ist Zappeln</a></li>
+				<li><a href="#zustaende">Eis, Wasser, Dampf</a></li>
+				<li><a href="#leitung">Wärme wandert</a></li>
+				<li><a href="#ballon">Der Heißluftballon</a></li>
+				<li><a href="#mischen">Das perfekte Badewasser</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Zappeln -->
+		<section class="chapter" id="zappeln">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Temperatur</span>
+				<h2>Temperatur ist Zappeln</h2>
+				<p>Alles um dich herum besteht aus winzigen Teilchen, Atomen und Molekülen. Und die stehen nie still.
+					Sie <strong>zittern, zappeln und flitzen</strong> ständig durcheinander.</p>
+				<p>Genau das ist Temperatur: <strong>wie heftig die Teilchen zappeln</strong>. In heißem Tee rasen die
+					Wassermoleküle mit über 2000 km/h herum, in Eiswasser sind sie etwas langsamer.</p>
+				<p>Kühlt man immer weiter ab, werden die Teilchen immer ruhiger, bis sie bei <strong>−273,15 °C</strong>
+					fast vollständig stillstehen. Kälter geht es nicht. Das ist der <strong>absolute Nullpunkt</strong>.
+				</p>
+				<p class="merke"><b>Merke</b>Wärme ist die Bewegungsenergie der Teilchen. Je wärmer, desto schneller
+					zappeln sie. Kälte ist einfach nur weniger Zappeln.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh die Temperatur hoch und runter. Findest du den absoluten Nullpunkt?</p>
+				<div class="stage-view">
+					<canvas id="gasCanvas" aria-label="Teilchen in einer Box mit Geschwindigkeitsverteilung"></canvas>
+					<span class="stage-tag">Teilchen im Gas</span>
+					<span class="stage-readout" id="gasOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Temperatur</span><output id="tempOut">20 °C</output></span>
+						<input type="range" id="temp" min="-273" max="600" value="20" />
+					</label>
+					<p class="stage-note" id="gasNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Zustände -->
+		<section class="chapter wide" id="zustaende">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Aggregatzustände</span>
+				<h2>Eis, Wasser, Dampf</h2>
+				<p>Im <strong>Eis</strong> halten sich die Wassermoleküle fest an den Händen und zittern nur auf ihrem
+					Platz. Wärmst du es auf, zittern sie heftiger, bis sie sich bei 0 °C losreißen: Das Eis schmilzt, die
+					Teilchen gleiten aneinander vorbei. Das ist <strong>Wasser</strong>. Bei 100 °C sind sie so schnell,
+					dass sie ganz davonfliegen: <strong>Dampf</strong>.</p>
+				<p>Achte beim Heizen auf die Kurve. Etwas Seltsames passiert: Während das Eis schmilzt und das Wasser
+					kocht, <strong>steigt die Temperatur nicht</strong>, obwohl du weiterheizt. Wo bleibt die Energie?</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Halte „Heizen“ gedrückt und beobachte Teilchen und Kurve. Mit „Kühlen“ geht es rückwärts.</p>
+				<div class="stage-view">
+					<canvas id="phaseCanvas" aria-label="Wassermoleküle und Heizkurve"></canvas>
+					<span class="stage-tag" id="phaseTag">Eis</span>
+					<span class="stage-readout" id="phaseOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn hold" id="btnHeat" type="button">🔥 Heizen (gedrückt halten)</button>
+					<button class="btn hold cold" id="btnCool" type="button">❄️ Kühlen (gedrückt halten)</button>
+					<button class="btn" id="btnPhaseReset" type="button">↺ Zurück zu Eis</button>
+					<p class="stage-note" id="phaseNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Beim Schmelzen und Verdampfen geht die ganze Energie ins Losreißen der
+					Teilchen voneinander, nicht ins Schnellerwerden. Darum bleibt die Temperatur so lange stehen. Und zum
+					Verdampfen braucht es fast siebenmal so viel Energie wie zum Schmelzen.</p>
+			</div>
+		</section>
+
+		<!-- 3 Leitung -->
+		<section class="chapter" id="leitung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Wärmeleitung</span>
+				<h2>Wärme wandert</h2>
+				<p>Halte einen Metalllöffel in heißen Tee, und kurz darauf ist auch der Griff heiß. Die schnell
+					zappelnden Teilchen unten <strong>schubsen ihre Nachbarn an</strong>, die wieder ihre Nachbarn, und so
+					wandert die Wärme durch den Löffel nach oben.</p>
+				<p>Manche Stoffe leiten Wärme blitzschnell, vor allem <strong>Metalle</strong>. Andere fast gar nicht,
+					zum Beispiel <strong>Holz, Glas oder Styropor</strong>. Solche Stoffe nennt man Isolatoren. Darum
+					haben Kochtöpfe Griffe aus Holz oder Kunststoff.</p>
+				<p class="merke"><b>Merke</b>Wärme fließt immer von warm nach kalt. Metalle leiten sie schnell weiter,
+					Isolatoren bremsen sie.</p>
+				<div class="fact">
+					<b>Warum fühlt sich Metall kalt an?</b>
+					<p>Ein Metallgeländer und ein Holzgeländer haben im Winter dieselbe Temperatur. Trotzdem fühlt sich das
+						Metall viel kälter an. Es leitet die Wärme aus deiner Hand nur viel schneller ab.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Material und zünde die Kerze an. Schmilzt die Butter am anderen Ende?</p>
+				<div class="stage-view">
+					<canvas id="rodCanvas" aria-label="Stab über einer Kerze mit Butter am Ende"></canvas>
+					<span class="stage-tag" id="rodTag">Kupfer</span>
+					<span class="stage-readout" id="rodOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="materials"></div>
+					<button class="btn primary" id="btnFlame" type="button" aria-pressed="false">🕯️ Kerze an</button>
+					<button class="btn" id="btnRodReset" type="button">↺ Abkühlen</button>
+					<p class="stage-note" id="rodNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Ballon -->
+		<section class="chapter flip" id="ballon">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Ausdehnung</span>
+				<h2>Der Heißluftballon</h2>
+				<p>Wenn Teilchen schneller zappeln, brauchen sie mehr Platz. Darum <strong>dehnen sich Stoffe aus,
+						wenn sie warm werden</strong>. Brücken haben deshalb Lücken, damit sie sich im Sommer ausdehnen
+					können.</p>
+				<p>Bei Luft ist das besonders stark. Heizt man die Luft in einem Ballon, drängen die schnellen Teilchen
+					unten aus der Öffnung hinaus. Übrig bleiben <strong>weniger Teilchen</strong> im gleichen Raum: Die
+					warme Luft ist leichter als die kalte Luft draußen. Und dann wirkt das Prinzip des Archimedes: Der
+					Ballon wird nach oben gedrückt.</p>
+				<p class="merke"><b>Merke</b>Warme Luft ist leichter als kalte und steigt nach oben. Ein Heißluftballon
+					ist ein riesiger Sack voll warmer Luft.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Halte den Brenner gedrückt, um zu steigen. Lass los, damit die Luft abkühlt und der Ballon
+					sinkt.</p>
+				<div class="stage-view">
+					<canvas id="hotCanvas" aria-label="Heißluftballon mit Teilchen im Inneren"></canvas>
+					<span class="stage-tag">Heißluftballon</span>
+					<span class="stage-readout" id="hotOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn hold primary" id="btnBurner" type="button">🔥 Brenner (gedrückt halten)</button>
+					<p class="stage-note" id="hotNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Mischen -->
+		<section class="chapter wide" id="mischen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Mischen</span>
+				<h2>Das perfekte Badewasser</h2>
+				<p>Mischst du heißes und kaltes Wasser, geben die schnellen Teilchen Energie an die langsamen ab, bis
+					alle gleich schnell zappeln. Die Mischtemperatur liegt dazwischen, und zwar näher an der Seite, von
+					der mehr Wasser kommt.</p>
+				<div class="formula">Mischtemperatur = (Menge heiß × 60 °C + Menge kalt × 12 °C) ÷ Gesamtmenge</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Fülle die Wanne bis zur Linie, und zwar mit genau 37 °C. Halte die Wasserhähne gedrückt.
+				</p>
+				<div class="stage-view">
+					<canvas id="tubCanvas" aria-label="Badewanne mit heißem und kaltem Wasserhahn"></canvas>
+					<span class="stage-tag">Badewanne</span>
+					<span class="stage-readout" id="tubOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn hold" id="btnHot" type="button">🔴 Heiß 60 °C</button>
+					<button class="btn hold cold" id="btnCold" type="button">🔵 Kalt 12 °C</button>
+					<button class="btn" id="btnDrain" type="button">🛁 Stöpsel ziehen</button>
+					<p class="stage-note" id="tubNote">Tipp: Rechne vorher! Wie viel heißes und wie viel kaltes Wasser
+						brauchst du ungefähr?</p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="2"
+					data-why="Während Eis schmilzt, steckt die gesamte zugeführte Energie im Lösen der Bindungen zwischen den Molekülen. Die Teilchen werden dabei nicht schneller, also bleibt die Temperatur bei 0 °C, bis alles geschmolzen ist.">
+					<p class="quiz-q">Du erhitzt ein Glas mit Eiswürfeln und Wasser. Was zeigt das Thermometer, solange
+						noch Eis darin schwimmt?</p>
+					<div class="quiz-options">
+						<button type="button">Die Temperatur steigt langsam, aber stetig.</button>
+						<button type="button">Sie sinkt erst, dann steigt sie.</button>
+						<button type="button">Sie bleibt bei 0 °C, bis das Eis geschmolzen ist.</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe:</p>
+		<a href="../atom/">Atome und Radioaktivität <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./waerme.js"></script>
+</body>
+
+</html>

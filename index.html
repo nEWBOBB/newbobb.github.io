@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Newbobb Lab</title>
 	<meta name="description"
-		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Telegraf, Telefon und Strom, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
+		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Strom, Licht, Schall, Schwerkraft, Energie, Auftrieb, Wärme und Atomen, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
 	<meta name="theme-color" content="#0a0908" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -528,12 +528,15 @@
 			gap: 16px;
 		}
 
-		/* Reihen zu je drei, die letzten zwei etwas breiter */
+		/* Reihen zu je drei, dazwischen Paare etwas breiter */
 		.lesson {
 			grid-column: span 2;
 		}
 
-		.lesson:nth-child(n + 7) {
+		.lesson:nth-child(7),
+		.lesson:nth-child(8),
+		.lesson:nth-child(12),
+		.lesson:nth-child(13) {
 			grid-column: span 3;
 		}
 
@@ -1001,6 +1004,308 @@
 			}
 		}
 
+		/* Schwerkraft: Mond kreist um einen Planeten */
+		.lesson--grav {
+			--c: #8fd3ff;
+		}
+
+		.lesson--grav .lesson-art {
+			background:
+				radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+				radial-gradient(1px 1px at 70% 20%, #fff, transparent),
+				radial-gradient(1px 1px at 85% 70%, #fff, transparent),
+				radial-gradient(1px 1px at 35% 80%, #fff, transparent),
+				#04050a;
+		}
+
+		.lesson--grav .lesson-art b {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 64px;
+			height: 64px;
+			margin: -32px 0 0 -32px;
+			border-radius: 50%;
+			background: radial-gradient(circle at 35% 30%, #8fd3ff, #1d5b9a 70%, #0b2747);
+			box-shadow: 0 0 40px rgba(120, 190, 255, 0.45);
+		}
+
+		.lesson--grav .lesson-art i {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 170px;
+			height: 170px;
+			margin: -85px 0 0 -85px;
+			border-radius: 50%;
+			border: 1px dashed rgba(183, 139, 255, 0.35);
+			animation: orbit 5s linear infinite;
+		}
+
+		.lesson--grav .lesson-art i::after {
+			content: "";
+			position: absolute;
+			top: -7px;
+			left: 50%;
+			width: 14px;
+			height: 14px;
+			margin-left: -7px;
+			border-radius: 50%;
+			background: #d8d4cc;
+			box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+		}
+
+		@keyframes orbit {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		/* Energie: schwingendes Pendel */
+		.lesson--energy {
+			--c: #c6f16b;
+		}
+
+		.lesson--energy .lesson-art b {
+			position: absolute;
+			left: 50%;
+			top: 14%;
+			width: 2px;
+			height: 62%;
+			margin-left: -1px;
+			background: rgba(244, 239, 230, 0.7);
+			transform-origin: top center;
+			animation: swing 2.2s ease-in-out infinite alternate;
+		}
+
+		.lesson--energy .lesson-art b::after {
+			content: "";
+			position: absolute;
+			bottom: -14px;
+			left: -14px;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			background: radial-gradient(circle at 35% 30%, #fff, #c6f16b 45%, #3a4a10);
+			box-shadow: 0 0 26px rgba(198, 241, 107, 0.55);
+		}
+
+		.lesson--energy .lesson-art::before {
+			content: "";
+			position: absolute;
+			left: calc(50% - 40px);
+			top: 14%;
+			width: 80px;
+			height: 6px;
+			margin-top: -6px;
+			background: #3a352f;
+		}
+
+		@keyframes swing {
+			from {
+				transform: rotate(38deg);
+			}
+
+			to {
+				transform: rotate(-38deg);
+			}
+		}
+
+		/* Schwimmen: schaukelndes Boot auf Wellen */
+		.lesson--float {
+			--c: #4ee6c9;
+		}
+
+		.lesson--float .lesson-art {
+			background: linear-gradient(180deg, #0d1a2e 0 55%, #2f8fd8 55%, #06172e);
+		}
+
+		.lesson--float .lesson-art b {
+			position: absolute;
+			left: 50%;
+			top: 55%;
+			width: 110px;
+			height: 34px;
+			margin: -22px 0 0 -55px;
+			background: #e0453a;
+			clip-path: polygon(0 0, 100% 0, 84% 100%, 16% 100%);
+			animation: bob 2.6s ease-in-out infinite;
+		}
+
+		.lesson--float .lesson-art b::before {
+			content: "";
+			position: absolute;
+			left: 30%;
+			top: 0;
+			width: 40%;
+			height: 6px;
+			background: #ffcf5a;
+		}
+
+		.lesson--float .lesson-art i {
+			position: absolute;
+			left: -10%;
+			right: -10%;
+			top: 55%;
+			height: 10px;
+			margin-top: -4px;
+			background: radial-gradient(circle at 10px -4px, transparent 12px, rgba(255, 255, 255, 0.45) 13px, transparent 15px) 0 0 / 26px 10px repeat-x;
+			animation: waves 3s linear infinite;
+		}
+
+		@keyframes bob {
+			50% {
+				transform: translateY(5px) rotate(3deg);
+			}
+		}
+
+		@keyframes waves {
+			to {
+				transform: translateX(26px);
+			}
+		}
+
+		/* Wärme: zappelnde Teilchen von kalt nach heiß */
+		.lesson--heat {
+			--c: #ff7a5c;
+		}
+
+		.lesson--heat .lesson-art {
+			background: linear-gradient(90deg, rgba(92, 200, 255, 0.18), rgba(255, 122, 92, 0.22)), #050404;
+		}
+
+		.lesson--heat .lesson-art i {
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			border-radius: 50%;
+			left: var(--x);
+			top: var(--y);
+			background: var(--k);
+			box-shadow: 0 0 12px var(--k);
+			animation: jiggle var(--s) ease-in-out infinite alternate;
+		}
+
+		.lesson--heat .lesson-art i:nth-child(1) {
+			--x: 14%;
+			--y: 34%;
+			--k: #5cc8ff;
+			--s: 1.6s;
+		}
+
+		.lesson--heat .lesson-art i:nth-child(2) {
+			--x: 28%;
+			--y: 60%;
+			--k: #8fd3ff;
+			--s: 1.2s;
+		}
+
+		.lesson--heat .lesson-art i:nth-child(3) {
+			--x: 48%;
+			--y: 40%;
+			--k: #e6e6dc;
+			--s: 0.7s;
+		}
+
+		.lesson--heat .lesson-art i:nth-child(4) {
+			--x: 66%;
+			--y: 62%;
+			--k: #ffb366;
+			--s: 0.35s;
+		}
+
+		.lesson--heat .lesson-art i:nth-child(5) {
+			--x: 82%;
+			--y: 32%;
+			--k: #ff7a5c;
+			--s: 0.2s;
+		}
+
+		@keyframes jiggle {
+			0% {
+				transform: translate(-6px, 4px);
+			}
+
+			50% {
+				transform: translate(5px, -6px);
+			}
+
+			100% {
+				transform: translate(-3px, -2px);
+			}
+		}
+
+		/* Atome: Kern mit Elektronenbahnen */
+		.lesson--atom {
+			--c: #d4ff3a;
+		}
+
+		.lesson--atom .lesson-art b {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 26px;
+			height: 26px;
+			margin: -13px 0 0 -13px;
+			border-radius: 50%;
+			background:
+				radial-gradient(circle at 30% 30%, #ff5a5a 0 5px, transparent 6px),
+				radial-gradient(circle at 70% 35%, #b8bcc6 0 5px, transparent 6px),
+				radial-gradient(circle at 45% 72%, #b8bcc6 0 5px, transparent 6px),
+				radial-gradient(circle at 75% 70%, #ff5a5a 0 5px, transparent 6px);
+			box-shadow: 0 0 30px rgba(212, 255, 58, 0.45);
+		}
+
+		.lesson--atom .lesson-art i {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 180px;
+			height: 64px;
+			margin: -32px 0 0 -90px;
+			border-radius: 50%;
+			border: 1.5px solid rgba(90, 176, 255, 0.45);
+			transform: rotate(var(--r));
+		}
+
+		.lesson--atom .lesson-art i::after {
+			content: "";
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			margin: -5px 0 0 -5px;
+			border-radius: 50%;
+			background: #5ab0ff;
+			box-shadow: 0 0 10px #5ab0ff;
+			offset-path: ellipse(90px 32px at 90px 32px);
+			animation: electron var(--s) linear infinite;
+		}
+
+		.lesson--atom .lesson-art i:nth-of-type(1) {
+			--r: 0deg;
+			--s: 2.4s;
+		}
+
+		.lesson--atom .lesson-art i:nth-of-type(2) {
+			--r: 60deg;
+			--s: 3.1s;
+		}
+
+		.lesson--atom .lesson-art i:nth-of-type(3) {
+			--r: -60deg;
+			--s: 2.7s;
+		}
+
+		@keyframes electron {
+			from {
+				offset-distance: 0%;
+			}
+
+			to {
+				offset-distance: 100%;
+			}
+		}
+
 		/* Strom: Elektronen im Draht */
 		.lesson--power .lesson-art b {
 			position: absolute;
@@ -1251,7 +1556,7 @@
 					Internet, alles zum Anfassen. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
 				<div class="stats">
 					<div class="stat"><strong id="countAll">18</strong><span>Projekte</span></div>
-					<div class="stat"><strong>8</strong><span>zum Verstehen</span></div>
+					<div class="stat"><strong>13</strong><span>zum Verstehen</span></div>
 					<div class="stat"><strong>1</strong><span>Schwarzes Loch</span></div>
 				</div>
 			</div>
@@ -1344,6 +1649,56 @@
 						<p>Luft drängelt, ein Oszilloskop mit Hörtest, Obertöne mischen, eine Gitarrensaite zupfen und
 							hören, warum Musik harmonisch klingt.</p>
 						<span class="lesson-go">Lauter machen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--grav reveal" href="./schwerkraft/">
+					<div class="lesson-art" aria-hidden="true"><b></b><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">09</span>
+						<h3>Wie Schwerkraft funktioniert</h3>
+						<p>Feder und Kugel im Vakuum, Würfe aufs Ziel, Newtons Kanone in die Umlaufbahn und ein eigenes
+							Sonnensystem zum Bauen.</p>
+						<span class="lesson-go">Abheben →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--energy reveal" href="./energie/">
+					<div class="lesson-art" aria-hidden="true"><b></b></div>
+					<div class="lesson-body">
+						<span class="lesson-num">10</span>
+						<h3>Wie Energie funktioniert</h3>
+						<p>Ein Pendel mit Energiebalken, eine selbst gebaute Achterbahn, Hebel, ein Wasserkraftwerk und
+							wie hoch dich ein Gummibärchen bringt.</p>
+						<span class="lesson-go">Losrollen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--float reveal" href="./auftrieb/">
+					<div class="lesson-art" aria-hidden="true"><i></i><b></b></div>
+					<div class="lesson-body">
+						<span class="lesson-num">11</span>
+						<h3>Warum Dinge schwimmen</h3>
+						<p>Wasserdruck, Archimedes’ Becken, ein Stahlschiff beladen, ein U-Boot steuern und mit
+							Luftballons abheben.</p>
+						<span class="lesson-go">Abtauchen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--heat reveal" href="./waerme/">
+					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">12</span>
+						<h3>Wie Wärme funktioniert</h3>
+						<p>Zappelnde Teilchen, Eis schmelzen mit Heizkurve, Butter auf einem Kupferstab, ein Heißluftballon
+							und das perfekte Badewasser.</p>
+						<span class="lesson-go">Aufheizen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--atom reveal" href="./atom/">
+					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">13</span>
+						<h3>Atome und Radioaktivität</h3>
+						<p>Zoom bis in den Atomkern, Atome selbst bauen, Halbwertszeit mit Geigerzähler, eine Kettenreaktion
+							und Strahlung abschirmen.</p>
+						<span class="lesson-go">Spalten →</span>
 					</div>
 				</a>
 			</div>
@@ -1516,6 +1871,46 @@
 						<div class="card-meta"><span>Verstehen · Akustik</span><span class="pill">Neu</span></div>
 						<h3>Musik und Schall <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Schallwellen, Hörtest, Obertöne, Saiten und Harmonie zum Anhören.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./schwerkraft/" style="--h: 205">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Mechanik</span><span class="pill">Neu</span></div>
+						<h3>Wie Schwerkraft funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Freier Fall, Wurfparabel, Umlaufbahnen und ein Gravitations-Sandkasten.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./energie/" style="--h: 80">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Mechanik</span><span class="pill">Neu</span></div>
+						<h3>Wie Energie funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Pendel, Achterbahn-Baukasten, Hebel, Wasserkraft und Gummibärchen-Energie.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./auftrieb/" style="--h: 168">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Mechanik</span><span class="pill">Neu</span></div>
+						<h3>Warum Dinge schwimmen <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Wasserdruck, Archimedes, Stahlschiffe, U-Boot und Ballonflug.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./waerme/" style="--h: 12">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Thermodynamik</span><span class="pill">Neu</span></div>
+						<h3>Wie Wärme funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Teilchenbewegung, Aggregatzustände, Wärmeleitung, Heißluftballon und Mischtemperatur.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./atom/" style="--h: 72">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Kernphysik</span><span class="pill">Neu</span></div>
+						<h3>Atome und Radioaktivität <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Zoom ins Atom, Atom-Baukasten, Halbwertszeit, Kettenreaktion und Abschirmung.</p>
 					</div>
 				</a>
 

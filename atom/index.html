@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Atome und Radioaktivität — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Atome und Radioaktivität funktionieren: Zoom bis in den Atomkern, Atome selbst bauen, Halbwertszeit mit Geigerzähler, eine Kettenreaktion und Strahlung abschirmen." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #d4ff3a;
+			--accent-2: #39ffb0;
+			--accent-ink: #1a2400;
+		}
+
+		#chainCanvas {
+			touch-action: none;
+			cursor: crosshair;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.builder {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			gap: 8px;
+			width: 100%;
+		}
+
+		.builder div {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 6px;
+			padding: 6px 6px 6px 12px;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			background: var(--panel-2);
+			font-size: 0.86rem;
+		}
+
+		.builder span {
+			margin-right: auto;
+		}
+
+		.builder b {
+			font-variant-numeric: tabular-nums;
+			min-width: 1.5em;
+			text-align: center;
+		}
+
+		.builder button {
+			width: 34px;
+			height: 34px;
+			padding: 0;
+			justify-content: center;
+		}
+
+		.goals {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px 14px;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			font-size: 0.84rem;
+			color: var(--muted);
+		}
+
+		.goals li::before {
+			content: "○ ";
+			color: var(--faint);
+		}
+
+		.goals li.done {
+			color: var(--ink);
+		}
+
+		.goals li.done::before {
+			content: "✓ ";
+			color: var(--good);
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../strom/">Strom</a>
+			<a href="../radio/">Radio</a>
+			<a href="../internet/">Internet</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schall/">Schall</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../energie/">Energie</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../atom/" aria-current="page">Atome</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 13</p>
+			<h1><em>Atome</em> und<br />Radioaktivität</h1>
+			<p class="v-lede">Alles, was du anfassen kannst, ist aus Atomen gebaut. Sie sind so klein, dass in einem
+				einzigen Wassertropfen mehr davon stecken als Sterne im Universum. Zoom hinein, bau dir eigene Atome und
+				entfessle eine Kettenreaktion.</p>
+			<ol class="v-toc">
+				<li><a href="#zoom">Wie klein ist ein Atom?</a></li>
+				<li><a href="#bauen">Bau dir ein Atom</a></li>
+				<li><a href="#zerfall">Die Halbwertszeit</a></li>
+				<li><a href="#kette">Die Kettenreaktion</a></li>
+				<li><a href="#strahlung">Strahlung abschirmen</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Zoom -->
+		<section class="chapter" id="zoom">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Größenordnungen</span>
+				<h2>Wie klein ist ein Atom?</h2>
+				<p>Unvorstellbar klein. Leg zehn Millionen Atome nebeneinander, und du hast gerade mal einen Millimeter.
+					Um dahin zu kommen, musst du immer wieder zehnmal näher heranzoomen: von deiner Hand zur Haut, zur
+					Zelle, zur Erbsubstanz DNA, bis zum Atom.</p>
+				<p>Und dann kommt die größte Überraschung: Ein Atom ist <strong>fast vollständig leer</strong>. Ganz
+					innen sitzt ein winziger <strong>Kern</strong>, um ihn herum schwirren
+					<strong>Elektronen</strong> als hauchdünne Wolke. Wäre das Atom so groß wie ein Fußballstadion, wäre der
+					Kern eine Erbse auf dem Anstoßpunkt.</p>
+				<p class="merke"><b>Merke</b>Atome sind etwa ein zehnmillionstel Millimeter groß. Fast ihre ganze Masse
+					steckt im winzigen Kern, der Rest ist leerer Raum mit Elektronen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den Regler langsam nach rechts oder drück auf „Reinzoomen“. Jeder Schritt ist zehnmal
+					näher.</p>
+				<div class="stage-view">
+					<canvas id="zoomCanvas" aria-label="Zoom von der Hand bis in den Atomkern"></canvas>
+					<span class="stage-tag" id="zoomTag">Hand</span>
+					<span class="stage-readout" id="zoomOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Zoom</span><output id="zoomLvl">1×</output></span>
+						<input type="range" id="zoomRange" min="0" max="1000" value="0" />
+					</label>
+					<button class="btn primary" id="btnZoom" type="button">🔍 Reinzoomen</button>
+					<p class="stage-note" id="zoomNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Bauen -->
+		<section class="chapter flip" id="bauen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Bausteine</span>
+				<h2>Bau dir ein Atom</h2>
+				<p>Jedes Atom besteht aus nur drei Sorten Bausteinen:</p>
+				<ul>
+					<li><strong>Protonen</strong> (rot, positiv geladen) sitzen im Kern. Ihre Anzahl bestimmt, welches
+						Element es ist. 1 Proton ist immer Wasserstoff, 6 immer Kohlenstoff, 79 immer Gold.</li>
+					<li><strong>Neutronen</strong> (grau, ungeladen) sitzen auch im Kern und halten ihn zusammen. Mit zu
+						wenigen oder zu vielen wird der Kern instabil: <strong>radioaktiv</strong>.</li>
+					<li><strong>Elektronen</strong> (blau, negativ) kreisen außen in Schalen. Gleich viele wie Protonen,
+						dann ist das Atom neutral. Sonst ist es ein geladenes <strong>Ion</strong>.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Protonen bestimmen das Element, Neutronen die Stabilität, Elektronen die
+					Ladung und die Chemie.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Füge Teilchen hinzu und schaff alle Aufgaben unten.</p>
+				<div class="stage-view">
+					<canvas id="buildCanvas" aria-label="Atom-Baukasten"></canvas>
+					<span class="stage-tag">Atom-Baukasten</span>
+				</div>
+				<div class="stage-controls">
+					<div class="builder">
+						<div><span>🔴 Protonen</span><button class="btn" type="button" data-k="p" data-d="-1"
+								aria-label="Proton entfernen">−</button><b id="nP">1</b><button class="btn" type="button"
+								data-k="p" data-d="1" aria-label="Proton hinzufügen">+</button></div>
+						<div><span>⚪ Neutronen</span><button class="btn" type="button" data-k="n" data-d="-1"
+								aria-label="Neutron entfernen">−</button><b id="nN">0</b><button class="btn" type="button"
+								data-k="n" data-d="1" aria-label="Neutron hinzufügen">+</button></div>
+						<div><span>🔵 Elektronen</span><button class="btn" type="button" data-k="e" data-d="-1"
+								aria-label="Elektron entfernen">−</button><b id="nE">1</b><button class="btn" type="button"
+								data-k="e" data-d="1" aria-label="Elektron hinzufügen">+</button></div>
+					</div>
+					<ul class="goals" id="goals"></ul>
+					<p class="stage-note" id="buildNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Zerfall -->
+		<section class="chapter" id="zerfall">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Zerfall</span>
+				<h2>Die Halbwertszeit</h2>
+				<p>Ein instabiler Atomkern zerfällt irgendwann von selbst und sendet dabei Strahlung aus. Wann genau?
+					Das weiß niemand, nicht einmal die Natur. Es ist echter <strong>Zufall</strong>, wie ein Münzwurf.</p>
+				<p>Bei vielen Atomen zusammen ergibt der Zufall aber ein festes Muster: Nach einer bestimmten Zeit ist
+					<strong>genau die Hälfte</strong> zerfallen. Das ist die <strong>Halbwertszeit</strong>. Nach zwei
+					Halbwertszeiten ist noch ein Viertel übrig, nach drei ein Achtel, und so weiter.</p>
+				<p>Halbwertszeiten reichen von Bruchteilen einer Sekunde bis zu Milliarden Jahren. Kohlenstoff-14 hat
+					5730 Jahre. Damit bestimmen Forscher, wie alt Mumien und Fossilien sind.</p>
+				<p class="merke"><b>Merke</b>Ein einzelner Zerfall ist Zufall. Aber nach jeder Halbwertszeit ist von
+					vielen Atomen immer die Hälfte übrig.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte den Zerfall und vergleiche die Kurve mit den gestrichelten Halbierungslinien. Mit Ton
+					hörst du einen Geigerzähler.</p>
+				<div class="stage-view">
+					<canvas id="decayCanvas" aria-label="400 Atome zerfallen zufällig"></canvas>
+					<span class="stage-tag">400 Atome</span>
+					<span class="stage-readout" id="decayOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnDecay" type="button">▶ Start</button>
+					<button class="btn" id="btnDecayReset" type="button">↺ Neu</button>
+					<button class="btn" id="btnGeiger" type="button" aria-pressed="false">🔊 Geigerzähler</button>
+					<label class="range">
+						<span class="range-head"><span>Halbwertszeit</span><output id="halfOut">3 s</output></span>
+						<input type="range" id="half" min="1" max="10" value="3" />
+					</label>
+					<p class="stage-note" id="decayNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Kette -->
+		<section class="chapter flip" id="kette">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Kernspaltung</span>
+				<h2>Die Kettenreaktion</h2>
+				<p>Trifft ein <strong>Neutron</strong> auf einen schweren Uran-Kern, kann der Kern zerplatzen. Dabei
+					werden <strong>riesige Mengen Energie</strong> frei und zwei bis drei neue Neutronen fliegen davon. Die
+					können weitere Kerne spalten, die wieder Neutronen freisetzen …</p>
+				<p>Liegen die Uran-Kerne dicht genug, wächst das lawinenartig an: eine
+					<strong>Kettenreaktion</strong>. In einem Kernkraftwerk wird sie mit <strong>Steuerstäben</strong>
+					gebremst, die Neutronen schlucken. So spaltet im Schnitt jede Spaltung genau eine neue, und die
+					Reaktion läuft gleichmäßig.</p>
+				<p class="merke"><b>Merke</b>Jede Spaltung setzt Energie und neue Neutronen frei. Ob die Kette abbricht,
+					gleichmäßig läuft oder explodiert, hängt davon ab, wie viele Neutronen weitere Kerne treffen.</p>
+				<div class="fact">
+					<b>E = mc²</b>
+					<p>Die Bruchstücke wiegen zusammen ein klein wenig weniger als der Urankern vorher. Diese verschwundene
+						Masse wird zu Energie. Albert Einstein hat das vorausgesagt: Schon ein Gramm Masse entspricht so
+						viel Energie wie 20 000 Tonnen Sprengstoff.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe ins Bild, um ein Neutron abzuschießen. Ändere die Uran-Dichte und schieb die
+					Steuerstäbe hinein.</p>
+				<div class="stage-view">
+					<canvas id="chainCanvas" aria-label="Uran-Kerne und Neutronen"></canvas>
+					<span class="stage-tag">Reaktor</span>
+					<span class="stage-readout" id="chainOut"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Uran-Dichte</span><output id="densOut">mittel</output></span>
+						<input type="range" id="dens" min="20" max="100" value="60" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Steuerstäbe</span><output id="rodsOut">draußen</output></span>
+						<input type="range" id="rods" min="0" max="100" value="0" />
+					</label>
+					<button class="btn primary" id="btnChainReset" type="button">↺ Neue Kerne</button>
+					<p class="stage-note" id="chainNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Strahlung -->
+		<section class="chapter wide" id="strahlung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Strahlung</span>
+				<h2>Strahlung abschirmen</h2>
+				<p>Radioaktive Kerne senden drei Arten von Strahlung aus. Sie unterscheiden sich darin, wie weit sie
+					durchkommen:</p>
+				<ul>
+					<li><strong>Alpha</strong> (α): dicke Klumpen aus 2 Protonen und 2 Neutronen. Stark, aber schon ein Blatt
+						Papier oder deine Haut hält sie auf.</li>
+					<li><strong>Beta</strong> (β): schnelle Elektronen. Gehen durch Papier, aber nicht durch ein paar
+						Millimeter Aluminium.</li>
+					<li><strong>Gamma</strong> (γ): energiereiches Licht, das man nicht sieht. Kommt sogar durch Metall.
+						Nur dickes Blei oder Beton schwächen es stark.</li>
+				</ul>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Strahlungsart und stell Hindernisse in den Weg. Wie viel kommt am Zähler an?</p>
+				<div class="stage-view">
+					<canvas id="rayCanvas" aria-label="Strahlenquelle, Abschirmungen und Zähler"></canvas>
+					<span class="stage-tag" id="rayTag">Alpha</span>
+					<span class="stage-readout" id="rayOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="rays"></div>
+					<div class="chips" id="shields"></div>
+					<p class="stage-note" id="rayNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Alpha stoppt Papier, Beta stoppt Aluminium, Gamma wird erst von dickem Blei
+					stark geschwächt. Darum tragen Röntgenärzte Bleischürzen.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Nach jeder Halbwertszeit halbiert sich die Menge: nach 1 Halbwertszeit 50 %, nach 2 noch 25 %, nach 3 noch 12,5 %. Ganz verschwunden ist sie also nie, sie wird nur immer weniger.">
+					<p class="quiz-q">Ein Stoff hat eine Halbwertszeit von 10 Jahren. Wie viel ist nach 30 Jahren noch
+						übrig?</p>
+					<div class="quiz-options">
+						<button type="button">Nichts mehr, nach 3 × 10 Jahren ist alles weg.</button>
+						<button type="button">Ein Achtel, also 12,5 %.</button>
+						<button type="button">Ein Drittel.</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Das war die Reihe. Zurück zum Anfang:</p>
+		<a href="../feuer/">Wie Feuer funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./atom.js"></script>
+</body>
+
+</html>
