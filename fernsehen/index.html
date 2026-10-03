@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Fernsehen funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie Fernsehen funktioniert: Bilder aus Zeilen, Bewegung als Täuschung, drei Farben für alle Farben und warum ein Stream nur sendet, was sich ändert." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #9fe7ff;
+			--accent-2: #ff8ad8;
+			--accent-ink: #04161c;
+		}
+
+		.presets {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.rgb {
+			display: grid;
+			gap: 2px;
+			width: 100%;
+		}
+
+		.rgb .range:nth-child(1) input {
+			--accent: #ff5a5a;
+		}
+
+		.rgb .range:nth-child(2) input {
+			--accent: #5aff7a;
+		}
+
+		.rgb .range:nth-child(3) input {
+			--accent: #5a8cff;
+		}
+
+		.rgb .range:nth-child(1) input::-webkit-slider-runnable-track {
+			background: linear-gradient(90deg, #ff5a5a var(--fill, 50%), rgba(255, 255, 255, 0.14) var(--fill, 50%));
+		}
+
+		.rgb .range:nth-child(2) input::-webkit-slider-runnable-track {
+			background: linear-gradient(90deg, #5aff7a var(--fill, 50%), rgba(255, 255, 255, 0.14) var(--fill, 50%));
+		}
+
+		.rgb .range:nth-child(3) input::-webkit-slider-runnable-track {
+			background: linear-gradient(90deg, #5a8cff var(--fill, 50%), rgba(255, 255, 255, 0.14) var(--fill, 50%));
+		}
+
+		.rgb .range:nth-child(1) input::-moz-range-progress {
+			background: #ff5a5a;
+		}
+
+		.rgb .range:nth-child(2) input::-moz-range-progress {
+			background: #5aff7a;
+		}
+
+		.rgb .range:nth-child(3) input::-moz-range-progress {
+			background: #5a8cff;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../schall/">Schall</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../strom/">Strom</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../telegraf/">Telegraf</a>
+			<a href="../energie/">Energie</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../telefon/">Telefon</a>
+			<a href="../radio/">Radio</a>
+			<a href="../atom/">Atome</a>
+			<a href="../fernsehen/" aria-current="page">Fernsehen</a>
+			<a href="../internet/">Internet</a>
+			<a href="../ki/">Sprach-KI</a>
+			<a href="../agenten/">Agenten</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 14 · 1926</p>
+			<h1>Wie <em>Fernsehen</em><br />funktioniert</h1>
+			<p class="v-lede">Ein Fernseher zeigt keine bewegten Bilder. Er zeigt Zeilen, die so schnell gemalt werden,
+				dass du sie nicht siehst, Standbilder, die so schnell wechseln, dass sie sich bewegen, und drei Farben,
+				die so klein sind, dass sie zu allen Farben verschmelzen. Hier kannst du jeden dieser Tricks
+				auseinandernehmen.</p>
+			<ol class="v-toc">
+				<li><a href="#zeilen">Bilder aus Zeilen</a></li>
+				<li><a href="#bewegung">Bewegung ist eine Täuschung</a></li>
+				<li><a href="#farben">Drei Farben reichen</a></li>
+				<li><a href="#senden">Nur was sich ändert</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Zeilen -->
+		<section class="chapter" id="zeilen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · 1926</span>
+				<h2>Bilder aus Zeilen</h2>
+				<p>Beim <a href="../telefon/">Telefon</a> reicht ein einziger schwankender Strom für die Stimme. Ein Bild
+					hat aber Tausende Punkte gleichzeitig. Die Lösung: Man zerlegt es in <strong>Zeilen</strong> und
+					schickt Punkt für Punkt nacheinander, so wie du ein Buch liest. Hell wird zu viel Strom, dunkel zu
+					wenig.</p>
+				<p>Der Empfänger malt das Bild in derselben Reihenfolge wieder auf. Im alten Röhrenfernseher tat das ein
+					<strong>Elektronenstrahl</strong>, der eine leuchtende Schicht auf dem Glas zum Glühen brachte. Er
+					raste so schnell über den Schirm, dass dein Auge nur ein fertiges Bild sah.</p>
+				<p>Je mehr Zeilen, desto schärfer das Bild. Probier aus, wie viel man mit 30 Zeilen erkennt.</p>
+				<p class="merke"><b>Merke</b>Ein Fernsehbild wird in Zeilen zerlegt und Punkt für Punkt nacheinander
+					übertragen. Der Empfänger setzt es in derselben Reihenfolge wieder zusammen.</p>
+				<div class="fact">
+					<b>Eine Puppe als erster Fernsehstar</b>
+					<p>Am 26. Januar 1926 führte John Logie Baird in London erstmals Fernsehen vor: 30 Zeilen,
+						flackernd und orange. Sein erstes Testgesicht war der Kopf einer Bauchrednerpuppe namens Stooky
+						Bill, denn kein Mensch hielt die grellen Lampen lange aus.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte zwischen den Zeilenzahlen um und schau dem Strahl in Zeitlupe zu.</p>
+				<div class="stage-view">
+					<canvas id="scanCanvas" aria-label="Ein Bild wird Zeile für Zeile gemalt"></canvas>
+					<span class="stage-tag" id="scanTag"></span>
+					<span class="stage-readout" id="scanReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="presets" id="scanPresets" role="group" aria-label="Zeilenzahl"></div>
+					<label class="range">
+						<span class="range-head"><span>Zeilen</span><output id="linesOut">30</output></span>
+						<input id="lines" type="range" min="8" max="160" step="1" value="30" />
+					</label>
+					<button class="btn primary" id="btnSlow" type="button" aria-pressed="true">Zeitlupe</button>
+					<p class="stage-note" id="scanNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Bewegung -->
+		<section class="chapter flip" id="bewegung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Bildfrequenz</span>
+				<h2>Bewegung ist eine Täuschung</h2>
+				<p>Kein Fernseher und kein Kino zeigt echte Bewegung. Sie zeigen Standbilder, eines nach dem anderen, wie
+					ein Daumenkino. Kommen genug Bilder pro Sekunde, kann dein Gehirn sie nicht mehr auseinanderhalten und
+					macht daraus eine flüssige Bewegung.</p>
+				<p>Ab etwa 16 Bildern pro Sekunde wirkt es wie Bewegung. Das Kino zeigt 24, das europäische Fernsehen
+					hatte 25 volle Bilder, aufgeteilt in 50 Halbbilder, damit es weniger flimmert. Spielekonsolen schaffen
+					heute 60 oder 120.</p>
+				<p class="merke"><b>Merke</b>Fernsehen zeigt viele Standbilder pro Sekunde. Ab etwa 16 Bildern pro
+					Sekunde verschmelzen sie im Kopf zu einer Bewegung.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Das Stromnetz in Europa schwingt 50-mal pro Sekunde. Die ersten Fernseher richteten ihren Takt danach, damit Lampen und Netzbrummen keine wandernden Streifen ins Bild machten. In Amerika mit 60 Hz Netz waren es entsprechend 60 Halbbilder.">
+					<p class="quiz-q">Warum zeigte das europäische Fernsehen genau 50 Halbbilder pro Sekunde?</p>
+					<div class="quiz-options">
+						<button type="button">Weil das Stromnetz 50-mal pro Sekunde schwingt</button>
+						<button type="button">Weil das Auge genau 50 Bilder pro Sekunde sieht</button>
+						<button type="button">Weil 50 eine schöne runde Zahl ist</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh die Bilder pro Sekunde langsam hoch. Ab wann wirkt es flüssig?</p>
+				<div class="stage-view">
+					<canvas id="fpsCanvas" aria-label="Springender Ball bei einstellbarer Bildfrequenz"></canvas>
+					<span class="stage-tag">Daumenkino</span>
+					<span class="stage-readout" id="fpsReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Bilder pro Sekunde</span><output id="fpsOut">4</output></span>
+						<input id="fps" type="range" min="1" max="60" step="1" value="4" />
+					</label>
+					<div class="presets">
+						<button class="btn" type="button" data-fps="4">4</button>
+						<button class="btn" type="button" data-fps="12">12</button>
+						<button class="btn" type="button" data-fps="24">Kino · 24</button>
+						<button class="btn" type="button" data-fps="50">Fernsehen · 50</button>
+					</div>
+					<p class="stage-note" id="fpsNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Farben -->
+		<section class="chapter" id="farben">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Farbfernsehen</span>
+				<h2>Drei Farben reichen</h2>
+				<p>Erinnerst du dich an <a href="../licht/">Licht und Farben</a>? Dein Auge hat nur drei Sorten
+					Farbsensoren. Ein Bildschirm nutzt das aus: Jedes Pixel besteht aus drei winzigen Lämpchen in
+					<strong>Rot, Grün und Blau</strong>. Je nachdem, wie hell jedes davon leuchtet, siehst du eine
+					andere Farbe.</p>
+				<p>Rot und Grün zusammen ergeben Gelb. Alle drei voll ergeben Weiß. Alle aus ergibt Schwarz. Weil die
+					Lämpchen so klein sind, sieht dein Auge nie die einzelnen Farben, sondern nur die Mischung.</p>
+				<p>Halte mal eine Lupe oder einen Wassertropfen an deinen Bildschirm. Dann siehst du sie wirklich.</p>
+				<p class="merke"><b>Merke</b>Jedes Pixel besteht aus einem roten, einem grünen und einem blauen
+					Lämpchen. Aus der Ferne mischt das Auge sie zu einer einzigen Farbe.</p>
+				<div class="fact">
+					<b>Ein Knopfdruck auf der Funkausstellung</b>
+					<p>Am 25. August 1967 drückte Willy Brandt auf der Funkausstellung in Berlin einen roten Knopf, und
+						das westdeutsche Fernsehen war farbig. Ein Techniker hatte allerdings schon kurz vorher
+						umgeschaltet.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Misch eine Farbe und zoom dann ganz nah an den Bildschirm heran.</p>
+				<div class="stage-view">
+					<canvas id="rgbCanvas" aria-label="Farbfläche und vergrößerte Pixel mit roten, grünen und blauen Lämpchen"></canvas>
+					<span class="stage-tag" id="rgbTag"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="rgb">
+						<label class="range"><span class="range-head"><span>Rot</span><output id="rOut">255</output></span><input
+								id="r" type="range" min="0" max="255" value="255" /></label>
+						<label class="range"><span class="range-head"><span>Grün</span><output id="gOut">200</output></span><input
+								id="g" type="range" min="0" max="255" value="200" /></label>
+						<label class="range"><span class="range-head"><span>Blau</span><output id="bOut">0</output></span><input
+								id="b" type="range" min="0" max="255" value="0" /></label>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Zoom</span><output id="zoomOut">1×</output></span>
+						<input id="zoom" type="range" min="0" max="1" step="0.01" value="0" />
+					</label>
+					<div class="presets">
+						<button class="btn" type="button" data-rgb="255,255,0">Gelb</button>
+						<button class="btn" type="button" data-rgb="255,255,255">Weiß</button>
+						<button class="btn" type="button" data-rgb="255,120,0">Orange</button>
+						<button class="btn" type="button" data-rgb="140,0,255">Lila</button>
+					</div>
+					<p class="stage-note" id="rgbNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Senden -->
+		<section class="chapter wide" id="senden">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Digital</span>
+				<h2>Nur was sich ändert</h2>
+				<p>Früher wurde das Bild wie beim <a href="../radio/">Radio</a> als Welle durch die Luft geschickt, heute
+					meist als Daten über Kabel, Satellit oder das <a href="../internet/">Internet</a>. Das Problem: Ein
+					Full-HD-Bild hat gut 2 Millionen Pixel, jedes mit drei Farbwerten, und das 25-mal pro Sekunde.
+					Unkomprimiert wären das rund 1,2 Gigabit pro Sekunde.</p>
+				<p>Ein Stream kommt mit etwa 5 bis 8 Megabit aus, also rund 200-mal weniger. Der wichtigste Trick: Von
+					einem Bild zum nächsten ändert sich meist nur wenig. Also schickt man ab und zu ein ganzes Bild und
+					dazwischen nur, <strong>was sich bewegt hat</strong>.</p>
+				<p>Ist das Internet zu langsam, wird außerdem gröber gespeichert. Dann siehst du die berühmten
+					<strong>Klötzchen</strong>.</p>
+				<p class="merke"><b>Merke</b>Digitales Fernsehen spart Daten, indem es meistens nur die Teile des Bildes
+					überträgt, die sich seit dem letzten Bild verändert haben.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte „Nur Änderungen zeigen“ ein. Dann dreh die Qualität herunter.</p>
+				<div class="stage-view">
+					<canvas id="codecCanvas" aria-label="Animierte Szene mit markierten Bildteilen, die sich ändern"></canvas>
+					<span class="stage-tag">Videostream</span>
+					<span class="stage-readout" id="codecReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnDiff" type="button" aria-pressed="false">Nur Änderungen zeigen</button>
+					<label class="range">
+						<span class="range-head"><span>Qualität</span><output id="qualOut">hoch</output></span>
+						<input id="qual" type="range" min="1" max="10" step="1" value="10" />
+					</label>
+					<p class="stage-note" id="codecNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="1"
+					data-why="Bei einem Nachrichtensprecher vor ruhigem Hintergrund ändert sich kaum etwas, es reichen wenige Daten. Bei Konfetti, Regen oder einer schnellen Kamerafahrt ändert sich fast jedes Pixel in jedem Bild. Genau dann wird der Stream am ehesten klötzchenhaft.">
+					<p class="quiz-q">Bei welcher Szene braucht ein Stream die meisten Daten?</p>
+					<div class="quiz-options">
+						<button type="button">Ein Nachrichtensprecher vor einer ruhigen Wand</button>
+						<button type="button">Eine Konfettikanone bei schneller Kamerafahrt</button>
+						<button type="button">Ein schwarzer Bildschirm mit weißer Schrift</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 15 · 1969</p>
+		<a href="../internet/">Wie das Internet funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./fernsehen.js"></script>
+</body>
+
+</html>

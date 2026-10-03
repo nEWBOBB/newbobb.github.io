@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie das Telefon funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie das Telefon funktioniert: Mikrofon und Hörer, Wählscheibe und Tastentöne, Digitalisierung und Funkzellen fürs Handy." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ff8fb1;
+			--accent-2: #ffc38f;
+			--accent-ink: #2a0712;
+		}
+
+		.presets {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		#sprechen .stage-note,
+		#digital .stage-note {
+			font-variant-numeric: tabular-nums;
+		}
+
+		.number {
+			width: 100%;
+			min-height: 1.6em;
+			padding: 10px 14px;
+			border-radius: 12px;
+			background: #0a0908;
+			border: 1px solid var(--line);
+			font-family: "JetBrains Mono", monospace;
+			font-size: 1.4rem;
+			letter-spacing: 0.18em;
+			color: var(--ink);
+		}
+
+		.number:empty::before {
+			content: "Nummer wählen …";
+			font-family: "Space Grotesk", sans-serif;
+			font-size: 1rem;
+			letter-spacing: 0;
+			color: var(--faint);
+		}
+
+		.keypad {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 8px;
+			width: 100%;
+		}
+
+		.keypad .btn {
+			justify-content: center;
+			padding: 14px 0;
+			font-family: "JetBrains Mono", monospace;
+			font-size: 1.15rem;
+			border-radius: 14px;
+		}
+
+		.keypad .btn.is-on {
+			background: var(--accent);
+			color: var(--accent-ink);
+			border-color: var(--accent);
+		}
+
+		.keypad .btn:disabled {
+			opacity: 0.3;
+			cursor: default;
+		}
+
+		#cellCanvas {
+			touch-action: none;
+			cursor: grab;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../schall/">Schall</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../strom/">Strom</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../telegraf/">Telegraf</a>
+			<a href="../energie/">Energie</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../telefon/" aria-current="page">Telefon</a>
+			<a href="../radio/">Radio</a>
+			<a href="../atom/">Atome</a>
+			<a href="../fernsehen/">Fernsehen</a>
+			<a href="../internet/">Internet</a>
+			<a href="../ki/">Sprach-KI</a>
+			<a href="../agenten/">Agenten</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 11 · 1876</p>
+			<h1>Wie das <em>Telefon</em><br />funktioniert</h1>
+			<p class="v-lede">Seit 1876 kann man über einen Draht miteinander sprechen. Heute trägst du ein Telefon in
+				der Hosentasche, das ganz ohne Draht auskommt. Hier siehst du, wie aus deiner Stimme Strom wird, wie die
+				Leitung den Weg zum richtigen Telefon findet und wie dein Handy beim Gehen von Mast zu Mast springt.</p>
+			<ol class="v-toc">
+				<li><a href="#sprechen">Schall wird zu Strom</a></li>
+				<li><a href="#waehlen">Klicks und Töne</a></li>
+				<li><a href="#digital">Heute: alles digital</a></li>
+				<li><a href="#handy">Telefon ohne Kabel</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Sprechen -->
+		<section class="chapter" id="sprechen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · 1876</span>
+				<h2>Schall wird zu Strom</h2>
+				<p>Der <a href="../telegraf/">Telegraf</a> kennt nur an und aus. Für Sprache braucht man mehr: Der Strom muss genau so schwanken,
+					wie die Luft beim Sprechen schwingt. Das schafft man mit zwei Membranen und einem Elektromagneten.
+				</p>
+				<ol class="steps">
+					<li><strong>Mikrofon:</strong> Deine Stimme drückt eine dünne Membran vor und zurück. Dahinter
+						liegen Kohlekörnchen. Werden sie zusammengedrückt, leiten sie besser, und es fließt mehr Strom.
+					</li>
+					<li><strong>Leitung:</strong> Der Strom schwankt jetzt im Takt deiner Stimme, bis zu einigen
+						tausend Mal pro Sekunde.</li>
+					<li><strong>Hörer:</strong> Ein Elektromagnet zieht eine Eisenmembran mal stärker, mal schwächer
+						an. Sie bewegt die Luft genau so wie deine Stimme. Am anderen Ende hört man dich.</li>
+				</ol>
+				<p>Schau dir unten an, dass alle drei Kurven dieselbe Form haben. Das nennt man <strong>analog</strong>:
+					Der Strom ist ein Abbild des Schalls.</p>
+				<p class="merke"><b>Merke</b>Beim Telefon schwankt der Strom genau wie die Luft beim Sprechen. Der Strom ist ein elektrisches Abbild deiner Stimme.</p>
+				<div class="fact">
+					<b>Warum Ferngespräche teuer waren</b>
+					<p>Je länger der Draht, desto schwächer und verrauschter das Signal. Erst mit Verstärkern
+						(ab 1913) waren Gespräche quer durch Amerika möglich. Dreh an der Leitungslänge und hör selbst.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe auf „Stimme senden“ und dreh danach die Leitungslänge hoch.</p>
+				<div class="stage-view">
+					<canvas id="phoneCanvas" aria-label="Mikrofon, Leitung und Hörer mit Signalkurven"></canvas>
+					<span class="stage-tag">Telefon · Zeitlupe</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnVoice" type="button" aria-pressed="false">▶ Stimme senden</button>
+					<button class="btn" id="btnMic" type="button" aria-pressed="false">🎙 Eigenes Mikrofon</button>
+					<label class="range">
+						<span class="range-head"><span>Tonhöhe</span><output id="pitchOut">160 Hz</output></span>
+						<input type="range" id="pitch" min="80" max="400" value="160" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Leitungslänge</span><output id="lineOut">5 km</output></span>
+						<input type="range" id="line" min="1" max="100" value="5" />
+					</label>
+					<p class="stage-note" id="phoneNote">Tippe auf „Stimme senden“. Mit Kopfhörern hörst du das andere
+						Ende.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Wählen -->
+		<section class="chapter flip" id="waehlen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Vermittlung</span>
+				<h2>Klicks und Töne</h2>
+				<p>Ein Telefon allein nützt wenig. Es muss mit genau dem einen anderen Telefon verbunden werden, das du
+					erreichen willst. Anfangs machten das Menschen: Man hob ab, im Amt meldete sich das
+					<strong>„Fräulein vom Amt“</strong> und steckte von Hand ein Kabel in die richtige Buchse.</p>
+				<p>Ab 1891 übernahmen das Maschinen. Die <strong>Wählscheibe</strong> unterbricht beim Zurücklaufen den
+					Strom, für eine 3 dreimal, für eine 0 zehnmal. Im Amt springt bei jeder Unterbrechung ein
+					<strong>Wähler</strong> einen Kontakt weiter. So findet die Leitung Ziffer für Ziffer ihren Weg.</p>
+				<p>Beim <strong>Tastentelefon</strong> klickt nichts mehr. Jede Taste sendet zwei Töne gleichzeitig: einen
+					für ihre Zeile und einen für ihre Spalte. Die Vermittlung hört das Tonpaar heraus und weiß, welche
+					Taste gedrückt wurde.</p>
+				<p class="merke"><b>Merke</b>Die Telefonnummer ist eine Wegbeschreibung. Früher als Folge von
+					Stromunterbrechungen, heute als Paare von Tönen oder gleich als Daten.</p>
+				<div class="fact">
+					<b>Ein Bestatter erfand den Wähler</b>
+					<p>Almon Strowger, Bestatter in Kansas City, war überzeugt, dass das Fräulein vom Amt Anrufe an seinen
+						Konkurrenten weiterleitete. Also erfand er 1891 eine Vermittlung, die ganz ohne Menschen
+						auskommt.</p>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Die Wählscheibe schickt so viele Stromunterbrechungen, wie die Ziffer groß ist, und die 0 steht für zehn. Rund 10 Impulse pro Sekunde: Eine 0 dauert also eine ganze Sekunde, eine 1 nur ein Zehntel.">
+					<p class="quiz-q">Welche Ziffer braucht auf der Wählscheibe am längsten?</p>
+					<div class="quiz-options">
+						<button type="button">Die 1</button>
+						<button type="button">Die 9</button>
+						<button type="button">Die 0</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Nummer, erst mit der Wählscheibe, dann mit Tasten. Mit Ton macht es mehr Spaß.
+				</p>
+				<div class="stage-view">
+					<canvas id="dialCanvas" aria-label="Signal auf der Telefonleitung beim Wählen"></canvas>
+					<span class="stage-tag" id="dialTag">Leitung · Wählscheibe</span>
+					<span class="stage-readout" id="dialReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="presets" role="group" aria-label="Art des Telefons">
+						<button class="btn" type="button" data-dialmode="puls" aria-pressed="true">Wählscheibe · 1950</button>
+						<button class="btn" type="button" data-dialmode="ton" aria-pressed="false">Tastentelefon · 1980</button>
+					</div>
+					<div class="number" id="dialNumber" aria-live="polite"></div>
+					<div class="keypad" id="keypad" role="group" aria-label="Ziffern"></div>
+					<button class="btn primary" id="btnCall" type="button">📞 Anrufen</button>
+					<button class="btn" id="btnHang" type="button">Auflegen</button>
+					<p class="stage-note" id="dialNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Digital -->
+		<section class="chapter" id="digital">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Digital</span>
+				<h2>Heute: alles digital</h2>
+				<p>Moderne Telefone schicken keine schwankenden Ströme mehr, sondern <strong>Zahlen</strong>. Das
+					Handy misst den Schall tausende Male pro Sekunde (die <strong>Abtastrate</strong>) und schreibt jede
+					Messung als Zahl auf. Wie fein diese Zahl sein darf, bestimmen die <strong>Bits</strong>.</p>
+				<p>Zahlen haben einen riesigen Vorteil: Rauschen macht aus einer 1 keine 2. Ein digitales Gespräch
+					klingt nach 10 000 km genauso wie nach 10 Metern. Und es ist im Grunde wieder Morse: nur noch an
+					und aus, aber Millionen Mal pro Sekunde.</p>
+				<h3>Spiel mit den Reglern</h3>
+				<ul>
+					<li>Wenig Abtastungen: Hohe Töne gehen verloren oder klingen falsch.</li>
+					<li>Wenig Bits: Die Treppenstufen werden grob, es rauscht und kratzt.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Digital heißt: Der Schall wird tausende Male pro Sekunde gemessen und als Zahl verschickt. Mehr Messungen und mehr Bits klingen besser.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Der Mensch hört bis etwa 20 000 Hz. Nach dem Abtasttheorem braucht man mindestens doppelt so viele Messungen pro Sekunde, also gut 40 000. Daher die 44 100 Hz der CD.">
+					<p class="quiz-q">Warum misst eine CD 44 100-mal pro Sekunde?</p>
+					<div class="quiz-options">
+						<button type="button">Weil CDs sich 44 100-mal pro Minute drehen</button>
+						<button type="button">Um Töne bis 20 000 Hz sauber zu erfassen, braucht man mehr als doppelt so
+							viele Messungen</button>
+						<button type="button">Das ist zufällig so festgelegt worden</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Probier Telefon, CD und Kaputt aus und hör dir jede Einstellung an.</p>
+				<div class="stage-view">
+					<canvas id="digCanvas" aria-label="Abtastung und Quantisierung eines Tons"></canvas>
+					<span class="stage-tag">5 Millisekunden Klang</span>
+				</div>
+				<div class="stage-controls">
+					<div class="presets">
+						<button class="btn" type="button" data-preset="8000,8">Telefon</button>
+						<button class="btn" type="button" data-preset="44100,16">CD</button>
+						<button class="btn" type="button" data-preset="3000,3">Kaputt</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Abtastrate</span><output id="rateOut">8.000 Hz</output></span>
+						<input type="range" id="rate" min="0" max="100" step="0.01" value="53.72" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Bits pro Messung</span><output id="bitsOut">8 Bit</output></span>
+						<input type="range" id="bits" min="1" max="16" value="8" />
+					</label>
+					<button class="btn primary" id="btnPlayDig" type="button">▶ Anhören</button>
+					<p class="stage-note" id="digNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Handy -->
+		<section class="chapter wide" id="handy">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Mobilfunk</span>
+				<h2>Das Handy: Telefon ohne Kabel</h2>
+				<p>Ein Handy ist ein kleines Funkgerät. Es spricht aber nicht direkt mit dem anderen Handy, sondern mit
+					dem nächsten <strong>Funkmast</strong>. Ab dort geht es meistens per Kabel weiter, wie bei jedem
+					anderen Telefon. Wie Funk genau funktioniert, siehst du im <a href="../radio/">nächsten Teil</a>.
+				</p>
+				<p>Jeder Mast versorgt ein Gebiet, eine <strong>Funkzelle</strong>. In der Stadt ist sie oft nur ein paar
+					hundert Meter groß, auf dem Land viele Kilometer. Gehst du aus einer Zelle hinaus, übergibt das Netz
+					dein Gespräch an den nächsten Mast, ohne dass du etwas merkst. Das heißt <strong>Handover</strong>.
+				</p>
+				<p>Eine Zelle kann nur eine begrenzte Zahl von Handys gleichzeitig bedienen. Deshalb klappt bei großen
+					Konzerten oft nichts mehr: Zehntausende Menschen stehen in derselben Zelle.</p>
+				<p class="merke"><b>Merke</b>Das Handy funkt zum nächsten Mast. Das Netz aus vielen kleinen Funkzellen
+					reicht dein Gespräch beim Gehen von Mast zu Mast weiter.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh das Handy durch die Stadt oder lass es spazieren gehen. Dann schick eine
+					Menschenmenge in eine Zelle.</p>
+				<div class="stage-view">
+					<canvas id="cellCanvas" aria-label="Funkzellen mit Masten und einem Handy"></canvas>
+					<span class="stage-tag">Funkzellen · von oben</span>
+					<span class="stage-readout" id="cellReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnWalk" type="button" aria-pressed="false">🚶 Spazieren gehen</button>
+					<button class="btn" id="btnCrowd" type="button" aria-pressed="false">🎤 Konzert in einer Zelle</button>
+					<button class="btn" id="btnSmall" type="button" aria-pressed="false">Kleinere Zellen bauen</button>
+					<p class="stage-note" id="cellNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="fact">
+					<b>Der erste Handy-Anruf</b>
+					<p>Am 3. April 1973 rief Martin Cooper von Motorola auf einer Straße in New York seinen Konkurrenten
+						bei einer anderen Firma an. Sein Telefon wog über ein Kilo, der Akku hielt etwa 30 Minuten.</p>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Mehr Masten mit kleineren Zellen heißt: Jede Zelle muss weniger Handys gleichzeitig bedienen. Deshalb stehen in Innenstädten und bei Großveranstaltungen viel mehr Masten, teils sogar mobile auf Lastwagen.">
+					<p class="quiz-q">Wie bekommt man bei einem Konzert mit 50 000 Leuten wieder Netz?</p>
+					<div class="quiz-options">
+						<button type="button">Einen einzigen, viel stärkeren Mast aufstellen</button>
+						<button type="button">Mehr Masten aufstellen, damit sich die Leute auf mehr Zellen verteilen</button>
+						<button type="button">Alle Handys lauter stellen</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 12 · 1895</p>
+		<a href="../radio/">Wie Radio funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./telefon.js"></script>
+</body>
+
+</html>

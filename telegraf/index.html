@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-	<title>Telegraf und Telefon — Newbobb Lab</title>
+	<title>Wie der Telegraf funktioniert — Newbobb Lab</title>
 	<meta name="description"
-		content="Interaktiv verstehen, wie Telegraf und Telefon funktionieren: Elektromagnet, Morsecode, Mikrofon, Hörer und Digitalisierung." />
+		content="Interaktiv verstehen, wie der Telegraf funktioniert: ein sehr langer Stromkreis mit Elektromagnet, Morsecode selbst funken und live entschlüsseln." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -136,18 +136,6 @@
 			border-color: var(--accent);
 			background: color-mix(in srgb, var(--accent) 14%, var(--panel));
 		}
-
-		.presets {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 8px;
-			width: 100%;
-		}
-
-		#telefon .stage-note,
-		#digital .stage-note {
-			font-variant-numeric: tabular-nums;
-		}
 	</style>
 </head>
 
@@ -163,11 +151,13 @@
 			<a href="../schwerkraft/">Schwerkraft</a>
 			<a href="../strom/">Strom</a>
 			<a href="../magnet/">Magnetismus</a>
-			<a href="../telegraf/" aria-current="page">Telegraf &amp; Telefon</a>
+			<a href="../telegraf/" aria-current="page">Telegraf</a>
 			<a href="../energie/">Energie</a>
 			<a href="../waerme/">Wärme</a>
+			<a href="../telefon/">Telefon</a>
 			<a href="../radio/">Radio</a>
 			<a href="../atom/">Atome</a>
+			<a href="../fernsehen/">Fernsehen</a>
 			<a href="../internet/">Internet</a>
 			<a href="../ki/">Sprach-KI</a>
 			<a href="../agenten/">Agenten</a>
@@ -177,15 +167,13 @@
 	<main>
 		<section class="v-hero">
 			<p class="v-kicker">Verstehen · Teil 8 · 1837</p>
-			<h1>Wie <em>Telegraf</em><br />und Telefon funktionieren</h1>
+			<h1>Wie der <em>Telegraf</em><br />funktioniert</h1>
 			<p class="v-lede">Vor 1840 reiste eine Nachricht so schnell wie das schnellste Pferd. Dann merkte man: Strom
 				ist in Sekundenbruchteilen am anderen Ende eines Drahts, egal wie lang er ist. Man musste ihn nur
 				schalten und am anderen Ende etwas bewegen lassen.</p>
 			<ol class="v-toc">
 				<li><a href="#telegraf">Der Telegraf</a></li>
 				<li><a href="#morse">Morse selbst funken</a></li>
-				<li><a href="#telefon">Das Telefon</a></li>
-				<li><a href="#digital">Heute: alles digital</a></li>
 			</ol>
 		</section>
 
@@ -255,109 +243,6 @@
 						<button type="button">−−− ··· −−−</button>
 						<button type="button">·−· ·−· ·−·</button>
 					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- 3 Telefon -->
-		<section class="chapter flip" id="telefon">
-			<div class="chapter-text reveal">
-				<span class="chapter-num">03 · 1876</span>
-				<h2>Das Telefon</h2>
-				<p>Der Telegraf kennt nur an und aus. Für Sprache braucht man mehr: Der Strom muss genau so schwanken,
-					wie die Luft beim Sprechen schwingt. Das schafft man mit zwei Membranen und einem Elektromagneten.
-				</p>
-				<ol class="steps">
-					<li><strong>Mikrofon:</strong> Deine Stimme drückt eine dünne Membran vor und zurück. Dahinter
-						liegen Kohlekörnchen. Werden sie zusammengedrückt, leiten sie besser, und es fließt mehr Strom.
-					</li>
-					<li><strong>Leitung:</strong> Der Strom schwankt jetzt im Takt deiner Stimme, bis zu einigen
-						tausend Mal pro Sekunde.</li>
-					<li><strong>Hörer:</strong> Ein Elektromagnet zieht eine Eisenmembran mal stärker, mal schwächer
-						an. Sie bewegt die Luft genau so wie deine Stimme. Am anderen Ende hört man dich.</li>
-				</ol>
-				<p>Schau dir unten an, dass alle drei Kurven dieselbe Form haben. Das nennt man <strong>analog</strong>:
-					Der Strom ist ein Abbild des Schalls.</p>
-				<p class="merke"><b>Merke</b>Beim Telefon schwankt der Strom genau wie die Luft beim Sprechen. Der Strom ist ein elektrisches Abbild deiner Stimme.</p>
-				<div class="fact">
-					<b>Warum Ferngespräche teuer waren</b>
-					<p>Je länger der Draht, desto schwächer und verrauschter das Signal. Erst mit Verstärkern
-						(ab 1913) waren Gespräche quer durch Amerika möglich. Dreh an der Leitungslänge und hör selbst.</p>
-				</div>
-			</div>
-			<div class="stage reveal">
-				<p class="task">Tippe auf „Stimme senden“ und dreh danach die Leitungslänge hoch.</p>
-				<div class="stage-view">
-					<canvas id="phoneCanvas" aria-label="Mikrofon, Leitung und Hörer mit Signalkurven"></canvas>
-					<span class="stage-tag">Telefon · Zeitlupe</span>
-				</div>
-				<div class="stage-controls">
-					<button class="btn primary" id="btnVoice" type="button" aria-pressed="false">▶ Stimme senden</button>
-					<button class="btn" id="btnMic" type="button" aria-pressed="false">🎙 Eigenes Mikrofon</button>
-					<label class="range">
-						<span class="range-head"><span>Tonhöhe</span><output id="pitchOut">160 Hz</output></span>
-						<input type="range" id="pitch" min="80" max="400" value="160" />
-					</label>
-					<label class="range">
-						<span class="range-head"><span>Leitungslänge</span><output id="lineOut">5 km</output></span>
-						<input type="range" id="line" min="1" max="100" value="5" />
-					</label>
-					<p class="stage-note" id="phoneNote">Tippe auf „Stimme senden“. Mit Kopfhörern hörst du das andere
-						Ende.</p>
-				</div>
-			</div>
-		</section>
-
-		<!-- 4 Digital -->
-		<section class="chapter" id="digital">
-			<div class="chapter-text reveal">
-				<span class="chapter-num">04 · Heute</span>
-				<h2>Heute: alles digital</h2>
-				<p>Moderne Telefone schicken keine schwankenden Ströme mehr, sondern <strong>Zahlen</strong>. Das
-					Handy misst den Schall tausende Male pro Sekunde (die <strong>Abtastrate</strong>) und schreibt jede
-					Messung als Zahl auf. Wie fein diese Zahl sein darf, bestimmen die <strong>Bits</strong>.</p>
-				<p>Zahlen haben einen riesigen Vorteil: Rauschen macht aus einer 1 keine 2. Ein digitales Gespräch
-					klingt nach 10 000 km genauso wie nach 10 Metern. Und es ist im Grunde wieder Morse: nur noch an
-					und aus, aber Millionen Mal pro Sekunde.</p>
-				<h3>Spiel mit den Reglern</h3>
-				<ul>
-					<li>Wenig Abtastungen: Hohe Töne gehen verloren oder klingen falsch.</li>
-					<li>Wenig Bits: Die Treppenstufen werden grob, es rauscht und kratzt.</li>
-				</ul>
-				<p class="merke"><b>Merke</b>Digital heißt: Der Schall wird tausende Male pro Sekunde gemessen und als Zahl verschickt. Mehr Messungen und mehr Bits klingen besser.</p>
-				<div class="quiz" data-answer="1"
-					data-why="Der Mensch hört bis etwa 20 000 Hz. Nach dem Abtasttheorem braucht man mindestens doppelt so viele Messungen pro Sekunde, also gut 40 000. Daher die 44 100 Hz der CD.">
-					<p class="quiz-q">Warum misst eine CD 44 100-mal pro Sekunde?</p>
-					<div class="quiz-options">
-						<button type="button">Weil CDs sich 44 100-mal pro Minute drehen</button>
-						<button type="button">Um Töne bis 20 000 Hz sauber zu erfassen, braucht man mehr als doppelt so
-							viele Messungen</button>
-						<button type="button">Das ist zufällig so festgelegt worden</button>
-					</div>
-				</div>
-			</div>
-			<div class="stage reveal">
-				<p class="task">Probier Telefon, CD und Kaputt aus und hör dir jede Einstellung an.</p>
-				<div class="stage-view">
-					<canvas id="digCanvas" aria-label="Abtastung und Quantisierung eines Tons"></canvas>
-					<span class="stage-tag">5 Millisekunden Klang</span>
-				</div>
-				<div class="stage-controls">
-					<div class="presets">
-						<button class="btn" type="button" data-preset="8000,8">Telefon</button>
-						<button class="btn" type="button" data-preset="44100,16">CD</button>
-						<button class="btn" type="button" data-preset="3000,3">Kaputt</button>
-					</div>
-					<label class="range">
-						<span class="range-head"><span>Abtastrate</span><output id="rateOut">8.000 Hz</output></span>
-						<input type="range" id="rate" min="0" max="100" step="0.01" value="53.72" />
-					</label>
-					<label class="range">
-						<span class="range-head"><span>Bits pro Messung</span><output id="bitsOut">8 Bit</output></span>
-						<input type="range" id="bits" min="1" max="16" value="8" />
-					</label>
-					<button class="btn primary" id="btnPlayDig" type="button">▶ Anhören</button>
-					<p class="stage-note" id="digNote"></p>
 				</div>
 			</div>
 		</section>

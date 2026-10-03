@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Newbobb Lab</title>
 	<meta name="description"
-		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Energie, Wärme, Atomen, Internet und KI, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
+		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Telefon, Radio, Fernsehen, Internet und KI, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
 	<meta name="theme-color" content="#0a0908" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -528,17 +528,16 @@
 			gap: 16px;
 		}
 
-		/* Reihen zu je drei, dazwischen Paare etwas breiter */
+		/* Reihen zu je drei, dazwischen Paare etwas breiter; am Ende zwei Paare */
 		.lesson {
 			grid-column: span 2;
 		}
 
-		.lesson:nth-child(7),
-		.lesson:nth-child(8),
-		.lesson:nth-child(12),
-		.lesson:nth-child(13),
-		.lesson:nth-child(14),
-		.lesson:nth-child(15) {
+		.lesson:nth-child(4),
+		.lesson:nth-child(5),
+		.lesson:nth-child(9),
+		.lesson:nth-child(10),
+		.lesson:nth-child(n + 14) {
 			grid-column: span 3;
 		}
 
@@ -1308,6 +1307,86 @@
 			}
 		}
 
+		/* Telefon: Wählscheibe, die eine Ziffer wählt */
+		.lesson--phone {
+			--c: #ff8fb1;
+		}
+
+		.lesson--phone .lesson-art {
+			display: grid;
+			place-items: center;
+			background:
+				radial-gradient(circle at 50% 50%, rgba(255, 143, 177, 0.18), transparent 60%),
+				#050404;
+		}
+
+		.lesson--phone .lesson-art b {
+			width: 130px;
+			height: 130px;
+			border-radius: 50%;
+			background:
+				radial-gradient(circle, #050404 0 24px, transparent 25px),
+				repeating-conic-gradient(from 10deg, rgba(255, 143, 177, 0.9) 0 18deg, transparent 18deg 30deg);
+			-webkit-mask: radial-gradient(circle, transparent 0 34px, #000 35px 58px, transparent 59px);
+			mask: radial-gradient(circle, transparent 0 34px, #000 35px 58px, transparent 59px);
+			box-shadow: 0 0 40px rgba(255, 143, 177, 0.3);
+			animation: dial 4s ease-in-out infinite;
+		}
+
+		@keyframes dial {
+			30% {
+				transform: rotate(150deg);
+			}
+
+			40%,
+			to {
+				transform: rotate(0);
+			}
+		}
+
+		/* Fernsehen: Röhre mit Testbild und wanderndem Strahl */
+		.lesson--tv {
+			--c: #9fe7ff;
+		}
+
+		.lesson--tv .lesson-art {
+			display: grid;
+			place-items: center;
+		}
+
+		.lesson--tv .lesson-art b {
+			position: relative;
+			width: 190px;
+			height: 130px;
+			border-radius: 22px / 18px;
+			overflow: hidden;
+			background:
+				repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0 2px, transparent 2px 4px),
+				linear-gradient(90deg, #e8e8e8 0 14.3%, #e8e05a 0 28.6%, #5ae0e0 0 42.9%, #5ae05a 0 57.1%, #e05ae0 0 71.4%, #e05a5a 0 85.7%, #5a5ae0 0);
+			box-shadow: 0 0 0 6px #1a1a1a, 0 0 40px rgba(159, 231, 255, 0.35);
+			filter: saturate(0.8);
+		}
+
+		.lesson--tv .lesson-art b::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			height: 18px;
+			background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.55), transparent);
+			animation: beam 2.4s linear infinite;
+		}
+
+		@keyframes beam {
+			from {
+				top: -18px;
+			}
+
+			to {
+				top: 100%;
+			}
+		}
+
 		/* Sprach-KI: Text, der Token für Token entsteht */
 		.lesson--ki {
 			--c: #ff7ad9;
@@ -1610,7 +1689,7 @@
 			}
 
 			.lesson,
-			.lesson:nth-child(n + 7) {
+			.lesson:nth-child(n) {
 				grid-column: auto;
 			}
 
@@ -1687,11 +1766,11 @@
 			<p class="eyebrow">Newbobb Lab · seit 2026</p>
 			<h1>Code,<br />der <span class="outline">leuchtet.</span></h1>
 			<div class="hero-foot">
-				<p>Ein Spielplatz zum Ausprobieren und Verstehen: vom ersten Feuer über Strom, Radio und Internet bis zur
-					KI, alles zum Anfassen. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
+				<p>Ein Spielplatz zum Ausprobieren und Verstehen: vom ersten Feuer über Strom, Telefon und Fernsehen bis
+					zur KI, alles zum Anfassen. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
 				<div class="stats">
 					<div class="stat"><strong id="countAll">18</strong><span>Projekte</span></div>
-					<div class="stat"><strong>15</strong><span>zum Verstehen</span></div>
+					<div class="stat"><strong>17</strong><span>zum Verstehen</span></div>
 					<div class="stat"><strong>1</strong><span>Schwarzes Loch</span></div>
 				</div>
 			</div>
@@ -1781,8 +1860,9 @@
 					<div class="lesson-art" aria-hidden="true"><span>·−·· ·− −··</span></div>
 					<div class="lesson-body">
 						<span class="lesson-num">08 · 1837</span>
-						<h3>Telegraf &amp; Telefon</h3>
-						<p>Morse selbst funken, Schall in Strom verwandeln und hören, wie Abtastrate und Bits klingen.</p>
+						<h3>Wie der Telegraf funktioniert</h3>
+						<p>Ein Stromkreis von Berlin nach Hamburg, ein klackender Elektromagnet und Morse selbst funken
+							mit Live-Decoder.</p>
 						<span class="lesson-go">Morsen →</span>
 					</div>
 				</a>
@@ -1806,10 +1886,20 @@
 						<span class="lesson-go">Aufheizen →</span>
 					</div>
 				</a>
+				<a class="lesson lesson--phone reveal" href="./telefon/">
+					<div class="lesson-art" aria-hidden="true"><b></b></div>
+					<div class="lesson-body">
+						<span class="lesson-num">11 · 1876</span>
+						<h3>Wie das Telefon funktioniert</h3>
+						<p>Stimme wird zu Strom, Wählscheibe gegen Tastentöne, Abtastrate und Bits zum Anhören und ein
+							Handy, das von Funkmast zu Funkmast springt.</p>
+						<span class="lesson-go">Anrufen →</span>
+					</div>
+				</a>
 				<a class="lesson lesson--radio reveal" href="./radio/">
 					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">11 · 1895</span>
+						<span class="lesson-num">12 · 1895</span>
 						<h3>Wie Radio funktioniert</h3>
 						<p>Wellen aussenden und empfangen, Wellenlängen vergleichen, AM gegen FM im Gewitter und ein Radio
 							zum Selbst-Abstimmen.</p>
@@ -1819,17 +1909,27 @@
 				<a class="lesson lesson--atom reveal" href="./atom/">
 					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">12 · 1896</span>
+						<span class="lesson-num">13 · 1896</span>
 						<h3>Atome und Radioaktivität</h3>
 						<p>Zoom bis in den Atomkern, Atome selbst bauen, Halbwertszeit mit Geigerzähler, eine Kettenreaktion
 							und Strahlung abschirmen.</p>
 						<span class="lesson-go">Spalten →</span>
 					</div>
 				</a>
+				<a class="lesson lesson--tv reveal" href="./fernsehen/">
+					<div class="lesson-art" aria-hidden="true"><b></b></div>
+					<div class="lesson-body">
+						<span class="lesson-num">14 · 1926</span>
+						<h3>Wie Fernsehen funktioniert</h3>
+						<p>Ein Bild Zeile für Zeile malen, Bewegung aus Standbildern, Pixel unter der Lupe und ein Stream,
+							der nur sendet, was sich bewegt.</p>
+						<span class="lesson-go">Einschalten →</span>
+					</div>
+				</a>
 				<a class="lesson lesson--net reveal" href="./internet/">
 					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">13 · 1969</span>
+						<span class="lesson-num">15 · 1969</span>
 						<h3>Wie das Internet funktioniert</h3>
 						<p>Text wird zu Bits, Pakete suchen sich Wege durch kaputte Router, DNS schlägt Adressen nach,
 							und Licht ist zu langsam.</p>
@@ -1839,7 +1939,7 @@
 				<a class="lesson lesson--ki reveal" href="./ki/">
 					<div class="lesson-art" aria-hidden="true"><span>Es·war·ein|mal</span><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">14 · 2017</span>
+						<span class="lesson-num">16 · 2017</span>
 						<h3>Wie Sprach-KI funktioniert</h3>
 						<p>Text in Tokens zerlegen, mit Bedeutung rechnen, Aufmerksamkeit sehen, ein Mini-Modell trainieren
 							und Wort für Wort eine Geschichte würfeln.</p>
@@ -1849,7 +1949,7 @@
 				<a class="lesson lesson--agent reveal" href="./agenten/">
 					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">15 · 2025</span>
+						<span class="lesson-num">17 · 2025</span>
 						<h3>Wie KI-Agenten arbeiten</h3>
 						<p>Die Schleife aus Denken, Handeln und Beobachten, Werkzeuge an- und ausschalten, MCP als Stecker
 							und ein Agent, der sich per E-Mail austricksen lässt.</p>
@@ -2023,8 +2123,8 @@
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
 						<div class="card-meta"><span>Verstehen · Nachrichtentechnik</span><span>1837</span></div>
-						<h3>Telegraf &amp; Telefon <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Morsen mit Live-Decoder, Mikrofon und Hörer, Digitalisierung zum Anhören.</p>
+						<h3>Wie der Telegraf funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Elektromagnet, Papierstreifen und Morsen mit Live-Decoder.</p>
 					</div>
 				</a>
 				<a class="card reveal" data-cat="learn" href="./energie/" style="--h: 80">
@@ -2043,6 +2143,14 @@
 						<p>Teilchenbewegung, Aggregatzustände, Wärmeleitung, Heißluftballon und Mischtemperatur.</p>
 					</div>
 				</a>
+				<a class="card reveal" data-cat="learn" href="./telefon/" style="--h: 340">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Nachrichtentechnik</span><span class="pill">Neu</span></div>
+						<h3>Wie das Telefon funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Mikrofon und Hörer, Wählscheibe und Tastentöne, Digitalisierung und Funkzellen.</p>
+					</div>
+				</a>
 				<a class="card reveal" data-cat="learn" href="./radio/" style="--h: 275">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
@@ -2059,6 +2167,14 @@
 						<p>Zoom ins Atom, Atom-Baukasten, Halbwertszeit, Kettenreaktion und Abschirmung.</p>
 					</div>
 				</a>
+				<a class="card reveal" data-cat="learn" href="./fernsehen/" style="--h: 190">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Bildtechnik</span><span class="pill">Neu</span></div>
+						<h3>Wie Fernsehen funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Zeilen, Bilder pro Sekunde, RGB-Pixel und Videokompression zum Ausprobieren.</p>
+					</div>
+				</a>
 				<a class="card reveal" data-cat="learn" href="./internet/" style="--h: 145">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
@@ -2070,7 +2186,7 @@
 				<a class="card reveal" data-cat="learn" href="./ki/" style="--h: 320">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Informatik</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Informatik</span><span>2017</span></div>
 						<h3>Wie Sprach-KI funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Tokens, Bedeutungsraum, Attention, Training und Temperatur zum Ausprobieren.</p>
 					</div>
@@ -2078,7 +2194,7 @@
 				<a class="card reveal" data-cat="learn" href="./agenten/" style="--h: 222">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Informatik</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Informatik</span><span>2025</span></div>
 						<h3>Wie KI-Agenten arbeiten <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Agenten-Schleife, Werkzeuge, MCP und Prompt Injection zum Ausprobieren.</p>
 					</div>
