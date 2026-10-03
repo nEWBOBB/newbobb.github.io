@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Gitarre lernen — Newbobb Lab</title>
+	<meta name="description"
+		content="Gitarre lernen, wie Profis es empfehlen: Stimmgerät mit Mikrofon, interaktives Griffbrett, die ersten Akkorde, Ein-Minuten-Wechsel, Schlagmuster mit Metronom und ein täglicher Übeplan." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/musik.css" />
+	<style>
+		#heroCanvas {
+			touch-action: none;
+			cursor: crosshair;
+		}
+
+		:root {
+			--accent: #f5b14c;
+			--accent-2: #5fdcc2;
+			--accent-ink: #241404;
+		}
+
+		#fretSvg,
+		#chordSvg {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.chord-wrap {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			justify-items: center;
+			padding: 34px 12px 8px;
+		}
+
+		.chord-wrap svg {
+			max-width: 300px;
+		}
+
+		.pair {
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			align-items: center;
+			gap: 8px;
+			padding: 34px 14px 10px;
+		}
+
+		.pair svg {
+			width: 100%;
+			max-width: 170px;
+			justify-self: center;
+		}
+
+		.pair .swap {
+			font-size: 1.6rem;
+			color: var(--accent);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#spielen">newbobb <span>/ spielen lernen</span></a>
+		<nav class="v-series" aria-label="Reihe Spielen lernen">
+			<a href="../gitarre/" aria-current="page">Gitarre</a>
+			<a href="../klavier/">Klavier</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Spielen lernen · Gitarre</p>
+			<h1>Gitarre <em>lernen</em>,<br />aber richtig</h1>
+			<p class="v-lede">Die meisten, die mit Gitarre anfangen, hören nach drei Monaten wieder auf. Nicht weil sie kein
+				Talent haben, sondern weil sie falsch üben. Hier lernst du die Methode, die Gitarrenlehrer seit
+				Jahrzehnten empfehlen: wenige Dinge, langsam, jeden Tag. Fahr mit dem Finger über die Saiten.</p>
+			<div class="hero-stage">
+				<canvas id="heroCanvas" aria-label="Sechs Gitarrensaiten zum Anschlagen"></canvas>
+				<span class="stage-tag">Wisch über die Saiten</span>
+				<button class="btn hero-btn" id="heroStrum" type="button">🎸 Anschlagen</button>
+			</div>
+			<ol class="v-toc">
+				<li><a href="#stimmen">Haltung und Stimmen</a></li>
+				<li><a href="#griffbrett">Das Griffbrett</a></li>
+				<li><a href="#akkorde">Die ersten Akkorde</a></li>
+				<li><a href="#wechsel">Ein-Minuten-Wechsel</a></li>
+				<li><a href="#rhythmus">Rhythmus ist alles</a></li>
+				<li><a href="#ueben">So üben Profis</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Stimmen -->
+		<section class="chapter" id="stimmen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Bevor der erste Ton klingt</span>
+				<h2>Haltung und Stimmen</h2>
+				<p>Eine verstimmte Gitarre klingt auch mit perfekten Griffen falsch, und dein Gehör gewöhnt sich an das
+					Falsche. Profis stimmen deshalb <strong>jedes Mal</strong>, bevor sie spielen. Es dauert eine Minute.</p>
+				<p>Die sechs Saiten heißen von der dicksten zur dünnsten <strong>E A D G H E</strong>. Merksatz: <em>Eine
+						Alte Dame Geht Heute Einkaufen.</em> Die dickste Saite ist die tiefste, sie liegt beim Spielen oben.</p>
+				<h3>So sitzt du richtig</h3>
+				<ul>
+					<li><strong>Rücken gerade</strong>, die Gitarre liegt auf dem rechten Oberschenkel, der Hals zeigt leicht
+						nach oben.</li>
+					<li>Der <strong>Daumen</strong> der Greifhand liegt locker hinter dem Hals, etwa hinter dem Mittelfinger.
+						Nicht klammern.</li>
+					<li>Die <strong>Fingerkuppen</strong> drücken senkrecht auf die Saite, so nah wie möglich
+						<strong>direkt hinter dem Bundstäbchen</strong>. Dann reicht wenig Kraft.</li>
+					<li>Schultern locker. Wenn etwas wehtut (außer den Fingerkuppen), mach eine Pause.</li>
+				</ul>
+				<div class="fact">
+					<b>Die Fingerkuppen tun weh?</b>
+					<p>Ganz normal. In den ersten zwei bis drei Wochen bildet sich Hornhaut. Lieber zweimal 10 Minuten am Tag
+						als einmal eine Stunde, dann heilen die Kuppen dazwischen.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Erlaube das Mikrofon und zupf eine leere Saite. Ohne Gitarre? Tippe die Saiten unten an und
+					hör dir die Zieltöne an.</p>
+				<div class="stage-view">
+					<canvas id="tunerCanvas" aria-label="Stimmgerät mit Zeiger"></canvas>
+					<span class="stage-tag">Stimmgerät</span>
+					<span class="stage-readout" id="tunerOut">Mikrofon aus</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnMic" type="button" aria-pressed="false">🎤 Stimmgerät an</button>
+					<div class="tuner-strings" id="tunerStrings"></div>
+					<p class="stage-note" id="tunerNote">Der Zeiger zeigt, wie weit du daneben liegst. Steht er mittig und
+						leuchtet grün, ist die Saite gestimmt. Tipp: Immer von unten an den Ton heran stimmen.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Griffbrett -->
+		<section class="chapter wide" id="griffbrett">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Orientierung</span>
+				<h2>Das Griffbrett</h2>
+				<p>Jedes Bundstäbchen macht den Ton um einen <strong>Halbton</strong> höher. Nach 12 Bünden bist du eine
+					Oktave höher und alles wiederholt sich. Schau dir an, wie die Bünde zum Korpus hin immer enger
+					werden: Jeder verkürzt die Saite um denselben Anteil.</p>
+				<p>Du musst nicht alle Töne auswendig lernen. Profis empfehlen, mit den Tönen auf der
+					<strong>tiefen E-Saite</strong> und der <strong>A-Saite</strong> anzufangen. Dort liegen später die
+					Grundtöne fast aller Akkorde.</p>
+				<p class="merke"><b>Merke</b>Zwischen E und F und zwischen H und C liegt nur ein Halbton, also ein Bund. Zwischen
+					allen anderen Stammtönen liegen zwei Bünde.</p>
+				<div class="pro">
+					<b>Profi-Tipp</b>
+					<ul>
+						<li>Lern jeden Tag nur <strong>einen</strong> Ton auf E- und A-Saite und such ihn überall.</li>
+						<li>Sag den Tonnamen laut, während du spielst. Das verknüpft Hand, Ohr und Kopf.</li>
+						<li>Die Punkte auf dem Hals (3, 5, 7, 9, 12) sind deine Landkarte.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe aufs Griffbrett, um Töne zu spielen. Dann starte die Tonsuche.</p>
+				<div class="stage-view">
+					<svg id="fretSvg" class="tap" viewBox="0 0 1000 300" role="img"
+						aria-label="Griffbrett mit sechs Saiten und zwölf Bünden"></svg>
+					<span class="stage-readout" id="fretOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="fretModes"></div>
+					<button class="btn primary" id="btnFind" type="button">🎯 Tonsuche starten</button>
+					<span class="pill" id="findScore" hidden></span>
+					<p class="stage-note" id="fretNote" aria-live="polite">Tippe einen Bund, um den Ton zu hören.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Akkorde -->
+		<section class="chapter" id="akkorde">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Die ersten Griffe</span>
+				<h2>Die ersten Akkorde</h2>
+				<p>Mit nur acht offenen Akkorden kannst du Tausende Lieder begleiten. Profis bringen sie in einer
+					bestimmten Reihenfolge bei, die leichtesten zuerst: <strong>E-Moll, A-Moll, E, A, D</strong>, dann
+					<strong>D-Moll, C und G</strong>.</p>
+				<h3>So liest du ein Griffbild</h3>
+				<ul>
+					<li>Die senkrechten Linien sind die Saiten, links die dicke tiefe E-Saite.</li>
+					<li>Die Kreise zeigen, wo du drückst. Die Zahl ist der <strong>Finger</strong>: 1 Zeige-, 2 Mittel-, 3
+						Ring-, 4 kleiner Finger.</li>
+					<li><strong>○</strong> heißt: Saite leer mitklingen lassen. <strong>×</strong> heißt: nicht anschlagen.</li>
+				</ul>
+				<div class="pro">
+					<b>Profi-Tipp: Saite für Saite prüfen</b>
+					<ul>
+						<li>Greif den Akkord und zupf jede Saite <strong>einzeln</strong>. Schnarrt oder dumpft eine? Dann
+							drückt ein Finger zu weit vom Bundstäbchen oder berührt die Nachbarsaite.</li>
+						<li>Finger steil stellen, wie kleine Hämmer. Die Fingernägel der Greifhand kurz halten.</li>
+						<li>Setz alle Finger <strong>gleichzeitig</strong> auf, nicht einen nach dem anderen.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle einen Akkord und schlag ihn an. Tippe auf eine Saite im Griffbild, um sie einzeln zu
+					prüfen.</p>
+				<div class="stage-view">
+					<div class="chord-wrap">
+						<svg id="chordSvg" class="tap" viewBox="0 0 260 300" role="img" aria-label="Griffbild"></svg>
+					</div>
+					<span class="stage-tag" id="chordTag">E-Moll</span>
+					<span class="stage-readout" id="chordOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="chordChips"></div>
+					<button class="btn primary" id="btnStrum" type="button">⬇ Anschlagen</button>
+					<button class="btn" id="btnArp" type="button">Saite für Saite</button>
+					<p class="stage-note" id="chordNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Wechsel -->
+		<section class="chapter flip" id="wechsel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Die wichtigste Übung</span>
+				<h2>Ein-Minuten-Wechsel</h2>
+				<p>Einen Akkord greifen kann fast jeder nach einem Tag. Das echte Problem ist der <strong>Wechsel</strong>:
+					Das Lied läuft weiter, und deine Finger suchen noch. Viele Gitarrenlehrer, allen voran Justin
+					Sandercoe, schwören deshalb auf eine einfache Übung:</p>
+				<ol class="steps">
+					<li>Nimm zwei Akkorde, zum Beispiel A und D.</li>
+					<li>Stell einen Timer auf eine Minute.</li>
+					<li>Wechsle so oft wie möglich hin und her und schlag jedes Mal einmal an. Jeder saubere Wechsel zählt.</li>
+					<li>Schreib die Zahl auf. Morgen versuchst du, sie zu schlagen.</li>
+				</ol>
+				<p>Mit 30 Wechseln pro Minute kannst du einfache Lieder begleiten. Mit 60 klingt es flüssig.</p>
+				<div class="pro">
+					<b>Profi-Tipp: Bewegung sparen</b>
+					<ul>
+						<li><strong>Ankerfinger</strong>: Bleibt ein Finger in beiden Akkorden auf derselben Stelle, lass ihn
+							liegen. Bei C und Am bleiben Zeige- und Mittelfinger einfach liegen, nur der Ringfinger wandert.</li>
+						<li><strong>Formen verschieben</strong>: Am und E sind derselbe Griff, nur um eine Saite versetzt. Die
+							Hand behält ihre Form und rutscht.</li>
+						<li>Heb die Finger nur so hoch wie nötig. Je kleiner die Bewegung, desto schneller.</li>
+						<li>Schau schon zum nächsten Akkord, bevor du ihn brauchst.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Paar, starte die Minute und tippe bei jedem Wechsel auf die Fläche (oder drück
+					die Leertaste).</p>
+				<div class="stage-view">
+					<div class="pair" id="pairView"></div>
+					<span class="stage-tag">Akkordpaar</span>
+					<span class="stage-readout" id="pairBest"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="pairChips"></div>
+					<div class="counter">
+						<button class="tapper" id="tapper" type="button" disabled>Erst die Minute starten</button>
+						<div>
+							<div class="big-readout" id="countOut">0</div>
+							<div class="stage-note mono" id="timeOut">1:00</div>
+						</div>
+					</div>
+					<button class="btn primary" id="btnMinute" type="button">⏱ Minute starten</button>
+					<div class="history" id="history" aria-label="Deine letzten Ergebnisse für dieses Paar"></div>
+					<p class="stage-note" id="pairNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Rhythmus -->
+		<section class="chapter wide" id="rhythmus">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Die rechte Hand</span>
+				<h2>Rhythmus ist alles</h2>
+				<p>Zuhörer verzeihen einen falschen Ton, aber keinen wackligen Rhythmus. Das Geheimnis guter Begleitung:
+					Die Schlaghand bewegt sich <strong>wie ein Pendel ständig auf und ab</strong>, gleichmäßig im Takt.
+					Auf den Zählzeiten <strong>1 2 3 4</strong> geht sie nach unten, auf den <strong>Unds</strong>
+					dazwischen nach oben. Für Pausen trifft sie die Saiten einfach nicht, bewegt sich aber weiter.</p>
+				<p>Und: Übe <strong>mit Metronom</strong> und fang langsamer an, als du denkst. Erst wenn das Muster
+					dreimal ohne Fehler läuft, wird es fünf Schläge pro Minute schneller.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Schlagmuster und eine Akkordfolge. Drück Start und spiel mit, oder hör erst nur zu.</p>
+				<div class="stage-view">
+					<canvas id="strumCanvas" aria-label="Schlagmuster mit Pendel und Takt"></canvas>
+					<span class="stage-tag" id="strumTag">Schlagmuster</span>
+					<span class="stage-readout" id="strumOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnPlay" type="button" aria-pressed="false">▶ Start</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="bpmOut">70 BPM</output></span>
+						<input type="range" id="bpm" min="40" max="140" value="70" />
+					</label>
+					<button class="btn toggle" id="btnGuitar" type="button" aria-pressed="true">🎸 Gitarre</button>
+					<button class="btn toggle" id="btnClick" type="button" aria-pressed="true">🥁 Klick</button>
+					<div class="chips" id="patternChips"></div>
+					<div class="chips" id="progChips"></div>
+					<p class="stage-note" id="strumNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Die Hand hört nie auf, sich zu bewegen. Ab und auf, ab und auf. Ob sie die
+					Saiten trifft, entscheidet das Muster, nicht der Arm. Und tipp mit dem Fuß mit.</p>
+			</div>
+		</section>
+
+		<!-- 6 Üben -->
+		<section class="chapter" id="ueben">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">06 · Die Methode</span>
+				<h2>So üben Profis</h2>
+				<p>Forschung zum Lernen von Bewegungen und die Erfahrung von Musiklehrern sagen dasselbe: Es kommt nicht auf
+					die Stunden an, sondern darauf, <strong>wie</strong> du übst.</p>
+				<ul>
+					<li><strong>Kurz und täglich</strong> schlägt lang und selten. 20 Minuten jeden Tag bringen mehr als
+						drei Stunden am Sonntag. Im Schlaf festigt das Gehirn, was du tagsüber geübt hast.</li>
+					<li><strong>Langsam ist schnell.</strong> Was du langsam sauber spielst, kannst du später schnell. Was du
+						schnell schlampig übst, übst du falsch ein.</li>
+					<li><strong>Gezielt statt Durchspielen.</strong> Spiel nicht immer das ganze Lied, sondern übe die eine
+						Stelle, die hakt.</li>
+					<li><strong>Nimm dich auf.</strong> Beim Spielen hörst du anders als beim Zuhören. Ein Handy reicht.</li>
+					<li><strong>Spiel echte Lieder</strong>, und zwar früh. Ein Lied, das du liebst, ist die beste Motivation.</li>
+				</ul>
+				<div class="myth">
+					<div><i>✗</i><s>„Ich brauche erst die perfekte Gitarre.“</s><span>Eine gut eingestellte Einsteigergitarre
+							reicht. Lass die Saitenlage im Laden prüfen, dann tut es viel weniger weh.</span></div>
+					<div><i>✗</i><s>„Erst Tonleitern, dann Lieder.“</s><span>Akkorde und Lieder zuerst. Tonleitern kommen, wenn
+							du sie für Solos brauchst.</span></div>
+					<div><i>✗</i><s>„Ich spiele schnell, das wird schon sauber.“</s><span>Nein. Das Gehirn lernt genau das, was
+							du wiederholst, Fehler eingeschlossen.</span></div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dein täglicher 20-Minuten-Plan. Starte die Session, der Timer führt dich durch.</p>
+				<div class="stage-controls" id="plan"></div>
+			</div>
+		</section>
+
+		<section class="chapter wide">
+			<div class="chapter-text full reveal">
+				<h3>Dein Weg in den ersten acht Wochen</h3>
+				<ol class="path">
+					<li><b>Em und Am</b>Stimmen, Haltung, zwei Akkorde. Nur Abschläge.</li>
+					<li><b>E, A, D</b>Erste Ein-Minuten-Wechsel: A ↔ D, D ↔ E.</li>
+					<li><b>Erstes Lied</b>Ein Lied mit zwei bis drei Akkorden, Viertel-Abschläge.</li>
+					<li><b>Achtel-Pendel</b>Ab und auf im Takt, Metronom ab 60 BPM.</li>
+					<li><b>Dm, C, G</b>Neue Akkorde, Wechsel C ↔ G und G ↔ D.</li>
+					<li><b>Pop-Muster</b>Ab · Ab-Auf · · Auf-Ab-Auf über G, D, Em, C.</li>
+					<li><b>Töne finden</b>Alle Stammtöne auf der E- und der A-Saite.</li>
+					<li><b>Drei Lieder</b>Ein kleines Repertoire, sauber und im Takt. Dann kommt der F-Barré.</li>
+				</ol>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="2"
+					data-why="Kurze tägliche Einheiten wirken am besten: Das Gehirn festigt Bewegungen zwischen den Übe-Einheiten, vor allem im Schlaf. Und die Fingerkuppen können sich erholen.">
+					<p class="quiz-q">Was bringt dich als Anfänger am schnellsten voran?</p>
+					<div class="quiz-options">
+						<button type="button">Einmal pro Woche drei Stunden am Stück</button>
+						<button type="button">Möglichst schnell spielen, damit es nach Musik klingt</button>
+						<button type="button">Jeden Tag 15 bis 20 Minuten, langsam und gezielt</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Direkt hinter dem Bundstäbchen braucht die Saite am wenigsten Druck und schnarrt nicht. Auf dem Stäbchen selbst klingt sie dumpf, weiter weg schnarrt sie.">
+					<p class="quiz-q">Wo drückst du die Saite am besten herunter?</p>
+					<div class="quiz-options">
+						<button type="button">Direkt hinter dem Bundstäbchen</button>
+						<button type="button">Genau in der Mitte zwischen zwei Stäbchen</button>
+						<button type="button">Genau auf dem Bundstäbchen</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Spielen lernen</p>
+		<a href="../klavier/">Klavier lernen <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/musik.js"></script>
+	<script src="./gitarre.js"></script>
+</body>
+
+</html>

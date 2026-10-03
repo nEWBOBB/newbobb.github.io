@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Klavier lernen — Newbobb Lab</title>
+	<meta name="description"
+		content="Klavier lernen, wie Profis es empfehlen: Tasten-Landkarte, Fingersatz und Handhaltung, Notenlesen mit Landmarken, Akkorde bauen, Tonleiter mit Daumenuntersatz, Tempo-Leiter mit Metronom und ein täglicher Übeplan." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Music&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/musik.css" />
+	<style>
+		:root {
+			--accent: #b3a4ff;
+			--accent-2: #ffcf6b;
+			--accent-ink: #140c33;
+		}
+
+		#staffSvg {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.seq {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 4px;
+			width: 100%;
+		}
+
+		.seq span {
+			display: grid;
+			place-items: center;
+			min-width: 30px;
+			height: 30px;
+			padding: 0 6px;
+			border-radius: 8px;
+			background: var(--panel-2);
+			border: 1px solid var(--line);
+			font-size: 0.82rem;
+			font-weight: 600;
+			color: var(--muted);
+		}
+
+		.seq span small {
+			font-size: 0.62rem;
+			color: var(--accent-2);
+			margin-left: 3px;
+		}
+
+		.seq span.done {
+			background: color-mix(in srgb, var(--accent) 22%, var(--panel-2));
+			color: var(--ink);
+		}
+
+		.seq span.now {
+			border-color: var(--accent-2);
+			color: var(--ink);
+			box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-2) 35%, transparent);
+		}
+
+		.ladder-btns {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+			width: 100%;
+		}
+
+		.ladder-btns .btn {
+			justify-content: center;
+			padding: 16px;
+			font-size: 1rem;
+		}
+
+		.ladder-btns .ok {
+			border-color: color-mix(in srgb, var(--good) 50%, transparent);
+		}
+
+		.ladder-btns .no {
+			border-color: color-mix(in srgb, var(--bad) 50%, transparent);
+		}
+
+		.kbd-hint {
+			font-size: 0.78rem;
+			color: var(--faint);
+		}
+
+		kbd {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.74rem;
+			padding: 1px 5px;
+			border-radius: 5px;
+			border: 1px solid var(--line);
+			background: var(--panel-2);
+			color: var(--muted);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#spielen">newbobb <span>/ spielen lernen</span></a>
+		<nav class="v-series" aria-label="Reihe Spielen lernen">
+			<a href="../gitarre/">Gitarre</a>
+			<a href="../klavier/" aria-current="page">Klavier</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Spielen lernen · Klavier</p>
+			<h1>Klavier <em>lernen</em>,<br />Taste für Taste</h1>
+			<p class="v-lede">88 Tasten sehen nach viel aus. Dabei wiederholt sich dasselbe Muster aus zwölf Tasten immer
+				wieder. Hier lernst du Klavier so, wie Klavierpädagogen es empfehlen: mit guter Hand, Landmarken statt
+				Eselsbrücken, Akkorden ab dem ersten Tag und langsamen, gezielten Wiederholungen.</p>
+			<div class="hero-stage">
+				<canvas id="heroCanvas" aria-label="Fallende Noten: der Anfang von Für Elise"></canvas>
+				<span class="stage-tag">Beethoven · Für Elise</span>
+				<button class="btn hero-btn" id="heroSound" type="button" aria-pressed="false">🔊 Mit Ton</button>
+			</div>
+			<ol class="v-toc">
+				<li><a href="#tasten">Die Landkarte</a></li>
+				<li><a href="#finger">Hand und Finger</a></li>
+				<li><a href="#noten">Noten lesen</a></li>
+				<li><a href="#akkorde">Akkorde bauen</a></li>
+				<li><a href="#tonleiter">Die Tonleiter</a></li>
+				<li><a href="#tempo">Langsam ist schnell</a></li>
+				<li><a href="#ueben">So üben Profis</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Tasten -->
+		<section class="chapter" id="tasten">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Orientierung</span>
+				<h2>Die Landkarte der Tasten</h2>
+				<p>Schau nicht auf die weißen Tasten, schau auf die <strong>schwarzen</strong>. Sie kommen immer abwechselnd
+					in Gruppen zu <strong>zwei</strong> und zu <strong>drei</strong>. Daran findest du jeden Ton, ohne zu
+					zählen.</p>
+				<ul>
+					<li>Das <strong>C</strong> liegt immer direkt links neben den zwei schwarzen Tasten.</li>
+					<li>Das <strong>F</strong> liegt immer direkt links neben den drei schwarzen Tasten.</li>
+					<li>Die weißen Tasten heißen <strong>C D E F G A H</strong>, dann geht es wieder mit C los. Auf Deutsch
+						heißt der siebte Ton H, nicht B.</li>
+				</ul>
+				<p>Das C in der Mitte des Klaviers heißt <strong>eingestrichenes C</strong> oder Mittel-C. Von dort aus
+					denkst du in alle Richtungen.</p>
+				<p class="merke"><b>Merke</b>Zwei schwarze Tasten: C links davon, D dazwischen, E rechts davon. Drei schwarze
+					Tasten: F links, G und A dazwischen, H rechts.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Spiel ein bisschen herum, dann starte die Tastenjagd. Finde jeden Ton so schnell du kannst.</p>
+				<div class="stage-view">
+					<div class="kb" id="kbMap"></div>
+					<span class="stage-readout" id="mapOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="mapLabels"></div>
+					<button class="btn primary" id="btnHunt" type="button">🎯 Tastenjagd starten</button>
+					<span class="pill" id="huntScore" hidden></span>
+					<p class="stage-note" id="mapNote" aria-live="polite"></p>
+					<p class="kbd-hint">Auch mit der Computertastatur: <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd> …
+						spielen die weißen, <kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Z</kbd> <kbd>U</kbd> die schwarzen
+						Tasten.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Finger -->
+		<section class="chapter flip" id="finger">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Die Hand</span>
+				<h2>Hand und Finger</h2>
+				<p>Am Klavier haben die Finger Nummern, und zwar an beiden Händen gleich: <strong>1 ist der Daumen</strong>,
+					2 der Zeigefinger, bis <strong>5, der kleine Finger</strong>. In Noten stehen diese Zahlen über den
+					Tönen. Sie heißen <strong>Fingersatz</strong>, und Profis halten sich daran, denn ein guter Fingersatz
+					entscheidet, ob eine Stelle leicht oder unmöglich ist.</p>
+				<h3>Die richtige Handhaltung</h3>
+				<ul>
+					<li>Die Hand ist <strong>gewölbt</strong>, als würdest du einen kleinen Ball halten. Die Finger
+						sind rund, nicht platt.</li>
+					<li>Du spielst mit den <strong>Fingerkuppen</strong>, der Daumen mit seiner Seite.</li>
+					<li>Handgelenk locker und etwa auf Höhe der Tasten, nicht abgeknickt.</li>
+					<li>Sitz so weit weg, dass deine Ellbogen leicht vor dem Körper sind. Die Bank steht mittig vor dem Mittel-C.</li>
+				</ul>
+				<p>Die erste Position heißt <strong>C-Lage</strong>: Jeder Finger liegt auf einer Taste, der rechte Daumen
+					auf dem Mittel-C. Fünf Töne, ohne die Hand zu bewegen.</p>
+				<div class="pro">
+					<b>Profi-Tipp</b>
+					<ul>
+						<li><strong>Hände getrennt</strong> üben, bis jede Hand es allein sicher kann. Erst dann zusammen.</li>
+						<li>Die Finger 4 und 5 sind schwach, das ist bei allen so. Gerade sie brauchen langsame Übungen.</li>
+						<li>Spür nach Spannung: Wird der Unterarm hart, Pause und ausschütteln.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Übung und spiel nach. Die gelbe Zahl zeigt den Finger, die leuchtende Taste den
+					nächsten Ton. Die Übung wartet auf dich, also kein Stress.</p>
+				<div class="stage-view">
+					<div class="kb" id="kbFinger"></div>
+					<span class="stage-readout" id="fingerOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="fingerEx"></div>
+					<div class="seq" id="fingerSeq"></div>
+					<button class="btn primary" id="btnFingerDemo" type="button">▶ Vorspielen</button>
+					<button class="btn" id="btnFingerReset" type="button">↺ Von vorn</button>
+					<p class="stage-note" id="fingerNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Noten -->
+		<section class="chapter" id="noten">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Lesen</span>
+				<h2>Noten lesen mit Landmarken</h2>
+				<p>Noten stehen auf fünf Linien. Jede Linie und jeder Zwischenraum ist ein weißer Ton, eine Stufe höher geht
+					es von Linie zu Zwischenraum. Oben steht meist der <strong>Violinschlüssel</strong> für die rechte Hand,
+					unten der <strong>Bassschlüssel</strong> für die linke.</p>
+				<p>Viele lernen Noten mit Merksätzen und zählen dann jedes Mal von unten durch. Das ist zu langsam. Profis
+					empfehlen <strong>Landmarken</strong>: ein paar Noten, die du sofort erkennst, und alles andere liest du
+					als Abstand davon.</p>
+				<ul>
+					<li><strong>Violin-G</strong>: Der Violinschlüssel kringelt sich um die zweite Linie. Das ist das G.</li>
+					<li><strong>Bass-F</strong>: Die zwei Punkte des Bassschlüssels umrahmen die vierte Linie. Das ist das F.</li>
+					<li><strong>Mittel-C</strong>: Sitzt auf einer kleinen Hilfslinie genau zwischen beiden Systemen.</li>
+					<li>Dazu je ein C im System: das dritte Fach im Violinschlüssel, das zweite im Bassschlüssel.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Von Linie zu Linie ist es immer eine Terz, also ein Ton übersprungen. Lies Noten
+					als Schritte und Sprünge, nicht einzeln.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Welcher Ton ist das? Fang mit den Landmarken an. Bei einem Fehler zeigt dir der Trainer, wie du
+					von der nächsten Landmarke aus hinkommst.</p>
+				<div class="stage-view">
+					<svg id="staffSvg" viewBox="0 0 400 220" role="img" aria-label="Notensystem mit einer Note"></svg>
+					<span class="stage-tag" id="staffTag">Landmarken</span>
+					<span class="stage-readout" id="staffOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="staffModes"></div>
+					<div class="staff-answers" id="staffAnswers"></div>
+					<p class="stage-note" id="staffNote" aria-live="polite">Tippe den Namen der Note.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Akkorde -->
+		<section class="chapter flip" id="akkorde">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Harmonie</span>
+				<h2>Akkorde bauen</h2>
+				<p>Ein Akkord sind drei Töne, die gut zusammen klingen. Du musst sie nicht auswendig lernen, du kannst sie
+					<strong>bauen</strong>: Nimm einen Grundton, zähl Halbtöne nach oben, schwarze Tasten mitgezählt.</p>
+				<ul>
+					<li><strong>Dur</strong> (fröhlich): Grundton, dann <strong>4</strong> Halbtöne, dann <strong>3</strong>.</li>
+					<li><strong>Moll</strong> (traurig): Grundton, dann <strong>3</strong> Halbtöne, dann <strong>4</strong>.</li>
+				</ul>
+				<p>Mit dieser Formel findest du alle 24 Dur- und Moll-Akkorde. Und mit nur vier davon kannst du Hunderte
+					Popsongs begleiten: <strong>C, G, A-Moll und F</strong>.</p>
+				<div class="pro">
+					<b>Profi-Trick: Umkehrungen</b>
+					<ul>
+						<li>Anfänger springen mit der ganzen Hand von Akkord zu Akkord. Profis nehmen den <strong>kürzesten
+								Weg</strong>: Sie stellen die Töne eines Akkords um, sodass die Hand fast liegen bleibt.</li>
+						<li>Probier beide Varianten unten und schau auf die Zahl der Halbtöne, die deine Finger wandern.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Bau einen Akkord: Grundton und Dur oder Moll wählen. Dann spiel die vier Akkorde und vergleiche.</p>
+				<div class="stage-view">
+					<div class="kb" id="kbChord"></div>
+					<span class="stage-tag" id="chordTag">C-Dur</span>
+					<span class="stage-readout" id="chordOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="rootChips"></div>
+					<div class="chips" id="qualChips"></div>
+					<div class="row">
+						<button class="btn primary" id="btnProg" type="button" aria-pressed="false">▶ C · G · Am · F</button>
+						<button class="btn" id="btnVoicing" type="button" aria-pressed="false">Umkehrungen: aus</button>
+					</div>
+					<p class="stage-note" id="chordNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Tonleiter -->
+		<section class="chapter" id="tonleiter">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Technik</span>
+				<h2>Die Tonleiter und der Daumen</h2>
+				<p>Eine Hand hat fünf Finger, eine Tonleiter aber acht Töne. Der Trick, den jeder Pianist lernt: Der
+					<strong>Daumen geht unter der Hand durch</strong>. Bei C-Dur rechts spielst du 1 2 3, dann schlüpft der
+					Daumen unter dem Mittelfinger hindurch aufs F, und weiter mit 1 2 3 4 5.</p>
+				<p>Abwärts ist es umgekehrt: Der Mittelfinger greift <strong>über den Daumen</strong>. Die linke Hand macht
+					dasselbe gespiegelt.</p>
+				<p>Tonleitern sind nicht langweilige Pflicht. Sie trainieren gleichmäßige Finger, den Daumenuntersatz und
+					dein Gefühl für Tonarten. Profis spielen sie jeden Tag ein paar Minuten zum Aufwärmen.</p>
+				<div class="pro">
+					<b>Profi-Tipp</b>
+					<ul>
+						<li>Der Daumen bereitet sich vor: Er wandert schon unter der Hand mit, während 2 und 3 spielen.</li>
+						<li>Das Handgelenk bleibt ruhig und auf einer Linie. Kein Hochziehen des Ellbogens.</li>
+						<li>Hör auf Gleichmäßigkeit: Alle acht Töne gleich laut, gleich lang. Das ist schwerer als schnell.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Hör dir die Tonleiter an und achte auf den Moment, in dem der Daumen untergreift. Dann spiel
+					selbst.</p>
+				<div class="stage-view">
+					<div class="kb" id="kbScale"></div>
+					<span class="stage-tag" id="scaleTag">C-Dur · rechte Hand</span>
+					<span class="stage-readout" id="scaleOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="scaleHands"></div>
+					<div class="seq" id="scaleSeq"></div>
+					<button class="btn primary" id="btnScaleDemo" type="button">▶ Vorspielen</button>
+					<button class="btn" id="btnScaleReset" type="button">↺ Selbst spielen</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo beim Vorspielen</span><output id="scaleBpmOut">72 BPM</output></span>
+						<input type="range" id="scaleBpm" min="40" max="140" value="72" />
+					</label>
+					<p class="stage-note" id="scaleNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6 Tempo -->
+		<section class="chapter flip" id="tempo">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">06 · Die Methode</span>
+				<h2>Langsam ist schnell</h2>
+				<p>Der häufigste Fehler beim Üben: das Stück immer wieder im Zieltempo durchspielen und hoffen, dass die
+					Fehler verschwinden. Sie verschwinden nicht, du übst sie mit ein.</p>
+				<p>Profis nutzen deshalb die <strong>Tempo-Leiter</strong>:</p>
+				<ol class="steps">
+					<li>Nimm eine kurze, schwierige Stelle, zwei Takte reichen.</li>
+					<li>Stell das Metronom so langsam, dass du sie sicher fehlerfrei spielst.</li>
+					<li>Schaffst du sie <strong>dreimal hintereinander sauber</strong>, wird das Metronom ein kleines Stück
+						schneller.</li>
+					<li>Bei einem Fehler zählst du wieder von null. Zwei Fehler hintereinander? Eine Stufe zurück.</li>
+				</ol>
+				<div class="fact">
+					<b>Warum funktioniert das?</b>
+					<p>Dein Gehirn speichert Bewegungen so, wie du sie wiederholst. Sauber wiederholt heißt sauber gespeichert.
+						Und im Schlaf wird das Geübte gefestigt. Deshalb kannst du eine Stelle am nächsten Tag oft besser als
+						am Ende der Übe-Session. Starte morgen ein paar Stufen unter dem heutigen Tempo.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte das Metronom, spiel deine Stelle (an deinem Klavier oder oben auf der Klaviatur) und
+					tippe nach jedem Durchgang ehrlich: sauber oder nicht.</p>
+				<div class="stage-view">
+					<canvas id="ladderCanvas" aria-label="Tempo-Leiter mit aktuellem Tempo"></canvas>
+					<span class="stage-tag">Tempo-Leiter</span>
+					<span class="stage-readout" id="ladderOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnMetro" type="button" aria-pressed="false">▶ Metronom</button>
+					<label class="range">
+						<span class="range-head"><span>Start</span><output id="ladStartOut">60 BPM</output></span>
+						<input type="range" id="ladStart" min="40" max="140" step="2" value="60" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Ziel</span><output id="ladGoalOut">100 BPM</output></span>
+						<input type="range" id="ladGoal" min="50" max="200" step="2" value="100" />
+					</label>
+					<div class="ladder-btns">
+						<button class="btn ok" id="btnClean" type="button">✓ Sauber</button>
+						<button class="btn no" id="btnMiss" type="button">✗ Fehler</button>
+					</div>
+					<p class="stage-note" id="ladderNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 7 Üben -->
+		<section class="chapter" id="ueben">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">07 · Jeden Tag</span>
+				<h2>So üben Profis</h2>
+				<ul>
+					<li><strong>Kurz und täglich</strong>: 20 bis 30 Minuten jeden Tag sind besser als zwei Stunden am
+						Wochenende.</li>
+					<li><strong>Erst lesen, dann spielen</strong>: Schau dir ein neues Stück an, bevor du loslegst. Wo
+						wiederholt sich etwas? Welche Lage? Welcher Fingersatz?</li>
+					<li><strong>In Abschnitten</strong>: Ein Stück in kurze Teile zerlegen, jeden einzeln, mit getrennten Händen.</li>
+					<li><strong>Vom Ende her</strong>: Übe den letzten Abschnitt zuerst. Sonst kannst du den Anfang perfekt
+						und wirst zum Ende hin immer unsicherer.</li>
+					<li><strong>Jeden Tag ein bisschen Blattspiel</strong>: etwas Leichtes, das du noch nie gesehen hast,
+						einmal durchspielen, ohne anzuhalten.</li>
+					<li><strong>Musik, die du liebst</strong>: Such dir früh ein Stück aus, für das du brennst.</li>
+				</ul>
+				<div class="myth">
+					<div><i>✗</i><s>„Ich lerne nach Gehör, Noten brauche ich nicht.“</s><span>Beides! Gehör und Noten ergänzen
+							sich. Wer lesen kann, hat Zugang zu jeder Musik der Welt.</span></div>
+					<div><i>✗</i><s>„Fingersatz ist egal, Hauptsache der Ton stimmt.“</s><span>Ein schlechter Fingersatz rächt
+							sich, sobald es schneller wird. Leg ihn von Anfang an fest.</span></div>
+					<div><i>✗</i><s>„Ich brauche erst ein echtes Klavier.“</s><span>Ein Digitalpiano mit 88 gewichteten Tasten
+							reicht völlig. Wichtig sind die gewichteten Tasten, damit die Finger Kraft lernen.</span></div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dein täglicher 25-Minuten-Plan. Starte die Session, der Timer führt dich durch.</p>
+				<div class="stage-controls" id="plan"></div>
+			</div>
+		</section>
+
+		<section class="chapter wide">
+			<div class="chapter-text full reveal">
+				<h3>Dein Weg in den ersten acht Wochen</h3>
+				<ol class="path">
+					<li><b>Landkarte</b>Alle Tasten finden, C-Lage rechts, Finger 1 bis 5.</li>
+					<li><b>Beide Hände</b>C-Lage links, Ode an die Freude rechts.</li>
+					<li><b>Landmarken</b>Violin-G, Bass-F, Mittel-C sofort erkennen.</li>
+					<li><b>Erste Akkorde</b>C, F, G in Grundstellung, linke Hand Grundton.</li>
+					<li><b>Tonleiter</b>C-Dur mit Daumenuntersatz, Hände getrennt.</li>
+					<li><b>Vier Akkorde</b>C · G · Am · F mit Umkehrungen, ein Popsong.</li>
+					<li><b>Zusammen</b>Melodie rechts, Grundtöne links, sehr langsam.</li>
+					<li><b>Erstes Stück</b>Ein leichtes Stück komplett, mit Tempo-Leiter.</li>
+				</ol>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="1"
+					data-why="Ein C findest du immer direkt links neben einer Gruppe aus zwei schwarzen Tasten, egal wo auf dem Klavier.">
+					<p class="quiz-q">Wo liegt jedes C auf dem Klavier?</p>
+					<div class="quiz-options">
+						<button type="button">Links neben den drei schwarzen Tasten</button>
+						<button type="button">Links neben den zwei schwarzen Tasten</button>
+						<button type="button">Zwischen den zwei schwarzen Tasten</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Dur ist Grundton plus 4 plus 3 Halbtöne: C, E, G. Bei Moll ist es umgekehrt, 3 plus 4: C, Es, G.">
+					<p class="quiz-q">Aus welchen Tönen besteht C-Dur?</p>
+					<div class="quiz-options">
+						<button type="button">C, E, G</button>
+						<button type="button">C, Es, G</button>
+						<button type="button">C, D, E</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Langsam und fehlerfrei wiederholen, dann in kleinen Schritten schneller. So speichert das Gehirn die richtige Bewegung.">
+					<p class="quiz-q">Eine Stelle klappt im Zieltempo nicht. Was tust du?</p>
+					<div class="quiz-options">
+						<button type="button">So lange im Zieltempo spielen, bis es klappt</button>
+						<button type="button">Die Stelle überspringen</button>
+						<button type="button">Langsamer, bis sie sauber ist, dann Schritt für Schritt schneller</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Spielen lernen</p>
+		<a href="../gitarre/">Gitarre lernen <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/musik.js"></script>
+	<script src="./klavier.js"></script>
+</body>
+
+</html>

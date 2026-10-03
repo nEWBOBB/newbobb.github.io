@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Newbobb Lab</title>
 	<meta name="description"
-		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Telefon, Radio, Fernsehen, Internet und KI, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
+		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Telefon, Radio, Fernsehen, Internet und KI, Gitarre und Klavier lernen, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
 	<meta name="theme-color" content="#0a0908" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1683,9 +1683,177 @@
 			transform: none;
 		}
 
+
+		/* ---------- Reihe Spielen lernen ---------- */
+
+		.play {
+			padding: clamp(24px, 6vh, 64px) var(--gutter) clamp(56px, 10vh, 100px);
+			border-top: 1px solid var(--line);
+		}
+
+		.play .eyebrow {
+			margin-bottom: 10px;
+		}
+
+		.play-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 16px;
+		}
+
+		.play-grid .lesson {
+			grid-column: auto;
+			min-height: 460px;
+		}
+
+		.play-rules {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin: 0 0 22px;
+			padding: 0;
+			list-style: none;
+		}
+
+		.play-rules li {
+			font-size: 0.84rem;
+			color: var(--muted);
+			padding: 7px 13px;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+		}
+
+		.play-rules li b {
+			color: var(--ink);
+			font-weight: 600;
+		}
+
+		/* Gitarre: sechs schwingende Saiten über einem Schallloch */
+		.lesson--guitar {
+			--c: #f5b14c;
+		}
+
+		.lesson--guitar .lesson-art {
+			background:
+				radial-gradient(circle at 72% 50%, #050404 0 17%, #6b4320 17.5% 19%, transparent 19.5%),
+				radial-gradient(ellipse at 70% 50%, #4a2c14, #24150a 60%, #120b06);
+		}
+
+		.lesson--guitar .lesson-art i {
+			position: absolute;
+			left: -5%;
+			right: -5%;
+			height: 2px;
+			top: calc(28% + var(--n) * 8.8%);
+			background: linear-gradient(90deg, #8a6a40, #f1d9b0 50%, #8a6a40);
+			box-shadow: 0 0 10px rgba(245, 177, 76, 0.35);
+			transform-origin: center;
+			animation: strum 1.6s ease-out infinite;
+			animation-delay: calc(var(--n) * 0.05s);
+		}
+
+		.lesson--guitar .lesson-art i:nth-of-type(1) { --n: 0; height: 3.4px; }
+		.lesson--guitar .lesson-art i:nth-of-type(2) { --n: 1; height: 3px; }
+		.lesson--guitar .lesson-art i:nth-of-type(3) { --n: 2; height: 2.6px; }
+		.lesson--guitar .lesson-art i:nth-of-type(4) { --n: 3; height: 2.2px; background: linear-gradient(90deg, #8c8780, #fff 50%, #8c8780); }
+		.lesson--guitar .lesson-art i:nth-of-type(5) { --n: 4; height: 1.8px; background: linear-gradient(90deg, #8c8780, #fff 50%, #8c8780); }
+		.lesson--guitar .lesson-art i:nth-of-type(6) { --n: 5; height: 1.4px; background: linear-gradient(90deg, #8c8780, #fff 50%, #8c8780); }
+
+		.lesson--guitar .lesson-art b {
+			position: absolute;
+			top: 18%;
+			bottom: 18%;
+			width: 3px;
+			left: calc(8% + var(--f) * 1%);
+			background: linear-gradient(180deg, transparent, #c9c0b2 20%, #c9c0b2 80%, transparent);
+			opacity: 0.55;
+		}
+
+		.lesson--guitar .lesson-art b:nth-of-type(1) { --f: 0; width: 7px; background: #e8e1d4; opacity: 0.8; }
+		.lesson--guitar .lesson-art b:nth-of-type(2) { --f: 12; }
+		.lesson--guitar .lesson-art b:nth-of-type(3) { --f: 23; }
+		.lesson--guitar .lesson-art b:nth-of-type(4) { --f: 33; }
+
+		@keyframes strum {
+			0% { transform: scaleY(1); }
+			6% { transform: scaleY(5); filter: brightness(1.6); }
+			14% { transform: scaleY(0.6); }
+			22% { transform: scaleY(3); }
+			40% { transform: scaleY(1.2); }
+			100% { transform: scaleY(1); }
+		}
+
+		/* Klavier: Tasten, die nacheinander aufleuchten */
+		.lesson--piano {
+			--c: #b3a4ff;
+		}
+
+		.lesson--piano .lesson-art {
+			background: radial-gradient(ellipse at 50% 120%, rgba(179, 164, 255, 0.35), transparent 60%), #08070b;
+		}
+
+		.lesson--piano .lesson-art span {
+			position: absolute;
+			left: 6%;
+			right: 6%;
+			bottom: 0;
+			height: 58%;
+			display: grid;
+			grid-template-columns: repeat(10, 1fr);
+			gap: 3px;
+		}
+
+		.lesson--piano .lesson-art span i {
+			border-radius: 0 0 6px 6px;
+			background: linear-gradient(180deg, #d8d1c6, #f6f2ea 70%);
+			animation: key 3.2s ease-in-out infinite;
+			animation-delay: calc(var(--k) * 0.18s);
+		}
+
+		.lesson--piano .lesson-art span em {
+			position: absolute;
+			top: 0;
+			width: 6%;
+			height: 60%;
+			border-radius: 0 0 4px 4px;
+			background: #19171d;
+			left: calc(var(--x) * 1%);
+			transform: translateX(-50%);
+			box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+		}
+
+		.lesson--piano .lesson-art u {
+			position: absolute;
+			bottom: 60%;
+			width: 6%;
+			border-radius: 4px;
+			background: #b3a4ff;
+			box-shadow: 0 0 16px #b3a4ff;
+			left: calc(var(--x) * 1%);
+			animation: fall 3.2s linear infinite;
+			animation-delay: calc(var(--d) * 0.18s - 0.9s);
+			opacity: 0;
+		}
+
+		@keyframes key {
+			0%, 18%, 100% { background: linear-gradient(180deg, #d8d1c6, #f6f2ea 70%); }
+			4%, 10% { background: linear-gradient(180deg, #c7bbff, #b3a4ff); box-shadow: 0 0 22px rgba(179, 164, 255, 0.6); }
+		}
+
+		@keyframes fall {
+			0% { top: -20%; height: 18%; opacity: 0.95; }
+			27% { top: 40%; height: 0%; opacity: 0.95; }
+			28%, 100% { opacity: 0; }
+		}
+
 		@media (max-width: 900px) {
-			.learn-grid {
+			.learn-grid,
+			.play-grid {
 				grid-template-columns: 1fr;
+			}
+
+			.play-grid .lesson {
+				min-height: 0;
 			}
 
 			.lesson,
@@ -1724,6 +1892,10 @@
 				padding: 8px 9px;
 			}
 
+			.top nav .nav-opt {
+				display: none;
+			}
+
 			.stats {
 				width: 100%;
 				justify-content: space-between;
@@ -1755,8 +1927,9 @@
 	<header class="top">
 		<a class="logo" href="./"><span class="logo-mark" aria-hidden="true"></span>newbobb</a>
 		<nav aria-label="Hauptnavigation">
-			<a href="#verstehen" class="nav-new">Verstehen</a>
-			<a href="#neu">Neu</a>
+			<a href="#verstehen">Verstehen</a>
+			<a href="#spielen" class="nav-new">Spielen</a>
+			<a href="#neu" class="nav-opt">Neu</a>
 			<a href="#projekte">Projekte</a>
 		</nav>
 	</header>
@@ -1767,10 +1940,12 @@
 			<h1>Code,<br />der <span class="outline">leuchtet.</span></h1>
 			<div class="hero-foot">
 				<p>Ein Spielplatz zum Ausprobieren und Verstehen: vom ersten Feuer über Strom, Telefon und Fernsehen bis
-					zur KI, alles zum Anfassen. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
+					zur KI, alles zum Anfassen. Dazu Gitarre und Klavier zum Lernen, audio-reaktive Visuals und ein Schwarzes
+					Loch.</p>
 				<div class="stats">
 					<div class="stat"><strong id="countAll">18</strong><span>Projekte</span></div>
 					<div class="stat"><strong>17</strong><span>zum Verstehen</span></div>
+					<div class="stat"><strong>2</strong><span>Instrumente</span></div>
 					<div class="stat"><strong>1</strong><span>Schwarzes Loch</span></div>
 				</div>
 			</div>
@@ -1959,6 +2134,45 @@
 			</div>
 		</section>
 
+		<section class="play" id="spielen">
+			<div class="section-head">
+				<div>
+					<p class="eyebrow">Reihe · Spielen lernen</p>
+					<h2>Ein Instrument lernen, aber richtig</h2>
+				</div>
+				<p class="learn-lede">Gitarre und Klavier zum Mitspielen, aufgebaut nach dem, was Musiklehrer empfehlen: wenig auf
+					einmal, langsam, jeden Tag ein bisschen.</p>
+			</div>
+			<ul class="play-rules">
+				<li><b>Kurz und täglich</b> statt lang und selten</li>
+				<li><b>Langsam ist schnell</b>: erst sauber, dann Tempo</li>
+				<li><b>Gezielt üben</b>: die Stelle, die hakt</li>
+				<li><b>Echte Lieder</b> ab der ersten Woche</li>
+			</ul>
+			<div class="play-grid">
+				<a class="lesson lesson--guitar reveal" href="./gitarre/">
+					<div class="lesson-art" aria-hidden="true"><b></b><b></b><b></b><b></b><i></i><i></i><i></i><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">Instrument 1 · Saiten</span>
+						<h3>Gitarre lernen</h3>
+						<p>Stimmgerät mit Mikrofon, ein Griffbrett zum Antippen, die ersten acht Akkorde, Ein-Minuten-Wechsel
+							mit Rekorden und Schlagmuster mit Metronom.</p>
+						<span class="lesson-go">Anschlagen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--piano reveal" href="./klavier/">
+					<div class="lesson-art" aria-hidden="true"><u style="--x: 25; --d: 2"></u><u style="--x: 55; --d: 5"></u><u style="--x: 75; --d: 8"></u><span><i style="--k: 0"></i><i style="--k: 2"></i><i style="--k: 4"></i><i style="--k: 1"></i><i style="--k: 3"></i><i style="--k: 5"></i><i style="--k: 7"></i><i style="--k: 6"></i><i style="--k: 8"></i><i style="--k: 9"></i><em style="--x: 10"></em><em style="--x: 20"></em><em style="--x: 40"></em><em style="--x: 50"></em><em style="--x: 60"></em><em style="--x: 80"></em><em style="--x: 90"></em></span></div>
+					<div class="lesson-body">
+						<span class="lesson-num">Instrument 2 · Tasten</span>
+						<h3>Klavier lernen</h3>
+						<p>Tastenjagd, Fingersatz in der C-Lage, Noten lesen mit Landmarken, Akkorde mit Umkehrungen,
+							Daumenuntersatz und die Tempo-Leiter.</p>
+						<span class="lesson-go">Losspielen →</span>
+					</div>
+				</a>
+			</div>
+		</section>
+
 		<section class="featured" id="neu" aria-label="Neuestes Projekt">
 			<a class="feature reveal" href="./ereignishorizont/">
 				<canvas id="teaser" aria-hidden="true"></canvas>
@@ -1991,6 +2205,7 @@
 					<button type="button" data-filter="all" aria-pressed="true">Alle<sup></sup></button>
 					<button type="button" data-filter="audio" aria-pressed="false">Audio &amp; Visuals<sup></sup></button>
 					<button type="button" data-filter="learn" aria-pressed="false">Verstehen<sup></sup></button>
+					<button type="button" data-filter="play" aria-pressed="false">Spielen lernen<sup></sup></button>
 					<button type="button" data-filter="lab" aria-pressed="false">Experimente<sup></sup></button>
 				</div>
 			</div>
@@ -2200,6 +2415,24 @@
 					</div>
 				</a>
 
+				<!-- Spielen lernen -->
+				<a class="card reveal" data-cat="play" href="./gitarre/" style="--h: 36">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Spielen lernen · Gitarre</span><span class="pill">Neu</span></div>
+						<h3>Gitarre lernen <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Stimmgerät, Griffbrett, erste Akkorde, Ein-Minuten-Wechsel und Schlagmuster.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="play" href="./klavier/" style="--h: 252">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Spielen lernen · Klavier</span><span class="pill">Neu</span></div>
+						<h3>Klavier lernen <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Tasten-Landkarte, Fingersatz, Notenlesen, Akkorde, Tonleiter und Tempo-Leiter.</p>
+					</div>
+				</a>
+
 				<!-- Experimente -->
 				<a class="card reveal" data-cat="lab" href="./ereignishorizont/" style="--h: 28">
 					<div class="thumb thumb--lab"></div>
@@ -2248,7 +2481,7 @@
 
 	<footer>
 		<span>© <span id="year">2026</span> Newbobb Lab</span>
-		<span>Gehostet auf GitHub Pages · <a href="#verstehen">Zur Reihe Verstehen</a></span>
+		<span>Gehostet auf GitHub Pages · <a href="#verstehen">Zur Reihe Verstehen</a> · <a href="#spielen">Spielen lernen</a></span>
 	</footer>
 
 	<script>
