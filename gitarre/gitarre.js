@@ -956,7 +956,480 @@
 		});
 	})();
 
-	// ---------- 6 Übeplan ----------
+	// ---------- 7 Tabs lesen ----------
+	(function tabs() {
+		// [Saite (0 = tiefe E), Bund, Dauer in Achteln]
+		const N = { G3: [3, 0], C: [4, 1], D: [4, 3], E: [5, 0], F: [5, 1], G: [5, 3], A: [5, 5] };
+		const parse = (str) =>
+			str.split(" ").map((tok) => {
+				const [, n, d] = tok.match(/^([A-H]\d?)(\d)$/);
+				return [...N[n], Number(d)];
+			});
+		const SONGS = [
+			{ name: "Ode an die Freude", notes: parse("E2 E2 F2 G2 G2 F2 E2 D2 C2 C2 D2 E2 E3 D1 D4 E2 E2 F2 G2 G2 F2 E2 D2 C2 C2 D2 E2 D3 C1 C4"), tip: "Beethoven, nur auf den zwei hohen Saiten. Achte auf den punktierten Rhythmus am Ende jeder Zeile: lang, kurz, lang." },
+			{ name: "Bruder Jakob", notes: parse("C2 D2 E2 C2 C2 D2 E2 C2 E2 F2 G4 E2 F2 G4 G1 A1 G1 F1 E2 C2 G1 A1 G1 F1 E2 C2 C2 G32 C4 C2 G32 C4"), tip: "Der Kanon geht auch zu zweit: Die zweite Stimme fängt an, wenn die erste bei Takt 3 ist. Der tiefe Ton ist die leere G-Saite." },
+			{ name: "Alle meine Entchen", notes: parse("C2 D2 E2 F2 G4 G4 A2 A2 A2 A2 G8 A2 A2 A2 A2 G8 F2 F2 F2 F2 E4 E4 D2 D2 D2 D2 C8"), tip: "Das A liegt im 5. Bund der e-Saite. Greif es mit dem kleinen Finger oder rutsch kurz mit dem Ringfinger hoch." },
+			{ name: "Bass-Riff", notes: [[0, 0, 2], [0, 0, 1], [0, 3, 1], [0, 0, 1], [0, 5, 1], [0, 3, 2], [1, 0, 2], [1, 0, 1], [1, 3, 1], [1, 0, 1], [1, 5, 1], [1, 3, 2]], tip: "Ein Riff auf den zwei tiefen Saiten. Dämpf die anderen Saiten mit der Handfläche der Schlaghand leicht ab." },
+		];
+		const svg = $("tabSvg");
+		const btn = $("btnTab");
+		const bpmIn = $("tabBpm");
+		const loopBtn = $("btnTabLoop");
+		let song = SONGS[0];
+		let starts = [];
+		let total = 0;
+		let cells = [];
+		let loop = true;
+
+		function layout() {
+			starts = [];
+			total = 0;
+			song.notes.forEach((n) => {
+				starts.push(total);
+				total += n[2];
+			});
+			const W = Math.max(320, svg.clientWidth || 600);
+			const bars = Math.ceil(total / 8);
+			const perLine = Math.max(1, Math.min(4, Math.floor((W - 40) / 155)));
+			const lines = Math.ceil(bars / perLine);
+			const LH = 150;
+			const H = lines * LH + 20;
+			svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+			svg.innerHTML = "";
+			cells = [];
+			const x0 = 34;
+			const barW = (W - x0 - 12) / perLine;
+			for (let l = 0; l < lines; l++) {
+				const top = 46 + l * LH;
+				for (let s = 0; s < 6; s++) {
+					const y = top + s * 18;
+					sv("line", { x1: x0 - 6, x2: W - 12, y1: y, y2: y, stroke: "rgba(244,239,230,0.3)", "stroke-width": 1.2 }, svg);
+					if (l === 0 || W > 0) {
+						const t = sv("text", { x: 10, y: y + 4, "font-size": 11, fill: "rgba(244,239,230,0.5)", "font-family": "JetBrains Mono, monospace" }, svg);
+						t.textContent = ["e", "H", "G", "D", "A", "E"][s];
+					}
+				}
+				const nb = Math.min(perLine, bars - l * perLine);
+				for (let b = 0; b <= nb; b++) {
+					const x = x0 + b * barW - 4;
+					sv("line", { x1: x, x2: x, y1: top, y2: top + 90, stroke: "rgba(244,239,230,0.45)", "stroke-width": 1.5 }, svg);
+				}
+			}
+			song.notes.forEach((n, i) => {
+				const st = starts[i];
+				const bar = Math.floor(st / 8);
+				const line = Math.floor(bar / perLine);
+				const x = x0 + (bar % perLine) * barW + ((st % 8) / 8) * (barW - 8) + 10;
+				const y = 46 + line * LH + (5 - n[0]) * 18;
+				const bg = sv("rect", { x: x - 10, y: y - 10, width: 20, height: 20, rx: 6, fill: "#070605" }, svg);
+				const t = sv("text", { x, y: y + 5, "text-anchor": "middle", "font-size": 15, "font-weight": 700, fill: INK, "font-family": "JetBrains Mono, monospace" }, svg);
+				t.textContent = n[1];
+				// Rhythmus als kleine Hälse unter dem Tab
+				const ry = 46 + line * LH + 100;
+				sv("line", { x1: x, x2: x, y1: ry, y2: ry + (n[2] >= 4 ? 8 : 18), stroke: "rgba(244,239,230,0.5)", "stroke-width": 1.4 }, svg);
+				if (n[2] >= 4) sv("circle", { cx: x, cy: ry + 13, r: 4, fill: "none", stroke: "rgba(244,239,230,0.5)", "stroke-width": 1.4 }, svg);
+				if (n[2] === 1) sv("line", { x1: x, x2: x + 8, y1: ry + 18, y2: ry + 12, stroke: "rgba(244,239,230,0.5)", "stroke-width": 1.4 }, svg);
+				if (n[2] === 3) sv("circle", { cx: x + 6, cy: ry + 16, r: 1.6, fill: "rgba(244,239,230,0.6)" }, svg);
+				cells.push({ bg, t });
+			});
+		}
+		function mark(i) {
+			cells.forEach((c, j) => {
+				c.bg.setAttribute("fill", j === i ? ACC : "#070605");
+				c.t.setAttribute("fill", j === i ? "#241404" : INK);
+			});
+		}
+
+		const clock = M.createClock({
+			bpm: 80,
+			steps: 8,
+			perBeat: 2,
+			onStep(step, time) {
+				const eighth = 60 / clock.bpm / 2;
+				if (step % 2 === 0) M.click(time, step % 8 === 0, 0.25);
+				const i = starts.indexOf(step);
+				if (i >= 0) {
+					const n = song.notes[i];
+					M.pluck(OPEN[n[0]] + n[1], { when: time, vel: 0.95, dur: n[2] * eighth + 0.25 });
+					M.at(time, () => {
+						if (!clock.running) return;
+						mark(i);
+						$("tabOut").textContent = `${["tiefe E", "A", "D", "G", "H", "hohe e"][n[0]]}-Saite · Bund ${n[1]}`;
+					});
+				}
+				if (step === total - 1 && !loop) M.at(time + eighth, () => setPlaying(false));
+			},
+		});
+		clock.onAutoStop = () => setPlaying(false);
+		function setPlaying(on) {
+			btn.setAttribute("aria-pressed", String(on));
+			btn.textContent = on ? "■ Stopp" : "▶ Play";
+			if (on) {
+				clock.setSteps(total);
+				clock.start();
+			} else {
+				clock.stop();
+				mark(-1);
+			}
+		}
+		btn.addEventListener("click", () => setPlaying(!clock.running));
+		bpmIn.addEventListener("input", () => {
+			clock.bpm = Number(bpmIn.value);
+			$("tabBpmOut").textContent = `${bpmIn.value} BPM`;
+		});
+		loopBtn.addEventListener("click", () => {
+			loop = !loop;
+			loopBtn.setAttribute("aria-pressed", String(loop));
+		});
+		const btns = SONGS.map((s, i) =>
+			chip(s.name, $("tabSongs"), () => {
+				setPlaying(false);
+				song = s;
+				choose(btns, btns[i]);
+				$("tabTag").textContent = s.name;
+				$("tabNote").textContent = s.tip;
+				layout();
+			})
+		);
+		choose(btns, btns[0]);
+		$("tabNote").textContent = song.tip;
+		layout();
+		let rw = 0;
+		window.addEventListener("resize", () => {
+			if (Math.abs(svg.clientWidth - rw) < 20) return;
+			rw = svg.clientWidth;
+			layout();
+		});
+	})();
+
+	// ---------- 8 Fingerpicking ----------
+	(function picking() {
+		const BASS = { Am: [1, 2], Em: [0, 2], C: [1, 2], G: [0, 2], D: [2, 1], Dm: [2, 1], A: [1, 2], E: [0, 2] };
+		const PATTERNS = [
+			{ name: "Arpeggio", steps: ["B", "i", "m", "a", "m", "i", "A", "i"], tip: "p i m a m i: Der Daumen beginnt, dann laufen die Finger hoch und wieder runter. Das klassische Lagerfeuer-Zupfen." },
+			{ name: "Daumen und Griff", steps: ["B", "-", "X", "-", "A", "-", "X", "-"], tip: "Der Daumen spielt den Bass, dann zupfen i, m und a gleichzeitig. Ein guter erster Schritt, weil die Finger als Team arbeiten." },
+			{ name: "Travis", steps: ["P", "m", "A", "i", "B", "m", "A", "i"], tip: "Wechselbass: Der Daumen springt auf jedem Schlag zwischen zwei Basssaiten, die Finger spielen auf den Unds. Erst den Daumen allein üben!" },
+		];
+		const PROGS = [
+			{ name: "Am · Em", chords: ["Am", "Em"] },
+			{ name: "C · Am · Dm · G", chords: ["C", "Am", "Dm", "G"] },
+			{ name: "G · Em · C · D", chords: ["G", "Em", "C", "D"] },
+		];
+		const COUNT = ["1", "+", "2", "+", "3", "+", "4", "+"];
+		const svg = $("pickSvg");
+		const btn = $("btnPick");
+		const bpmIn = $("pickBpm");
+		let pat = PATTERNS[0];
+		let prog = PROGS[0];
+		let cols = [];
+		const strOf = (tok, key) => {
+			const [b, a] = BASS[key];
+			return { B: [b], A: [a], i: [3], m: [4], a: [5], P: [b, 5], X: [3, 4, 5], "-": [] }[tok];
+		};
+		const fingerOf = (s, tok) => (s <= 2 ? "p" : { 3: "i", 4: "m", 5: "a" }[s]) + (tok === "-" ? "" : "");
+		const noteOf = (key, s) => {
+			const f = CHORDS[key].frets[s];
+			return OPEN[s] + Math.max(0, f);
+		};
+
+		function draw(key) {
+			svg.innerHTML = "";
+			const X = (i) => 92 + i * 62;
+			const Y = (s) => 40 + (5 - s) * 34;
+			for (let s = 0; s < 6; s++) {
+				sv("line", { x1: 50, x2: 590, y1: Y(s), y2: Y(s), stroke: s < 3 ? "#d6b98c" : "#e6e2da", "stroke-width": 3 - s * 0.35, opacity: 0.55 }, svg);
+				const t = sv("text", { x: 18, y: Y(s) + 4, "font-size": 13, fill: "rgba(244,239,230,0.55)", "font-family": "JetBrains Mono, monospace" }, svg);
+				t.textContent = ["E", "A", "D", "G", "H", "e"][s];
+			}
+			cols = [];
+			pat.steps.forEach((tok, i) => {
+				const hl = sv("rect", { x: X(i) - 24, y: 18, width: 48, height: 236, rx: 10, fill: "transparent" }, svg);
+				const dots = [];
+				strOf(tok, key).forEach((s) => {
+					const p = s <= 2;
+					const c = sv("circle", { cx: X(i), cy: Y(s), r: 14, fill: p ? ACC : ACC2 }, svg);
+					const t = sv("text", { x: X(i), y: Y(s) + 5, "text-anchor": "middle", "font-size": 14, "font-weight": 700, fill: "#1a1004", "font-family": "Space Grotesk, sans-serif" }, svg);
+					t.textContent = fingerOf(s, tok);
+					dots.push(c);
+				});
+				const ct = sv("text", { x: X(i), y: 278, "text-anchor": "middle", "font-size": 15, "font-weight": i % 2 ? 500 : 700, fill: i % 2 ? "rgba(244,239,230,0.45)" : "rgba(244,239,230,0.8)", "font-family": "Space Grotesk, sans-serif" }, svg);
+				ct.textContent = COUNT[i];
+				cols.push({ hl, dots });
+			});
+		}
+		function mark(i) {
+			cols.forEach((c, j) => c.hl.setAttribute("fill", j === i ? "rgba(245,177,76,0.16)" : "transparent"));
+		}
+
+		let shownKey = null;
+		const clock = M.createClock({
+			bpm: 66,
+			steps: 8 * prog.chords.length,
+			perBeat: 2,
+			onStep(step, time) {
+				const key = prog.chords[Math.floor(step / 8) % prog.chords.length];
+				const e = step % 8;
+				const strs = strOf(pat.steps[e], key);
+				const eighth = 60 / clock.bpm / 2;
+				strs.forEach((s) => M.pluck(noteOf(key, s), { when: time, vel: s <= 2 ? 0.95 : 0.7, bright: 0.45, dur: eighth * 6 }));
+				M.at(time, () => {
+					if (!clock.running) return;
+					if (shownKey !== key) {
+						shownKey = key;
+						draw(key);
+					}
+					mark(e);
+					$("pickOut").textContent = `${CHORDS[key].name} · Daumen auf ${["E", "A", "D"][BASS[key][0]]}`;
+				});
+			},
+		});
+		clock.onAutoStop = () => setPlaying(false);
+		function setPlaying(on) {
+			btn.setAttribute("aria-pressed", String(on));
+			btn.textContent = on ? "■ Stopp" : "▶ Start";
+			if (on) {
+				clock.setSteps(8 * prog.chords.length);
+				clock.start();
+			} else {
+				clock.stop();
+				mark(-1);
+			}
+		}
+		btn.addEventListener("click", () => setPlaying(!clock.running));
+		bpmIn.addEventListener("input", () => {
+			clock.bpm = Number(bpmIn.value);
+			$("pickBpmOut").textContent = `${bpmIn.value} BPM`;
+		});
+		const pBtns = PATTERNS.map((p, i) =>
+			chip(p.name, $("pickPatterns"), () => {
+				pat = p;
+				choose(pBtns, pBtns[i]);
+				$("pickTag").textContent = p.name;
+				$("pickNote").textContent = p.tip;
+				shownKey = prog.chords[0];
+				draw(shownKey);
+			})
+		);
+		const gBtns = PROGS.map((p, i) =>
+			chip(p.name, $("pickProgs"), () => {
+				prog = p;
+				choose(gBtns, gBtns[i]);
+				if (clock.running) {
+					clock.stop();
+					setPlaying(true);
+				} else {
+					shownKey = p.chords[0];
+					draw(shownKey);
+				}
+			})
+		);
+		choose(pBtns, pBtns[0]);
+		choose(gBtns, gBtns[0]);
+		$("pickNote").textContent = pat.tip;
+		shownKey = "Am";
+		draw("Am");
+	})();
+
+	// ---------- 9 Barré ----------
+	const SHAPES = [
+		{ name: "E-Form Dur", root: 0, minor: false, frets: (b) => [b, b + 2, b + 2, b + 1, b, b], fingers: [1, 3, 4, 2, 1, 1] },
+		{ name: "E-Form Moll", root: 0, minor: true, frets: (b) => [b, b + 2, b + 2, b, b, b], fingers: [1, 3, 4, 1, 1, 1] },
+		{ name: "A-Form Dur", root: 1, minor: false, frets: (b) => [-1, b, b + 2, b + 2, b + 2, b], fingers: [0, 1, 2, 3, 4, 1] },
+		{ name: "A-Form Moll", root: 1, minor: true, frets: (b) => [-1, b, b + 2, b + 2, b + 1, b], fingers: [0, 1, 3, 4, 2, 1] },
+	];
+	const shapeName = (sh, b) => {
+		const n = M.noteName(OPEN[sh.root] + b);
+		return sh.minor ? `${n.toLowerCase()}-Moll` : `${n}-Dur`;
+	};
+	const shapeNotes = (sh, b) => sh.frets(b).map((f, i) => (f < 0 ? null : OPEN[i] + f));
+
+	(function barre() {
+		const svg = $("barreSvg");
+		const fretIn = $("barreFret");
+		let shape = SHAPES[0];
+
+		function draw() {
+			const b = Number(fretIn.value);
+			const frets = shape.frets(b);
+			svg.innerHTML = "";
+			const X = (i) => 50 + i * 34;
+			const Y0 = 58;
+			const FH = 56;
+			for (let f = 0; f <= 4; f++) sv("line", { x1: X(0), y1: Y0 + f * FH, x2: X(5), y2: Y0 + f * FH, stroke: f === 0 && b === 1 ? "#e8e1d4" : "rgba(244,239,230,0.35)", "stroke-width": f === 0 && b === 1 ? 8 : 2 }, svg);
+			for (let i = 0; i < 6; i++) {
+				sv("line", { x1: X(i), y1: Y0, x2: X(i), y2: Y0 + 4 * FH, stroke: frets[i] < 0 ? "rgba(244,239,230,0.25)" : "#cfc7b9", "stroke-width": 3.2 - i * 0.35 }, svg);
+				if (frets[i] < 0) sv("path", { d: `M${X(i) - 7} ${Y0 - 33}L${X(i) + 7} ${Y0 - 19}M${X(i) + 7} ${Y0 - 33}L${X(i) - 7} ${Y0 - 19}`, stroke: "#ff8a7a", "stroke-width": 2.5, "stroke-linecap": "round" }, svg);
+			}
+			for (let r = 0; r < 4; r++) {
+				const t = sv("text", { x: 22, y: Y0 + (r + 0.5) * FH + 5, "text-anchor": "middle", "font-size": 13, fill: r === 0 ? ACC : "rgba(244,239,230,0.4)", "font-family": "JetBrains Mono, monospace" }, svg);
+				t.textContent = b + r;
+			}
+			// Barré-Balken
+			const barS = frets.map((f, i) => (shape.fingers[i] === 1 && f === b ? i : -1)).filter((i) => i >= 0);
+			const first = shape.root;
+			const cy0 = Y0 + 0.5 * FH;
+			sv("rect", { x: X(first) - 15, y: cy0 - 15, width: X(Math.max(...barS)) - X(first) + 30, height: 30, rx: 15, fill: ACC }, svg);
+			const bt = sv("text", { x: X(first), y: cy0 + 5.5, "text-anchor": "middle", "font-size": 16, "font-weight": 700, fill: "#241404", "font-family": "Space Grotesk, sans-serif" }, svg);
+			bt.textContent = "1";
+			frets.forEach((f, i) => {
+				if (f <= b || shape.fingers[i] === 1) return;
+				const cy = Y0 + (f - b + 0.5) * FH;
+				sv("circle", { cx: X(i), cy, r: 15, fill: ACC }, svg);
+				const t = sv("text", { x: X(i), y: cy + 5.5, "text-anchor": "middle", "font-size": 16, "font-weight": 700, fill: "#241404", "font-family": "Space Grotesk, sans-serif" }, svg);
+				t.textContent = shape.fingers[i];
+			});
+			sv("circle", { cx: X(shape.root), cy: Y0 + 4 * FH + 22, r: 4, fill: ACC2 }, svg);
+			const name = shapeName(shape, b);
+			$("barreOut").textContent = M.noteName(OPEN[shape.root] + b) + (shape.minor ? "m" : "");
+			$("barreFretOut").textContent = b;
+			$("barreNote").textContent = `${name}: Grundton ${M.noteName(OPEN[shape.root] + b)} im ${b}. Bund auf der ${shape.root === 0 ? "tiefen E" : "A"}-Saite (grüner Punkt).${shape.root === 1 ? " Die tiefe E-Saite bleibt still." : ""}${b === 5 && shape.root === 0 ? " Hier ist der beste Ort zum Üben." : ""}`;
+		}
+		const strumIt = () => M.strum(shapeNotes(shape, Number(fretIn.value)), { vel: 0.85 });
+		const btns = SHAPES.map((sh, i) =>
+			chip(sh.name, $("barreShapes"), () => {
+				shape = sh;
+				choose(btns, btns[i]);
+				draw();
+				strumIt();
+			})
+		);
+		choose(btns, btns[0]);
+		let last = 0;
+		fretIn.addEventListener("input", () => {
+			draw();
+			const now = performance.now();
+			if (now - last > 160) {
+				last = now;
+				strumIt();
+			}
+		});
+		$("btnBarre").addEventListener("click", strumIt);
+		draw();
+	})();
+
+	// ---------- 10 Gehörtraining ----------
+	(function ear() {
+		const cv = $("earCanvas");
+		const { ctx, size } = fitCanvas(cv, (w) => (w < 500 ? 1.7 : 2.4));
+		const note = $("earNote");
+		const MODES = [
+			{ name: "Dur oder Moll?", answers: ["Dur", "Moll"] },
+			{ name: "Stufen in G-Dur", answers: ["I · G", "IV · C", "V · D", "vi · Em"] },
+		];
+		const STUFEN = ["G", "C", "D", "Em"];
+		let mode = MODES[0];
+		let q = null;
+		let locked = true;
+		let right = 0;
+		let total = 0;
+		let streak = 0;
+		let pulse = 0;
+		let shown = "?";
+		let shownColor = INK;
+
+		function play() {
+			if (!q) return;
+			const ac = M.audio();
+			pulse = 1;
+			if (mode === MODES[0]) {
+				M.strum(q.notes, { vel: 0.9 });
+				setTimeout(() => (pulse = 1), 900);
+				M.strum(q.notes, { when: ac.currentTime + 0.9, vel: 0.7, spread: 0.12 });
+			} else {
+				M.strum(chordNotes("G"), { vel: 0.8 });
+				M.strum(chordNotes(STUFEN[q.answer]), { when: ac.currentTime + 1.3, vel: 0.9 });
+				setTimeout(() => (pulse = 1), 1300);
+			}
+		}
+		function next() {
+			if (mode === MODES[0]) {
+				const minor = Math.random() < 0.5;
+				const pool = SHAPES.filter((s) => s.minor === minor);
+				const sh = pool[Math.floor(Math.random() * pool.length)];
+				const b = 1 + Math.floor(Math.random() * 7);
+				q = { answer: minor ? 1 : 0, notes: shapeNotes(sh, b), label: shapeName(sh, b) };
+			} else {
+				const a = Math.floor(Math.random() * 4);
+				q = { answer: a, label: CHORDS[STUFEN[a]].name };
+			}
+			locked = false;
+			shown = "?";
+			shownColor = INK;
+			ansBtns.forEach((b) => b.classList.remove("is-right", "is-wrong"));
+			note.textContent = mode === MODES[0] ? "Klingt der Akkord hell oder dunkel?" : "Erst kommt G als Heimat, dann der gesuchte Akkord.";
+			play();
+		}
+		let ansBtns = [];
+		function buildAnswers() {
+			$("earAnswers").innerHTML = "";
+			ansBtns = mode.answers.map((a, i) => {
+				const b = chip(a, $("earAnswers"), () => answer(i));
+				b.removeAttribute("aria-pressed");
+				return b;
+			});
+		}
+		function answer(i) {
+			if (locked || !q) return;
+			locked = true;
+			total++;
+			if (i === q.answer) {
+				right++;
+				streak++;
+				ansBtns[i].classList.add("is-right");
+				shownColor = "#7bdc9a";
+				note.textContent = `Richtig: ${q.label}.`;
+				setTimeout(next, 1400);
+			} else {
+				streak = 0;
+				ansBtns[i].classList.add("is-wrong");
+				ansBtns[q.answer].classList.add("is-right");
+				shownColor = "#ff8a7a";
+				note.textContent = `Das war ${q.label}. Hör es dir mit 🔁 nochmal an und vergleiche, dann weiter mit ▶.`;
+			}
+			shown = mode.answers[q.answer].split(" · ")[0];
+			$("earOut").textContent = `${right} von ${total} · Serie ${streak}`;
+		}
+		const mBtns = MODES.map((m, i) =>
+			chip(m.name, $("earModes"), () => {
+				mode = m;
+				choose(mBtns, mBtns[i]);
+				$("earTag").textContent = m.name;
+				buildAnswers();
+				q = null;
+				locked = true;
+				shown = "?";
+				note.textContent = "Drück ▶, um zu starten.";
+			})
+		);
+		choose(mBtns, mBtns[0]);
+		buildAnswers();
+		note.textContent = "Drück ▶, um zu starten. Am besten mit Kopfhörern.";
+		$("btnEarPlay").addEventListener("click", next);
+		$("btnEarAgain").addEventListener("click", play);
+
+		whenVisible(cv, (dt, t) => {
+			const { w, h } = size;
+			ctx.clearRect(0, 0, w, h);
+			pulse = Math.max(0, pulse - dt * 0.8);
+			const cx = w / 2;
+			const cy = h / 2;
+			for (let k = 0; k < 4; k++) {
+				const r = 40 + k * 26 + (reduced ? 0 : Math.sin(t * 2 + k) * 3) + pulse * 30;
+				ctx.strokeStyle = `rgba(245,177,76,${0.08 + pulse * 0.25 - k * 0.015})`;
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+				ctx.arc(cx, cy, r, 0, Math.PI * 2);
+				ctx.stroke();
+			}
+			ctx.fillStyle = shownColor;
+			ctx.textAlign = "center";
+			ctx.font = `800 ${Math.min(64, h * 0.3)}px Syne, sans-serif`;
+			ctx.fillText(shown, cx, cy + Math.min(64, h * 0.3) * 0.35);
+			ctx.textAlign = "start";
+		});
+	})();
+
+	// ---------- 11 Übeplan ----------
 	M.practicePlan($("plan"), "gitarre", [
 		{ min: 2, title: "Stimmen und lockern", tip: "Gitarre stimmen, Schultern kreisen, Hände ausschütteln." },
 		{ min: 3, title: "Aufwärmen: 1-2-3-4", tip: "Auf jeder Saite Bund 1 bis 4, ein Finger pro Bund. Langsam, jeder Ton klar." },

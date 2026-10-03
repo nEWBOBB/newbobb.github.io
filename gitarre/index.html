@@ -94,6 +94,10 @@
 				<li><a href="#akkorde">Die ersten Akkorde</a></li>
 				<li><a href="#wechsel">Ein-Minuten-Wechsel</a></li>
 				<li><a href="#rhythmus">Rhythmus ist alles</a></li>
+				<li><a href="#tabs">Tabs lesen</a></li>
+				<li><a href="#zupfen">Fingerpicking</a></li>
+				<li><a href="#barre">Barré</a></li>
+				<li><a href="#gehoer">Gehörtraining</a></li>
 				<li><a href="#ueben">So üben Profis</a></li>
 			</ol>
 		</section>
@@ -311,10 +315,171 @@
 			</div>
 		</section>
 
-		<!-- 6 Üben -->
+		<!-- 7 Tabs -->
+		<section class="chapter wide" id="tabs">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">07 · Melodien spielen</span>
+				<h2>Tabs lesen</h2>
+				<p>Gitarristen schreiben Musik meist nicht in Noten, sondern als <strong>Tabulatur</strong>, kurz Tab. Das
+					ist ein Bild des Griffbretts von vorne gesehen:</p>
+				<ul>
+					<li>Die sechs Linien sind die Saiten. <strong>Oben die dünne hohe e-Saite</strong>, unten die dicke
+						tiefe E-Saite. Also genau andersherum, als du von oben auf deine Gitarre schaust.</li>
+					<li>Die Zahl ist der <strong>Bund</strong>. 0 heißt: leere Saite.</li>
+					<li>Gelesen wird von links nach rechts. Zahlen übereinander klingen gleichzeitig.</li>
+				</ul>
+				<div class="pro">
+					<b>Profi-Tipp</b>
+					<ul>
+						<li>Tabs zeigen oft keinen Rhythmus. <strong>Hör dir das Original an</strong>, bevor du einen Tab
+							übst. Hier hilft der Player, er spielt den Rhythmus mit.</li>
+						<li>Eine Hand, ein Bereich: Für die ersten vier Bünde ist jeder Finger für einen Bund zuständig.
+							Zeigefinger Bund 1, Mittelfinger Bund 2, Ringfinger Bund 3.</li>
+						<li>Erst langsam mitspielen, die Melodie laut mitsingen, dann schneller.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Lied und drück Play. Die Marke läuft mit, spiel die leuchtenden Zahlen mit.</p>
+				<div class="stage-view">
+					<svg id="tabSvg" viewBox="0 0 1000 240" role="img" aria-label="Tabulatur"></svg>
+					<span class="stage-tag" id="tabTag">Ode an die Freude</span>
+					<span class="stage-readout" id="tabOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnTab" type="button" aria-pressed="false">▶ Play</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="tabBpmOut">80 BPM</output></span>
+						<input type="range" id="tabBpm" min="40" max="140" value="80" />
+					</label>
+					<button class="btn toggle" id="btnTabLoop" type="button" aria-pressed="true">🔁 Schleife</button>
+					<div class="chips" id="tabSongs"></div>
+					<p class="stage-note" id="tabNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 8 Zupfen -->
+		<section class="chapter flip" id="zupfen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">08 · Die rechte Hand, Teil 2</span>
+				<h2>Fingerpicking</h2>
+				<p>Statt mit dem Plektrum über alle Saiten zu schlagen, zupfst du die Saiten einzeln mit den Fingern.
+					Jeder Finger hat seine feste Aufgabe, die Namen kommen aus dem Spanischen der klassischen Gitarre:</p>
+				<ul>
+					<li><strong>p</strong> (pulgar, Daumen): die Basssaiten E, A und D</li>
+					<li><strong>i</strong> (indice, Zeigefinger): die G-Saite</li>
+					<li><strong>m</strong> (medio, Mittelfinger): die H-Saite</li>
+					<li><strong>a</strong> (anular, Ringfinger): die hohe e-Saite</li>
+				</ul>
+				<p>Der <strong>Daumen spielt immer den Grundton</strong> des Akkords. Beim Wechselbass (Travis-Picking)
+					springt er zwischen zwei Basssaiten hin und her wie ein Metronom, und die Finger spielen dazwischen.</p>
+				<div class="pro">
+					<b>Profi-Tipp</b>
+					<ul>
+						<li>Erst den Daumen allein üben, bis er gleichmäßig läuft, ohne dass du hinschaust. Dann die Finger dazu.</li>
+						<li>Leg den kleinen Finger nicht auf die Decke. Die Hand schwebt locker über den Saiten.</li>
+						<li>Zupf aus den Fingergelenken, nicht aus dem Handgelenk. Die Hand bleibt ruhig.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Muster. Die Buchstaben zeigen, welcher Finger welche Saite zupft.</p>
+				<div class="stage-view">
+					<svg id="pickSvg" viewBox="0 0 600 290" role="img" aria-label="Zupfmuster"></svg>
+					<span class="stage-tag" id="pickTag">Arpeggio</span>
+					<span class="stage-readout" id="pickOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnPick" type="button" aria-pressed="false">▶ Start</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="pickBpmOut">66 BPM</output></span>
+						<input type="range" id="pickBpm" min="40" max="120" value="66" />
+					</label>
+					<div class="chips" id="pickPatterns"></div>
+					<div class="chips" id="pickProgs"></div>
+					<p class="stage-note" id="pickNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 9 Barré -->
+		<section class="chapter" id="barre">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">09 · Der nächste Schritt</span>
+				<h2>Barré: ein Griff, zwölf Akkorde</h2>
+				<p>Beim Barré legt sich der Zeigefinger quer über alle Saiten, wie ein beweglicher Sattel. Der Rest der
+					Hand greift eine bekannte Form, zum Beispiel E-Dur. Das Geniale: Diese Form kannst du <strong>das ganze
+						Griffbrett hinauf schieben</strong>. Im ersten Bund ist es F-Dur, im dritten G-Dur, im fünften A-Dur.</p>
+				<p>Der Name des Akkords ist immer der Ton, auf dem der Zeigefinger auf der tiefsten gegriffenen Saite liegt.
+					Deshalb lohnt es sich, die Töne auf der E- und A-Saite zu kennen (Kapitel 2).</p>
+				<div class="pro">
+					<b>Profi-Tipp: Barré ohne Krampf</b>
+					<ul>
+						<li><strong>Fang im 5. Bund an</strong>, nicht beim gefürchteten F im 1. Bund. Weiter oben ist die
+							Saitenspannung geringer. Dann Bund für Bund nach unten wandern.</li>
+						<li>Roll den Zeigefinger leicht auf seine harte Außenkante, dort ist er flacher.</li>
+						<li>Nicht mit dem Daumen quetschen. Zieh den Arm sanft nach hinten, das Gewicht des Arms drückt mit.</li>
+						<li>Wochen bis zum sauberen F sind normal. Jeden Tag eine Minute reicht.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Form und schieb den Barré über den Hals. Hör, wie der Akkord mitwandert.</p>
+				<div class="stage-view">
+					<div class="chord-wrap">
+						<svg id="barreSvg" viewBox="0 0 260 320" role="img" aria-label="Barré-Griffbild"></svg>
+					</div>
+					<span class="stage-tag">Barré</span>
+					<span class="stage-readout big-readout" id="barreOut">F</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="barreShapes"></div>
+					<label class="range">
+						<span class="range-head"><span>Bund</span><output id="barreFretOut">1</output></span>
+						<input type="range" id="barreFret" min="1" max="10" value="1" />
+					</label>
+					<button class="btn primary" id="btnBarre" type="button">⬇ Anschlagen</button>
+					<p class="stage-note" id="barreNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 10 Gehör -->
+		<section class="chapter flip" id="gehoer">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">10 · Ohren auf</span>
+				<h2>Gehörtraining</h2>
+				<p>Gute Gitarristen spielen nicht nur mit den Händen, sondern mit den Ohren. Sie hören, ob ein Akkord Dur
+					oder Moll ist, und sie erkennen, wohin ein Lied als Nächstes geht. Das ist kein Talent, das ist
+					Training, ein paar Minuten am Tag.</p>
+				<p>Die meisten Lieder bestehen aus wenigen Akkorden einer Tonart. In G-Dur sind das vor allem
+					<strong>G, C, D und Em</strong>. Musiker nennen sie nach ihrer Stufe: <strong>I, IV, V und vi</strong>.
+					Wer diese Stufen hört, kann viele Lieder nach Gehör mitspielen.</p>
+				<p class="merke"><b>Merke</b>Dur klingt hell und offen, Moll dunkler und weicher. Die V (D in G-Dur) klingt
+					gespannt und will zurück zur I. Die IV klingt, als würde die Musik einen Schritt weg gehen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Hör zu und tippe deine Antwort. Mit 🔁 kannst du es so oft wiederholen, wie du willst.</p>
+				<div class="stage-view">
+					<canvas id="earCanvas" aria-label="Gehörtraining"></canvas>
+					<span class="stage-tag" id="earTag">Dur oder Moll?</span>
+					<span class="stage-readout" id="earOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="earModes"></div>
+					<button class="btn primary" id="btnEarPlay" type="button">▶ Neue Aufgabe</button>
+					<button class="btn" id="btnEarAgain" type="button">🔁 Nochmal</button>
+					<div class="chips" id="earAnswers"></div>
+					<p class="stage-note" id="earNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 11 Üben -->
 		<section class="chapter" id="ueben">
 			<div class="chapter-text reveal">
-				<span class="chapter-num">06 · Die Methode</span>
+				<span class="chapter-num">11 · Die Methode</span>
 				<h2>So üben Profis</h2>
 				<p>Forschung zum Lernen von Bewegungen und die Erfahrung von Musiklehrern sagen dasselbe: Es kommt nicht auf
 					die Stunden an, sondern darauf, <strong>wie</strong> du übst.</p>

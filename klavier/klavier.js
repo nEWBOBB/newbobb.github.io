@@ -992,7 +992,417 @@
 		});
 	})();
 
-	// ---------- 7 Übeplan ----------
+	// ---------- 7 Rhythmus klopfen ----------
+	(function rhythm() {
+		const svg = $("rhySvg");
+		const note = $("rhyNote");
+		const out = $("rhyOut");
+		const tapper = $("rhyTap");
+		const bpmIn = $("rhyBpm");
+		const LEVELS = [
+			{ name: "Stufe 1 · Ganze, Halbe, Viertel", units: ["w", "h", "q"] },
+			{ name: "Stufe 2 · mit Achteln", units: ["h", "q", "ee"] },
+			{ name: "Stufe 3 · Punkte und Pausen", units: ["h", "q", "ee", "dq", "r"] },
+		];
+		const LEN = { w: 4, h: 2, q: 1, ee: 1, dq: 2, r: 1 };
+		let level = LEVELS[0];
+		let bar = [];
+		let onsets = [];
+		let state = "idle";
+		let t0 = 0;
+		let taps = [];
+		let raf = 0;
+		let marks = null;
+
+		function generate() {
+			let left = 4;
+			const out = [];
+			while (left > 0) {
+				const fit = level.units.filter((u) => LEN[u] <= left && !(u === "w" && Math.random() < 0.7));
+				const u = fit[Math.floor(Math.random() * fit.length)] || "q";
+				out.push(u);
+				left -= LEN[u];
+			}
+			if (out.every((u) => u === "r")) out[0] = "q";
+			bar = out;
+			onsets = [];
+			let b = 0;
+			bar.forEach((u) => {
+				if (u === "ee") onsets.push(b, b + 0.5);
+				else if (u === "dq") onsets.push(b, b + 1.5);
+				else if (u !== "r") onsets.push(b);
+				b += LEN[u];
+			});
+			marks = null;
+			draw(-1);
+		}
+
+		const X = (beat) => 104 + beat * 114;
+		function head(x, filled) {
+			sv("ellipse", { cx: x, cy: 110, rx: 10, ry: 7, fill: filled ? INK : "none", stroke: INK, "stroke-width": 2, transform: `rotate(-22 ${x} 110)` }, svg);
+		}
+		function stem(x) {
+			sv("line", { x1: x + 9, x2: x + 9, y1: 108, y2: 56, stroke: INK, "stroke-width": 2 }, svg);
+		}
+		function draw(playBeat) {
+			svg.innerHTML = "";
+			sv("line", { x1: 40, x2: 570, y1: 110, y2: 110, stroke: "rgba(244,239,230,0.35)", "stroke-width": 1.5 }, svg);
+			[40, 570].forEach((x) => sv("line", { x1: x, x2: x, y1: 90, y2: 130, stroke: "rgba(244,239,230,0.6)", "stroke-width": 2 }, svg));
+			const ts = sv("text", { x: 48, y: 104, "font-size": 18, "font-weight": 700, fill: "rgba(244,239,230,0.7)", "font-family": "Syne, sans-serif" }, svg);
+			ts.textContent = "4";
+			const ts2 = sv("text", { x: 48, y: 126, "font-size": 18, "font-weight": 700, fill: "rgba(244,239,230,0.7)", "font-family": "Syne, sans-serif" }, svg);
+			ts2.textContent = "4";
+			let b = 0;
+			bar.forEach((u) => {
+				const x = X(b);
+				if (u === "w") head(x, false);
+				else if (u === "h") {
+					head(x, false);
+					stem(x);
+				} else if (u === "q") {
+					head(x, true);
+					stem(x);
+				} else if (u === "ee") {
+					const x2 = X(b + 0.5);
+					head(x, true);
+					stem(x);
+					head(x2, true);
+					stem(x2);
+					sv("rect", { x: x + 8, y: 54, width: x2 - x + 2, height: 7, fill: INK }, svg);
+				} else if (u === "dq") {
+					const x2 = X(b + 1.5);
+					head(x, true);
+					stem(x);
+					sv("circle", { cx: x + 18, cy: 106, r: 2.6, fill: INK }, svg);
+					head(x2, true);
+					stem(x2);
+					sv("path", { d: `M${x2 + 9} 56 q 4 14 14 20 q -6 -4 -14 -6`, fill: INK }, svg);
+				} else if (u === "r") {
+					const t = sv("text", { x: x - 8, y: 124, "font-size": 46, fill: INK, "font-family": "'Noto Music', serif" }, svg);
+					t.textContent = "\u{1D13D}";
+				}
+				b += LEN[u];
+			});
+			for (let i = 0; i < 8; i++) {
+				const t = sv("text", { x: X(i / 2), y: 172, "text-anchor": "middle", "font-size": i % 2 ? 13 : 15, "font-weight": i % 2 ? 500 : 700, fill: i % 2 ? "rgba(244,239,230,0.4)" : "rgba(244,239,230,0.8)", "font-family": "Space Grotesk, sans-serif" }, svg);
+				t.textContent = i % 2 ? "+" : String(i / 2 + 1);
+			}
+			if (marks) {
+				marks.hits.forEach((m) => sv("circle", { cx: X(m.beat), cy: 28, r: 8, fill: m.color }, svg));
+				marks.taps.forEach((tb) => sv("line", { x1: X(tb), x2: X(tb), y1: 140, y2: 152, stroke: ACC2, "stroke-width": 3, "stroke-linecap": "round" }, svg));
+			}
+			if (playBeat >= 0) sv("line", { x1: X(playBeat), x2: X(playBeat), y1: 40, y2: 156, stroke: ACC, "stroke-width": 2, opacity: 0.8 }, svg);
+		}
+
+		const beatLen = () => 60 / Number(bpmIn.value);
+		function animate() {
+			if (state !== "count" && state !== "play" && state !== "listen") return draw(-1);
+			const now = M.audio().currentTime;
+			const beat = (now - t0) / beatLen();
+			if (beat < 0) {
+				out.textContent = `Vorzählen … ${4 + Math.floor(beat) + 1}`;
+				draw(-1);
+			} else {
+				if (state === "count") state = "play";
+				out.textContent = state === "listen" ? "Hör zu" : "Jetzt klopfen!";
+				draw(Math.min(4, beat));
+			}
+			raf = requestAnimationFrame(animate);
+		}
+
+		function schedule(withNotes) {
+			const ac = M.audio();
+			const bl = beatLen();
+			t0 = ac.currentTime + 0.2 + 4 * bl;
+			for (let i = -4; i < 4; i++) M.click(t0 + i * bl, i === -4 || i === 0, 0.5);
+			if (withNotes) onsets.forEach((o) => M.piano(72, { when: t0 + o * bl, vel: 0.6, dur: 0.25 }));
+		}
+		$("btnRhy").addEventListener("click", () => {
+			if (state !== "idle") return;
+			marks = null;
+			taps = [];
+			state = "count";
+			schedule(false);
+			note.textContent = "Klopf genau auf den Notenanfang. Bei langen Noten einmal klopfen und weiterzählen.";
+			cancelAnimationFrame(raf);
+			raf = requestAnimationFrame(animate);
+			setTimeout(evaluate, (0.2 + 8.6 * beatLen()) * 1000);
+		});
+		$("btnRhyListen").addEventListener("click", () => {
+			if (state !== "idle") return;
+			state = "listen";
+			marks = null;
+			schedule(true);
+			cancelAnimationFrame(raf);
+			raf = requestAnimationFrame(animate);
+			setTimeout(() => {
+				state = "idle";
+				out.textContent = "";
+			}, (0.2 + 8.3 * beatLen()) * 1000);
+		});
+		$("btnRhyNew").addEventListener("click", () => state === "idle" && generate());
+		bpmIn.addEventListener("input", () => ($("rhyBpmOut").textContent = `${bpmIn.value} BPM`));
+
+		function tap() {
+			if (state !== "count" && state !== "play") return;
+			const ac = M.audio();
+			const lat = ac.outputLatency || ac.baseLatency || 0;
+			taps.push((ac.currentTime - lat - t0) / beatLen());
+			tapper.classList.add("hit");
+			setTimeout(() => tapper.classList.remove("hit"), 90);
+		}
+		tapper.addEventListener("pointerdown", (e) => {
+			e.preventDefault();
+			tap();
+		});
+		document.addEventListener("keydown", (e) => {
+			if ((state === "count" || state === "play") && e.code === "Space" && !e.repeat) {
+				e.preventDefault();
+				tap();
+			}
+		});
+
+		function evaluate() {
+			if (state !== "play" && state !== "count") return;
+			state = "idle";
+			cancelAnimationFrame(raf);
+			const valid = taps.filter((t) => t > -0.4 && t < 4.4);
+			const used = new Set();
+			let good = 0;
+			let sum = 0;
+			let n = 0;
+			const hits = onsets.map((o) => {
+				let best = -1;
+				valid.forEach((t, i) => {
+					if (used.has(i) || Math.abs(t - o) > 0.35) return;
+					if (best < 0 || Math.abs(t - o) < Math.abs(valid[best] - o)) best = i;
+				});
+				if (best < 0) return { beat: o, color: "#ff8a7a" };
+				used.add(best);
+				const err = valid[best] - o;
+				sum += err;
+				n++;
+				const a = Math.abs(err);
+				if (a < 0.12) good++;
+				return { beat: o, color: a < 0.12 ? "#7bdc9a" : a < 0.22 ? ACC2 : "#ff8a7a" };
+			});
+			const extra = valid.length - used.size;
+			marks = { hits, taps: valid.map((t) => Math.max(-0.2, Math.min(4.2, t))) };
+			draw(-1);
+			const score = Math.round((good / (onsets.length + extra)) * 100);
+			out.textContent = `${score} % im Takt`;
+			const ms = n ? Math.round((sum / n) * beatLen() * 1000) : 0;
+			let msg = `${good} von ${onsets.length} Noten genau getroffen${extra ? `, ${extra} ${extra === 1 ? "Schlag" : "Schläge"} zu viel` : ""}. `;
+			if (n && Math.abs(ms) > 35) msg += ms < 0 ? `Du bist im Schnitt ${-ms} ms zu früh: typisch, wenn man eilt. Zähl ruhig mit.` : `Du bist im Schnitt ${ms} ms zu spät. Klopf mutiger auf den Schlag.`;
+			else if (score >= 90) msg += "Stark! Neuer Takt oder etwas schneller.";
+			else msg += "Hör dir den Takt mit 👂 an, zähl laut mit und versuch es nochmal.";
+			note.textContent = msg;
+		}
+
+		const lBtns = LEVELS.map((l, i) =>
+			chip(l.name, $("rhyLevels"), () => {
+				if (state !== "idle") return;
+				level = l;
+				choose(lBtns, lBtns[i]);
+				$("rhyTag").textContent = l.name.split(" · ")[0];
+				generate();
+			})
+		);
+		choose(lBtns, lBtns[0]);
+		generate();
+		note.textContent = "Die Punkte oben zeigen nach dem Klopfen: grün genau, gelb knapp, rot daneben.";
+		if (document.fonts && document.fonts.load) document.fonts.load("46px 'Noto Music'", "\u{1D13D}").then(() => state === "idle" && draw(-1));
+	})();
+
+	// ---------- 8 Begleitmuster ----------
+	(function accompaniment() {
+		const CH = [
+			{ n: "C-Dur", root: 48, third: 4, rh: [60, 64, 67] },
+			{ n: "G-Dur", root: 43, third: 4, rh: [59, 62, 67] },
+			{ n: "a-Moll", root: 45, third: 3, rh: [60, 64, 69] },
+			{ n: "F-Dur", root: 41, third: 4, rh: [60, 65, 69] },
+		];
+		const PATTERNS = [
+			{ name: "Grundton", steps: [[0, 0, 8]], tip: "Nur der Grundton, mit dem kleinen Finger, eine ganze Note lang. Klingt schlicht und trägt trotzdem das ganze Lied." },
+			{ name: "Grundton + Quinte", steps: [[0, 0, 4], [7, 4, 4]], tip: "Kleiner Finger auf den Grundton, Daumen auf die Quinte. Die Hand bleibt in derselben Form und wandert nur mit." },
+			{ name: "Oktaven", steps: [[0, 0, 2], [12, 2, 2], [0, 4, 2], [12, 6, 2]], tip: "Finger 5 und 1 im Wechsel, eine Oktave auseinander. Treibt nach vorne, typisch für Pop und Rock." },
+			{ name: "Gebrochen 1-5-8-5", steps: [[0, 0, 2], [7, 2, 2], [12, 4, 2], [7, 6, 2]], tip: "Grundton, Quinte, Oktave, Quinte. Fließend und weich, der Klassiker für Balladen. Fingersatz 5 2 1 2." },
+			{ name: "Alberti-Bass", steps: "A", tip: "Unten, oben, Mitte, oben: 5 1 3 1. Der Bass aus Mozarts Sonaten. Gleichmäßig und leise spielen, die Melodie ist die Hauptsache." },
+		];
+		const out = $("accOut");
+		const btn = $("btnAcc");
+		const bpmIn = $("accBpm");
+		const rhBtn = $("btnAccRH");
+		let pat = PATTERNS[1];
+		let rh = true;
+		const kb = Keyboard($("kbAccomp"), { from: 41, to: 76, base: 48, labels: "c" });
+		const stepsOf = (c) =>
+			pat.steps === "A" ? [0, 7, c.third, 7, 0, 7, c.third, 7].map((o, i) => [o, i, 1]) : pat.steps;
+
+		const clock = M.createClock({
+			bpm: 76,
+			steps: 32,
+			perBeat: 2,
+			onStep(step, time) {
+				const bar = Math.floor(step / 8);
+				const e = step % 8;
+				const c = CH[bar];
+				const eighth = 60 / clock.bpm / 2;
+				if (rh && e % 4 === 0) c.rh.forEach((m) => M.piano(m, { when: time, vel: 0.42, dur: eighth * 3.8 }));
+				stepsOf(c)
+					.filter((s) => s[1] === e)
+					.forEach(([o, , l]) => {
+						const m = c.root + o;
+						M.piano(m, { when: time, vel: 0.62, dur: Math.max(eighth * l * 0.95, eighth * 1.5) });
+						M.at(time, () => {
+							if (!clock.running) return;
+							kb.clear("hint");
+							kb.light(m, "hint");
+							if (e === 0) {
+								kb.clear("lit");
+								if (rh) c.rh.forEach((r) => kb.light(r, "lit"));
+								out.textContent = c.n;
+							}
+						});
+					});
+			},
+		});
+		clock.onAutoStop = () => setPlaying(false);
+		function setPlaying(on) {
+			btn.setAttribute("aria-pressed", String(on));
+			btn.textContent = on ? "■ Stopp" : "▶ Start";
+			if (on) clock.start();
+			else {
+				clock.stop();
+				kb.clear("hint");
+				kb.clear("lit");
+				out.textContent = "";
+			}
+		}
+		btn.addEventListener("click", () => setPlaying(!clock.running));
+		bpmIn.addEventListener("input", () => {
+			clock.bpm = Number(bpmIn.value);
+			$("accBpmOut").textContent = `${bpmIn.value} BPM`;
+		});
+		rhBtn.addEventListener("click", () => {
+			rh = !rh;
+			rhBtn.setAttribute("aria-pressed", String(rh));
+			if (!rh) kb.clear("lit");
+		});
+		const pBtns = PATTERNS.map((p, i) =>
+			chip(p.name, $("accPatterns"), () => {
+				pat = p;
+				choose(pBtns, pBtns[i]);
+				$("accNote").textContent = p.tip;
+			})
+		);
+		choose(pBtns, pBtns[1]);
+		$("accNote").textContent = pat.tip;
+	})();
+
+	// ---------- 9 Intervalle ----------
+	(function intervals() {
+		const INT = {
+			1: ["kleine Sekunde", "den Hai aus „Der weiße Hai“"],
+			2: ["große Sekunde", "„Alle meine Entchen“"],
+			3: ["kleine Terz", "„Greensleeves“"],
+			4: ["große Terz", "„When the Saints Go Marching In“"],
+			5: ["Quarte", "„O Tannenbaum“"],
+			6: ["Tritonus", "„Maria“ aus der West Side Story"],
+			7: ["Quinte", "„Morgen kommt der Weihnachtsmann“ (von „-gen“ zu „kommt“)"],
+			9: ["große Sexte", "„My Bonnie Is Over the Ocean“"],
+			12: ["Oktave", "„Somewhere Over the Rainbow“"],
+		};
+		const LEVELS = [
+			{ name: "Stufe 1", set: [4, 7, 12] },
+			{ name: "Stufe 2", set: [2, 4, 5, 7, 12] },
+			{ name: "Stufe 3", set: [1, 2, 3, 4, 5, 6, 7, 9, 12] },
+		];
+		const note = $("intNote");
+		const out = $("intOut");
+		const harmBtn = $("btnIntHarm");
+		const kb = Keyboard($("kbInt"), { from: 55, to: 79, base: 60, labels: "c" });
+		let level = LEVELS[0];
+		let q = null;
+		let locked = true;
+		let harm = false;
+		let right = 0;
+		let total = 0;
+		let streak = 0;
+		let ans = [];
+
+		function play() {
+			if (!q) return;
+			const ac = M.audio();
+			const t = ac.currentTime + 0.05;
+			M.piano(q.lo, { when: t, vel: 0.7, dur: harm ? 1.6 : 0.8 });
+			M.piano(q.lo + q.iv, { when: harm ? t : t + 0.8, vel: 0.7, dur: harm ? 1.6 : 1.1 });
+		}
+		function next() {
+			const iv = level.set[Math.floor(Math.random() * level.set.length)];
+			const lo = 55 + Math.floor(Math.random() * (79 - 55 - iv + 1));
+			q = { iv, lo };
+			locked = false;
+			kb.clear("hint");
+			kb.setLabels("c");
+			ans.forEach((b) => b.classList.remove("is-right", "is-wrong"));
+			note.textContent = "Wie weit liegen die zwei Töne auseinander? Sing das erste Lied, das dir einfällt, im Kopf mit.";
+			play();
+		}
+		function build() {
+			$("intAnswers").innerHTML = "";
+			ans = level.set.map((iv) => {
+				const b = chip(INT[iv][0], $("intAnswers"), () => answer(iv, b));
+				b.removeAttribute("aria-pressed");
+				return b;
+			});
+		}
+		function answer(iv, b) {
+			if (locked || !q) return;
+			locked = true;
+			total++;
+			[q.lo, q.lo + q.iv].forEach((m) => {
+				kb.light(m, "hint");
+				kb.tag(m, M.noteName(m));
+			});
+			const truth = ans[level.set.indexOf(q.iv)];
+			if (iv === q.iv) {
+				right++;
+				streak++;
+				b.classList.add("is-right");
+				note.textContent = `Richtig: ${INT[iv][0]}, ${q.iv} Halbtöne, wie bei ${INT[iv][1]}.`;
+				setTimeout(next, 1800);
+			} else {
+				streak = 0;
+				b.classList.add("is-wrong");
+				truth.classList.add("is-right");
+				note.textContent = `Das war eine ${INT[q.iv][0]} (${q.iv} Halbtöne). Denk an ${INT[q.iv][1]}. Mit 🔁 nochmal hören, dann ▶.`;
+			}
+			out.textContent = `${right} von ${total} · Serie ${streak}`;
+		}
+		const lBtns = LEVELS.map((l, i) =>
+			chip(l.name, $("intLevels"), () => {
+				level = l;
+				choose(lBtns, lBtns[i]);
+				build();
+				q = null;
+				locked = true;
+				note.textContent = `${l.set.map((iv) => INT[iv][0]).join(", ")}. Drück ▶.`;
+			})
+		);
+		choose(lBtns, lBtns[0]);
+		build();
+		note.textContent = "Stufe 1: große Terz, Quinte und Oktave. Drück ▶.";
+		$("btnIntNew").addEventListener("click", next);
+		$("btnIntAgain").addEventListener("click", play);
+		harmBtn.addEventListener("click", () => {
+			harm = !harm;
+			harmBtn.setAttribute("aria-pressed", String(harm));
+			if (q) play();
+		});
+	})();
+
+	// ---------- 10 Übeplan ----------
 	M.practicePlan($("plan"), "klavier", [
 		{ min: 3, title: "Aufwärmen", tip: "Fünf-Finger-Übung und C-Dur-Tonleiter, Hände getrennt, langsam und gleichmäßig." },
 		{ min: 3, title: "Noten lesen", tip: "Landmarken-Trainer oder ein leichtes, neues Stück einmal durchspielen, ohne anzuhalten." },

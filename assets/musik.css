@@ -441,12 +441,14 @@ select.sel:focus-visible {
 	font-size: 1rem;
 }
 
-.staff-answers .btn.is-right {
+.staff-answers .btn.is-right,
+.chips .btn.is-right {
 	background: color-mix(in srgb, var(--good) 25%, var(--panel-2));
 	border-color: var(--good);
 }
 
-.staff-answers .btn.is-wrong {
+.staff-answers .btn.is-wrong,
+.chips .btn.is-wrong {
 	background: color-mix(in srgb, var(--bad) 25%, var(--panel-2));
 	border-color: var(--bad);
 }

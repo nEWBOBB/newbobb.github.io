@@ -133,6 +133,9 @@
 				<li><a href="#akkorde">Akkorde bauen</a></li>
 				<li><a href="#tonleiter">Die Tonleiter</a></li>
 				<li><a href="#tempo">Langsam ist schnell</a></li>
+				<li><a href="#rhythmus">Rhythmus klopfen</a></li>
+				<li><a href="#begleitung">Begleitmuster</a></li>
+				<li><a href="#intervalle">Intervalle hören</a></li>
 				<li><a href="#ueben">So üben Profis</a></li>
 			</ol>
 		</section>
@@ -388,10 +391,133 @@
 			</div>
 		</section>
 
-		<!-- 7 Üben -->
+		<!-- 7 Rhythmus -->
+		<section class="chapter" id="rhythmus">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">07 · Im Takt</span>
+				<h2>Rhythmus lesen und klopfen</h2>
+				<p>Eine Note sagt dir nicht nur, welcher Ton, sondern auch <strong>wie lang</strong>. Im 4/4-Takt hat jeder
+					Takt vier Schläge:</p>
+				<ul>
+					<li><strong>Ganze Note</strong> (hohler Kopf, kein Hals): 4 Schläge</li>
+					<li><strong>Halbe Note</strong> (hohler Kopf mit Hals): 2 Schläge</li>
+					<li><strong>Viertelnote</strong> (gefüllter Kopf mit Hals): 1 Schlag</li>
+					<li><strong>Achtelnoten</strong> (mit Balken verbunden): je ein halber Schlag, gezählt „1 und“</li>
+					<li>Ein <strong>Punkt</strong> hinter der Note verlängert sie um die Hälfte. Pausen zählen genauso, nur
+						ohne Ton.</li>
+				</ul>
+				<div class="pro">
+					<b>Profi-Tipp: laut zählen</b>
+					<ul>
+						<li>Zähl beim Üben <strong>laut mit</strong>: „eins und zwei und drei und vier und“. Das fühlt sich
+							am Anfang albern an und ist die wirksamste Rhythmus-Übung, die es gibt.</li>
+						<li>Erst den Rhythmus klopfen, dann mit Tönen spielen. Ein Problem nach dem anderen.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Drück Start. Nach vier Vorzähl-Klicks klopfst du den Takt: auf die Fläche tippen oder die
+					Leertaste drücken.</p>
+				<div class="stage-view">
+					<svg id="rhySvg" viewBox="0 0 600 200" role="img" aria-label="Ein Takt Rhythmus"></svg>
+					<span class="stage-tag" id="rhyTag">Stufe 1</span>
+					<span class="stage-readout" id="rhyOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="rhyLevels"></div>
+					<button class="tapper" id="rhyTap" type="button">Klopf hier</button>
+					<button class="btn primary" id="btnRhy" type="button">▶ Start</button>
+					<button class="btn" id="btnRhyNew" type="button">🎲 Neuer Takt</button>
+					<button class="btn" id="btnRhyListen" type="button">👂 Vorspielen</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="rhyBpmOut">72 BPM</output></span>
+						<input type="range" id="rhyBpm" min="50" max="120" value="72" />
+					</label>
+					<p class="stage-note" id="rhyNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 8 Begleitung -->
+		<section class="chapter wide" id="begleitung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">08 · Die linke Hand</span>
+				<h2>Begleitmuster für links</h2>
+				<p>Mit Akkorden rechts und einem Begleitmuster links klingt schon ein einfaches Lied voll. Profis lernen
+					eine Handvoll Muster, die sie in jedem Stil wiederverwenden, vom Kinderlied bis zur Popballade. Sie
+					bauen aufeinander auf, fang deshalb oben an:</p>
+				<ol class="steps">
+					<li><strong>Grundton</strong>: Links nur der Grundton, lang gehalten. Damit klingt es sofort nach Band.</li>
+					<li><strong>Grundton und Quinte</strong>: Kleiner Finger auf den Grundton, Daumen fünf weiße Tasten höher.</li>
+					<li><strong>Oktaven</strong>: Grundton mit 5 und 1 im Wechsel, treibt nach vorne.</li>
+					<li><strong>Gebrochener Akkord</strong>: 1 – 5 – 8 – 5. Fließend, ideal für Balladen.</li>
+					<li><strong>Alberti-Bass</strong>: unten – oben – Mitte – oben. Mozart hat ihn geliebt.</li>
+				</ol>
+				<p class="merke"><b>Merke</b>Die Begleitung muss automatisch laufen, bevor die Melodie dazukommt. Spiel sie so
+					lange allein, bis du dabei reden kannst.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle ein Muster. Gelb ist die linke Hand, lila die rechte. Dreh das Tempo herunter, um
+					mitzuspielen.</p>
+				<div class="stage-view">
+					<div class="kb" id="kbAccomp"></div>
+					<span class="stage-readout" id="accOut"></span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnAcc" type="button" aria-pressed="false">▶ Start</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="accBpmOut">76 BPM</output></span>
+						<input type="range" id="accBpm" min="40" max="120" value="76" />
+					</label>
+					<button class="btn toggle" id="btnAccRH" type="button" aria-pressed="true">Rechte Hand</button>
+					<div class="chips" id="accPatterns"></div>
+					<p class="stage-note" id="accNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 9 Intervalle -->
+		<section class="chapter flip" id="intervalle">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">09 · Gehörbildung</span>
+				<h2>Intervalle hören</h2>
+				<p>Ein <strong>Intervall</strong> ist der Abstand zwischen zwei Tönen. Wer Intervalle hört, kann Melodien
+					nachspielen, ohne Noten zu brauchen, und liest Noten schneller, weil er weiß, wie sie klingen werden.</p>
+				<p>Der Trick der Profis: Jedes Intervall bekommt einen <strong>Liedanfang</strong> als Anker. Die ersten zwei
+					Töne des Lieds sind genau dieses Intervall.</p>
+				<ul>
+					<li>Kleine Sekunde: <strong>Der weiße Hai</strong></li>
+					<li>Große Sekunde: <strong>Alle meine Entchen</strong></li>
+					<li>Kleine Terz: <strong>Greensleeves</strong></li>
+					<li>Große Terz: <strong>When the Saints Go Marching In</strong></li>
+					<li>Quarte: <strong>O Tannenbaum</strong></li>
+					<li>Tritonus: <strong>Maria</strong> (West Side Story)</li>
+					<li>Quinte: <strong>Morgen kommt der Weihnachtsmann</strong> (von „-gen“ zu „kommt“)</li>
+					<li>Große Sexte: <strong>My Bonnie Is Over the Ocean</strong></li>
+					<li>Oktave: <strong>Somewhere Over the Rainbow</strong></li>
+				</ul>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Hör dir die zwei Töne an und tippe das Intervall. Fang mit Stufe 1 an.</p>
+				<div class="stage-view">
+					<div class="kb" id="kbInt"></div>
+					<span class="stage-readout" id="intOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="intLevels"></div>
+					<button class="btn primary" id="btnIntNew" type="button">▶ Neues Intervall</button>
+					<button class="btn" id="btnIntAgain" type="button">🔁 Nochmal</button>
+					<button class="btn" id="btnIntHarm" type="button" aria-pressed="false">Zusammen klingen</button>
+					<div class="chips" id="intAnswers"></div>
+					<p class="stage-note" id="intNote" aria-live="polite"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 10 Üben -->
 		<section class="chapter" id="ueben">
 			<div class="chapter-text reveal">
-				<span class="chapter-num">07 · Jeden Tag</span>
+				<span class="chapter-num">10 · Jeden Tag</span>
 				<h2>So üben Profis</h2>
 				<ul>
 					<li><strong>Kurz und täglich</strong>: 20 bis 30 Minuten jeden Tag sind besser als zwei Stunden am
