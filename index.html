@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Newbobb Lab</title>
 	<meta name="description"
-		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Strom, Licht, Schall, Schwerkraft, Energie, Auftrieb, Wärme und Atomen, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
+		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Energie, Wärme, Atomen, Internet und KI, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
 	<meta name="theme-color" content="#0a0908" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -536,7 +536,9 @@
 		.lesson:nth-child(7),
 		.lesson:nth-child(8),
 		.lesson:nth-child(12),
-		.lesson:nth-child(13) {
+		.lesson:nth-child(13),
+		.lesson:nth-child(14),
+		.lesson:nth-child(15) {
 			grid-column: span 3;
 		}
 
@@ -1306,6 +1308,135 @@
 			}
 		}
 
+		/* Sprach-KI: Text, der Token für Token entsteht */
+		.lesson--ki {
+			--c: #ff7ad9;
+		}
+
+		.lesson--ki .lesson-art {
+			display: grid;
+			place-items: center;
+			background:
+				radial-gradient(circle at 50% 55%, rgba(255, 122, 217, 0.2), transparent 60%),
+				#050404;
+		}
+
+		.lesson--ki .lesson-art span {
+			position: relative;
+			z-index: 1;
+			font-family: "Syne", sans-serif;
+			font-weight: 700;
+			font-size: clamp(1.4rem, 3vw, 2rem);
+			color: #f4efe6;
+			letter-spacing: 0.02em;
+			white-space: nowrap;
+			text-shadow: 0 0 24px rgba(255, 122, 217, 0.6);
+			clip-path: inset(0 100% 0 0);
+			animation: typeon 4.5s steps(14) infinite;
+		}
+
+		.lesson--ki .lesson-art i {
+			position: absolute;
+			left: 50%;
+			bottom: 18%;
+			width: 10px;
+			border-radius: 4px 4px 0 0;
+			background: linear-gradient(to top, #9b8cff, #ff7ad9);
+			animation: probs 2.2s ease-in-out infinite alternate;
+		}
+
+		.lesson--ki .lesson-art i:nth-of-type(1) {
+			margin-left: -26px;
+			height: 34px;
+		}
+
+		.lesson--ki .lesson-art i:nth-of-type(2) {
+			margin-left: -5px;
+			height: 18px;
+			animation-delay: -0.7s;
+		}
+
+		.lesson--ki .lesson-art i:nth-of-type(3) {
+			margin-left: 16px;
+			height: 10px;
+			animation-delay: -1.4s;
+		}
+
+		@keyframes typeon {
+			70%,
+			to {
+				clip-path: inset(0 0 0 0);
+			}
+		}
+
+		@keyframes probs {
+			to {
+				transform: scaleY(0.4);
+				transform-origin: bottom;
+			}
+		}
+
+		/* Agenten: Punkt, der durch die Schleife wandert */
+		.lesson--agent {
+			--c: #6f9bff;
+		}
+
+		.lesson--agent .lesson-art {
+			background:
+				radial-gradient(circle at 50% 50%, rgba(111, 155, 255, 0.18), transparent 60%),
+				#050404;
+		}
+
+		.lesson--agent .lesson-art b {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 130px;
+			height: 130px;
+			margin: -65px 0 0 -65px;
+			border-radius: 50%;
+			border: 1.5px dashed rgba(111, 155, 255, 0.45);
+		}
+
+		.lesson--agent .lesson-art b::after {
+			content: "";
+			position: absolute;
+			width: 12px;
+			height: 12px;
+			margin: -6px 0 0 -6px;
+			border-radius: 50%;
+			background: #5af0ff;
+			box-shadow: 0 0 14px #5af0ff;
+			offset-path: circle(65px at 65px 65px);
+			animation: electron 3.6s linear infinite;
+		}
+
+		.lesson--agent .lesson-art i {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			width: 30px;
+			height: 30px;
+			margin: -15px 0 0 -15px;
+			border-radius: 50%;
+			background: #141210;
+			border: 2px solid #6f9bff;
+			transform: rotate(var(--a)) translateY(-65px);
+		}
+
+		.lesson--agent .lesson-art i:nth-of-type(1) {
+			--a: 0deg;
+		}
+
+		.lesson--agent .lesson-art i:nth-of-type(2) {
+			--a: 120deg;
+		}
+
+		.lesson--agent .lesson-art i:nth-of-type(3) {
+			--a: 240deg;
+		}
+
+
 		/* Strom: Elektronen im Draht */
 		.lesson--power .lesson-art b {
 			position: absolute;
@@ -1510,6 +1641,10 @@
 		}
 
 		@media (max-width: 520px) {
+			.top nav a {
+				padding: 8px 9px;
+			}
+
 			.stats {
 				width: 100%;
 				justify-content: space-between;
@@ -1552,11 +1687,11 @@
 			<p class="eyebrow">Newbobb Lab · seit 2026</p>
 			<h1>Code,<br />der <span class="outline">leuchtet.</span></h1>
 			<div class="hero-foot">
-				<p>Ein Spielplatz zum Ausprobieren und Verstehen: Feuer, Strom, Magnete, Licht, Schall, Radio und
-					Internet, alles zum Anfassen. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
+				<p>Ein Spielplatz zum Ausprobieren und Verstehen: vom ersten Feuer über Strom, Radio und Internet bis zur
+					KI, alles zum Anfassen. Dazu audio-reaktive Visuals und ein Schwarzes Loch.</p>
 				<div class="stats">
 					<div class="stat"><strong id="countAll">18</strong><span>Projekte</span></div>
-					<div class="stat"><strong>13</strong><span>zum Verstehen</span></div>
+					<div class="stat"><strong>15</strong><span>zum Verstehen</span></div>
 					<div class="stat"><strong>1</strong><span>Schwarzes Loch</span></div>
 				</div>
 			</div>
@@ -1568,137 +1703,157 @@
 					<p class="eyebrow">Reihe · Verstehen</p>
 					<h2>Wie funktioniert das eigentlich?</h2>
 				</div>
-				<p class="learn-lede">Interaktive Erklärungen zum Anfassen: Anzünden, morsen, Schalter umlegen und
-					sehen, was im Inneren passiert.</p>
+				<p class="learn-lede">Interaktive Erklärungen zum Anfassen, in der Reihenfolge, in der die Menschheit sie
+					entdeckt hat: vom ersten Feuer bis zu KI-Agenten.</p>
 			</div>
 			<div class="learn-grid">
 				<a class="lesson lesson--fire reveal" href="./feuer/">
 					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">01</span>
+						<span class="lesson-num">01 · vor 400 000 Jahren</span>
 						<h3>Wie Feuer funktioniert</h3>
 						<p>Feuerdreieck, Kerzenflamme mit Thermometer, Flammenfarben und eine Molekül-Simulation der
 							Kettenreaktion.</p>
 						<span class="lesson-go">Anzünden →</span>
 					</div>
 				</a>
-				<a class="lesson lesson--tel reveal" href="./telegraf/">
-					<div class="lesson-art" aria-hidden="true"><span>·−·· ·− −··</span></div>
-					<div class="lesson-body">
-						<span class="lesson-num">02</span>
-						<h3>Telegraf &amp; Telefon</h3>
-						<p>Morse selbst funken, Schall in Strom verwandeln und hören, wie Abtastrate und Bits klingen.</p>
-						<span class="lesson-go">Morsen →</span>
-					</div>
-				</a>
-				<a class="lesson lesson--power reveal" href="./strom/">
-					<div class="lesson-art" aria-hidden="true"><b></b></div>
-					<div class="lesson-body">
-						<span class="lesson-num">03</span>
-						<h3>Wie Strom funktioniert</h3>
-						<p>Elektronen beobachten, Spannung und Widerstand regeln, Sicherungen sprengen und selbst einen
-							Generator drehen.</p>
-						<span class="lesson-go">Einschalten →</span>
-					</div>
-				</a>
-				<a class="lesson lesson--radio reveal" href="./radio/">
-					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i></div>
-					<div class="lesson-body">
-						<span class="lesson-num">04</span>
-						<h3>Wie Radio funktioniert</h3>
-						<p>Wellen aussenden und empfangen, Wellenlängen vergleichen, AM gegen FM im Gewitter und ein Radio
-							zum Selbst-Abstimmen.</p>
-						<span class="lesson-go">Sender suchen →</span>
-					</div>
-				</a>
-				<a class="lesson lesson--net reveal" href="./internet/">
-					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-					<div class="lesson-body">
-						<span class="lesson-num">05</span>
-						<h3>Wie das Internet funktioniert</h3>
-						<p>Text wird zu Bits, Pakete suchen sich Wege durch kaputte Router, DNS schlägt Adressen nach,
-							und Licht ist zu langsam.</p>
-						<span class="lesson-go">Pakete schicken →</span>
-					</div>
-				</a>
-				<a class="lesson lesson--mag reveal" href="./magnet/">
-					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
-					<div class="lesson-body">
-						<span class="lesson-num">06</span>
-						<h3>Wie Magnete funktionieren</h3>
-						<p>Feldlinien live sehen, Eisen magnetisieren, Ørsteds Kompass-Versuch und ein Elektromotor, dem
-							man den Kommutator wegnehmen kann.</p>
-						<span class="lesson-go">Anziehen →</span>
-					</div>
-				</a>
-				<a class="lesson lesson--light reveal" href="./licht/">
-					<div class="lesson-art" aria-hidden="true"><b></b><i></i><u></u></div>
-					<div class="lesson-body">
-						<span class="lesson-num">07</span>
-						<h3>Licht und Farben</h3>
-						<p>Ein Prisma zerlegt Licht in den Regenbogen, Farben mischen sich, ein Apfel wird schwarz, und der
-							Himmel färbt sich zum Sonnenuntergang.</p>
-						<span class="lesson-go">Regenbogen machen →</span>
-					</div>
-				</a>
 				<a class="lesson lesson--sound reveal" href="./schall/">
 					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">08</span>
+						<span class="lesson-num">02 · um 500 v. Chr.</span>
 						<h3>Musik und Schall</h3>
 						<p>Luft drängelt, ein Oszilloskop mit Hörtest, Obertöne mischen, eine Gitarrensaite zupfen und
 							hören, warum Musik harmonisch klingt.</p>
 						<span class="lesson-go">Lauter machen →</span>
 					</div>
 				</a>
-				<a class="lesson lesson--grav reveal" href="./schwerkraft/">
-					<div class="lesson-art" aria-hidden="true"><b></b><i></i></div>
-					<div class="lesson-body">
-						<span class="lesson-num">09</span>
-						<h3>Wie Schwerkraft funktioniert</h3>
-						<p>Feder und Kugel im Vakuum, Würfe aufs Ziel, Newtons Kanone in die Umlaufbahn und ein eigenes
-							Sonnensystem zum Bauen.</p>
-						<span class="lesson-go">Abheben →</span>
-					</div>
-				</a>
-				<a class="lesson lesson--energy reveal" href="./energie/">
-					<div class="lesson-art" aria-hidden="true"><b></b></div>
-					<div class="lesson-body">
-						<span class="lesson-num">10</span>
-						<h3>Wie Energie funktioniert</h3>
-						<p>Ein Pendel mit Energiebalken, eine selbst gebaute Achterbahn, Hebel, ein Wasserkraftwerk und
-							wie hoch dich ein Gummibärchen bringt.</p>
-						<span class="lesson-go">Losrollen →</span>
-					</div>
-				</a>
 				<a class="lesson lesson--float reveal" href="./auftrieb/">
 					<div class="lesson-art" aria-hidden="true"><i></i><b></b></div>
 					<div class="lesson-body">
-						<span class="lesson-num">11</span>
+						<span class="lesson-num">03 · um 250 v. Chr.</span>
 						<h3>Warum Dinge schwimmen</h3>
 						<p>Wasserdruck, Archimedes’ Becken, ein Stahlschiff beladen, ein U-Boot steuern und mit
 							Luftballons abheben.</p>
 						<span class="lesson-go">Abtauchen →</span>
 					</div>
 				</a>
+				<a class="lesson lesson--light reveal" href="./licht/">
+					<div class="lesson-art" aria-hidden="true"><b></b><i></i><u></u></div>
+					<div class="lesson-body">
+						<span class="lesson-num">04 · 1666</span>
+						<h3>Licht und Farben</h3>
+						<p>Ein Prisma zerlegt Licht in den Regenbogen, Farben mischen sich, ein Apfel wird schwarz, und der
+							Himmel färbt sich zum Sonnenuntergang.</p>
+						<span class="lesson-go">Regenbogen machen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--grav reveal" href="./schwerkraft/">
+					<div class="lesson-art" aria-hidden="true"><b></b><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">05 · 1687</span>
+						<h3>Wie Schwerkraft funktioniert</h3>
+						<p>Feder und Kugel im Vakuum, Würfe aufs Ziel, Newtons Kanone in die Umlaufbahn und ein eigenes
+							Sonnensystem zum Bauen.</p>
+						<span class="lesson-go">Abheben →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--power reveal" href="./strom/">
+					<div class="lesson-art" aria-hidden="true"><b></b></div>
+					<div class="lesson-body">
+						<span class="lesson-num">06 · 1800</span>
+						<h3>Wie Strom funktioniert</h3>
+						<p>Elektronen beobachten, Spannung und Widerstand regeln, Sicherungen sprengen und selbst einen
+							Generator drehen.</p>
+						<span class="lesson-go">Einschalten →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--mag reveal" href="./magnet/">
+					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">07 · 1820</span>
+						<h3>Wie Magnete funktionieren</h3>
+						<p>Feldlinien live sehen, Eisen magnetisieren, Ørsteds Kompass-Versuch und ein Elektromotor, dem
+							man den Kommutator wegnehmen kann.</p>
+						<span class="lesson-go">Anziehen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--tel reveal" href="./telegraf/">
+					<div class="lesson-art" aria-hidden="true"><span>·−·· ·− −··</span></div>
+					<div class="lesson-body">
+						<span class="lesson-num">08 · 1837</span>
+						<h3>Telegraf &amp; Telefon</h3>
+						<p>Morse selbst funken, Schall in Strom verwandeln und hören, wie Abtastrate und Bits klingen.</p>
+						<span class="lesson-go">Morsen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--energy reveal" href="./energie/">
+					<div class="lesson-art" aria-hidden="true"><b></b></div>
+					<div class="lesson-body">
+						<span class="lesson-num">09 · 1847</span>
+						<h3>Wie Energie funktioniert</h3>
+						<p>Ein Pendel mit Energiebalken, eine selbst gebaute Achterbahn, Hebel, ein Wasserkraftwerk und
+							wie hoch dich ein Gummibärchen bringt.</p>
+						<span class="lesson-go">Losrollen →</span>
+					</div>
+				</a>
 				<a class="lesson lesson--heat reveal" href="./waerme/">
 					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">12</span>
+						<span class="lesson-num">10 · 1857</span>
 						<h3>Wie Wärme funktioniert</h3>
 						<p>Zappelnde Teilchen, Eis schmelzen mit Heizkurve, Butter auf einem Kupferstab, ein Heißluftballon
 							und das perfekte Badewasser.</p>
 						<span class="lesson-go">Aufheizen →</span>
 					</div>
 				</a>
+				<a class="lesson lesson--radio reveal" href="./radio/">
+					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">11 · 1895</span>
+						<h3>Wie Radio funktioniert</h3>
+						<p>Wellen aussenden und empfangen, Wellenlängen vergleichen, AM gegen FM im Gewitter und ein Radio
+							zum Selbst-Abstimmen.</p>
+						<span class="lesson-go">Sender suchen →</span>
+					</div>
+				</a>
 				<a class="lesson lesson--atom reveal" href="./atom/">
 					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
 					<div class="lesson-body">
-						<span class="lesson-num">13</span>
+						<span class="lesson-num">12 · 1896</span>
 						<h3>Atome und Radioaktivität</h3>
 						<p>Zoom bis in den Atomkern, Atome selbst bauen, Halbwertszeit mit Geigerzähler, eine Kettenreaktion
 							und Strahlung abschirmen.</p>
 						<span class="lesson-go">Spalten →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--net reveal" href="./internet/">
+					<div class="lesson-art" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">13 · 1969</span>
+						<h3>Wie das Internet funktioniert</h3>
+						<p>Text wird zu Bits, Pakete suchen sich Wege durch kaputte Router, DNS schlägt Adressen nach,
+							und Licht ist zu langsam.</p>
+						<span class="lesson-go">Pakete schicken →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--ki reveal" href="./ki/">
+					<div class="lesson-art" aria-hidden="true"><span>Es·war·ein|mal</span><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">14 · 2017</span>
+						<h3>Wie Sprach-KI funktioniert</h3>
+						<p>Text in Tokens zerlegen, mit Bedeutung rechnen, Aufmerksamkeit sehen, ein Mini-Modell trainieren
+							und Wort für Wort eine Geschichte würfeln.</p>
+						<span class="lesson-go">Weiterschreiben →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--agent reveal" href="./agenten/">
+					<div class="lesson-art" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
+					<div class="lesson-body">
+						<span class="lesson-num">15 · 2025</span>
+						<h3>Wie KI-Agenten arbeiten</h3>
+						<p>Die Schleife aus Denken, Handeln und Beobachten, Werkzeuge an- und ausschalten, MCP als Stecker
+							und ein Agent, der sich per E-Mail austricksen lässt.</p>
+						<span class="lesson-go">Loslegen →</span>
 					</div>
 				</a>
 			</div>
@@ -1811,106 +1966,121 @@
 				<a class="card reveal" data-cat="learn" href="./feuer/" style="--h: 25">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Chemie</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Chemie</span><span>vor 400 000 Jahren</span></div>
 						<h3>Wie Feuer funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Feuerdreieck, Kerze, Bunsenbrenner und die Kettenreaktion der Moleküle.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./telegraf/" style="--h: 168">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Nachrichtentechnik</span><span class="pill">Neu</span></div>
-						<h3>Telegraf &amp; Telefon <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Morsen mit Live-Decoder, Mikrofon und Hörer, Digitalisierung zum Anhören.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./strom/" style="--h: 52">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Physik</span><span class="pill">Neu</span></div>
-						<h3>Wie Strom funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Stromkreis, Ohmsches Gesetz, Reihe und parallel, Generator zum Kurbeln.</p>
-					</div>
-				</a>
-
-				<a class="card reveal" data-cat="learn" href="./radio/" style="--h: 275">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Funk</span><span class="pill">Neu</span></div>
-						<h3>Wie Radio funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Antennen, Wellenlänge, AM und FM und ein Radio mit vier versteckten Sendern.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./internet/" style="--h: 145">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Netze</span><span class="pill">Neu</span></div>
-						<h3>Wie das Internet funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Bits, Datenpakete, Router, DNS und der Ping bis zum Mars.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./magnet/" style="--h: 0">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Physik</span><span class="pill">Neu</span></div>
-						<h3>Wie Magnete funktionieren <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Feldlinien, Weiss-Bezirke, Ørsted und ein Elektromotor mit Kommutator.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./licht/" style="--h: 48">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Optik</span><span class="pill">Neu</span></div>
-						<h3>Licht und Farben <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Wellenlänge, Prisma, Farbmischung, Körperfarben und der blaue Himmel.</p>
 					</div>
 				</a>
 				<a class="card reveal" data-cat="learn" href="./schall/" style="--h: 22">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Akustik</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Akustik</span><span>um 500 v. Chr.</span></div>
 						<h3>Musik und Schall <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Schallwellen, Hörtest, Obertöne, Saiten und Harmonie zum Anhören.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./schwerkraft/" style="--h: 205">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Mechanik</span><span class="pill">Neu</span></div>
-						<h3>Wie Schwerkraft funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Freier Fall, Wurfparabel, Umlaufbahnen und ein Gravitations-Sandkasten.</p>
-					</div>
-				</a>
-				<a class="card reveal" data-cat="learn" href="./energie/" style="--h: 80">
-					<div class="thumb thumb--learn"></div>
-					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Mechanik</span><span class="pill">Neu</span></div>
-						<h3>Wie Energie funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
-						<p>Pendel, Achterbahn-Baukasten, Hebel, Wasserkraft und Gummibärchen-Energie.</p>
 					</div>
 				</a>
 				<a class="card reveal" data-cat="learn" href="./auftrieb/" style="--h: 168">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Mechanik</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Mechanik</span><span>um 250 v. Chr.</span></div>
 						<h3>Warum Dinge schwimmen <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Wasserdruck, Archimedes, Stahlschiffe, U-Boot und Ballonflug.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./licht/" style="--h: 48">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Optik</span><span>1666</span></div>
+						<h3>Licht und Farben <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Wellenlänge, Prisma, Farbmischung, Körperfarben und der blaue Himmel.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./schwerkraft/" style="--h: 205">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Mechanik</span><span>1687</span></div>
+						<h3>Wie Schwerkraft funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Freier Fall, Wurfparabel, Umlaufbahnen und ein Gravitations-Sandkasten.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./strom/" style="--h: 52">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Physik</span><span>1800</span></div>
+						<h3>Wie Strom funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Stromkreis, Ohmsches Gesetz, Reihe und parallel, Generator zum Kurbeln.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./magnet/" style="--h: 0">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Physik</span><span>1820</span></div>
+						<h3>Wie Magnete funktionieren <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Feldlinien, Weiss-Bezirke, Ørsted und ein Elektromotor mit Kommutator.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./telegraf/" style="--h: 168">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Nachrichtentechnik</span><span>1837</span></div>
+						<h3>Telegraf &amp; Telefon <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Morsen mit Live-Decoder, Mikrofon und Hörer, Digitalisierung zum Anhören.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./energie/" style="--h: 80">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Mechanik</span><span>1847</span></div>
+						<h3>Wie Energie funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Pendel, Achterbahn-Baukasten, Hebel, Wasserkraft und Gummibärchen-Energie.</p>
 					</div>
 				</a>
 				<a class="card reveal" data-cat="learn" href="./waerme/" style="--h: 12">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Thermodynamik</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Thermodynamik</span><span>1857</span></div>
 						<h3>Wie Wärme funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Teilchenbewegung, Aggregatzustände, Wärmeleitung, Heißluftballon und Mischtemperatur.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./radio/" style="--h: 275">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Funk</span><span>1895</span></div>
+						<h3>Wie Radio funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Antennen, Wellenlänge, AM und FM und ein Radio mit vier versteckten Sendern.</p>
 					</div>
 				</a>
 				<a class="card reveal" data-cat="learn" href="./atom/" style="--h: 72">
 					<div class="thumb thumb--learn"></div>
 					<div class="card-body">
-						<div class="card-meta"><span>Verstehen · Kernphysik</span><span class="pill">Neu</span></div>
+						<div class="card-meta"><span>Verstehen · Kernphysik</span><span>1896</span></div>
 						<h3>Atome und Radioaktivität <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
 						<p>Zoom ins Atom, Atom-Baukasten, Halbwertszeit, Kettenreaktion und Abschirmung.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./internet/" style="--h: 145">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Netze</span><span>1969</span></div>
+						<h3>Wie das Internet funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Bits, Datenpakete, Router, DNS und der Ping bis zum Mars.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./ki/" style="--h: 320">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Informatik</span><span class="pill">Neu</span></div>
+						<h3>Wie Sprach-KI funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Tokens, Bedeutungsraum, Attention, Training und Temperatur zum Ausprobieren.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="learn" href="./agenten/" style="--h: 222">
+					<div class="thumb thumb--learn"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Verstehen · Informatik</span><span class="pill">Neu</span></div>
+						<h3>Wie KI-Agenten arbeiten <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Agenten-Schleife, Werkzeuge, MCP und Prompt Injection zum Ausprobieren.</p>
 					</div>
 				</a>
 

@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Wie Sprach-KI funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Interaktiv verstehen, wie KI-Sprachmodelle funktionieren: Tokens, Bedeutung als Ort, Aufmerksamkeit, Training und warum das Modell immer nur das nächste Wort rät." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #ff7ad9;
+			--accent-2: #9b8cff;
+			--accent-ink: #2a0420;
+		}
+
+		.text-in {
+			width: 100%;
+			font: inherit;
+			font-size: 1.05rem;
+			color: var(--ink);
+			background: #0a0908;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 12px 14px;
+		}
+
+		.text-in:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		/* Tokens */
+		.tokens {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px 4px;
+			padding: 18px 16px;
+			min-height: 150px;
+			max-height: 320px;
+			overflow-y: auto;
+			background: #070605;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.tok {
+			display: grid;
+			gap: 2px;
+			padding: 6px 8px 5px;
+			border-radius: 8px;
+			background: hsl(var(--h) 70% 60% / 0.16);
+			border: 1px solid hsl(var(--h) 80% 70% / 0.45);
+			text-align: center;
+		}
+
+		.tok b {
+			font-weight: 500;
+			font-size: 1.02rem;
+			white-space: pre;
+			line-height: 1.25;
+		}
+
+		.tok b i {
+			font-style: normal;
+			color: var(--faint);
+		}
+
+		.tok code {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.66rem;
+			color: var(--faint);
+		}
+
+		.tok.byte {
+			border-style: dashed;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		/* Balken für Wahrscheinlichkeiten */
+		.probs {
+			display: grid;
+			gap: 6px;
+			width: 100%;
+		}
+
+		.prob {
+			display: grid;
+			grid-template-columns: minmax(84px, 9ch) minmax(0, 1fr) 6ch;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.9rem;
+		}
+
+		.prob span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.prob .track {
+			height: 14px;
+			border-radius: 6px;
+			background: rgba(255, 255, 255, 0.06);
+			overflow: hidden;
+		}
+
+		.prob .fill {
+			height: 100%;
+			width: 0;
+			border-radius: 6px;
+			background: linear-gradient(90deg, var(--accent-2), var(--accent));
+			transition: width 0.35s cubic-bezier(.2, .8, .2, 1);
+		}
+
+		.prob output {
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+			color: var(--muted);
+			font-size: 0.82rem;
+			white-space: nowrap;
+		}
+
+		.prob.is-target span::after {
+			content: " ✓";
+			color: var(--good);
+		}
+
+		.chapter .story {
+			margin: 0;
+			padding: 18px 18px 16px;
+			min-height: 110px;
+			font-family: "Syne", sans-serif;
+			font-size: clamp(1.15rem, 3vw, 1.45rem);
+			line-height: 1.4;
+			color: var(--ink);
+			background: #070605;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.story .gen {
+			color: var(--accent);
+		}
+
+		.story .cursor {
+			display: inline-block;
+			width: 0.5em;
+			height: 1.1em;
+			margin-left: 2px;
+			vertical-align: -0.15em;
+			background: var(--accent);
+			animation: blink 1s steps(2) infinite;
+		}
+
+		@keyframes blink {
+			50% {
+				opacity: 0;
+			}
+		}
+
+		.panel {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 14px;
+			background: var(--panel-2);
+			border: 1px solid var(--line);
+		}
+
+		.panel small {
+			display: block;
+			margin-bottom: 8px;
+			font-size: 0.7rem;
+			letter-spacing: 0.16em;
+			text-transform: uppercase;
+			color: var(--faint);
+		}
+
+		.train-sample {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.86rem;
+			color: var(--muted);
+		}
+
+		.train-sample b {
+			color: var(--accent);
+			font-weight: 500;
+		}
+
+		#embedCanvas,
+		#attnCanvas {
+			cursor: pointer;
+			touch-action: manipulation;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Reihe Verstehen">
+			<a href="../feuer/">Feuer</a>
+			<a href="../schall/">Schall</a>
+			<a href="../auftrieb/">Schwimmen</a>
+			<a href="../licht/">Licht</a>
+			<a href="../schwerkraft/">Schwerkraft</a>
+			<a href="../strom/">Strom</a>
+			<a href="../magnet/">Magnetismus</a>
+			<a href="../telegraf/">Telegraf &amp; Telefon</a>
+			<a href="../energie/">Energie</a>
+			<a href="../waerme/">Wärme</a>
+			<a href="../radio/">Radio</a>
+			<a href="../atom/">Atome</a>
+			<a href="../internet/">Internet</a>
+			<a href="../ki/" aria-current="page">Sprach-KI</a>
+			<a href="../agenten/">Agenten</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Teil 14 · 2017</p>
+			<h1>Wie <em>Sprach-KI</em><br />funktioniert</h1>
+			<p class="v-lede">ChatGPT, Copilot und Co. wirken, als würden sie nachdenken. Tatsächlich machen sie immer
+				wieder nur eine einzige Sache: das nächste Wortstück raten. Hier siehst du, wie aus diesem einfachen
+				Trick Geschichten, Antworten und Programmcode werden.</p>
+			<ol class="v-toc">
+				<li><a href="#tokens">Text wird zu Zahlen</a></li>
+				<li><a href="#bedeutung">Bedeutung als Ort</a></li>
+				<li><a href="#aufmerksamkeit">Aufmerksamkeit</a></li>
+				<li><a href="#training">Lernen durch Raten</a></li>
+				<li><a href="#raten">Das nächste Wort</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Tokens -->
+		<section class="chapter" id="tokens">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Grundlagen</span>
+				<h2>Text wird zu Zahlen</h2>
+				<p>Ein Computer kann nur mit Zahlen rechnen. Im <a href="../internet/">Internet-Teil</a> wurde jeder
+					Buchstabe zu einer Nummer. Ein Sprachmodell geht einen Schritt weiter: Es zerlegt Text in
+					<strong>Tokens</strong>, also Wortstücke, und jedes Stück bekommt eine feste Nummer.</p>
+				<p>Häufige Wörter wie <em>und</em> oder <em>Hallo</em> sind ein einziges Token. Seltene Wörter werden in
+					Silben oder sogar einzelne Buchstaben zerlegt. Ein Emoji besteht oft aus mehreren Bytes, die jeweils
+					ein eigenes Token sind.</p>
+				<p>Das erklärt eine berühmte Schwäche: Frag ein Modell, wie viele <em>r</em> in <em>Erdbeere</em>
+					stecken. Es sieht nicht die Buchstaben, sondern nur die Nummern seiner Stücke, und muss das Zählen
+					aus dem Gedächtnis erledigen.</p>
+				<p class="merke"><b>Merke</b>Ein Sprachmodell liest keine Buchstaben, sondern Tokens: Wortstücke, die
+					jeweils eine Nummer haben.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tipp etwas ein. Probier ein langes, zusammengesetztes Wort oder ein Emoji.</p>
+				<div class="tokens" id="tokens-out" aria-live="polite"></div>
+				<div class="stage-controls">
+					<input class="text-in" id="tokText" type="text" maxlength="80"
+						value="Hallo! Wie viele r hat das Wort Erdbeere? 🍓" aria-label="Text" autocomplete="off" />
+					<div class="chips">
+						<button class="btn" type="button" data-tok="Donaudampfschifffahrtsgesellschaft">Langes Wort</button>
+						<button class="btn" type="button" data-tok="Ich lerne heute, wie KI funktioniert.">Einfacher Satz</button>
+						<button class="btn" type="button" data-tok="function add(a, b) { return a + b; }">Code</button>
+					</div>
+					<p class="stage-note" id="tokNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Embeddings -->
+		<section class="chapter flip" id="bedeutung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Embeddings</span>
+				<h2>Bedeutung als Ort</h2>
+				<p>Eine Nummer allein sagt nichts über die Bedeutung. Token 4711 ist nicht „ähnlicher“ zu 4712 als zu
+					90. Deshalb übersetzt das Modell jedes Token in einen Ort in einem riesigen Raum, ein
+					<strong>Embedding</strong>.</p>
+				<p>Wörter, die in ähnlichen Sätzen vorkommen, landen nahe beieinander: <em>Hund</em> bei
+					<em>Katze</em>, <em>Brot</em> bei <em>Käse</em>. Niemand hat das einprogrammiert, es ergibt sich beim
+					Training von selbst.</p>
+				<p>Das Verblüffende: Selbst <strong>Richtungen</strong> haben Bedeutung. Der Weg von <em>Mann</em> zu
+					<em>Frau</em> zeigt ungefähr in dieselbe Richtung wie der von <em>König</em> zu <em>Königin</em>. Man
+					kann mit Bedeutung rechnen.</p>
+				<p class="merke"><b>Merke</b>Jedes Token wird zu einem Punkt in einem Bedeutungsraum. Ähnliche Wörter
+					liegen nah beieinander, und Richtungen tragen Bedeutung.</p>
+				<div class="fact">
+					<b>Nur zwei von tausenden</b>
+					<p>Die Karte hier hat zwei Richtungen, damit sie auf deinen Bildschirm passt. Echte Modelle nutzen
+						für jedes Token Tausende Zahlen, also einen Raum mit Tausenden Richtungen.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe auf ein Wort, um seine Nachbarn zu sehen. Dann rechne mit Bedeutung.</p>
+				<div class="stage-view">
+					<canvas id="embedCanvas" aria-label="Karte von Wörtern im Bedeutungsraum"></canvas>
+					<span class="stage-tag">Bedeutungsraum · vereinfacht</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips">
+						<button class="btn primary" type="button" data-analogy="0">König − Mann + Frau</button>
+						<button class="btn" type="button" data-analogy="1">Berlin − Deutschland + Frankreich</button>
+						<button class="btn" type="button" data-analogy="2">Junge − Mann + Frau</button>
+					</div>
+					<p class="stage-note" id="embedNote">Tippe auf ein Wort.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Attention -->
+		<section class="chapter" id="aufmerksamkeit">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Attention</span>
+				<h2>Aufmerksamkeit</h2>
+				<p>Viele Wörter bedeuten je nach Satz etwas anderes. Eine <em>Bank</em> kann zum Sitzen sein oder Geld
+					verleihen. Um das zu klären, schaut jedes Token auf die Tokens vor ihm und entscheidet, welche davon
+					gerade wichtig sind. Das heißt <strong>Attention</strong>.</p>
+				<p>Die Linien zeigen, wie stark ein Wort auf andere achtet. Danach wird sein Punkt im Bedeutungsraum ein
+					Stück in Richtung der wichtigen Wörter verschoben. Aus „Bank“ wird so „Bank, die am Fluss steht“.</p>
+				<p>Das passiert nicht einmal, sondern in Dutzenden Schichten hintereinander, jede mit vielen solchen
+					Blickrichtungen. Am Ende steckt in jedem Token der Sinn des ganzen Satzes bis dahin. Diese Bauweise
+					heißt <strong>Transformer</strong> und wurde 2017 veröffentlicht. Sie steckt in fast jeder heutigen
+					Sprach-KI.</p>
+				<p class="merke"><b>Merke</b>Bei der Attention schaut jedes Wort auf die Wörter davor und holt sich von
+					den wichtigsten ihre Bedeutung dazu.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Sprachmodelle wie GPT schreiben von links nach rechts. Beim Schreiben eines Wortes gibt es die folgenden noch gar nicht, deshalb kann jedes Token nur auf frühere Tokens achten.">
+					<p class="quiz-q">Warum gehen die Linien in der Grafik nur zu Wörtern, die weiter oben stehen?</p>
+					<div class="quiz-options">
+						<button type="button">Weil spätere Wörter nie wichtig sind</button>
+						<button type="button">Damit die Grafik übersichtlich bleibt</button>
+						<button type="button">Weil das Modell beim Schreiben die späteren Wörter noch nicht kennt</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle einen Satz und tippe links auf ein Wort, zum Beispiel „Bank“ oder „groß“.</p>
+				<div class="stage-view">
+					<canvas id="attnCanvas" aria-label="Aufmerksamkeit zwischen den Wörtern eines Satzes"></canvas>
+					<span class="stage-tag">Attention · vereinfacht</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="attnSentences" role="group" aria-label="Satz wählen"></div>
+					<p class="stage-note" id="attnNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Training -->
+		<section class="chapter flip" id="training">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Training</span>
+				<h2>Lernen durch Raten</h2>
+				<p>Woher weiß das Modell all das? Es hat geübt, mit einem riesigen Lückentext: Billionen Wörter aus
+					Büchern, Webseiten und Programmcode. Immer wieder sieht es einen Textanfang und soll das nächste Token
+					raten.</p>
+				<p>Nach jedem Versuch wird gemessen, wie daneben es lag. Dann werden seine <strong>Gewichte</strong>,
+					Milliarden einstellbarer Zahlen, ein winziges Stück in die Richtung gedreht, die die richtige Antwort
+					etwas wahrscheinlicher gemacht hätte. Das wiederholt sich unvorstellbar oft.</p>
+				<p>Probier es selbst. Das Mini-Modell rechts kennt nur einen Satzanfang und fünf mögliche Fortsetzungen.
+					Schau, wohin sich seine Wahrscheinlichkeiten bewegen, wenn es Beispiele sieht.</p>
+				<p class="merke"><b>Merke</b>Ein Sprachmodell lernt, indem es Milliarden Mal das nächste Wort rät und
+					sich nach jedem Fehler ein bisschen korrigiert. Am Ende spiegelt es wider, wie Menschen schreiben.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Das Modell lernt die Häufigkeiten aus seinen Trainingsdaten. In den Beispielen ist der Himmel meistens blau, manchmal grau oder bewölkt und nie grün. Genau diese Verteilung stellt sich nach genug Übung ein.">
+					<p class="quiz-q">Welche Wahrscheinlichkeiten hat das Mini-Modell nach sehr vielen Beispielen?</p>
+					<div class="quiz-options">
+						<button type="button">100 % „blau“, weil das die richtige Antwort ist</button>
+						<button type="button">Ungefähr so verteilt wie in den Trainingsbeispielen</button>
+						<button type="button">Alle fünf Wörter gleich wahrscheinlich</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Lass das Modell ein Beispiel lernen, dann hundert.</p>
+				<div class="stage-view">
+					<canvas id="lossCanvas" aria-label="Verlauf des Fehlers beim Training"></canvas>
+					<span class="stage-tag">Fehler pro Beispiel</span>
+					<span class="stage-readout" id="trainReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="panel">
+						<small>Der Himmel ist heute …</small>
+						<div class="probs" id="trainProbs"></div>
+					</div>
+					<p class="train-sample" id="trainSample">Noch kein Beispiel gesehen.</p>
+					<button class="btn primary" id="btnTrain1" type="button">1 Beispiel lernen</button>
+					<button class="btn" id="btnTrain100" type="button">100 Beispiele</button>
+					<button class="btn" id="btnTrainReset" type="button">Vergessen</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Sampling -->
+		<section class="chapter wide" id="raten">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Sampling</span>
+				<h2>Das nächste Wort</h2>
+				<p>Jetzt kommt alles zusammen. Das Modell liest den bisherigen Text, schickt ihn durch alle Schichten und
+					gibt am Ende für <strong>jedes mögliche Token eine Wahrscheinlichkeit</strong> aus. Eines davon wird
+					ausgewählt, an den Text gehängt, und alles beginnt von vorn. Wort für Wort entsteht so eine Antwort.
+				</p>
+				<p>Ausgewählt wird nicht immer das wahrscheinlichste Wort, sonst klänge jeder Text gleich. Die
+					<strong>Temperatur</strong> regelt, wie mutig gewürfelt wird: niedrig heißt vorhersehbar, hoch heißt
+					kreativ, und irgendwann chaotisch.</p>
+				<p>Wichtig: Das Modell wählt, was <strong>plausibel klingt</strong>, nicht, was wahr ist. Wenn es etwas
+					nicht weiß, rät es trotzdem flüssig weiter. Solche überzeugend falschen Antworten heißen
+					<strong>Halluzinationen</strong>.</p>
+				<p class="merke"><b>Merke</b>Ein Sprachmodell erzeugt Text, indem es immer wieder ein wahrscheinliches
+					nächstes Token auswählt. Die Temperatur bestimmt, wie viel Zufall dabei ist.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Klick ein paar Mal auf „Nächstes Wort“. Dann dreh die Temperatur ganz hoch und fang neu
+					an.</p>
+				<p class="story" id="story" aria-live="polite"></p>
+				<div class="stage-controls">
+					<div class="panel">
+						<small>Wahrscheinlichkeiten für das nächste Wort</small>
+						<div class="probs" id="nextProbs"></div>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Temperatur</span><output id="tempOut">0,8</output></span>
+						<input id="temp" type="range" min="0.1" max="2" step="0.1" value="0.8" />
+					</label>
+					<button class="btn primary" id="btnNext" type="button">Nächstes Wort</button>
+					<button class="btn" id="btnSentence" type="button">Bis zum Punkt</button>
+					<button class="btn" id="btnRestart" type="button">Neu anfangen</button>
+					<p class="stage-note" id="storyNote"></p>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="fact">
+					<b>Kein Gedächtnis zwischen den Wörtern</b>
+					<p>Das Modell merkt sich zwischen zwei Tokens nichts. Für jedes neue Token liest es den gesamten Text
+						bisher noch einmal. Dieser Text heißt <strong>Kontext</strong>, und wie viel davon hineinpasst, ist
+						eine der wichtigsten Eigenschaften eines Modells.</p>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Bei Temperatur nahe null wird immer das wahrscheinlichste Token gewählt. Der Zufall verschwindet, also kommt bei gleichem Anfang jedes Mal derselbe Text heraus.">
+					<p class="quiz-q">Was passiert, wenn man die Temperatur ganz nach unten dreht?</p>
+					<div class="quiz-options">
+						<button type="button">Das Modell schreibt bei gleichem Anfang immer denselben Text</button>
+						<button type="button">Das Modell wird klüger und macht keine Fehler mehr</button>
+						<button type="button">Das Modell schreibt langsamer</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Das Modell sucht nicht in einer Datenbank nach Fakten, sondern erzeugt eine plausible Fortsetzung. Wenn das Wissen fehlt oder unsicher ist, klingt die geratene Antwort trotzdem flüssig und selbstbewusst.">
+					<p class="quiz-q">Warum erfindet eine KI manchmal Dinge, die überzeugend klingen, aber falsch sind?
+					</p>
+					<div class="quiz-options">
+						<button type="button">Weil sie absichtlich lügt</button>
+						<button type="button">Weil sie das Plausibelste erzeugt, nicht das nachweislich Wahre</button>
+						<button type="button">Weil ihre Datenbank Fehler enthält</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 15 · 2025</p>
+		<a href="../agenten/">Wie KI-Agenten arbeiten <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./ki.js"></script>
+</body>
+
+</html>
