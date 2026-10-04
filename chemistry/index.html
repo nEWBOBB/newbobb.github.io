@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Chemie — Newbobb Lab</title>
+	<meta name="description"
+		content="Chemie interaktiv: Teilchen stoßen zusammen und reagieren. Temperatur, Aktivierungsenergie und Katalysator selbst einstellen und sehen, warum Wärme Reaktionen schneller macht." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #7bdc9a;
+		}
+
+	</style>
+</head>
+
+<body data-fach="chemistry">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 03 · Stufe 3 der Leiter</p>
+			<h1>Wenn Teilchen<br /><em>zusammenstoßen</em></h1>
+			<p class="v-lede">Chemie ist Physik von Atomen, die sich verbinden. Eine Reaktion passiert nur, wenn zwei
+				Teilchen hart genug zusammenprallen. Dreh an der Temperatur und sieh selbst.</p>
+			<ol class="v-toc">
+				<li><a href="#stoss">Die Stoßtheorie</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="stoss">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Reaktionskinetik</span>
+				<h2>Die Stoßtheorie</h2>
+				<p>In einem Gas fliegen ständig Teilchen durcheinander. Treffen ein <strong>blaues</strong> und ein
+					<strong>rotes</strong> Teilchen aufeinander, <em>können</em> sie zu einem neuen Stoff verschmelzen,
+					aber nur, wenn der Aufprall genug Energie hat.</p>
+				<p>Diese Schwelle heißt <strong>Aktivierungsenergie</strong>. Sie ist der Grund, warum Holz nicht von
+					selbst brennt: Erst ein Streichholz liefert den nötigen Stoß.</p>
+				<p>Wärme heißt: Die Teilchen sind schneller. Dann stoßen sie öfter <em>und</em> härter. Schon 10 °C mehr
+					verdoppeln viele Reaktionsgeschwindigkeiten ungefähr (RGT-Regel).</p>
+				<p>Ein <strong>Katalysator</strong> senkt die Schwelle, ohne selbst verbraucht zu werden. So arbeiten
+					Enzyme in deinem Körper und der Kat im Auto.</p>
+				<p class="merke"><b>Merke</b>Eine Reaktion braucht Stöße, die stark genug sind. Mehr Wärme oder ein
+					Katalysator machen solche Stöße häufiger.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte kalt. Dreh dann die Temperatur hoch oder schalte den Katalysator ein. Wie schnell
+					ist alles umgesetzt?</p>
+				<div class="stage-view">
+					<canvas id="chemCanvas" aria-label="Reaktionsbehälter mit Teilchen"></canvas>
+					<span class="stage-tag">A + B → AB</span>
+					<span class="stage-readout" id="chemOut">0 % umgesetzt</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Temperatur</span><output id="tOut">20 °C</output></span>
+						<input type="range" id="temp" min="-50" max="300" value="20" />
+					</label>
+					<button class="btn" id="btnCat" type="button" aria-pressed="false">⚗ Katalysator</button>
+					<button class="btn primary" id="btnReset" type="button">↺ Neu befüllen</button>
+					<ul class="f-legend">
+						<li style="--c:#8fb8ff">Stoff A</li>
+						<li style="--c:#ff8a7a">Stoff B</li>
+						<li style="--c:#7bdc9a">Produkt AB</li>
+						<li style="--c:#ffffff">Stoß ohne Reaktion</li>
+					</ul>
+					<p class="stage-note" id="chemNote">Stöße bisher: 0, davon erfolgreich: 0</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Chemie</h2>
+			<p>Hier geht es um Stoffe, die sich verwandeln. Und um die Atome, aus denen sie bestehen.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./chemistry.js"></script>
+</body>
+
+</html>

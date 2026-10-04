@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Psychologie — Newbobb Lab</title>
+	<meta name="description"
+		content="Psychologie interaktiv: der Stroop-Test. Miss selbst, wie dein Gehirn beim Lesen automatisch schneller ist als beim Hinsehen, und was das über Aufmerksamkeit verrät." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #ff9ec7;
+		}
+
+		.stroop {
+			display: grid;
+			place-items: center;
+			min-height: 260px;
+			padding: 40px 16px;
+			text-align: center;
+		}
+
+		.stroop-word {
+			font-family: "Syne", sans-serif;
+			font-weight: 800;
+			font-size: clamp(2.6rem, 9vw, 4.4rem);
+			letter-spacing: -0.02em;
+			line-height: 1;
+			min-height: 1.1em;
+		}
+
+		.stroop-hint {
+			margin-top: 14px;
+			color: var(--faint);
+			font-size: 0.86rem;
+		}
+
+		.ink-buttons {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 8px;
+			width: 100%;
+		}
+
+		.ink-buttons .btn {
+			justify-content: center;
+			border-color: color-mix(in srgb, var(--c) 60%, transparent);
+		}
+
+		.ink-buttons .btn::before {
+			content: "";
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: var(--c);
+		}
+
+		.ink-buttons kbd {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.7rem;
+			color: var(--faint);
+		}
+
+		.bars {
+			display: grid;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.bar {
+			display: grid;
+			grid-template-columns: 9.5em 1fr 4.5em;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.84rem;
+			color: var(--muted);
+		}
+
+		.bar i {
+			display: block;
+			height: 10px;
+			border-radius: 6px;
+			background: var(--c);
+			width: 0;
+			transition: width 0.6s;
+		}
+
+		.bar b {
+			color: var(--ink);
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+		}
+
+		@media (max-width: 520px) {
+			.ink-buttons {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			.bar {
+				grid-template-columns: 7em 1fr 4em;
+			}
+		}
+	</style>
+</head>
+
+<body data-fach="psychology">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 05 · Stufe 5 der Leiter</p>
+			<h1>Dein Gehirn<br />liest <em>schneller</em></h1>
+			<p class="v-lede">Psychologie ist Biologie, die denkt. Die oberste Stufe der Leiter: Wer verstehen will, wie
+				Menschen ticken, fängt am besten bei sich selbst an. Mit einem Test, den du nicht schummeln kannst.</p>
+			<ol class="v-toc">
+				<li><a href="#stroop">Der Stroop-Effekt</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="stroop">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Kognitionspsychologie</span>
+				<h2>Der Stroop-Effekt</h2>
+				<p>Die Aufgabe ist leicht: Nenne die <strong>Farbe der Schrift</strong>, nicht das Wort. Steht da
+					<span style="color:#ff6a6a;font-weight:600">ROT</span> in Rot, geht das blitzschnell. Steht da
+					<span style="color:#6aa8ff;font-weight:600">ROT</span> in Blau, stolpert dein Kopf.</p>
+				<p>Der Grund: <strong>Lesen läuft automatisch</strong>. Du hast es so oft geübt, dass dein Gehirn das Wort
+					schon verstanden hat, bevor du es willst. Die Farbe zu benennen braucht dagegen bewusste
+					Aufmerksamkeit. Beide Signale streiten sich, und das kostet Zeit.</p>
+				<p>John Ridley Stroop hat das 1935 beschrieben. Es ist eines der am häufigsten wiederholten Experimente der
+					Psychologie, und es funktioniert fast bei jedem.</p>
+				<p class="merke"><b>Merke</b>Gewohnheiten laufen automatisch und lassen sich schwer abschalten. Was du
+					oft übst, macht dein Gehirn irgendwann ohne dich.</p>
+				<div class="fact">
+					<b>Warum das wichtig ist</b>
+					<p>Werbung, Gewohnheiten, Vorurteile: Vieles, was uns lenkt, passiert auf dieser automatischen Ebene.
+						Mehr dazu auf der Seite <a href="../persuasion/">Überzeugen</a>.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">20 Wörter. Klick immer die <strong>Schriftfarbe</strong>, so schnell du kannst. Tasten 1
+					bis 4 gehen auch.</p>
+				<div class="stage-view">
+					<div class="stroop" aria-live="polite">
+						<div>
+							<div class="stroop-word" id="word">Bereit?</div>
+							<div class="stroop-hint" id="hint">Drück auf Start.</div>
+						</div>
+					</div>
+					<span class="stage-tag">Stroop-Test</span>
+					<span class="stage-readout" id="stroopOut">0 / 20</span>
+				</div>
+				<div class="stage-controls">
+					<div class="ink-buttons" id="inks"></div>
+					<button class="btn primary" id="btnStroop" type="button">▶ Start</button>
+					<div class="bars" id="bars" hidden>
+						<div class="bar" style="--c:#7bdc9a"><span>Wort = Farbe</span><i id="barSame"></i><b id="msSame">–</b></div>
+						<div class="bar" style="--c:#ff8a7a"><span>Wort ≠ Farbe</span><i id="barDiff"></i><b id="msDiff">–</b></div>
+					</div>
+					<p class="stage-note" id="stroopNote">Die Hälfte der Wörter passt zur Farbe, die andere Hälfte nicht.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Psychologie</h2>
+			<p>Psychologie steckt überall dort, wo das Gehirn mitspielt, zum Beispiel beim Sehen von Bewegung.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./psychology.js"></script>
+</body>
+
+</html>

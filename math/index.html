@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Mathematik — Newbobb Lab</title>
+	<meta name="description"
+		content="Mathematik interaktiv: Wie aus einem Punkt auf dem Kreis die Sinuswelle entsteht, und warum sie in Physik, Musik und Technik überall auftaucht." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #b8a6ff;
+		}
+
+		#circleCanvas {
+			touch-action: none;
+			cursor: grab;
+		}
+	</style>
+</head>
+
+<body data-fach="math">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 01 · Stufe 1 der Leiter</p>
+			<h1>Die Sprache<br />der <em>Natur</em></h1>
+			<p class="v-lede">Mathe ist die unterste Stufe der Leiter. Physik, Chemie und Informatik sind in ihr
+				geschrieben. Hier siehst du eine ihrer schönsten Ideen: Ein Kreis, der sich dreht, wird zu einer Welle.</p>
+			<ol class="v-toc">
+				<li><a href="#kreis">Vom Kreis zur Welle</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="kreis">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Trigonometrie</span>
+				<h2>Vom Kreis zur Welle</h2>
+				<p>Ein Punkt läuft auf einem Kreis mit Radius 1 im Kreis. Schau nur auf seine <strong>Höhe</strong>: Sie geht
+					rauf, runter, rauf, runter. Schreibt man diese Höhe über die Zeit auf, entsteht die
+					<strong>Sinuswelle</strong>.</p>
+				<p>Die waagerechte Position heißt <strong>Kosinus</strong>. Zusammen beschreiben Sinus und Kosinus jeden
+					Punkt auf dem Kreis, und nach Pythagoras gilt immer: sin² + cos² = 1.</p>
+				<p>Jetzt der Trick: Lass zwei Kreise ineinander drehen, den zweiten schneller. Ihre Höhen addieren sich,
+					und die Welle bekommt eine neue Form. Mit genug Kreisen kann man <strong>jede</strong> Form bauen. Das
+					heißt Fourier-Analyse und steckt in jeder MP3-Datei.</p>
+				<p class="merke"><b>Merke</b>Der Sinus ist die Höhe eines Punktes, der im Kreis läuft. Wellen sind
+					drehende Kreise, nur von der Seite gesehen.</p>
+				<div class="formula">y = sin(φ) · x = cos(φ)
+					<small>φ ist der Winkel. Eine volle Runde sind 360° oder 2π ≈ 6,28.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den Punkt im Kreis herum. Dann schalte den zweiten Kreis dazu und ändere seine
+					Geschwindigkeit.</p>
+				<div class="stage-view">
+					<canvas id="circleCanvas" aria-label="Einheitskreis mit Sinuswelle"></canvas>
+					<span class="stage-tag">Einheitskreis</span>
+					<span class="stage-readout" id="circleOut">φ = 0°</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSpin" type="button" aria-pressed="true">⟳ Drehen</button>
+					<button class="btn" id="btnSecond" type="button" aria-pressed="false">◎ Zweiter Kreis</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo 2. Kreis</span><output id="kOut">3×</output></span>
+						<input type="range" id="k" min="2" max="9" value="3" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Größe 2. Kreis</span><output id="rOut">33 %</output></span>
+						<input type="range" id="r2" min="5" max="80" value="33" />
+					</label>
+					<p class="stage-note" id="circleNote">sin(0°) = 0,00 · cos(0°) = 1,00</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Mathematik</h2>
+			<p>Mathe steckt in allem, was hier rechnet und schwingt. Diese Projekte sind besonders mathematisch.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./math.js"></script>
+</body>
+
+</html>

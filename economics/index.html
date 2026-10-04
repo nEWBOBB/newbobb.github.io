@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Mikroökonomie — Newbobb Lab</title>
+	<meta name="description"
+		content="Mikroökonomie interaktiv: Angebot und Nachfrage am Beispiel Eiscreme. Kurven verschieben, Gleichgewichtspreis finden und sehen, warum ein Höchstpreis zu Schlangen führt." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #ffd166;
+		}
+
+		.scen {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body data-fach="economics">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 06 · Naval: Grundlage 1</p>
+			<h1>Wer bestimmt<br />den <em>Preis?</em></h1>
+			<p class="v-lede">Mikroökonomie erklärt, wie Menschen und Firmen entscheiden, wenn Dinge knapp sind. Ihr
+				wichtigstes Bild sind zwei Linien, die sich kreuzen. Am Kreuzungspunkt entsteht der Preis.</p>
+			<ol class="v-toc">
+				<li><a href="#markt">Angebot und Nachfrage</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="markt">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Märkte</span>
+				<h2>Angebot und Nachfrage</h2>
+				<p>Stell dir einen Eisstand vor. Je billiger die Kugel, desto mehr wollen die Leute kaufen. Das ist die
+					<strong>Nachfrage</strong>: Die Linie fällt.</p>
+				<p>Je teurer die Kugel, desto mehr lohnt es sich für Eisdielen, Eis herzustellen. Das ist das
+					<strong>Angebot</strong>: Die Linie steigt.</p>
+				<p>Wo sich beide treffen, liegt der <strong>Gleichgewichtspreis</strong>. Dort wird genau so viel
+					verkauft, wie gekauft werden soll. Niemand hat es so geplant. Es passiert einfach, weil jeder für sich
+					entscheidet.</p>
+				<p>Spannend wird es, wenn sich etwas ändert: Eine Hitzewelle schiebt die Nachfrage nach rechts. Teure
+					Milch schiebt das Angebot nach oben. Und wenn der Staat einen <strong>Höchstpreis</strong> festlegt,
+					entstehen Schlangen, weil mehr Leute kaufen wollen, als Eis da ist.</p>
+				<p class="merke"><b>Merke</b>Preise sind Signale. Sie zeigen allen gleichzeitig, wie knapp etwas ist,
+					ohne dass jemand alles wissen muss.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Probier die Szenarien aus. Setz dann einen Höchstpreis unter den Gleichgewichtspreis.</p>
+				<div class="stage-view">
+					<canvas id="marketCanvas" aria-label="Angebots- und Nachfragekurve"></canvas>
+					<span class="stage-tag">Eismarkt</span>
+					<span class="stage-readout" id="marketOut">Preis 2,00 €</span>
+				</div>
+				<div class="stage-controls">
+					<div class="scen">
+						<button class="btn" type="button" data-scen="heat">☀ Hitzewelle</button>
+						<button class="btn" type="button" data-scen="milk">🥛 Milch wird teuer</button>
+						<button class="btn" type="button" data-scen="tech">⚙ Neue Eismaschine</button>
+						<button class="btn" type="button" data-scen="reset">↺ Normal</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Nachfrage</span><output id="dOut">normal</output></span>
+						<input type="range" id="dem" min="60" max="140" value="100" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Kosten der Anbieter</span><output id="sOut">normal</output></span>
+						<input type="range" id="sup" min="0" max="60" value="20" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Höchstpreis</span><output id="cOut">aus</output></span>
+						<input type="range" id="ceil" min="10" max="101" value="101" />
+					</label>
+					<p class="stage-note" id="marketNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Mikroökonomie</h2>
+			<p>Projekte rund um Märkte, Preise und Entscheidungen.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./economics.js"></script>
+</body>
+
+</html>

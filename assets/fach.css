@@ -1,0 +1,210 @@
+/* Fächer-Seiten: ergänzt verstehen.css um Spruch-Leiter und Projektliste */
+
+:root {
+	--accent: var(--fach, #b8a6ff);
+	--accent-2: var(--fach, #b8a6ff);
+	--accent-ink: #0b0a09;
+}
+
+.v-home span a {
+	color: inherit;
+	text-decoration: none;
+}
+
+/* ---------- Die beiden Sprüche ---------- */
+
+.f-quotes {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 0 var(--gutter) 24px;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+}
+
+.f-quote {
+	margin: 0;
+	padding: 22px 24px;
+	border: 1px solid var(--line);
+	border-radius: 20px;
+	background: var(--panel);
+	opacity: 0.62;
+	transition: opacity 0.3s;
+}
+
+.f-quote.is-active,
+.f-quote:hover {
+	opacity: 1;
+}
+
+.f-quote.is-active {
+	border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.f-quote figcaption {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 0.74rem;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--faint);
+	margin-bottom: 12px;
+}
+
+.f-quote a {
+	color: var(--ink);
+	text-decoration-color: var(--faint);
+	text-underline-offset: 3px;
+}
+
+.f-ladder {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	gap: 6px;
+}
+
+.f-ladder li {
+	padding: 6px 10px;
+	border-radius: 10px;
+	color: var(--muted);
+	font-size: 0.95rem;
+}
+
+.f-ladder li.is-me {
+	background: color-mix(in srgb, var(--accent) 16%, transparent);
+	color: var(--ink);
+}
+
+.f-quote blockquote {
+	margin: 0 0 14px;
+	font-size: 1.12rem;
+	line-height: 1.45;
+}
+
+.f-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 0;
+}
+
+.f-chips a {
+	padding: 4px 11px;
+	border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+	border-radius: 999px;
+	font-size: 0.84rem;
+	text-decoration: none;
+	color: var(--muted);
+}
+
+.f-chips a:hover,
+.f-chips a.is-me {
+	color: #0b0a09;
+	background: var(--c);
+}
+
+/* ---------- Projekte im Fach ---------- */
+
+.f-projects {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 24px var(--gutter) 72px;
+}
+
+.f-projects h2 {
+	font-size: clamp(1.6rem, 4vw, 2.4rem);
+	margin: 0 0 8px;
+}
+
+.f-projects > p {
+	margin: 0 0 24px;
+	color: var(--muted);
+	max-width: var(--measure);
+}
+
+.f-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 12px;
+}
+
+.f-card {
+	position: relative;
+	display: grid;
+	gap: 4px;
+	padding: 18px 44px 18px 18px;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: var(--panel);
+	color: var(--ink);
+	text-decoration: none;
+	transition: border-color 0.2s, background 0.2s;
+}
+
+.f-card:hover {
+	border-color: var(--accent);
+	background: var(--panel-2);
+}
+
+.f-card span {
+	color: var(--muted);
+	font-size: 0.9rem;
+	line-height: 1.45;
+}
+
+.f-card i {
+	position: absolute;
+	right: 18px;
+	top: 18px;
+	font-style: normal;
+	color: var(--accent);
+	transition: transform 0.2s;
+}
+
+.f-card:hover i {
+	transform: translateX(4px);
+}
+
+.f-empty {
+	padding: 18px;
+	border: 1px dashed var(--line);
+	border-radius: 16px;
+	color: var(--faint);
+	margin: 0;
+}
+
+/* ---------- Kleinteile für die Experimente ---------- */
+
+.f-big {
+	font-family: "JetBrains Mono", monospace;
+	font-variant-numeric: tabular-nums;
+}
+
+.f-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.84rem;
+	color: var(--muted);
+}
+
+.f-legend li::before {
+	content: "";
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	margin-right: 6px;
+	background: var(--c);
+	vertical-align: -1px;
+}
+
+@media (max-width: 880px) {
+	.f-quotes {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

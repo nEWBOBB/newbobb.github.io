@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Ethik — Newbobb Lab</title>
+	<meta name="description"
+		content="Ethik interaktiv: sechs moralische Dilemmas vom Weichenproblem bis zur Notlüge. Finde heraus, ob du eher nach Folgen, nach Pflichten oder nach Charakter entscheidest." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #e8d3a0;
+		}
+
+		.dilemma {
+			padding: 46px 20px 24px;
+			min-height: 260px;
+		}
+
+		.dilemma h3 {
+			margin: 0 0 10px;
+			font-size: 1.3rem;
+		}
+
+		.dilemma p {
+			margin: 0;
+			color: var(--muted);
+		}
+
+		.choices {
+			display: grid;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.choices .btn {
+			justify-content: flex-start;
+			text-align: left;
+			border-radius: 14px;
+			padding: 12px 16px;
+		}
+
+		.lean {
+			display: grid;
+			gap: 10px;
+			width: 100%;
+		}
+
+		.lean div {
+			display: grid;
+			grid-template-columns: 8.5em 1fr 2.5em;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.86rem;
+			color: var(--muted);
+		}
+
+		.lean i {
+			display: block;
+			height: 12px;
+			border-radius: 6px;
+			background: var(--c);
+			width: 0;
+			transition: width 0.7s;
+		}
+
+		.lean b {
+			text-align: right;
+			color: var(--ink);
+		}
+
+		.frames {
+			list-style: none;
+			padding: 0 !important;
+			display: grid;
+			gap: 10px;
+		}
+
+		.frames li {
+			padding: 12px 14px 12px 16px;
+			border-left: 3px solid var(--c);
+			background: var(--panel);
+			border-radius: 0 12px 12px 0;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body data-fach="ethics">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 09 · Naval: Grundlage 4</p>
+			<h1>Was ist<br /><em>richtig?</em></h1>
+			<p class="v-lede">Ethik fragt, wie wir handeln sollen. Seit 2500 Jahren streiten kluge Leute darüber, und es
+				gibt drei große Antworten. Welche ist deine? Sechs Dilemmas verraten es.</p>
+			<ol class="v-toc">
+				<li><a href="#dilemmas">Sechs Dilemmas</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="dilemmas">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Moralphilosophie</span>
+				<h2>Drei Arten zu entscheiden</h2>
+				<ul class="frames">
+					<li style="--c:#ffd166"><strong>Folgen zählen</strong> (Utilitarismus, Bentham und Mill): Richtig
+						ist, was am Ende für die meisten am besten ausgeht.</li>
+					<li style="--c:#8fb8ff"><strong>Pflichten zählen</strong> (Kant): Manche Dinge tut man nicht, egal
+						was dabei herauskommt. Menschen darf man nie nur als Mittel benutzen.</li>
+					<li style="--c:#7bdc9a"><strong>Charakter zählt</strong> (Tugendethik, Aristoteles): Frag nicht nach
+						Regeln, sondern: Was würde ein guter, kluger Mensch hier tun?</li>
+				</ul>
+				<p>Keine der drei ist „die richtige“. Jede hat Fälle, in denen sie sich falsch anfühlt. Genau das zeigen
+					die Dilemmas: Beim Weichenproblem stellen in Studien rund 9 von 10 Menschen die Weiche um. Beim
+					Brückenproblem, bei dem genauso einer stirbt, um fünf zu retten, würde nur etwa 1 von 10 stoßen.</p>
+				<p class="merke"><b>Merke</b>Ethik ist kein Gefühl, sondern Nachdenken über Gründe. Wer seine Gründe
+					kennt, kann sie erklären und auch mal ändern.</p>
+				<div class="fact">
+					<b>Warum das heute wichtig ist</b>
+					<p>Selbstfahrende Autos und KI-Agenten müssen solche Entscheidungen einprogrammiert bekommen. Jemand
+						muss sich vorher überlegen, was richtig ist.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Es gibt keine falschen Antworten. Entscheide spontan.</p>
+				<div class="stage-view">
+					<div class="dilemma" aria-live="polite">
+						<h3 id="dTitle">…</h3>
+						<p id="dText"></p>
+					</div>
+					<span class="stage-tag" id="dTag">Dilemma 1 / 6</span>
+				</div>
+				<div class="stage-controls">
+					<div class="choices" id="choices"></div>
+					<div class="lean" id="lean" hidden>
+						<div style="--c:#ffd166"><span>Folgen</span><i></i><b></b></div>
+						<div style="--c:#8fb8ff"><span>Pflichten</span><i></i><b></b></div>
+						<div style="--c:#7bdc9a"><span>Charakter</span><i></i><b></b></div>
+					</div>
+					<p class="stage-note" id="dNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Ethik</h2>
+			<p>Projekte, in denen es um richtig und falsch geht, auch bei Maschinen.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./ethics.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Spieltheorie — Newbobb Lab</title>
+	<meta name="description"
+		content="Spieltheorie interaktiv: Spiel das Gefangenendilemma gegen einen unbekannten Gegner und lass sieben Strategien in Axelrods Turnier gegeneinander antreten. Warum Kooperation am Ende gewinnt." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #ff8a5c;
+		}
+
+		.pd-score {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+			padding: 22px 18px 6px;
+			text-align: center;
+		}
+
+		.pd-score b {
+			display: block;
+			font-family: "Syne", sans-serif;
+			font-size: 2.4rem;
+			line-height: 1;
+		}
+
+		.pd-score span {
+			color: var(--faint);
+			font-size: 0.8rem;
+			text-transform: uppercase;
+			letter-spacing: 0.12em;
+		}
+
+		.pd-rows {
+			display: grid;
+			gap: 6px;
+			padding: 14px 18px 22px;
+		}
+
+		.pd-row {
+			display: grid;
+			grid-template-columns: 5.5em repeat(10, minmax(0, 1fr));
+			gap: 4px;
+			align-items: center;
+			font-size: 0.78rem;
+			color: var(--faint);
+		}
+
+		.pd-row i {
+			aspect-ratio: 1;
+			border-radius: 6px;
+			background: rgba(255, 255, 255, 0.05);
+			display: grid;
+			place-items: center;
+			font-style: normal;
+			font-size: 0.9rem;
+		}
+
+		.pd-row i.c {
+			background: rgba(123, 220, 154, 0.25);
+		}
+
+		.pd-row i.d {
+			background: rgba(255, 106, 138, 0.3);
+		}
+
+		.payoff {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 0 0 14px;
+			font-size: 0.9rem;
+			color: var(--muted);
+		}
+
+		.payoff th,
+		.payoff td {
+			border: 1px solid var(--line);
+			padding: 8px 10px;
+			text-align: center;
+		}
+
+		.payoff td b {
+			color: var(--ink);
+		}
+
+		.ranking {
+			list-style: none;
+			margin: 0;
+			padding: 18px;
+			display: grid;
+			gap: 8px;
+		}
+
+		.ranking li {
+			display: grid;
+			grid-template-columns: 1.4em 10em 1fr 3.4em;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.86rem;
+		}
+
+		.ranking li span:first-child {
+			color: var(--faint);
+			font-family: "JetBrains Mono", monospace;
+		}
+
+		.ranking li i {
+			display: block;
+			height: 12px;
+			border-radius: 6px;
+			background: var(--accent);
+			transition: width 0.6s;
+		}
+
+		.ranking li b {
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+		}
+
+		@media (max-width: 520px) {
+			.ranking li {
+				grid-template-columns: 1.2em 7.5em 1fr 3em;
+			}
+		}
+	</style>
+</head>
+
+<body data-fach="game-theory">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 07 · Naval: Grundlage 2</p>
+			<h1>Vertrauen<br />oder <em>Verrat?</em></h1>
+			<p class="v-lede">Spieltheorie ist die Mathematik von Entscheidungen, bei denen dein Ergebnis davon abhängt,
+				was andere tun. Ihr berühmtestes Rätsel: Lohnt es sich, nett zu sein?</p>
+			<ol class="v-toc">
+				<li><a href="#dilemma">Das Gefangenendilemma</a></li>
+				<li><a href="#turnier">Axelrods Turnier</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="dilemma">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Ein Spiel, zwei Spieler</span>
+				<h2>Das Gefangenendilemma</h2>
+				<p>Zwei Spieler entscheiden gleichzeitig: <strong>kooperieren</strong> oder <strong>betrügen</strong>.
+					Die Punkte:</p>
+				<table class="payoff">
+					<tr><th></th><th>Gegner kooperiert</th><th>Gegner betrügt</th></tr>
+					<tr><th>Du kooperierst</th><td><b>3</b> : 3</td><td><b>0</b> : 5</td></tr>
+					<tr><th>Du betrügst</th><td><b>5</b> : 0</td><td><b>1</b> : 1</td></tr>
+				</table>
+				<p>Das Dilemma: Egal was der andere tut, Betrügen bringt dir <em>in dieser einen Runde</em> mehr. Aber wenn
+					beide so denken, bekommen beide nur 1 statt 3.</p>
+				<p>Alles ändert sich, wenn man sich <strong>wiederbegegnet</strong>. Dann merkt sich der andere, was du
+					getan hast. Spiel 10 Runden gegen einen unbekannten Gegner und finde heraus, wie er tickt.</p>
+				<p class="merke"><b>Merke</b>Was in einem einzelnen Spiel klug ist, kann in einer langen Beziehung dumm
+					sein. Naval nennt das: „Play long-term games with long-term people.“</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">10 Runden gegen einen Gegner mit einer geheimen Strategie. Holst du mehr Punkte als er?</p>
+				<div class="stage-view">
+					<div class="pd-score">
+						<div><span>Du</span><b id="pdMe">0</b></div>
+						<div><span>Gegner</span><b id="pdThem">0</b></div>
+					</div>
+					<div class="pd-rows">
+						<div class="pd-row" id="rowMe"><span>Du</span></div>
+						<div class="pd-row" id="rowThem"><span>Gegner</span></div>
+					</div>
+					<span class="stage-tag" id="pdRound">Runde 1 / 10</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnC" type="button">🤝 Kooperieren</button>
+					<button class="btn" id="btnD" type="button">🗡 Betrügen</button>
+					<button class="btn" id="btnNew" type="button">↺ Neuer Gegner</button>
+					<p class="stage-note" id="pdNote">Wer ist dein Gegner? Das verrate ich nach Runde 10.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="turnier">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Evolution der Kooperation</span>
+				<h2>Axelrods Turnier</h2>
+				<p>1980 lud der Politologe Robert Axelrod Forscher ein, Programme für das wiederholte Gefangenendilemma
+					zu schreiben. Jedes spielte gegen jedes, 200 Runden lang. Gewonnen hat das kürzeste Programm von
+					allen: <strong>Tit for Tat</strong> („Wie du mir, so ich dir“).</p>
+				<ul>
+					<li><strong>Freundlich:</strong> Es fängt nie mit Betrug an.</li>
+					<li><strong>Wehrhaft:</strong> Betrug wird sofort bestraft.</li>
+					<li><strong>Versöhnlich:</strong> Wer wieder kooperiert, dem wird verziehen.</li>
+					<li><strong>Durchschaubar:</strong> Der Gegner merkt schnell, dass sich Kooperation lohnt.</li>
+				</ul>
+				<p>Aber wer gewinnt, hängt davon ab, <strong>wer sonst noch mitspielt</strong>. Sind viele naive Spieler
+					dabei, lohnt sich Ausbeuten. Und wenn Züge aus Versehen falsch ankommen, schaukeln sich strenge
+					Strategien in endlose <strong>Racheketten</strong> hoch.</p>
+				<p class="merke"><b>Merke</b>Nett, aber nicht naiv. Und vergeben können, weil Fehler passieren.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte das Turnier. Dreh dann die Fehlerquote hoch und starte nochmal. Wer gewinnt jetzt?</p>
+				<div class="stage-view">
+					<ol class="ranking" id="ranking"></ol>
+					<span class="stage-tag">Punkte pro Runde</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Missverständnisse</span><output id="noiseOut">0 %</output></span>
+						<input type="range" id="noise" min="0" max="15" value="0" />
+					</label>
+					<button class="btn primary" id="btnTour" type="button">🏆 Turnier starten</button>
+					<p class="stage-note" id="tourNote">Jede Strategie spielt 200 Runden gegen jede andere und gegen sich
+						selbst.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Spieltheorie</h2>
+			<p>Projekte, in denen Strategie, Vertrauen und Entscheidungen eine Rolle spielen.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./game-theory.js"></script>
+</body>
+
+</html>

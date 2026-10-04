@@ -1155,3 +1155,176 @@
 	28%, 100% { opacity: 0; }
 }
 
+
+/* ---------- Fächer: Leiter und Naval ---------- */
+
+.fx {
+	padding-top: clamp(80px, 14vh, 150px);
+}
+
+.fx-quotes {
+	max-width: 1320px;
+	margin: clamp(32px, 6vh, 56px) auto 0;
+	padding: 0 var(--gutter);
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+	gap: 16px;
+}
+
+.fx-quotes figure {
+	margin: 0;
+	padding: clamp(20px, 3vw, 32px);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	background: var(--panel);
+}
+
+.fx-quotes figcaption {
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--faint);
+	margin-bottom: 18px;
+}
+
+/* Die Leiter steigt von unten links nach oben rechts */
+.fx-ladder {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 8px;
+}
+
+.fx-ladder li {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 10px;
+	margin-left: calc(var(--i) * clamp(10px, 4%, 44px));
+	padding: 10px 14px;
+	border-left: 3px solid var(--c);
+	border-radius: 0 14px 14px 0;
+	background: linear-gradient(90deg, color-mix(in srgb, var(--c) 14%, transparent), transparent 80%);
+}
+
+.fx-ladder a {
+	text-decoration: none;
+	font-size: 1.05rem;
+}
+
+.fx-ladder a b {
+	color: var(--c);
+	font-weight: 600;
+}
+
+.fx-ladder a:hover b {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.fx-ladder span {
+	color: var(--muted);
+	font-size: 0.95rem;
+}
+
+.fx-naval blockquote {
+	margin: 0 0 16px;
+	font-family: var(--serif);
+	font-style: italic;
+	font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+	line-height: 1.2;
+}
+
+.fx-naval p {
+	margin: 0;
+	color: var(--muted);
+	line-height: 1.6;
+}
+
+.fx-naval b {
+	color: var(--ink);
+	font-weight: 600;
+}
+
+.fx-grid {
+	max-width: 1320px;
+	margin: 16px auto 0;
+	padding: 0 var(--gutter);
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.fx-tile {
+	position: relative;
+	display: grid;
+	gap: 6px;
+	align-content: end;
+	min-height: 150px;
+	padding: 18px;
+	border: 1px solid var(--line);
+	border-radius: 20px;
+	background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--c) 18%, transparent), transparent 60%), var(--panel);
+	text-decoration: none;
+	overflow: hidden;
+	transition: opacity 0.9s var(--ease), border-color 0.25s, transform 0.25s var(--ease);
+}
+
+.fx-tile:hover,
+.fx-tile:focus-visible {
+	border-color: var(--c);
+	transform: translateY(-3px);
+}
+
+.fx-tile span {
+	position: absolute;
+	top: 16px;
+	left: 18px;
+	font-size: 0.66rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+.fx-tile b {
+	font-family: var(--display);
+	font-weight: 700;
+	font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+	letter-spacing: -0.02em;
+	color: var(--c);
+	overflow-wrap: anywhere;
+}
+
+.fx-tile small {
+	color: var(--muted);
+	font-size: 0.84rem;
+	line-height: 1.4;
+}
+
+@media (max-width: 1000px) {
+	.fx-quotes {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.fx-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 620px) {
+	.fx-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.fx-tile {
+		min-height: 128px;
+		padding: 14px;
+	}
+
+	.fx-tile span {
+		left: 14px;
+		top: 12px;
+	}
+}

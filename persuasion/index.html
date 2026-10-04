@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Überzeugen — Newbobb Lab</title>
+	<meta name="description"
+		content="Überzeugen interaktiv: die sechs Prinzipien der Beeinflussung nach Robert Cialdini. Erkenne in echten Werbe- und Alltagssätzen, welcher Trick gerade bei dir wirkt." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #ff6a8a;
+		}
+
+		.ad {
+			display: grid;
+			place-items: center;
+			min-height: 250px;
+			padding: 44px 18px 24px;
+		}
+
+		.ad-card {
+			width: min(100%, 420px);
+			padding: 18px 20px;
+			border-radius: 18px;
+			background: #f4efe6;
+			color: #1b1815;
+			box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+			transition: transform 0.35s, opacity 0.35s;
+		}
+
+		.ad-card small {
+			display: block;
+			font-size: 0.72rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #7a6f63;
+			margin-bottom: 6px;
+		}
+
+		.ad-card p {
+			margin: 0;
+			font-size: 1.08rem;
+			line-height: 1.4;
+			font-weight: 500;
+		}
+
+		.ad-card.is-out {
+			transform: translateY(-10px) rotate(-2deg);
+			opacity: 0;
+		}
+
+		.principles {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 8px;
+			width: 100%;
+		}
+
+		.principles .btn {
+			justify-content: center;
+			text-align: center;
+			padding: 10px 8px;
+		}
+
+		.principles .btn.is-right {
+			background: color-mix(in srgb, var(--good) 30%, var(--panel-2));
+			border-color: var(--good);
+		}
+
+		.principles .btn.is-wrong {
+			background: color-mix(in srgb, var(--bad) 25%, var(--panel-2));
+			border-color: var(--bad);
+		}
+
+		.p-list {
+			list-style: none;
+			padding: 0 !important;
+			display: grid;
+			gap: 10px;
+		}
+
+		.p-list li {
+			padding: 12px 14px;
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			margin: 0;
+		}
+
+		@media (max-width: 520px) {
+			.principles {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+	</style>
+</head>
+
+<body data-fach="persuasion">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 08 · Naval: Grundlage 3</p>
+			<h1>Warum du<br /><em>Ja</em> sagst</h1>
+			<p class="v-lede">Überzeugen ist angewandte Psychologie. Wer die Hebel kennt, kann besser erklären und
+				verkaufen. Und merkt sofort, wenn jemand sie bei einem selbst benutzt.</p>
+			<ol class="v-toc">
+				<li><a href="#prinzipien">Die sechs Hebel</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="prinzipien">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Einfluss</span>
+				<h2>Die sechs Hebel</h2>
+				<p>Der Psychologe Robert Cialdini hat jahrelang Verkäufer, Spendensammler und Werber beobachtet. 1984
+					fasste er zusammen, was immer wieder funktioniert. Es sind Abkürzungen, die unser Gehirn nimmt, um
+					schnell zu entscheiden:</p>
+				<ul class="p-list">
+					<li><strong>Gegenseitigkeit:</strong> Wer etwas bekommt, will etwas zurückgeben.</li>
+					<li><strong>Knappheit:</strong> Was selten ist oder bald weg, wirkt wertvoller.</li>
+					<li><strong>Autorität:</strong> Experten und Uniformen folgen wir leichter.</li>
+					<li><strong>Konsistenz:</strong> Wer A gesagt hat, sagt gern auch B.</li>
+					<li><strong>Sympathie:</strong> Menschen, die wir mögen, sagen wir lieber Ja.</li>
+					<li><strong>Soziale Bewährtheit:</strong> Was viele tun, kann nicht falsch sein.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Diese Hebel sind nicht böse. Sie werden erst problematisch, wenn sie
+					benutzt werden, um dich zu etwas zu bringen, das nicht gut für dich ist. Darum geht es auf der Seite
+					<a href="../ethics/">Ethik</a>.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Welcher Hebel steckt in diesem Satz? 8 Beispiele aus Werbung und Alltag.</p>
+				<div class="stage-view">
+					<div class="ad">
+						<div class="ad-card" id="adCard"><small id="adWhere">Werbung</small>
+							<p id="adText">…</p>
+						</div>
+					</div>
+					<span class="stage-tag">Erkenne den Trick</span>
+					<span class="stage-readout" id="adOut">0 / 8</span>
+				</div>
+				<div class="stage-controls">
+					<div class="principles" id="principles"></div>
+					<button class="btn primary" id="btnNext" type="button" hidden>Weiter →</button>
+					<p class="stage-note" id="adNote">Wähle einen Hebel.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Überzeugen</h2>
+			<p>Projekte rund um Kommunikation, Sprache und wie Botschaften ankommen.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./persuasion.js"></script>
+</body>
+
+</html>

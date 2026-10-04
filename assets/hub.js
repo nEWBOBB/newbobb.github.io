@@ -13,6 +13,7 @@
 		play: { name: "Spielen lernen", color: "#b3a4ff" },
 		audio: { name: "Audio & Visuals", color: "#5ce1e6" },
 		lab: { name: "Experimente", color: "#ff6ad5" },
+		fach: { name: "Fach", color: "#b8a6ff" },
 	};
 
 	$("#year").textContent = new Date().getFullYear();
@@ -35,6 +36,17 @@
 		});
 	}
 	$("#statAll").textContent = projects.length;
+	// Fächer-Seiten tauchen nur in der Suche auf, nicht im Sternbild
+	const palSource = projects.concat(
+		$$(".fx-tile").map((t) => ({
+			href: t.getAttribute("href"),
+			cat: "fach",
+			title: $("b", t).textContent.trim(),
+			desc: $("small", t)?.textContent.trim() ?? "",
+			meta: "Fach",
+			year: "",
+		}))
+	);
 
 	// ---------- Cursor-Licht und Fußzeilen-Glanz ----------
 	if (finePointer && !reduced) {
@@ -80,7 +92,7 @@
 			spyLinks.forEach((a) => a.classList.toggle("is-active", a.dataset.spy === en.target.id));
 		}
 	}, { rootMargin: "-45% 0px -50% 0px" });
-	["verstehen", "spielen", "neu", "archiv"].forEach((id) => spy.observe(document.getElementById(id)));
+	["faecher", "verstehen", "spielen", "neu", "archiv"].forEach((id) => spy.observe(document.getElementById(id)));
 
 	// ---------- Wechselndes Wort im Titel ----------
 	const rot = $(".rotator");
@@ -588,12 +600,12 @@
 	let lastFocus = null;
 	const palOpen = () => !pal.hidden;
 	const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-	const ORDER = { learn: 0, play: 1, lab: 2, audio: 3 };
+	const ORDER = { fach: 0, learn: 1, play: 2, lab: 3, audio: 4 };
 
 	function renderPal() {
 		const q = norm(palInput.value.trim());
 		const words = q.split(/\s+/).filter(Boolean);
-		palItems = projects
+		palItems = palSource
 			.map((p) => {
 				const t = norm(p.title);
 				const hay = norm(`${p.title} ${p.desc} ${p.meta} ${CAT[p.cat].name}`);

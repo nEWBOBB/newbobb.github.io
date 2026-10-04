@@ -18,7 +18,7 @@
 </head>
 
 <body>
-	<a class="skip" href="#verstehen">Zum Inhalt springen</a>
+	<a class="skip" href="#faecher">Zum Inhalt springen</a>
 	<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 	<div class="cursor" aria-hidden="true"></div>
 
@@ -26,6 +26,7 @@
 	<header class="dock" id="dock">
 		<a class="logo" href="./" aria-label="Newbobb Lab Startseite"><span class="logo-mark" aria-hidden="true"></span><span class="logo-word">newbobb</span></a>
 		<nav aria-label="Hauptnavigation">
+			<a href="#faecher" data-spy="faecher">Fächer</a>
 			<a href="#verstehen" data-spy="verstehen">Verstehen</a>
 			<a href="#spielen" data-spy="spielen">Spielen</a>
 			<a href="#neu" data-spy="neu" class="nav-opt">Labor</a>
@@ -73,10 +74,51 @@
 			</div>
 		</div>
 
+		<!-- Fächer: die beiden Sprüche als Lehrplan -->
+		<section class="fx" id="faecher">
+			<div class="sec-head">
+				<p class="mono eyebrow"><span class="num">01</span> Fächer</p>
+				<h2>Zwei Sprüche. <em>Ein Lehrplan.</em></h2>
+				<p class="sec-lede">Jedes Fach baut auf einem anderen auf. Zwei Sprüche zeigen den Weg, und jedes Fach hat
+					hier seine eigene Seite mit einem Experiment und den passenden Projekten.</p>
+			</div>
+			<div class="fx-quotes">
+				<figure class="fx-ladder-box reveal">
+					<figcaption class="mono">Die Leiter</figcaption>
+					<ol class="fx-ladder">
+						<li style="--c:#b8a6ff; --i:0"><a href="./math/">Lerne <b>Mathe</b>,</a><span>um Physik zu verstehen.</span></li>
+						<li style="--c:#8fb8ff; --i:1"><a href="./physics/">Lerne <b>Physik</b>,</a><span>um Chemie zu verstehen.</span></li>
+						<li style="--c:#7bdc9a; --i:2"><a href="./chemistry/">Lerne <b>Chemie</b>,</a><span>um Biologie zu verstehen.</span></li>
+						<li style="--c:#c6e86a; --i:3"><a href="./biology/">Lerne <b>Biologie</b>,</a><span>um Psychologie zu verstehen.</span></li>
+						<li style="--c:#ff9ec7; --i:4"><a href="./psychology/">Lerne <b>Psychologie</b>,</a><span>um Menschen zu verstehen.</span></li>
+					</ol>
+				</figure>
+				<figure class="fx-naval reveal">
+					<figcaption class="mono">Naval Ravikant · die Grundlagen</figcaption>
+					<blockquote lang="en">„Microeconomics, game theory, psychology, persuasion, ethics, mathematics, and
+						computers.“</blockquote>
+					<p>Wer diese Grundlagen beherrscht, kann fast alles andere darauf aufbauen. Zwei davon stehen
+						auch auf der Leiter: <b>Mathe</b> ganz unten und <b>Psychologie</b> ganz oben.</p>
+				</figure>
+			</div>
+			<div class="fx-grid">
+				<a class="fx-tile reveal" href="./math/" style="--c:#b8a6ff"><span class="mono">01 · Leiter · Naval</span><b>Mathematik</b><small>Vom Kreis zur Sinuswelle</small></a>
+				<a class="fx-tile reveal" href="./physics/" style="--c:#8fb8ff"><span class="mono">02 · Leiter</span><b>Physik</b><small>Federpendel und 11 Projekte</small></a>
+				<a class="fx-tile reveal" href="./chemistry/" style="--c:#7bdc9a"><span class="mono">03 · Leiter</span><b>Chemie</b><small>Teilchen, die zusammenstoßen</small></a>
+				<a class="fx-tile reveal" href="./biology/" style="--c:#c6e86a"><span class="mono">04 · Leiter</span><b>Biologie</b><small>Hasen, Füchse und Zyklen</small></a>
+				<a class="fx-tile reveal" href="./psychology/" style="--c:#ff9ec7"><span class="mono">05 · Leiter · Naval</span><b>Psychologie</b><small>Der Stroop-Test</small></a>
+				<a class="fx-tile reveal" href="./economics/" style="--c:#ffd166"><span class="mono">06 · Naval</span><b>Mikroökonomie</b><small>Angebot und Nachfrage</small></a>
+				<a class="fx-tile reveal" href="./game-theory/" style="--c:#ff8a5c"><span class="mono">07 · Naval</span><b>Spieltheorie</b><small>Gefangenendilemma und Turnier</small></a>
+				<a class="fx-tile reveal" href="./persuasion/" style="--c:#ff6a8a"><span class="mono">08 · Naval</span><b>Überzeugen</b><small>Die sechs Hebel erkennen</small></a>
+				<a class="fx-tile reveal" href="./ethics/" style="--c:#e8d3a0"><span class="mono">09 · Naval</span><b>Ethik</b><small>Sechs Dilemmas</small></a>
+				<a class="fx-tile reveal" href="./computers/" style="--c:#5ce1e6"><span class="mono">10 · Naval</span><b>Informatik</b><small>Bits, Bytes und 6 Projekte</small></a>
+			</div>
+		</section>
+
 		<!-- Zeitreise: Reihe Verstehen -->
 		<section class="tl" id="verstehen">
 			<div class="sec-head">
-				<p class="mono eyebrow"><span class="num">01</span> Reihe · Verstehen</p>
+				<p class="mono eyebrow"><span class="num">02</span> Reihe · Verstehen</p>
 				<h2>400 000 Jahre Erfindungen. <em>In 17 Stationen.</em></h2>
 				<p class="sec-lede">Interaktive Erklärungen zum Anfassen, in der Reihenfolge, in der die Menschheit sie
 					entdeckt hat: vom ersten Feuer bis zu KI-Agenten. Scroll dich durch die Zeit.</p>
@@ -270,7 +312,7 @@
 		<!-- Spielen lernen -->
 		<section class="play" id="spielen">
 			<div class="sec-head">
-				<p class="mono eyebrow"><span class="num">02</span> Reihe · Spielen lernen</p>
+				<p class="mono eyebrow"><span class="num">03</span> Reihe · Spielen lernen</p>
 				<h2>Ein Instrument lernen. <em>Aber richtig.</em></h2>
 				<p class="sec-lede">Gitarre und Klavier zum Mitspielen, aufgebaut nach dem, was Musiklehrer empfehlen:
 					wenig auf einmal, langsam, jeden Tag ein bisschen.</p>
@@ -311,7 +353,7 @@
 			<a class="feature reveal" href="./ereignishorizont/">
 				<canvas id="teaser" aria-hidden="true"></canvas>
 				<div class="feature-body">
-					<p class="mono eyebrow"><span class="num">03</span> Aus dem Labor</p>
+					<p class="mono eyebrow"><span class="num">04</span> Aus dem Labor</p>
 					<h2>Ereignis&shy;horizont</h2>
 					<p>Ein Schwarzes Loch, live im Browser geraytraced. Licht wird von der Gravitation gebogen, die
 						Akkretionsscheibe glüht mit Doppler-Effekt, und ein Drone-Sound wird tiefer, je näher du dem
@@ -333,7 +375,7 @@
 		<section class="archive" id="archiv">
 			<div class="sec-head sec-head--row">
 				<div>
-					<p class="mono eyebrow"><span class="num">04</span> Archiv</p>
+					<p class="mono eyebrow"><span class="num">05</span> Archiv</p>
 					<h2>Alles. <em>Auf einen Blick.</em></h2>
 				</div>
 				<label class="search">
@@ -625,6 +667,7 @@
 		<div class="foot-row">
 			<span>© <span id="year">2026</span> Newbobb Lab · Gehostet auf GitHub Pages</span>
 			<nav aria-label="Fußzeile">
+				<a href="#faecher">Fächer</a>
 				<a href="#verstehen">Verstehen</a>
 				<a href="#spielen">Spielen lernen</a>
 				<a href="#archiv">Archiv</a>

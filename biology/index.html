@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Biologie — Newbobb Lab</title>
+	<meta name="description"
+		content="Biologie interaktiv: Hasen und Füchse im Räuber-Beute-Zyklus. Geburtenrate und Jagderfolg einstellen und sehen, wie zwei Populationen sich gegenseitig auf und ab treiben." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/fach.css" />
+	<style>
+		:root {
+			--fach: #c6e86a;
+		}
+
+		#ecoCanvas {
+			cursor: crosshair;
+		}
+	</style>
+</head>
+
+<body data-fach="biology">
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
+		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Fach 04 · Stufe 4 der Leiter</p>
+			<h1>Hasen,<br />Füchse und <em>Zyklen</em></h1>
+			<p class="v-lede">Biologie ist Chemie, die lebt und sich vermehrt. Und sobald Lebewesen sich gegenseitig
+				fressen, entstehen Muster, die man mit zwei Gleichungen vorhersagen kann.</p>
+			<ol class="v-toc">
+				<li><a href="#zyklus">Räuber und Beute</a></li>
+				<li><a href="#projekte">Projekte</a></li>
+			</ol>
+		</section>
+
+		<div class="f-quotes" data-fach-quote></div>
+
+
+		<section class="chapter" id="zyklus">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Ökologie</span>
+				<h2>Räuber und Beute</h2>
+				<p>Auf einer Insel leben Hasen und Füchse. Gibt es viele Hasen, finden die Füchse leicht Futter und
+					bekommen viele Junge. Dann gibt es viele Füchse, die fressen die Hasen weg. Ohne Hasen verhungern die
+					Füchse, und die Hasen können sich wieder erholen.</p>
+				<p>So entsteht ein <strong>Zyklus</strong>: Die Füchse laufen den Hasen immer ein Stück hinterher.
+					Genau das hat man in echten Fellhandels-Daten aus Kanada gefunden, über 90 Jahre lang, bei Luchsen und
+					Schneeschuhhasen.</p>
+				<p>Die Mathematiker Lotka und Volterra haben das in den 1920ern in zwei Gleichungen gefasst. Hier sind
+					Mathe, Physik und Biologie auf einmal im Spiel: Es ist wieder eine Schwingung.</p>
+				<p class="merke"><b>Merke</b>Räuber und Beute regeln sich gegenseitig. Die Räuber-Kurve folgt der
+					Beute-Kurve mit Verzögerung.</p>
+				<div class="formula">Hasen′ = a·H − b·H·F · Füchse′ = c·H·F − d·F
+					<small>a: Geburtenrate der Hasen, b: Jagderfolg, c: wie gut Füchse aus Beute Nachwuchs machen, d:
+						Sterberate der Füchse.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte die Simulation. Ändere dann den Jagderfolg. Klick ins Diagramm, um Füchse
+					auszusetzen.</p>
+				<div class="stage-view">
+					<canvas id="ecoCanvas" aria-label="Diagramm der Hasen- und Fuchsbestände über die Zeit"></canvas>
+					<span class="stage-tag">Lotka-Volterra</span>
+					<span class="stage-readout" id="ecoOut">🐇 40 · 🦊 9</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Geburtenrate Hasen</span><output id="aOut">1,0</output></span>
+						<input type="range" id="ra" min="3" max="20" value="10" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Jagderfolg Füchse</span><output id="bOut">1,0</output></span>
+						<input type="range" id="rb" min="3" max="25" value="10" />
+					</label>
+					<button class="btn primary" id="btnRun" type="button" aria-pressed="true">⏸ Pause</button>
+					<button class="btn" id="btnEco" type="button">↺ Neu</button>
+					<ul class="f-legend">
+						<li style="--c:#c6e86a">Hasen</li>
+						<li style="--c:#ff8a5c">Füchse</li>
+					</ul>
+					<p class="stage-note" id="ecoNote">Beobachte, wer zuerst seinen Höhepunkt erreicht.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="f-projects" id="projekte">
+			<h2>Projekte in Biologie</h2>
+			<p>Leben ist Chemie, die sich selbst kopiert. Projekte zu Körper, Sinnen und Lebewesen.</p>
+			<div class="f-grid" data-fach-projects></div>
+		</section>
+	</main>
+
+	<footer class="v-next" data-fach-next></footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/fach.js"></script>
+	<script src="./biology.js"></script>
+</body>
+
+</html>
