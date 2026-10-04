@@ -13,6 +13,7 @@
 	--ember: #ff6a3d;
 	--c-learn: #ffb366;
 	--c-play: #b3a4ff;
+	--c-quant: #6be3a8;
 	--c-audio: #5ce1e6;
 	--c-lab: #ff6ad5;
 	--gutter: clamp(16px, 5vw, 72px);
@@ -972,6 +973,29 @@ body.has-pointer .cursor {
 	height: 300px;
 }
 
+/* ---------- Quant-Mathe ---------- */
+
+.quant {
+	padding: clamp(90px, 16vh, 170px) 0 0;
+}
+
+.quant-grid {
+	max-width: 1320px;
+	margin: 36px auto 0;
+	padding: 0 var(--gutter);
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 18px;
+}
+
+.quant-grid .lesson {
+	grid-column: span 2;
+}
+
+.quant-grid .lesson:nth-child(n + 4) {
+	grid-column: span 3;
+}
+
 /* ---------- Labor-Highlight ---------- */
 
 .featured {
@@ -1540,6 +1564,31 @@ body.has-pointer .cursor {
 @media (max-width: 1000px) {
 	.rules {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 1000px) {
+	.quant-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.quant-grid .lesson,
+	.quant-grid .lesson:nth-child(n + 4) {
+		grid-column: auto;
+	}
+
+	.quant-grid .lesson:last-child {
+		grid-column: span 2;
+	}
+}
+
+@media (max-width: 640px) {
+	.quant-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.quant-grid .lesson:last-child {
+		grid-column: auto;
 	}
 }
 

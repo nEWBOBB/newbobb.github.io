@@ -1,0 +1,175 @@
+/* Ergänzungen der Reihe „Quant“ zu verstehen.css */
+
+:root {
+	--bg: #08090b;
+	--panel: #111316;
+	--panel-2: #171a1e;
+	--accent: #6be3a8;
+	--accent-2: #7aa8ff;
+	--accent-ink: #04140c;
+}
+
+.stage-view {
+	background: #08090b;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	width: 100%;
+}
+
+.btn.chip {
+	padding: 7px 13px;
+	font-size: 0.84rem;
+}
+
+.btn.small {
+	padding: 7px 13px;
+	font-size: 0.84rem;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	width: 100%;
+	align-items: center;
+}
+
+.label {
+	font-size: 0.74rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--faint);
+	width: 100%;
+	margin: 4px 0 -2px;
+}
+
+/* Kennzahlen unter einer Station */
+.stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+	gap: 8px;
+	width: 100%;
+}
+
+.stats div {
+	padding: 9px 12px;
+	border-radius: 12px;
+	background: #0b0c0f;
+	border: 1px solid var(--line);
+	font-size: 0.76rem;
+	color: var(--faint);
+}
+
+.stats b {
+	display: block;
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-weight: 500;
+	font-size: 1rem;
+	color: var(--ink);
+	font-variant-numeric: tabular-nums;
+}
+
+/* Farbige Wörter, passend zu den Kurven */
+.k-a { color: #6be3a8; }
+.k-b { color: #7aa8ff; }
+.k-c { color: #ffb366; }
+.k-d { color: #ff7a9c; }
+.k-e { color: #c79bff; }
+
+.chapter p .k-a,
+.chapter p .k-b,
+.chapter p .k-c,
+.chapter p .k-d,
+.chapter p .k-e {
+	font-weight: 600;
+}
+
+/* Eingabe-Matrix */
+.matrix {
+	display: inline-grid;
+	gap: 6px;
+	padding: 8px 12px;
+	border-left: 2px solid var(--muted);
+	border-right: 2px solid var(--muted);
+	border-radius: 8px;
+}
+
+.matrix input {
+	width: 64px;
+	font: inherit;
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 0.86rem;
+	text-align: center;
+	color: var(--ink);
+	background: #0b0c0f;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	padding: 6px 4px;
+}
+
+.matrix input:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+}
+
+select.select {
+	font: inherit;
+	font-size: 0.86rem;
+	color: var(--ink);
+	background: var(--panel-2);
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	padding: 8px 14px;
+}
+
+/* Zwei Canvas nebeneinander in einer Station */
+.duo {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.duo > div {
+	position: relative;
+	min-width: 0;
+}
+
+.duo > div + div {
+	border-left: 1px solid var(--line);
+}
+
+@media (max-width: 560px) {
+	.duo {
+		grid-template-columns: 1fr;
+	}
+
+	.duo > div + div {
+		border-left: 0;
+		border-top: 1px solid var(--line);
+	}
+}
+
+.mono {
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Quellen-Hinweis am Seitenende */
+.v-credit {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 0 var(--gutter) 40px;
+	font-size: 0.82rem;
+	color: var(--faint);
+}
+
+.v-credit a {
+	color: var(--muted);
+}
+
+/* Breite Kapitel dürfen nicht von langen Formeln aufgedehnt werden */
+.chapter.wide {
+	grid-template-columns: minmax(0, 1fr);
+}

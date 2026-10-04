@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Gauß-Prozesse — Newbobb Lab</title>
+	<meta name="description"
+		content="Gauß-Prozesse visuell erklärt: mehrdimensionale Normalverteilung, Marginalisieren und Bedingen, von Punkten zu Funktionen, Kernel, Regression mit Unsicherheit und Hyperparameter." />
+	<meta name="theme-color" content="#08090b" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/quant.css" />
+	<style>
+		:root {
+			--accent: #ff7a9c;
+			--accent-2: #c79bff;
+			--accent-ink: #26050f;
+		}
+
+		#mvnCanvas,
+		#postCanvas {
+			touch-action: none;
+			cursor: crosshair;
+		}
+
+		#lmlCanvas {
+			cursor: pointer;
+		}
+
+		.duo.wide-left {
+			grid-template-columns: 0.75fr 1.25fr;
+		}
+
+		@media (max-width: 560px) {
+			.duo.wide-left {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ quant</span></a>
+		<nav class="v-series" aria-label="Reihe Quant">
+			<a href="../zufall/">Zufall</a>
+			<a href="../sichtbar/">Sichtbar</a>
+			<a href="../momentum/">Momentum</a>
+			<a href="../mcmc/">MCMC</a>
+			<a href="../gauss/" aria-current="page">Gauß-Prozesse</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Quant · Teil 5 · Funktionen als Zufall</p>
+			<h1><em>Gauß</em>-<br />Prozesse</h1>
+			<p class="v-lede">Was, wenn man nicht eine Zahl schätzen will, sondern eine ganze unbekannte Funktion, und dazu
+				ehrlich sagen möchte, wo man sich sicher ist und wo nicht? Gauß-Prozesse tun genau das, und alles beginnt
+				mit der guten alten Glockenkurve.</p>
+			<ol class="v-toc">
+				<li><a href="#mvn">Die Glocke in 2D</a></li>
+				<li><a href="#funktionen">Von Punkten zu Funktionen</a></li>
+				<li><a href="#kernel">Kernel</a></li>
+				<li><a href="#posterior">Lernen aus Daten</a></li>
+				<li><a href="#hyper">Hyperparameter</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 MVN -->
+		<section class="chapter" id="mvn">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Mehrdimensionale Normalverteilung</span>
+				<h2>Die Glocke in zwei Dimensionen</h2>
+				<p>Zwei Zufallszahlen X und Y, die jeweils normalverteilt sind, können zusammenhängen: Ist X groß, ist Y oft
+					auch groß. Das beschreibt die <strong>Kovarianzmatrix</strong> Σ. Auf der Diagonale stehen die Varianzen,
+					daneben der Zusammenhang.</p>
+				<div class="formula">Σ = [ σ₁²  ρσ₁σ₂ ; ρσ₁σ₂  σ₂² ]</div>
+				<p>Zwei Operationen machen Gauß-Prozesse möglich, und beide liefern wieder eine Glocke:</p>
+				<ul>
+					<li><strong>Marginalisieren</strong>: Y einfach ignorieren. Was von X übrig bleibt, ist N(0, σ₁²), die
+						Projektion der Wolke auf die Achse.</li>
+					<li><strong>Bedingen</strong>: Y ist bekannt, etwa Y = 1,5. Dann schneidet man die Wolke dort durch. Bei
+						starkem Zusammenhang wird die Glocke für X schmal und verschiebt sich.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Bedingen ist Lernen: Wer Y kennt, weiß mehr über X, aber nur wenn ρ ≠ 0. Je
+					stärker der Zusammenhang, desto schmaler die Restunsicherheit σ₁²(1 − ρ²).</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte auf „Bedingen“ und zieh die Linie hoch und runter. Dreh dann ρ.</p>
+				<div class="stage-view">
+					<canvas id="mvnCanvas" aria-label="Zweidimensionale Normalverteilung mit Randverteilungen"></canvas>
+					<span class="stage-tag" id="mvnTag">Marginalisieren</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="mvnChips"></div>
+					<label class="range">
+						<span class="range-head"><span>Korrelation ρ</span><output id="mRhoOut"></output></span>
+						<input type="range" id="mRho" min="-0.97" max="0.97" step="0.01" value="0.75" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>σ₁ (X)</span><output id="mS1Out"></output></span>
+						<input type="range" id="mS1" min="0.4" max="1.8" step="0.01" value="1.1" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>σ₂ (Y)</span><output id="mS2Out"></output></span>
+						<input type="range" id="mS2" min="0.4" max="1.8" step="0.01" value="1" />
+					</label>
+					<p class="stage-note mono" id="mvnNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Funktionen -->
+		<section class="chapter flip" id="funktionen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Der Trick</span>
+				<h2>Von Punkten zu Funktionen</h2>
+				<p>Jetzt der entscheidende Gedankensprung. Nimm nicht zwei, sondern n Zufallszahlen f₁ … fₙ und stell sie
+					nebeneinander an die Stellen x₁ … xₙ. Eine Ziehung aus der n-dimensionalen Glocke ist dann eine
+					Zickzacklinie.</p>
+				<p>Wähle die Kovarianz so, dass benachbarte Stellen stark zusammenhängen und weit entfernte kaum. Dann sind
+					Nachbarn sich ähnlich, und aus dem Zickzack wird eine glatte Kurve. Mit unendlich vielen Stellen ist jede
+					Ziehung eine <strong>Funktion</strong>. Das ist ein <strong>Gauß-Prozess</strong>.</p>
+				<div class="formula">Σᵢⱼ = k(xᵢ, xⱼ) = σ² · exp(−(xᵢ − xⱼ)² / 2ℓ²)</div>
+				<p class="merke"><b>Merke</b>Ein Gauß-Prozess ist eine Normalverteilung über Funktionen. Die
+					Kovarianzfunktion k, der <strong>Kernel</strong>, legt fest, wie die Funktionen aussehen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Erhöhe die Zahl der Stellen von 2 auf 50. Links siehst du die Kovarianzmatrix.</p>
+				<div class="stage-view duo wide-left">
+					<div><canvas id="covCanvas" aria-label="Kovarianzmatrix"></canvas><span class="stage-tag">Σ</span></div>
+					<div><canvas id="ptsCanvas" aria-label="Ziehungen als Punkte"></canvas><span class="stage-tag">Ziehungen</span></div>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Stellen n</span><output id="fNOut"></output></span>
+						<input type="range" id="fN" min="2" max="50" step="1" value="5" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Länge ℓ</span><output id="fLOut"></output></span>
+						<input type="range" id="fL" min="0.02" max="0.6" step="0.01" value="0.18" />
+					</label>
+					<div class="row">
+						<button class="btn" id="fNew" type="button">Neu ziehen</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Kernel -->
+		<section class="chapter" id="kernel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Kernel</span>
+				<h2>Der Kernel ist das Vorwissen</h2>
+				<p>Bevor man Daten sieht, sagt der Kernel, welche Art Funktionen man erwartet. Er ist der
+					<strong>Prior</strong>.</p>
+				<ul>
+					<li><strong>RBF</strong> (Radiale Basisfunktion): sehr glatt. ℓ bestimmt, wie weit die Funktion „schaut“.
+					</li>
+					<li><strong>Exponentiell</strong> (Matérn ½): rau und zittrig, wie ein Aktienkurs.</li>
+					<li><strong>Periodisch</strong>: wiederholt sich mit der Periode p, etwa Jahreszeiten.</li>
+					<li><strong>Linear</strong>: nur Geraden, also klassische lineare Regression.</li>
+				</ul>
+				<p>Kernel lassen sich kombinieren: Addieren heißt „beides überlagert“ (Trend plus Saison), Multiplizieren
+					heißt „das eine moduliert das andere“ (eine Schwingung, deren Stärke wächst).</p>
+				<p class="merke"><b>Merke</b>Die Heatmap zeigt, wie stark f(x) und f(x′) zusammenhängen. Ein breites helles
+					Band bedeutet glatte, ein schmales raue Funktionen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle Kernel und dreh an ℓ. Die drei Kurven verformen sich mit.</p>
+				<div class="stage-view duo wide-left">
+					<div><canvas id="kMatCanvas" aria-label="Kernelmatrix"></canvas><span class="stage-tag">k(x, x′)</span></div>
+					<div><canvas id="kSmpCanvas" aria-label="Ziehungen aus dem Prior"></canvas><span class="stage-tag" id="kTag">Prior</span></div>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="kChips"></div>
+					<label class="range" id="kLWrap">
+						<span class="range-head"><span>Länge ℓ</span><output id="kLOut"></output></span>
+						<input type="range" id="kL" min="0.15" max="4" step="0.01" value="1" />
+					</label>
+					<label class="range" id="kPWrap">
+						<span class="range-head"><span>Periode p</span><output id="kPOut"></output></span>
+						<input type="range" id="kP" min="0.5" max="6" step="0.05" value="2.5" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Stärke σ</span><output id="kSOut"></output></span>
+						<input type="range" id="kS" min="0.2" max="2" step="0.01" value="1" />
+					</label>
+					<div class="row">
+						<button class="btn" id="kNew" type="button">Neu ziehen</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Posterior -->
+		<section class="chapter wide" id="posterior">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Gauß-Prozess-Regression</span>
+				<h2>Lernen aus Daten</h2>
+				<p>Jetzt kommt Kapitel 1 zurück. Ein paar Funktionswerte sind gemessen. Wir <strong>bedingen</strong> die
+					riesige Glocke auf diese Werte, genau wie die Linie in der 2D-Wolke. Heraus kommt wieder ein
+					Gauß-Prozess, der <strong>Posterior</strong>: eine <span class="k-d">mittlere Kurve</span> als beste
+					Schätzung, ein <span class="k-e">Band</span> für 95 % Unsicherheit und dünne Ziehungen, die alle durch die
+					Punkte gehen.</p>
+				<div class="formula">μ* = K*ₓ (Kₓₓ + σₙ²I)⁻¹ y  ·  Σ* = K** − K*ₓ (Kₓₓ + σₙ²I)⁻¹ Kₓ*</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tipp ins Feld, um Messpunkte zu setzen. Zieh vorhandene Punkte herum. Erhöhe dann das
+					Rauschen.</p>
+				<div class="stage-view">
+					<canvas id="postCanvas" aria-label="Gauß-Prozess-Posterior mit Unsicherheitsband"></canvas>
+					<span class="stage-tag" id="postTag">Posterior</span>
+					<span class="stage-readout" id="postOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="pChips"></div>
+					<label class="range">
+						<span class="range-head"><span>Länge ℓ</span><output id="pLOut"></output></span>
+						<input type="range" id="pL" min="0.2" max="4" step="0.01" value="1" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Messrauschen σₙ</span><output id="pNOut"></output></span>
+						<input type="range" id="pN" min="0.01" max="1" step="0.01" value="0.05" />
+					</label>
+					<div class="row">
+						<button class="btn" id="pSamples" type="button" aria-pressed="true">Ziehungen</button>
+						<button class="btn" id="pClear" type="button">Punkte löschen</button>
+						<button class="btn" id="pDemo" type="button">Beispielpunkte</button>
+					</div>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p>Beobachte das Band: Direkt an einem Messpunkt ist es schmal, zwischen den Punkten wird es breiter, und
+					weit weg von allen Daten fällt der GP auf sein Vorwissen zurück (Mittel null, volle Breite). Ein Modell,
+					das weiß, was es nicht weiß.</p>
+				<p class="merke"><b>Merke</b>Deshalb werden GPs dort eingesetzt, wo jede Messung teuer ist: beim Abstimmen
+					von KI-Modellen, in der Geostatistik („Kriging“), beim Kalibrieren von Zinskurven und Volatilitätsflächen.
+				</p>
+			</div>
+		</section>
+
+		<!-- 5 Hyper -->
+		<section class="chapter flip" id="hyper">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Hyperparameter</span>
+				<h2>Wie lang ist ℓ?</h2>
+				<p>Die Länge ℓ steht im Kernel, nicht in den Daten. Woher weiß man den richtigen Wert? Zu klein, und das
+					Modell malt jeden Punkt einzeln nach (Überanpassung). Zu groß, und es bügelt alles platt.</p>
+				<p>Die Antwort ist die <strong>marginale Likelihood</strong>: Wie wahrscheinlich sind genau diese Daten unter
+					dem Prior mit diesem ℓ? Sie belohnt gute Passung und bestraft Komplexität automatisch, ein eingebautes
+					Ockhams Rasiermesser.</p>
+				<div class="formula">log p(y | ℓ) = −½ yᵀ K⁻¹ y − ½ log |K| − n/2 · log 2π<small>erster Term: Passung ·
+						zweiter Term: Strafe für Komplexität</small></div>
+				<p class="merke"><b>Merke</b>Man wählt ℓ, wo die Kurve rechts ihr Maximum hat. Die Daten hier wurden mit
+					ℓ = 1 erzeugt. Findet die Likelihood das wieder?</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Klick in die rechte Kurve, um ℓ zu setzen, oder lass optimieren.</p>
+				<div class="stage-view duo">
+					<div><canvas id="hypCanvas" aria-label="Posterior mit gewähltem ℓ"></canvas><span class="stage-tag" id="hypTag">Fit</span></div>
+					<div><canvas id="lmlCanvas" aria-label="Log-Likelihood über ℓ"></canvas><span class="stage-tag">log p(y | ℓ)</span></div>
+				</div>
+				<div class="stage-controls">
+					<div class="row">
+						<button class="btn primary" id="hOpt" type="button">Optimieren</button>
+						<button class="btn" id="hNew" type="button">Neue Daten</button>
+					</div>
+					<p class="stage-note" id="hypNote"></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Ende der Reihe · zurück zum Anfang</p>
+		<a href="../zufall/">Zufall sehen <span>→</span></a>
+	</footer>
+	<p class="v-credit">Inspiriert von <a href="https://distill.pub/2019/visual-exploration-gaussian-processes/"
+			rel="noopener">A Visual Exploration of Gaussian Processes</a> (Görtler, Kehlbeck, Deussen, Distill 2019). Eigene
+		Umsetzung, ohne fremden Code.</p>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/quant.js"></script>
+	<script src="./gauss.js"></script>
+</body>
+
+</html>

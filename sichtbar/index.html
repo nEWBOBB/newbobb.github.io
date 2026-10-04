@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Mathe sichtbar — Newbobb Lab</title>
+	<meta name="description"
+		content="Mathe visuell erklärt: Markov-Ketten, Übergangsmatrizen, bedingte Wahrscheinlichkeit, Eigenvektoren, Hauptkomponentenanalyse und Bildfilter zum Anfassen." />
+	<meta name="theme-color" content="#08090b" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/quant.css" />
+	<style>
+		:root {
+			--accent: #7aa8ff;
+			--accent-2: #6be3a8;
+			--accent-ink: #050d1c;
+		}
+
+		#condCanvas,
+		#eigCanvas,
+		#pcaCanvas,
+		#kSrc {
+			touch-action: none;
+			cursor: crosshair;
+		}
+
+		.calc {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 10px;
+			width: 100%;
+			font-family: "JetBrains Mono", ui-monospace, monospace;
+			font-size: 0.78rem;
+			color: var(--muted);
+		}
+
+		.calc table {
+			border-collapse: separate;
+			border-spacing: 2px;
+		}
+
+		.calc td {
+			width: 34px;
+			height: 26px;
+			text-align: center;
+			border-radius: 5px;
+			font-size: 0.72rem;
+		}
+
+		.calc .eq {
+			font-size: 1rem;
+			color: var(--ink);
+		}
+
+		.file {
+			font-size: 0.84rem;
+			color: var(--muted);
+		}
+
+		.file input {
+			max-width: 210px;
+			font-size: 0.8rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ quant</span></a>
+		<nav class="v-series" aria-label="Reihe Quant">
+			<a href="../zufall/">Zufall</a>
+			<a href="../sichtbar/" aria-current="page">Sichtbar</a>
+			<a href="../momentum/">Momentum</a>
+			<a href="../mcmc/">MCMC</a>
+			<a href="../gauss/">Gauß-Prozesse</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Quant · Teil 2 · Visuell erklärt</p>
+			<h1>Mathe<br /><em>sichtbar</em></h1>
+			<p class="v-lede">Hinter Wettervorhersagen, Google-Suche, Gesichtserkennung und Instagram-Filtern stecken ein
+				paar erstaunlich anschauliche Ideen. Man muss sie nur bewegen dürfen.</p>
+			<ol class="v-toc">
+				<li><a href="#markov">Markov-Ketten</a></li>
+				<li><a href="#matrix">Übergangsmatrix</a></li>
+				<li><a href="#bedingt">Bedingte Wahrscheinlichkeit</a></li>
+				<li><a href="#eigen">Eigenvektoren</a></li>
+				<li><a href="#pca">Hauptkomponenten</a></li>
+				<li><a href="#kernel">Bildfilter</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Markov -->
+		<section class="chapter" id="markov">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Markov-Ketten</span>
+				<h2>Ein Zufall ohne Gedächtnis</h2>
+				<p>Eine <strong>Markov-Kette</strong> springt zwischen Zuständen hin und her. Wohin sie als Nächstes springt,
+					hängt nur davon ab, wo sie <em>gerade</em> ist, nicht davon, wie sie dorthin kam.</p>
+				<p>Ein Spielzeug-Wettermodell: Ist heute Sonne, bleibt es mit Wahrscheinlichkeit p sonnig, sonst kommt
+					Regen. Ist heute Regen, regnet es mit Wahrscheinlichkeit q weiter. Die Pfeile sind umso dicker, je
+					wahrscheinlicher der Sprung.</p>
+				<p>Lass die Kette laufen und beobachte den Anteil sonniger Tage. Er pendelt sich auf einen festen Wert ein,
+					die <strong>stationäre Verteilung</strong>, egal, wo die Kette gestartet ist.</p>
+				<p class="merke"><b>Merke</b>Hohe Bleibewahrscheinlichkeiten erzeugen lange Sonnen- und Regenphasen. Der
+					Langzeitanteil hängt aber nur vom Verhältnis der Wechselwahrscheinlichkeiten ab.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Mach das Wetter „klebriger“ und schau, wie sich die Streifen unten verändern.</p>
+				<div class="stage-view">
+					<canvas id="mkCanvas" aria-label="Markov-Kette mit zwei Zuständen"></canvas>
+					<span class="stage-tag">Wetter-Kette</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Sonne → Sonne (p)</span><output id="mkPOut"></output></span>
+						<input type="range" id="mkP" min="0" max="1" step="0.01" value="0.7" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Regen → Regen (q)</span><output id="mkQOut"></output></span>
+						<input type="range" id="mkQ" min="0" max="1" step="0.01" value="0.5" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="mkSpeedOut"></output></span>
+						<input type="range" id="mkSpeed" min="1" max="40" step="1" value="3" />
+					</label>
+					<div class="stats">
+						<div>Tage<b id="mkN">0</b></div>
+						<div>Anteil Sonne<b id="mkF">–</b></div>
+						<div>Stationär<b id="mkPi">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Matrix -->
+		<section class="chapter flip" id="matrix">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Übergangsmatrix</span>
+				<h2>Alles in einer Tabelle</h2>
+				<p>Mit mehr Zuständen wird das Diagramm schnell unübersichtlich. Deshalb schreibt man die
+					Wahrscheinlichkeiten in eine <strong>Übergangsmatrix</strong> P: Zeile i, Spalte j ist die
+					Wahrscheinlichkeit, von i nach j zu springen. Jede Zeile summiert sich zu 1.</p>
+				<p>Die schönste Eigenschaft: Ist π die Verteilung heute, dann ist π·P die Verteilung morgen. Die stationäre
+					Verteilung ist genau die, die sich dabei nicht mehr ändert:</p>
+				<div class="formula">π · P = π<small>π ist ein (linker) Eigenvektor von P zum Eigenwert 1. Mehr dazu in Kapitel
+						4.</small></div>
+				<p>Genau so hat Google ursprünglich Webseiten bewertet: Ein Zufallssurfer klickt endlos Links, und PageRank
+					ist der Anteil der Zeit, den er auf jeder Seite verbringt.</p>
+				<p class="merke"><b>Merke</b>Nicht jede Kette findet ein Gleichgewicht: Ein starrer Zyklus kreist ewig, und
+					ein Zustand, den man nie wieder verlässt, schluckt am Ende alles.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Ändere die Zahlen in der Matrix (Zeilen werden automatisch normiert) oder nimm ein Beispiel.
+				</p>
+				<div class="stage-view">
+					<canvas id="mxCanvas" aria-label="Markov-Kette mit drei Zuständen und Besuchshäufigkeiten"></canvas>
+					<span class="stage-tag">Drei Zustände</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="mxPresets"></div>
+					<div class="row">
+						<div class="matrix" id="mxInputs" style="grid-template-columns: repeat(3, auto)"></div>
+						<button class="btn" id="mxReset" type="button">↺ Zählen neu</button>
+					</div>
+					<p class="stage-note" id="mxNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Bedingte Wahrscheinlichkeit -->
+		<section class="chapter" id="bedingt">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Bedingte Wahrscheinlichkeit</span>
+				<h2>Wenn man schon etwas weiß</h2>
+				<p>Kugeln fallen zufällig von oben. Manche durchqueren das Brett <span class="k-a">A</span>, manche das Brett
+					<span class="k-b">B</span>, manche beide. Die Breite eines Bretts ist seine Wahrscheinlichkeit.</p>
+				<p>Die <strong>bedingte Wahrscheinlichkeit</strong> P(A | B) fragt: Von den Kugeln, die durch B gefallen
+					sind, wie viele waren auch in A? Man schaut also nur noch auf B, als wäre B die ganze Welt.</p>
+				<div class="formula">P(A | B) = P(A ∩ B) / P(B)</div>
+				<p>Schieb die Bretter so, dass sie sich nicht überlappen: P(A | B) wird null. Leg A ganz über B: P(A | B)
+					wird eins. Und wenn das Verhältnis gerade P(A) ist, sind A und B <strong>unabhängig</strong>.</p>
+				<p class="merke"><b>Merke</b>P(A | B) und P(B | A) sind fast nie gleich. Die meisten Basketballprofis sind
+					groß, aber die meisten großen Menschen sind keine Basketballprofis.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Bretter in der Mitte zum Verschieben, an den Enden zum Verbreitern.</p>
+				<div class="stage-view">
+					<canvas id="condCanvas" aria-label="Fallende Kugeln durch die Bretter A und B"></canvas>
+					<span class="stage-tag">Kugelregen</span>
+				</div>
+				<div class="stage-controls">
+					<div class="stats">
+						<div>P(A)<b id="cA">–</b></div>
+						<div>P(B)<b id="cB">–</b></div>
+						<div>P(A ∩ B)<b id="cAB">–</b></div>
+						<div>P(A | B)<b id="cAgB">–</b></div>
+						<div>P(B | A)<b id="cBgA">–</b></div>
+					</div>
+					<p class="stage-note" id="condNote">Oben: gezählt aus den Kugeln. Klein darunter: exakt aus den Breiten.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Eigenvektoren -->
+		<section class="chapter flip" id="eigen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Lineare Algebra</span>
+				<h2>Eigenvektoren: die Richtungen, die bleiben</h2>
+				<p>Eine 2×2-Matrix A verwandelt jeden Pfeil v in einen neuen Pfeil Av. Meistens wird er dabei gedreht und
+					gestreckt. Aber es gibt besondere Richtungen, in denen A nur streckt, ohne zu drehen:</p>
+				<div class="formula">A · v = λ · v</div>
+				<p>Solche v heißen <strong>Eigenvektoren</strong>, der Streckfaktor λ <strong>Eigenwert</strong>. Zieh den
+					<span class="k-a">Pfeil v</span> herum, bis <span class="k-c">Av</span> genau in dieselbe Richtung zeigt.
+					Dann liegst du auf einer der <span class="k-e">lila Linien</span>.</p>
+				<p>Wendet man A immer wieder an, gewinnt der Eigenvektor mit dem größten |λ|: Jeder Startpunkt wird zu ihm
+					hingezogen. Genau so findet man stationäre Verteilungen und PageRank.</p>
+				<p class="merke"><b>Merke</b>Eigenvektoren sind das Skelett einer Matrix. Wer sie kennt, versteht, was die
+					Matrix tut, und was passiert, wenn man sie tausendmal anwendet.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den grünen Pfeil. Drück dann „Immer wieder anwenden“.</p>
+				<div class="stage-view">
+					<canvas id="eigCanvas" aria-label="Vektor v, sein Bild Av und die Eigenrichtungen"></canvas>
+					<span class="stage-tag">Ebene</span>
+					<span class="stage-readout" id="eigOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="eigPresets"></div>
+					<div class="row">
+						<span class="mono" style="color: var(--muted)">A =</span>
+						<div class="matrix" id="eigInputs" style="grid-template-columns: repeat(2, auto)"></div>
+						<button class="btn primary" id="eigIter" type="button">Immer wieder anwenden</button>
+						<button class="btn" id="eigGrid" type="button" aria-pressed="true">Gitter</button>
+					</div>
+					<p class="stage-note" id="eigNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 PCA -->
+		<section class="chapter" id="pca">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Hauptkomponentenanalyse</span>
+				<h2>Die wichtigste Richtung finden</h2>
+				<p>Viele Daten haben mehr Spalten als nötig. Größe und Gewicht von Menschen etwa hängen so eng zusammen, dass
+					eine einzige Zahl („wie groß gebaut“) fast alles erklärt.</p>
+				<p>Die <strong>Hauptkomponentenanalyse</strong> (PCA) dreht das Koordinatensystem so, dass die erste Achse in
+					Richtung der größten Streuung zeigt. Das sind die Eigenvektoren der Kovarianzmatrix, wieder Kapitel 4.
+					Projiziert man alle Punkte auf die <span class="k-c">erste Achse</span>, wird aus 2D eine Zahlenreihe,
+					und man verliert nur die kleine Streuung entlang der <span class="k-b">zweiten</span>.</p>
+				<p class="merke"><b>Merke</b>PCA komprimiert Daten, indem es die Richtungen mit wenig Varianz weglässt. Liegen
+					die Punkte fast auf einer Linie, geht dabei kaum Information verloren.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh einzelne Punkte weg und sieh, wie sich die Achsen drehen. Unten: die 1D-Version.</p>
+				<div class="stage-view">
+					<canvas id="pcaCanvas" aria-label="Punktwolke mit Hauptachsen und Projektion"></canvas>
+					<span class="stage-tag">Punktwolke</span>
+				</div>
+				<div class="stage-controls">
+					<div class="row">
+						<button class="btn" id="pcaNew" type="button">Neue Wolke</button>
+						<button class="btn" id="pcaProj" type="button" aria-pressed="true">Projektion zeigen</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Zusammenhang der Wolke</span><output id="pcaCorrOut"></output></span>
+						<input type="range" id="pcaCorr" min="0" max="0.98" step="0.01" value="0.85" />
+					</label>
+					<div class="stats">
+						<div>Varianz Achse 1<b id="pcaV1">–</b></div>
+						<div>Varianz Achse 2<b id="pcaV2">–</b></div>
+						<div>Erklärt von Achse 1<b id="pcaExp">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6 Kernel -->
+		<section class="chapter wide" id="kernel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">06 · Faltung</span>
+				<h2>Wie Bildfilter rechnen</h2>
+				<p>Ein Bild ist eine Tabelle aus Helligkeitswerten. Ein <strong>Filterkern</strong> ist eine kleine 3×3-Tabelle
+					aus Gewichten. Für jedes Pixel legt man den Kern darüber, multipliziert die neun Nachbarn mit den neun
+					Gewichten und addiert alles. Das Ergebnis ist das neue Pixel. Das heißt <strong>Faltung</strong>, und es
+					ist auch der Grundbaustein von Bilderkennungs-KI.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Fahr mit der Maus (oder dem Finger) übers linke Bild und schau unten, was gerechnet wird.
+					Wähle andere Kerne oder tipp eigene Gewichte ein.</p>
+				<div class="stage-view duo">
+					<div><canvas id="kSrc" aria-label="Originalbild"></canvas><span class="stage-tag">Original</span></div>
+					<div><canvas id="kDst" aria-label="Gefiltertes Bild"></canvas><span class="stage-tag" id="kTag">Gefiltert</span></div>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="kPresets"></div>
+					<div class="row">
+						<div class="matrix" id="kInputs" style="grid-template-columns: repeat(3, auto)"></div>
+						<div class="calc" id="kCalc" style="width: auto; flex: 1"></div>
+					</div>
+					<label class="file">Eigenes Bild: <input type="file" id="kFile" accept="image/*" /></label>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p class="merke"><b>Merke</b>Summieren die Gewichte zu 1, bleibt die Helligkeit erhalten (Unschärfe,
+					Schärfen). Summieren sie zu 0, bleibt nur übrig, wo sich etwas ändert: Kanten.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Alle neun Gewichte sind gleich und summieren zu 1. Jedes Pixel wird zum Mittelwert seiner Nachbarschaft, Kanten verschwimmen.">
+					<p class="quiz-q">Ein Kern hat neunmal das Gewicht 1/9. Was macht er?</p>
+					<div class="quiz-options">
+						<button type="button">Er macht das Bild unscharf.</button>
+						<button type="button">Er findet Kanten.</button>
+						<button type="button">Er macht das Bild neunmal heller.</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 3 · Optimierung</p>
+		<a href="../momentum/">Warum Momentum funktioniert <span>→</span></a>
+	</footer>
+	<p class="v-credit">Inspiriert von <a href="https://setosa.io/ev/" rel="noopener">Explained Visually</a> (Victor
+		Powell und Lewis Lehe). Eigene Umsetzung, ohne fremden Code.</p>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/quant.js"></script>
+	<script src="./sichtbar.js"></script>
+</body>
+
+</html>

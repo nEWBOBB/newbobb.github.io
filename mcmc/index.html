@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>MCMC-Galerie — Newbobb Lab</title>
+	<meta name="description"
+		content="Markov Chain Monte Carlo zum Zuschauen: Monte-Carlo-Pfeile, Metropolis-Hastings Schritt für Schritt, eine Galerie mit Random Walk, Adaptive MH, MALA, Hamiltonian Monte Carlo und Gibbs auf sechs Zielverteilungen, plus Diagnose mit Autokorrelation." />
+	<meta name="theme-color" content="#08090b" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/quant.css" />
+	<style>
+		:root {
+			--accent: #c79bff;
+			--accent-2: #6be3a8;
+			--accent-ink: #160a26;
+		}
+
+		.gallery {
+			display: grid;
+			grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+		}
+
+		.gallery .stage-view {
+			border-bottom: 0;
+			border-right: 1px solid var(--line);
+		}
+
+		.gallery .stage-controls {
+			align-content: start;
+		}
+
+		.algo-info {
+			width: 100%;
+			margin: 0;
+			padding: 12px 14px;
+			border-radius: 12px;
+			background: #0b0c0f;
+			border: 1px solid var(--line);
+			font-size: 0.88rem;
+			color: var(--muted);
+		}
+
+		.algo-info b {
+			color: var(--ink);
+		}
+
+		@media (max-width: 560px) {
+			#galTag {
+				display: none;
+			}
+		}
+
+		@media (max-width: 880px) {
+			.gallery {
+				grid-template-columns: 1fr;
+			}
+
+			.gallery .stage-view {
+				border-right: 0;
+				border-bottom: 1px solid var(--line);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ quant</span></a>
+		<nav class="v-series" aria-label="Reihe Quant">
+			<a href="../zufall/">Zufall</a>
+			<a href="../sichtbar/">Sichtbar</a>
+			<a href="../momentum/">Momentum</a>
+			<a href="../mcmc/" aria-current="page">MCMC</a>
+			<a href="../gauss/">Gauß-Prozesse</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Quant · Teil 4 · Sampling</p>
+			<h1>Die <em>MCMC</em>-<br />Galerie</h1>
+			<p class="v-lede">Wie rechnet man mit einer Verteilung, die man nicht hinschreiben kann? Man schickt einen
+				Zufallswanderer los, der sich genau so viel Zeit an jedem Ort lässt, wie die Verteilung es verlangt. Hier
+				siehst du fünf berühmte Wanderer bei der Arbeit.</p>
+			<ol class="v-toc">
+				<li><a href="#monte">Monte Carlo</a></li>
+				<li><a href="#mh">Metropolis-Hastings</a></li>
+				<li><a href="#galerie">Die Galerie</a></li>
+				<li><a href="#diagnose">Diagnose</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Monte Carlo -->
+		<section class="chapter" id="monte">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Monte Carlo</span>
+				<h2>Rechnen mit Zufallspfeilen</h2>
+				<p>Wirf Pfeile blind auf ein Quadrat mit Seitenlänge 1. Ein Viertelkreis darin hat die Fläche π/4. Also
+					landet auf lange Sicht der Anteil π/4 der Pfeile im Kreis, und mal 4 genommen hast du π.</p>
+				<p>Das ist die <strong>Monte-Carlo-Methode</strong>: Statt eine schwierige Fläche, ein Integral oder einen
+					Erwartungswert auszurechnen, zieht man Zufallsproben und zählt. Sie stammt aus dem Manhattan-Projekt und
+					wurde nach dem Casino benannt.</p>
+				<p class="merke"><b>Merke</b>Der Fehler schrumpft wie 1/√n, egal wie kompliziert das Problem ist. Für eine
+					Stelle mehr Genauigkeit braucht man aber hundertmal mehr Proben.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wirf 1000 Pfeile, dann noch mal 10 000. Wie viele Nachkommastellen stimmen?</p>
+				<div class="stage-view">
+					<canvas id="piCanvas" aria-label="Zufallspunkte im Quadrat und im Viertelkreis"></canvas>
+					<span class="stage-tag">Pfeile</span>
+				</div>
+				<div class="stage-controls">
+					<div class="row">
+						<button class="btn primary" id="pi100" type="button">×100</button>
+						<button class="btn" id="pi1000" type="button">×1000</button>
+						<button class="btn" id="pi10000" type="button">×10 000</button>
+						<button class="btn" id="piReset" type="button">↺</button>
+					</div>
+					<div class="stats">
+						<div>Pfeile<b id="piN">0</b></div>
+						<div>Schätzung<b id="piEst">–</b></div>
+						<div>Fehler<b id="piErr">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 MH -->
+		<section class="chapter flip" id="mh">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Metropolis-Hastings</span>
+				<h2>Der Wanderer, der lieber bergauf geht</h2>
+				<p>Pfeile blind werfen funktioniert in zwei Dimensionen. In hundert Dimensionen landet fast jeder Pfeil im
+					Nichts. Besser ist ein Wanderer, der dort bleibt, wo die Wahrscheinlichkeit hoch ist. Der
+					<strong>Metropolis-Hastings-Algorithmus</strong> (1953) macht das so:</p>
+				<ol class="steps">
+					<li>Schlag einen zufälligen Nachbarort vor, etwa x′ = x + σ · Zufall.</li>
+					<li>Ist er wahrscheinlicher, geh hin.</li>
+					<li>Ist er unwahrscheinlicher, geh nur mit Wahrscheinlichkeit p(x′) / p(x) hin, sonst bleib stehen und
+						zähle den alten Ort noch einmal.</li>
+				</ol>
+				<p>Das Geniale: Man braucht p nur bis auf einen konstanten Faktor, denn er kürzt sich im Verhältnis weg. Genau
+					dieser Faktor ist in der Bayes-Statistik das, was man nicht ausrechnen kann.</p>
+				<p class="merke"><b>Merke</b>Das Histogramm der besuchten Orte wird zur Zielverteilung. Die Kette ist eine
+					Markov-Kette, deren stationäre Verteilung genau p ist.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Mach fünf Einzelschritte und lies die Rechnung mit. Dann lass ihn laufen.</p>
+				<div class="stage-view">
+					<canvas id="mhCanvas" aria-label="Eindimensionaler Metropolis-Hastings mit Spurplot"></canvas>
+					<span class="stage-tag">Ziel p(x) und Histogramm</span>
+				</div>
+				<div class="stage-controls">
+					<div class="row">
+						<button class="btn primary" id="mhStep" type="button">Ein Schritt</button>
+						<button class="btn" id="mhRun" type="button" aria-pressed="false">▶ Laufen lassen</button>
+						<button class="btn" id="mhReset" type="button">↺</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Vorschlagsweite σ</span><output id="mhSOut"></output></span>
+						<input type="range" id="mhS" min="0.05" max="6" step="0.05" value="1" />
+					</label>
+					<p class="stage-note mono" id="mhNote">Drück „Ein Schritt“.</p>
+					<div class="stats">
+						<div>Schritte<b id="mhN">0</b></div>
+						<div>Akzeptiert<b id="mhAcc">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Galerie -->
+		<section class="chapter wide" id="galerie">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Die Galerie</span>
+				<h2>Fünf Wanderer, sechs Landschaften</h2>
+				<p>Jeder Algorithmus hat eine andere Idee, wie man klug vorschlägt. Wähle links einen Wanderer und eine
+					Landschaft. <span class="k-a">Grüne</span> Striche sind angenommene Vorschläge, <span
+						class="k-d">rosa</span> abgelehnte. Unten und rechts wachsen die Randverteilungen mit, die dünne
+					Linie ist die Wahrheit.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte mit Random Walk auf der Banane, dann HMC auf derselben Banane. Probier danach den
+					Trichter und die zwei Gipfel.</p>
+				<div class="gallery">
+					<div class="stage-view">
+						<canvas id="galCanvas" aria-label="Zweidimensionale Zielverteilung mit MCMC-Proben"></canvas>
+						<span class="stage-tag" id="galTag"></span>
+						<span class="stage-readout" id="galOut"></span>
+					</div>
+					<div class="stage-controls">
+						<p class="label">Algorithmus</p>
+						<div class="chips" id="algoChips"></div>
+						<p class="label">Zielverteilung</p>
+						<div class="chips" id="targetChips"></div>
+						<p class="algo-info" id="algoInfo"></p>
+						<label class="range" id="gSWrap">
+							<span class="range-head"><span id="gSName">Vorschlagsweite σ</span><output id="gSOut"></output></span>
+							<input type="range" id="gS" min="0.05" max="3" step="0.01" value="0.8" />
+						</label>
+						<label class="range" id="gLWrap">
+							<span class="range-head"><span>Leapfrog-Schritte L</span><output id="gLOut"></output></span>
+							<input type="range" id="gL" min="1" max="60" step="1" value="20" />
+						</label>
+						<label class="range">
+							<span class="range-head"><span>Tempo</span><output id="gTOut"></output></span>
+							<input type="range" id="gT" min="0" max="1" step="0.01" value="0.5" />
+						</label>
+						<div class="row">
+							<button class="btn primary" id="gRun" type="button" aria-pressed="true">⏸ Pause</button>
+							<button class="btn" id="gStep" type="button">Ein Schritt</button>
+							<button class="btn" id="gReset" type="button">↺</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="chapter-text reveal">
+				<p>Was du dabei sehen solltest:</p>
+				<ul>
+					<li><strong>Random Walk</strong> stolpert auf der Banane und im Trichter. Kleine Schritte kommen nicht
+						voran, große werden fast immer abgelehnt.</li>
+					<li><strong>Adaptive MH</strong> lernt aus den bisherigen Proben die Form der Wolke und schlägt passend
+						geneigte Schritte vor. Ideal für die schräge Ellipse.</li>
+					<li><strong>MALA</strong> schiebt jeden Vorschlag ein Stück den Gradienten hinauf, also Richtung Gipfel.
+					</li>
+					<li><strong>HMC</strong> rollt eine Murmel mit zufälligem Schwung durch die Landschaft und macht so riesige
+						Sprünge, die trotzdem fast immer angenommen werden. Das ist das Herz von Stan und PyMC.</li>
+					<li><strong>Gibbs</strong> bewegt sich nur parallel zu den Achsen. Ist die Verteilung schräg, wird es ein
+						mühsames Treppensteigen.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Bei den zwei Gipfeln scheitern fast alle: Der Wanderer bleibt lange auf einem
+					Gipfel, weil das Tal dazwischen fast nie überquert wird. Mehrgipflige Verteilungen sind das große offene
+					Problem von MCMC.</p>
+			</div>
+		</section>
+
+		<!-- 4 Diagnose -->
+		<section class="chapter" id="diagnose">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Diagnose</span>
+				<h2>Wie gut mischt die Kette?</h2>
+				<p>MCMC-Proben sind nicht unabhängig: Jede hängt an der vorigen. Die <strong>Autokorrelation</strong> misst,
+					wie ähnlich eine Probe der k Schritte früheren ist. Fällt sie schnell auf null, mischt die Kette gut.</p>
+				<p>Drei Ketten mit derselben Glocke als Ziel, aber verschiedenem σ:</p>
+				<ul>
+					<li><span class="k-d">Zu klein</span>: Fast alles wird angenommen, aber die Kette kriecht. Der Spurplot
+						sieht aus wie ein träger Fluss.</li>
+					<li><span class="k-a">Genau richtig</span>: Der Spurplot sieht aus wie eine „haarige Raupe“.</li>
+					<li><span class="k-c">Zu groß</span>: Fast alles wird abgelehnt, die Kette steht lange still, sichtbar als
+						flache Stufen.</li>
+				</ul>
+				<p>Die <strong>effektive Stichprobengröße</strong> (ESS) sagt, wie vielen unabhängigen Proben die Kette
+					entspricht.</p>
+				<p class="merke"><b>Merke</b>Eine Faustregel für Random Walk in vielen Dimensionen: Akzeptanzrate um 23 %. In
+					einer Dimension sind es eher 44 %.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Vergleiche die drei Spurplots und die Autokorrelation rechts daneben.</p>
+				<div class="stage-view">
+					<canvas id="diagCanvas" aria-label="Spurplots und Autokorrelation dreier Ketten"></canvas>
+					<span class="stage-tag">Spur · Autokorrelation</span>
+				</div>
+				<div class="stage-controls">
+					<div class="row">
+						<button class="btn" id="diagReset" type="button">↺ Neu starten</button>
+					</div>
+					<p class="stage-note" id="diagNote"></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 5 · Funktionen als Zufall</p>
+		<a href="../gauss/">Gauß-Prozesse <span>→</span></a>
+	</footer>
+	<p class="v-credit">Inspiriert von der <a href="https://chi-feng.github.io/mcmc-demo/" rel="noopener">MCMC Interactive
+			Gallery</a> (Chi Feng). Eigene Umsetzung, ohne fremden Code.</p>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/quant.js"></script>
+	<script src="./mcmc.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Warum Momentum funktioniert — Newbobb Lab</title>
+	<meta name="description"
+		content="Gradientenabstieg mit Momentum zum Anfassen: der schwere Ball im Tal, Zerlegung in Eigenrichtungen, die Landkarte von Schrittweite und Momentum, kritische Dämpfung und Modell-Fitting." />
+	<meta name="theme-color" content="#08090b" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/quant.css" />
+	<style>
+		:root {
+			--accent: #ffb366;
+			--accent-2: #ff7a9c;
+			--accent-ink: #1f1004;
+		}
+
+		#valleyCanvas,
+		#mapCanvas {
+			touch-action: none;
+			cursor: crosshair;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ quant</span></a>
+		<nav class="v-series" aria-label="Reihe Quant">
+			<a href="../zufall/">Zufall</a>
+			<a href="../sichtbar/">Sichtbar</a>
+			<a href="../momentum/" aria-current="page">Momentum</a>
+			<a href="../mcmc/">MCMC</a>
+			<a href="../gauss/">Gauß-Prozesse</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Quant · Teil 3 · Optimierung</p>
+			<h1>Warum <em>Momentum</em><br />funktioniert</h1>
+			<p class="v-lede">Fast jedes neuronale Netz und viele Finanzmodelle werden mit Gradientenabstieg trainiert:
+				immer ein kleines Stück bergab. Das ist erstaunlich langsam. Ein winziger Trick macht es oft dramatisch
+				schneller: Gib dem Ball Schwung.</p>
+			<ol class="v-toc">
+				<li><a href="#tal">Der Ball im Tal</a></li>
+				<li><a href="#eigen">Eigenrichtungen</a></li>
+				<li><a href="#karte">Die Landkarte</a></li>
+				<li><a href="#daempfung">Kritische Dämpfung</a></li>
+				<li><a href="#fit">Modelle fitten</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Tal -->
+		<section class="chapter" id="tal">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Gradientenabstieg</span>
+				<h2>Der Ball im Tal</h2>
+				<p>Stell dir eine Landschaft vor, deren Höhe der Fehler eines Modells ist. Gesucht ist der tiefste Punkt.
+					<strong>Gradientenabstieg</strong> schaut, wo es am steilsten bergab geht, und macht einen Schritt der
+					Länge α in diese Richtung. Immer wieder.</p>
+				<div class="formula">w ← w − α · ∇f(w)</div>
+				<p>In einem langen, schmalen Tal geht das schief: Die steilste Richtung zeigt fast quer über das Tal, nicht
+					entlang. Der <span class="k-b">Ball ohne Schwung</span> zickzackt hin und her und kommt kaum voran. Ein
+					größeres α hilft nicht, dann schaukelt er sich auf und fliegt raus.</p>
+				<p><strong>Momentum</strong> merkt sich die bisherige Bewegung. Die Zickzack-Anteile heben sich gegenseitig
+					auf, die Bewegung entlang des Tals summiert sich. Der <span class="k-c">schwere Ball</span> rollt.</p>
+				<div class="formula">z ← β · z + ∇f(w)<br />w ← w − α · z<small>β = 0 ist normaler Gradientenabstieg, β nahe 1
+						heißt viel Schwung.</small></div>
+				<p class="merke"><b>Merke</b>Momentum ist ein Gedächtnis für die Richtung. Es dämpft das Hin und Her quer
+					zum Tal und beschleunigt die Fahrt entlang.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tipp ins Bild, um den Startpunkt zu setzen. Dreh β von 0 bis 0,99.</p>
+				<div class="stage-view">
+					<canvas id="valleyCanvas" aria-label="Höhenlinien mit Pfad des Gradientenabstiegs"></canvas>
+					<span class="stage-tag" id="valleyTag">Schmales Tal</span>
+					<span class="stage-readout" id="valleyOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="valleyChips"></div>
+					<label class="range">
+						<span class="range-head"><span>Schrittweite α</span><output id="vAOut"></output></span>
+						<input type="range" id="vA" min="0" max="1" step="0.001" value="0.5" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Momentum β</span><output id="vBOut"></output></span>
+						<input type="range" id="vB" min="0" max="0.99" step="0.01" value="0.8" />
+					</label>
+					<div class="row">
+						<button class="btn" id="vGhost" type="button" aria-pressed="true">Vergleich ohne Schwung</button>
+						<button class="btn primary" id="vPlay" type="button">▶ Abrollen</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Eigen -->
+		<section class="chapter flip" id="eigen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Die Zerlegung</span>
+				<h2>Jede Richtung für sich</h2>
+				<p>Für ein quadratisches Tal gibt es einen Trick, der alles erklärt: Dreht man das Koordinatensystem auf die
+					<strong>Eigenrichtungen</strong> der Krümmung (die Achsen des Tals), zerfällt das Problem in lauter
+					unabhängige Ein-Dimensions-Probleme. Jede Richtung i hat ihre eigene Krümmung λᵢ.</p>
+				<p>Ohne Momentum schrumpft der Fehler in Richtung i bei jedem Schritt um den Faktor |1 − αλᵢ|. Steile
+					Richtungen (großes λ) sind schnell erledigt, flache (kleines λ) brauchen ewig. Und α darf nicht größer als
+					2/λ<sub>max</sub> sein, sonst explodiert die steilste Richtung.</p>
+				<div class="formula">Fehlerᵢ(k) = (1 − αλᵢ)ᵏ · Fehlerᵢ(0)<small>ohne Momentum</small></div>
+				<p>Das Verhältnis κ = λ<sub>max</sub> / λ<sub>min</sub> heißt <strong>Konditionszahl</strong>. Sie bestimmt,
+					wie schwer das Problem ist. Momentum macht aus κ effektiv √κ. Bei κ = 100 heißt das: zehnmal
+					schneller.</p>
+				<p class="merke"><b>Merke</b>Der Gesamtfehler ist die Summe der einzelnen Richtungen. Am Ende bleibt immer
+					die langsamste übrig, und genau die beschleunigt Momentum.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schau, welche Richtung zuletzt übrig bleibt. Erhöhe dann β.</p>
+				<div class="stage-view">
+					<canvas id="eigCanvas" aria-label="Fehler in jeder Eigenrichtung über die Schritte"></canvas>
+					<span class="stage-tag">Fehler je Richtung</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Schrittweite α</span><output id="eAOut"></output></span>
+						<input type="range" id="eA" min="0.05" max="3.5" step="0.01" value="1.5" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Momentum β</span><output id="eBOut"></output></span>
+						<input type="range" id="eB" min="0" max="0.99" step="0.01" value="0" />
+					</label>
+					<p class="stage-note" id="eigNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Karte -->
+		<section class="chapter" id="karte">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Konvergenzrate</span>
+				<h2>Die Landkarte von α und β</h2>
+				<p>Wie schnell man ins Ziel kommt, hängt nur von α, β und den Krümmungen ab. Die Karte zeigt für jedes Paar
+					(α, β) die <strong>Konvergenzrate</strong>: den Faktor, um den der Fehler pro Schritt im schlechtesten
+					Fall schrumpft. Je heller, desto schneller. Im roten Bereich explodiert das Verfahren.</p>
+				<p>Es gibt einen besten Punkt, und er liegt nicht bei β = 0. Für ein Tal mit Konditionszahl κ ist er</p>
+				<div class="formula">α* = (2 / (√λ<sub>max</sub> + √λ<sub>min</sub>))² · β* = ((√κ − 1) / (√κ + 1))²<small>Dann
+						schrumpft der Fehler um (√κ − 1)/(√κ + 1) pro Schritt statt um (κ − 1)/(κ + 1).</small></div>
+				<p class="merke"><b>Merke</b>Mit Momentum darf α größer sein als ohne. Das Optimum liegt an der Kante, wo
+					die langsamste und die schnellste Richtung gleichzeitig am Limit sind.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Ohne Momentum braucht man grob κ Schritte pro Größenordnung, mit Momentum grob √κ. Bei κ = 10 000 sind das 10 000 gegen 100.">
+					<p class="quiz-q">Ein Problem hat κ = 10 000. Um welchen Faktor ist optimales Momentum ungefähr schneller als
+						optimaler Gradientenabstieg?</p>
+					<div class="quiz-options">
+						<button type="button">Etwa 2-mal</button>
+						<button type="button">Etwa 100-mal</button>
+						<button type="button">Etwa 10 000-mal</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Klick in die Karte, um α und β zu wählen. Ändere κ.</p>
+				<div class="stage-view">
+					<canvas id="mapCanvas" aria-label="Konvergenzrate über Schrittweite und Momentum"></canvas>
+					<span class="stage-tag">Rate über (α, β)</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Konditionszahl κ</span><output id="mKOut"></output></span>
+						<input type="range" id="mK" min="0.3" max="3" step="0.01" value="2" />
+					</label>
+					<div class="stats">
+						<div>α · β<b id="mAB">–</b></div>
+						<div>Rate<b id="mRate">–</b></div>
+						<div>Schritte bis 1/1000<b id="mSteps">–</b></div>
+						<div>Bestes ohne β<b id="mGD">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Dämpfung -->
+		<section class="chapter flip" id="daempfung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Dynamik</span>
+				<h2>Kritische Dämpfung</h2>
+				<p>In einer einzelnen Richtung verhält sich Momentum wie eine Feder mit Stoßdämpfer. Mit wenig β ist der
+					Dämpfer stark: Die Kurve kriecht ins Ziel. Mit viel β schwingt sie über das Ziel hinaus und pendelt
+					aus.</p>
+				<p>Dazwischen liegt die <strong>kritische Dämpfung</strong>: der schnellste Weg ins Ziel, ganz ohne
+					Überschwingen. Rechts siehst du die zwei Eigenwerte der Iteration. Solange beide im Kreis liegen,
+					konvergiert das Verfahren. Werden sie komplex, gibt es Schwingungen, und ihr Abstand zur Mitte ist √β.
+				</p>
+				<div class="formula">β<sub>kritisch</sub> = (1 − √(αλ))²</div>
+				<p class="merke"><b>Merke</b>Schwingungen sind kein Fehler, sondern das Zeichen, dass Momentum arbeitet. Zu
+					viel Schwung kostet aber Zeit, weil der Ball ewig nachpendelt.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schieb β durch den kritischen Wert und beobachte die Punkte rechts.</p>
+				<div class="stage-view duo">
+					<div><canvas id="dmpCanvas" aria-label="Fehler über die Schritte"></canvas><span class="stage-tag" id="dmpTag">Verlauf</span></div>
+					<div><canvas id="cplxCanvas" aria-label="Eigenwerte in der komplexen Ebene"></canvas><span class="stage-tag">Eigenwerte</span></div>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Schrittweite α · λ</span><output id="dAOut"></output></span>
+						<input type="range" id="dA" min="0.01" max="1.9" step="0.01" value="0.1" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Momentum β</span><output id="dBOut"></output></span>
+						<input type="range" id="dB" min="0" max="0.99" step="0.005" value="0.3" />
+					</label>
+					<div class="row">
+						<button class="btn small" id="dCrit" type="button">β kritisch setzen</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Fit -->
+		<section class="chapter" id="fit">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Praxis</span>
+				<h2>Ein Modell fitten, Schritt für Schritt</h2>
+				<p>Jetzt ein echtes Lernproblem: Eine Kurve aus zwölf Bausteinen (Polynome) soll durch die Punkte gehen.
+					Gradientenabstieg passt die zwölf Gewichte an. Mit dem Regler spulst du durch die Schritte.</p>
+				<p>Achte auf die Reihenfolge: Zuerst lernt das Modell die groben, glatten Formen (große Eigenwerte), erst viel
+					später die feinen Zacken (kleine Eigenwerte). Wer früh aufhört, bekommt eine glatte Kurve, die nicht
+					jeden Messfehler nachmalt. Dieses <strong>frühe Stoppen</strong> wirkt wie eine Regularisierung.</p>
+				<p class="merke"><b>Merke</b>Momentum spult denselben Film schneller ab. Was ohne Schwung 3 000 Schritte
+					braucht, schafft es in einem Bruchteil.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den Schritt-Regler langsam von links nach rechts, einmal ohne und einmal mit Momentum.
+				</p>
+				<div class="stage-view">
+					<canvas id="fitCanvas" aria-label="Polynom-Fit nach k Schritten"></canvas>
+					<span class="stage-tag" id="fitTag">Fit</span>
+					<span class="stage-readout" id="fitOut"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="fitChips"></div>
+					<label class="range">
+						<span class="range-head"><span>Schritt k</span><output id="fitKOut"></output></span>
+						<input type="range" id="fitK" min="0" max="1" step="0.001" value="0.35" />
+					</label>
+					<div class="row">
+						<button class="btn" id="fitNew" type="button">Neue Punkte</button>
+					</div>
+					<p class="stage-note" id="fitNote"></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 4 · Sampling</p>
+		<a href="../mcmc/">Die MCMC-Galerie <span>→</span></a>
+	</footer>
+	<p class="v-credit">Inspiriert von <a href="https://distill.pub/2017/momentum/" rel="noopener">Why Momentum Really
+			Works</a> (Gabriel Goh, Distill 2017). Eigene Umsetzung, ohne fremden Code.</p>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/quant.js"></script>
+	<script src="./momentum.js"></script>
+</body>
+
+</html>

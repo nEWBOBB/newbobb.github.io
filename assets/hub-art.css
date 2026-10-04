@@ -1155,3 +1155,170 @@
 	28%, 100% { opacity: 0; }
 }
 
+
+/* ---------- Quant-Mathe: kleine animierte Diagramme ---------- */
+.lesson--q {
+	--c: #6be3a8;
+}
+
+.lesson--q .lesson-art {
+	background: radial-gradient(ellipse at 50% 110%, color-mix(in srgb, var(--c) 22%, transparent), transparent 65%), #07090a;
+}
+
+.lesson--q .lesson-art svg {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.lesson--q-sichtbar { --c: #7aa8ff; }
+.lesson--q-momentum { --c: #ffb366; }
+.lesson--q-mcmc { --c: #c79bff; }
+.lesson--q-gauss { --c: #ff7a9c; }
+
+/* Zufall: Histogramm wächst zur Glocke */
+.q-bars rect {
+	fill: rgba(107, 227, 168, 0.55);
+	transform-box: fill-box;
+	transform-origin: bottom;
+	animation: qbar 3.6s ease-in-out infinite;
+	animation-delay: calc(var(--i) * 0.06s);
+}
+
+.q-curve {
+	fill: none;
+	stroke: #ffb366;
+	stroke-width: 2.5;
+	stroke-dasharray: 5 4;
+}
+
+.q-axis {
+	stroke: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes qbar {
+	0%, 100% { transform: scaleY(0.2); }
+	45%, 70% { transform: scaleY(1); }
+}
+
+/* Sichtbar: Markov-Kette */
+.q-edge {
+	fill: none;
+	stroke-width: 2.5;
+	opacity: 0.55;
+}
+
+.q-node {
+	fill: #111418;
+	stroke-width: 3;
+}
+
+.lesson--q text {
+	font: 700 22px Syne, sans-serif;
+	text-anchor: middle;
+}
+
+.q-ball {
+	fill: #f4efe6;
+	filter: drop-shadow(0 0 6px #7aa8ff);
+}
+
+/* Momentum: Höhenlinien, Zickzack und rollender Ball */
+.q-cont {
+	fill: none;
+	stroke: rgba(255, 179, 102, 0.22);
+	stroke-width: 1.5;
+}
+
+.q-zig {
+	fill: none;
+	stroke: #7aa8ff;
+	stroke-width: 1.8;
+	opacity: 0.8;
+}
+
+.q-smooth {
+	fill: none;
+	stroke: #ffb366;
+	stroke-width: 2.5;
+}
+
+.q-ball2 {
+	fill: #ffb366;
+	filter: drop-shadow(0 0 8px #ffb366);
+}
+
+.q-goal {
+	fill: #f4efe6;
+}
+
+/* MCMC: Proben tauchen nacheinander auf */
+.q-dots circle {
+	fill: #c79bff;
+	opacity: 0;
+	animation: qdot 5s linear infinite;
+	animation-delay: var(--d);
+}
+
+.q-trail {
+	fill: none;
+	stroke: #6be3a8;
+	stroke-width: 2;
+	stroke-dasharray: 400;
+	animation: qtrail 5s linear infinite;
+}
+
+@keyframes qdot {
+	0% { opacity: 0; }
+	4%, 85% { opacity: 0.85; }
+	100% { opacity: 0; }
+}
+
+@keyframes qtrail {
+	from { stroke-dashoffset: 400; }
+	to { stroke-dashoffset: -400; }
+}
+
+/* Gauß-Prozess: Band, Mittelwert und Ziehungen */
+.q-band {
+	fill: rgba(199, 155, 255, 0.22);
+}
+
+.q-mean {
+	fill: none;
+	stroke: #ff7a9c;
+	stroke-width: 3;
+}
+
+.q-samp {
+	fill: none;
+	stroke: #7aa8ff;
+	stroke-width: 1.4;
+	opacity: 0.35;
+	animation: qsamp 3s ease-in-out infinite alternate;
+	animation-delay: calc(var(--k) * -1s);
+}
+
+.q-pt {
+	fill: #f4efe6;
+	stroke: #07090a;
+	stroke-width: 2;
+}
+
+@keyframes qsamp {
+	to { opacity: 0.85; }
+}
+
+/* Archiv-Vorschau: Glockenkurve über Raster */
+.thumb--quant::before {
+	background:
+		radial-gradient(circle at 50% 120%, hsla(var(--h), 85%, 60%, 0.55), transparent 60%),
+		linear-gradient(180deg, hsl(var(--h), 30%, 8%), hsl(var(--h), 40%, 4%));
+}
+
+.thumb--quant::after {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 75' preserveAspectRatio='none'%3E%3Cpath d='M0 70 C60 70 70 8 100 8 S140 70 200 70' fill='none' stroke='%23f4efe6' stroke-opacity='0.7' stroke-width='1.6'/%3E%3C/svg%3E") center 70% / 70% 70% no-repeat,
+		linear-gradient(hsla(var(--h), 90%, 75%, 0.1) 1px, transparent 1px) 0 0 / 18px 18px,
+		linear-gradient(90deg, hsla(var(--h), 90%, 75%, 0.1) 1px, transparent 1px) 0 0 / 18px 18px;
+}

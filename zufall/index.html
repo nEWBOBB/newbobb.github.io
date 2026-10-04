@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Zufall sehen — Newbobb Lab</title>
+	<meta name="description"
+		content="Wahrscheinlichkeit und Statistik zum Anfassen: Münzwurf und Gesetz der großen Zahlen, Erwartungswert, Verteilungen, zentraler Grenzwertsatz, Bayes, Konfidenzintervalle und Regression." />
+	<meta name="theme-color" content="#08090b" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/quant.css" />
+	<style>
+		#diceCanvas,
+		#regCanvas {
+			touch-action: none;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ quant</span></a>
+		<nav class="v-series" aria-label="Reihe Quant">
+			<a href="../zufall/" aria-current="page">Zufall</a>
+			<a href="../sichtbar/">Sichtbar</a>
+			<a href="../momentum/">Momentum</a>
+			<a href="../mcmc/">MCMC</a>
+			<a href="../gauss/">Gauß-Prozesse</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Quant · Teil 1 · Wahrscheinlichkeit und Statistik</p>
+			<h1><em>Zufall</em><br />sehen</h1>
+			<p class="v-lede">Ein einzelner Münzwurf ist unberechenbar. Tausend Würfe sind es nicht. Hier wirfst, würfelst
+				und ziehst du so lange, bis aus dem Chaos Regeln werden: Erwartungswert, Verteilungen, der zentrale
+				Grenzwertsatz und die Frage, wie sicher man sich eigentlich sein kann.</p>
+			<ol class="v-toc">
+				<li><a href="#muenze">Gesetz der großen Zahlen</a></li>
+				<li><a href="#wuerfel">Erwartungswert</a></li>
+				<li><a href="#verteilungen">Verteilungen</a></li>
+				<li><a href="#zgs">Zentraler Grenzwertsatz</a></li>
+				<li><a href="#bayes">Bayes</a></li>
+				<li><a href="#konfidenz">Konfidenzintervalle</a></li>
+				<li><a href="#regression">Regression</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Münze -->
+		<section class="chapter" id="muenze">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Zufallsereignisse</span>
+				<h2>Das Gesetz der großen Zahlen</h2>
+				<p>Eine faire Münze zeigt mit Wahrscheinlichkeit ½ Kopf. Das heißt aber nicht, dass nach zehn Würfen genau
+					fünfmal Kopf gefallen ist. Kurzfristig springt der Anteil wild herum.</p>
+				<p>Wirf weiter. Je mehr Würfe, desto enger klebt die <span class="k-a">beobachtete Häufigkeit</span> an der
+					<span class="k-c">wahren Wahrscheinlichkeit</span>. Das ist das <strong>Gesetz der großen
+						Zahlen</strong>, die Grundlage jeder Statistik, jeder Versicherung und jedes Casinos.</p>
+				<p class="merke"><b>Merke</b>Wahrscheinlichkeit ist die relative Häufigkeit auf lange Sicht. Die Abweichung
+					schrumpft etwa wie 1/√n: hundertmal mehr Würfe machen das Ergebnis zehnmal genauer.</p>
+				<div class="fact">
+					<b>Der Spielerfehlschluss</b>
+					<p>Nach fünfmal Zahl ist Kopf nicht „fällig“. Die Münze hat kein Gedächtnis. Der Ausgleich passiert nicht,
+						weil Kopf aufholt, sondern weil die alten Würfe in der Masse der neuen untergehen.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wirf ein paarmal einzeln, dann hundertmal. Stell danach die Münze schief.</p>
+				<div class="stage-view">
+					<canvas id="coinCanvas" aria-label="Verlauf der relativen Häufigkeit von Kopf"></canvas>
+					<span class="stage-tag">Anteil Kopf</span>
+				</div>
+				<div class="stage-controls">
+					<div class="row">
+						<button class="btn primary" id="coin1" type="button">Werfen</button>
+						<button class="btn" id="coin10" type="button">×10</button>
+						<button class="btn" id="coin100" type="button">×100</button>
+						<button class="btn" id="coinReset" type="button">↺</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>P(Kopf)</span><output id="coinPOut"></output></span>
+						<input type="range" id="coinP" min="0" max="1" step="0.01" value="0.5" />
+					</label>
+					<div class="stats">
+						<div>Würfe<b id="coinN">0</b></div>
+						<div>Kopf<b id="coinH">0</b></div>
+						<div>Anteil<b id="coinF">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Würfel -->
+		<section class="chapter flip" id="wuerfel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Erwartungswert und Varianz</span>
+				<h2>Was du im Schnitt würfelst</h2>
+				<p>Der <strong>Erwartungswert</strong> ist das, was im Mittel herauskommt, wenn man unendlich oft würfelt.
+					Man rechnet ihn aus, indem man jede Augenzahl mit ihrer Wahrscheinlichkeit gewichtet und alles addiert.
+					Beim fairen Würfel ergibt das 3,5, eine Zahl, die der Würfel nie zeigt.</p>
+				<div class="formula">E[X] = Σ x · P(X = x)<small>Für den fairen Würfel: (1 + 2 + 3 + 4 + 5 + 6) · ⅙ = 3,5</small></div>
+				<p>Die <strong>Varianz</strong> misst, wie weit die Würfe im Schnitt vom Erwartungswert wegstreuen (im
+					Quadrat). Ihre Wurzel ist die <strong>Standardabweichung</strong>.</p>
+				<div class="formula">Var(X) = E[(X − E[X])²]</div>
+				<p class="merke"><b>Merke</b>Der laufende Mittelwert deiner Würfe wandert zum Erwartungswert. Wie schnell,
+					hängt von der Varianz ab: Ein Würfel, der nur 1 oder 6 zeigt, braucht viel länger.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Balken hoch und runter, um den Würfel zu zinken. Dann würfle.</p>
+				<div class="stage-view">
+					<canvas id="diceCanvas" aria-label="Wahrscheinlichkeiten des Würfels und laufender Mittelwert"></canvas>
+					<span class="stage-tag">Würfel zinken</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="dicePresets"></div>
+					<div class="row">
+						<button class="btn primary" id="dice1" type="button">Würfeln</button>
+						<button class="btn" id="dice10" type="button">×10</button>
+						<button class="btn" id="dice100" type="button">×100</button>
+						<button class="btn" id="diceReset" type="button">↺</button>
+					</div>
+					<div class="stats">
+						<div>E[X]<b id="diceE">3,50</b></div>
+						<div>Std.-Abw.<b id="diceS">1,71</b></div>
+						<div>Mittel bisher<b id="diceM">–</b></div>
+						<div>Würfe<b id="diceN">0</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Verteilungen -->
+		<section class="chapter" id="verteilungen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Wahrscheinlichkeitsverteilungen</span>
+				<h2>Der Zoo der Verteilungen</h2>
+				<p>Eine <strong>Verteilung</strong> sagt, wie wahrscheinlich jeder mögliche Wert ist. Ein paar tauchen
+					überall auf, weil sie aus einfachen Mechanismen entstehen:</p>
+				<ul>
+					<li><strong>Binomial</strong>: Wie oft Erfolg bei n unabhängigen Versuchen? (Treffer bei 20 Elfmetern)
+					</li>
+					<li><strong>Poisson</strong>: Wie viele seltene Ereignisse pro Zeitraum? (Anrufe pro Minute, Tore pro
+						Spiel)</li>
+					<li><strong>Geometrisch</strong>: Wie viele Versuche bis zum ersten Erfolg?</li>
+					<li><strong>Normal</strong>: Die Glocke, sobald sich viele kleine Einflüsse addieren.</li>
+					<li><strong>Exponential</strong>: Wartezeit bis zum nächsten seltenen Ereignis.</li>
+					<li><strong>Beta</strong>: Werte zwischen 0 und 1, ideal für unbekannte Wahrscheinlichkeiten.</li>
+				</ul>
+				<p class="merke"><b>Merke</b>Diskrete Verteilungen haben Balken (Wahrscheinlichkeiten), stetige eine Kurve
+					(Dichte). Bei einer Dichte zählt nur die Fläche: Die Wahrscheinlichkeit eines einzelnen Punktes ist null.
+				</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Verteilung, dreh an den Parametern und zieh dann Stichproben.</p>
+				<div class="stage-view">
+					<canvas id="distCanvas" aria-label="Wahrscheinlichkeitsverteilung mit Stichproben"></canvas>
+					<span class="stage-tag" id="distTag">Binomial</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="distChips"></div>
+					<label class="range">
+						<span class="range-head"><span id="dA_name">n</span><output id="dAOut"></output></span>
+						<input type="range" id="dA" min="0" max="1" step="0.001" value="0.5" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span id="dB_name">p</span><output id="dBOut"></output></span>
+						<input type="range" id="dB" min="0" max="1" step="0.001" value="0.5" />
+					</label>
+					<div class="row">
+						<button class="btn primary" id="distDraw" type="button">1000 ziehen</button>
+						<button class="btn" id="distClear" type="button">Stichprobe löschen</button>
+					</div>
+					<div class="stats">
+						<div>Erwartungswert<b id="distE">–</b></div>
+						<div>Std.-Abw.<b id="distS">–</b></div>
+						<div>Stichprobe<b id="distN">0</b></div>
+					</div>
+					<p class="stage-note" id="distNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 ZGS -->
+		<section class="chapter flip" id="zgs">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Zentraler Grenzwertsatz</span>
+				<h2>Warum überall Glocken sind</h2>
+				<p>Nimm irgendeine Verteilung, egal wie schief oder krumm. Zieh n Werte und bilde ihren
+					<strong>Mittelwert</strong>. Wiederhole das tausendmal und mach ein Histogramm der Mittelwerte.</p>
+				<p>Das Ergebnis ist fast immer eine <span class="k-c">Glockenkurve</span>, und zwar umso genauer, je größer
+					n ist. Ihre Breite schrumpft wie σ/√n. Das ist der <strong>zentrale Grenzwertsatz</strong>, und er
+					erklärt, warum Körpergrößen, Messfehler und Aktienrenditen über viele Tage so oft normalverteilt
+					aussehen.</p>
+				<div class="formula">X̄ₙ ≈ Normal(μ, σ² / n)<small>für große n, solange die Varianz endlich ist</small></div>
+				<p class="merke"><b>Merke</b>Summen und Mittelwerte vieler unabhängiger Zufallszahlen sind ungefähr
+					normalverteilt, ganz egal, wie die einzelnen Zahlen verteilt sind.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte mit n = 1. Dann erhöhe n und ziehe neu. Probier die U-Form.</p>
+				<div class="stage-view">
+					<canvas id="cltCanvas" aria-label="Ausgangsverteilung und Histogramm der Mittelwerte"></canvas>
+					<span class="stage-tag">oben: Ausgang · unten: Mittelwerte</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="cltChips"></div>
+					<label class="range">
+						<span class="range-head"><span>Stichprobengröße n</span><output id="cltNOut"></output></span>
+						<input type="range" id="cltN" min="1" max="50" step="1" value="1" />
+					</label>
+					<div class="row">
+						<button class="btn primary" id="clt1" type="button">1 Stichprobe</button>
+						<button class="btn" id="clt100" type="button">×100</button>
+						<button class="btn" id="clt1000" type="button">×1000</button>
+						<button class="btn" id="cltReset" type="button">↺</button>
+					</div>
+					<p class="stage-note" id="cltNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 Bayes -->
+		<section class="chapter" id="bayes">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Bayessche Inferenz</span>
+				<h2>Lernen aus Daten</h2>
+				<p>Bisher kannten wir die Wahrscheinlichkeit und haben Daten erzeugt. In der echten Welt ist es umgekehrt:
+					Wir sehen Daten und wollen die unbekannte Wahrscheinlichkeit erraten.</p>
+				<p>Hier ist eine Münze mit unbekanntem P(Kopf). Der Bayes-Ansatz beschreibt unser Unwissen selbst als
+					Verteilung. Vor dem ersten Wurf ist das der <span class="k-b">Prior</span>. Mit jedem Wurf wird er zum
+					<span class="k-a">Posterior</span>: Wahrscheinliche Werte werden verstärkt, unplausible gedämpft.</p>
+				<div class="formula">Posterior ∝ Likelihood × Prior<small>Für eine Münze mit Beta(a, b)-Prior: nach k Kopf und
+						z Zahl ist der Posterior Beta(a + k, b + z).</small></div>
+				<p class="merke"><b>Merke</b>Mit wenigen Daten zählt die Vorannahme viel, mit vielen Daten setzen sich die
+					Daten durch. Am Ende landen alle Priors am selben Ort.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle einen Prior und wirf. Wie schnell wird die Kurve schmal? Deck am Ende auf.</p>
+				<div class="stage-view">
+					<canvas id="bayesCanvas" aria-label="Prior und Posterior für P(Kopf)"></canvas>
+					<span class="stage-tag">Glaube über P(Kopf)</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="bayesChips"></div>
+					<div class="row">
+						<button class="btn primary" id="bayes1" type="button">Werfen</button>
+						<button class="btn" id="bayes10" type="button">×10</button>
+						<button class="btn" id="bayesReveal" type="button">Aufdecken</button>
+						<button class="btn" id="bayesNew" type="button">Neue Münze</button>
+					</div>
+					<div class="stats">
+						<div>Kopf : Zahl<b id="bayesKZ">0 : 0</b></div>
+						<div>Schätzung<b id="bayesMean">–</b></div>
+						<div>95 %-Bereich<b id="bayesCI">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6 Konfidenz -->
+		<section class="chapter flip" id="konfidenz">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">06 · Frequentistische Inferenz</span>
+				<h2>Was „95 % sicher“ wirklich heißt</h2>
+				<p>Ein <strong>Konfidenzintervall</strong> ist ein Bereich um den Stichprobenmittelwert, der den wahren Wert
+					einfangen soll. Hier ist der wahre Mittelwert μ bekannt (die gelbe Linie), damit du nachprüfen kannst.</p>
+				<p>Jede Zeile ist eine neue Stichprobe mit eigenem Intervall. Die meisten treffen μ
+					(<span class="k-a">grün</span>), manche nicht (<span class="k-d">rosa</span>). Auf lange Sicht trifft ein
+					95 %-Intervall in 95 % der Fälle.</p>
+				<div class="formula">x̄ ± z · σ / √n<small>z = 1,96 für 95 %</small></div>
+				<p class="merke"><b>Merke</b>Die 95 % beziehen sich auf das Verfahren, nicht auf ein einzelnes Intervall.
+					Ein fertiges Intervall enthält μ oder eben nicht.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Die Breite ist proportional zu 1/√n. Für die halbe Breite braucht man also die vierfache Stichprobe.">
+					<p class="quiz-q">Du willst ein Intervall halb so breit. Wie viel mehr Daten brauchst du?</p>
+					<div class="quiz-options">
+						<button type="button">Doppelt so viele</button>
+						<button type="button">Dreimal so viele</button>
+						<button type="button">Viermal so viele</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Erzeuge 20 Intervalle. Schieb dann das Konfidenzniveau hin und her.</p>
+				<div class="stage-view">
+					<canvas id="ciCanvas" aria-label="Viele Konfidenzintervalle um den wahren Mittelwert"></canvas>
+					<span class="stage-tag">Intervalle</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Konfidenzniveau</span><output id="ciLevelOut"></output></span>
+						<input type="range" id="ciLevel" min="0.5" max="0.99" step="0.01" value="0.95" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Stichprobengröße n</span><output id="ciNOut"></output></span>
+						<input type="range" id="ciN" min="2" max="100" step="1" value="10" />
+					</label>
+					<div class="row">
+						<button class="btn primary" id="ci1" type="button">1 Intervall</button>
+						<button class="btn" id="ci20" type="button">×20</button>
+						<button class="btn" id="ciReset" type="button">↺</button>
+					</div>
+					<div class="stats">
+						<div>Intervalle<b id="ciCount">0</b></div>
+						<div>treffen μ<b id="ciHit">–</b></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 7 Regression -->
+		<section class="chapter" id="regression">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">07 · Regressionsanalyse</span>
+				<h2>Die beste Gerade</h2>
+				<p>Gegeben sind Punkte. Welche Gerade passt am besten? Die klassische Antwort heißt <strong>Methode der
+						kleinsten Quadrate</strong>: Für jeden Punkt misst man den senkrechten Abstand zur Gerade, das
+					<strong>Residuum</strong>, quadriert ihn und addiert alles. Die beste Gerade macht diese Summe so klein
+					wie möglich.</p>
+				<p>Die Quadrate sind wörtlich gemeint: Jedes Residuum ist hier als Fläche gezeichnet. Die Gerade sucht die
+					kleinste Gesamtfläche.</p>
+				<div class="formula">min Σ (yᵢ − (a + b·xᵢ))²</div>
+				<p class="merke"><b>Merke</b>Quadrieren bestraft große Fehler besonders stark. Deshalb zerrt ein einzelner
+					Ausreißer die Gerade deutlich zu sich hin. Probier es aus.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Punkte herum, tipp ins Leere für neue. Dann versuch selbst, die Fläche zu schlagen.
+				</p>
+				<div class="stage-view">
+					<canvas id="regCanvas" aria-label="Punkte, Regressionsgerade und Residuenquadrate"></canvas>
+					<span class="stage-tag" id="regTag">Kleinste Quadrate</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="regChips"></div>
+					<div class="row">
+						<button class="btn" id="regPop" type="button">Letzten Punkt entfernen</button>
+						<button class="btn" id="regRand" type="button">Neue Punkte</button>
+					</div>
+					<div class="stats">
+						<div>Quadratsumme<b id="regSSE">–</b></div>
+						<div>Optimum<b id="regBest">–</b></div>
+						<div>R²<b id="regR2">–</b></div>
+					</div>
+					<p class="stage-note" id="regNote"></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe · Teil 2 · Lineare Algebra und Markov-Ketten</p>
+		<a href="../sichtbar/">Mathe sichtbar machen <span>→</span></a>
+	</footer>
+	<p class="v-credit">Inspiriert von <a href="https://seeing-theory.brown.edu/" rel="noopener">Seeing Theory</a>
+		(Brown University). Eigene Umsetzung, ohne fremden Code.</p>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/quant.js"></script>
+	<script src="./zufall.js"></script>
+</body>
+
+</html>

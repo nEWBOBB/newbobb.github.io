@@ -11,6 +11,7 @@
 	const CAT = {
 		learn: { name: "Verstehen", color: "#ffb366" },
 		play: { name: "Spielen lernen", color: "#b3a4ff" },
+		quant: { name: "Quant-Mathe", color: "#6be3a8" },
 		audio: { name: "Audio & Visuals", color: "#5ce1e6" },
 		lab: { name: "Experimente", color: "#ff6ad5" },
 	};
@@ -80,7 +81,7 @@
 			spyLinks.forEach((a) => a.classList.toggle("is-active", a.dataset.spy === en.target.id));
 		}
 	}, { rootMargin: "-45% 0px -50% 0px" });
-	["verstehen", "spielen", "neu", "archiv"].forEach((id) => spy.observe(document.getElementById(id)));
+	["verstehen", "spielen", "quant", "neu", "archiv"].forEach((id) => spy.observe(document.getElementById(id)));
 
 	// ---------- Wechselndes Wort im Titel ----------
 	const rot = $(".rotator");
@@ -175,8 +176,8 @@
 		// Verstehen als Zeitbogen in der Reihenfolge der Entdeckung
 		const P = wide ? [[0.5, 0.9], [0.6, 0.12], [0.97, 0.26]] : [[0.06, 0.5], [0.4, 0.04], [0.95, 0.18]];
 		const clusters = wide
-			? { audio: [0.86, 0.72, 0.075], lab: [0.7, 0.62, 0.06], play: [0.5, 0.2, 0.04] }
-			: { audio: [0.78, 0.44, 0.1], lab: [0.48, 0.38, 0.08], play: [0.18, 0.2, 0.06] };
+			? { audio: [0.86, 0.72, 0.075], lab: [0.7, 0.62, 0.06], play: [0.5, 0.2, 0.04], quant: [0.92, 0.47, 0.05] }
+			: { audio: [0.78, 0.44, 0.1], lab: [0.48, 0.38, 0.08], play: [0.18, 0.2, 0.06], quant: [0.72, 0.78, 0.08] };
 		stars = projects.map((p) => {
 			let x;
 			let y;
@@ -588,7 +589,7 @@
 	let lastFocus = null;
 	const palOpen = () => !pal.hidden;
 	const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-	const ORDER = { learn: 0, play: 1, lab: 2, audio: 3 };
+	const ORDER = { learn: 0, play: 1, quant: 2, lab: 3, audio: 4 };
 
 	function renderPal() {
 		const q = norm(palInput.value.trim());

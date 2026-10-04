@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Newbobb Lab</title>
 	<meta name="description"
-		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Telefon, Radio, Fernsehen, Internet und KI, Gitarre und Klavier lernen, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
+		content="Newbobb Lab: interaktive Experimente zum Verstehen von Feuer, Schall, Licht, Schwerkraft, Strom, Telefon, Radio, Fernsehen, Internet und KI, Gitarre und Klavier lernen, Quant-Mathe von Wahrscheinlichkeit bis MCMC und Gauß-Prozessen, dazu audio-reaktive Visuals und ein Schwarzes Loch im Browser." />
 	<meta name="theme-color" content="#07070a" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,6 +28,7 @@
 		<nav aria-label="Hauptnavigation">
 			<a href="#verstehen" data-spy="verstehen">Verstehen</a>
 			<a href="#spielen" data-spy="spielen">Spielen</a>
+			<a href="#quant" data-spy="quant">Quant</a>
 			<a href="#neu" data-spy="neu" class="nav-opt">Labor</a>
 			<a href="#archiv" data-spy="archiv">Archiv</a>
 		</nav>
@@ -58,6 +59,7 @@
 				<ul class="legend" aria-label="Kategorien im Sternbild">
 					<li style="--c: var(--c-learn)"><a href="#verstehen">Verstehen</a></li>
 					<li style="--c: var(--c-play)"><a href="#spielen">Spielen lernen</a></li>
+					<li style="--c: var(--c-quant)"><a href="#quant">Quant-Mathe</a></li>
 					<li style="--c: var(--c-audio)"><a href="#archiv" data-jump-filter="audio">Audio &amp; Visuals</a></li>
 					<li style="--c: var(--c-lab)"><a href="#archiv" data-jump-filter="lab">Experimente</a></li>
 				</ul>
@@ -69,7 +71,7 @@
 		<!-- Laufband -->
 		<div class="marquee" aria-hidden="true">
 			<div class="marquee-track">
-				<span>Feuer</span><b>✦</b><span>Schall</span><b>✦</b><span>Auftrieb</span><b>✦</b><span>Licht</span><b>✦</b><span>Schwerkraft</span><b>✦</b><span>Strom</span><b>✦</b><span>Magnetismus</span><b>✦</b><span>Telegraf</span><b>✦</b><span>Energie</span><b>✦</b><span>Wärme</span><b>✦</b><span>Telefon</span><b>✦</b><span>Radio</span><b>✦</b><span>Atome</span><b>✦</b><span>Fernsehen</span><b>✦</b><span>Internet</span><b>✦</b><span>Sprach-KI</span><b>✦</b><span>Agenten</span><b>✦</b><span>Gitarre</span><b>✦</b><span>Klavier</span><b>✦</b><span>Schwarzes Loch</span><b>✦</b>
+				<span>Feuer</span><b>✦</b><span>Schall</span><b>✦</b><span>Auftrieb</span><b>✦</b><span>Licht</span><b>✦</b><span>Schwerkraft</span><b>✦</b><span>Strom</span><b>✦</b><span>Magnetismus</span><b>✦</b><span>Telegraf</span><b>✦</b><span>Energie</span><b>✦</b><span>Wärme</span><b>✦</b><span>Telefon</span><b>✦</b><span>Radio</span><b>✦</b><span>Atome</span><b>✦</b><span>Fernsehen</span><b>✦</b><span>Internet</span><b>✦</b><span>Sprach-KI</span><b>✦</b><span>Agenten</span><b>✦</b><span>Gitarre</span><b>✦</b><span>Klavier</span><b>✦</b><span>Zufall</span><b>✦</b><span>Eigenvektoren</span><b>✦</b><span>Momentum</span><b>✦</b><span>MCMC</span><b>✦</b><span>Gauß-Prozesse</span><b>✦</b><span>Schwarzes Loch</span><b>✦</b>
 			</div>
 		</div>
 
@@ -306,12 +308,69 @@
 			</div>
 		</section>
 
+		<!-- Quant-Mathe -->
+		<section class="quant" id="quant">
+			<div class="sec-head">
+				<p class="mono eyebrow"><span class="num">03</span> Reihe · Quant</p>
+				<h2>Mathe, die sich bewegt. <em>Für Quants.</em></h2>
+				<p class="sec-lede">Wahrscheinlichkeit, lineare Algebra, Optimierung, Sampling und Gauß-Prozesse: die
+					Werkzeuge hinter Statistik, Machine Learning und Finanzmodellen, zum Ziehen, Würfeln und Ausprobieren.</p>
+			</div>
+			<div class="quant-grid">
+				<a class="lesson lesson--q lesson--q-zufall reveal" href="./zufall/">
+					<div class="lesson-art" aria-hidden="true"><svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice"><g class="q-bars"><rect x="22.0" y="194.9" width="13.1" height="10.1" rx="2" style="--i:0"/><rect x="39.1" y="190.5" width="13.1" height="14.5" rx="2" style="--i:1"/><rect x="56.3" y="181.3" width="13.1" height="23.7" rx="2" style="--i:2"/><rect x="73.4" y="171.9" width="13.1" height="33.1" rx="2" style="--i:3"/><rect x="90.6" y="158.6" width="13.1" height="46.4" rx="2" style="--i:4"/><rect x="107.7" y="134.4" width="13.1" height="70.6" rx="2" style="--i:5"/><rect x="124.9" y="98.6" width="13.1" height="106.4" rx="2" style="--i:6"/><rect x="142.0" y="77.6" width="13.1" height="127.4" rx="2" style="--i:7"/><rect x="159.1" y="58.1" width="13.1" height="146.9" rx="2" style="--i:8"/><rect x="176.3" y="67.7" width="13.1" height="137.3" rx="2" style="--i:9"/><rect x="193.4" y="49.3" width="13.1" height="155.7" rx="2" style="--i:10"/><rect x="210.6" y="65.4" width="13.1" height="139.6" rx="2" style="--i:11"/><rect x="227.7" y="81.6" width="13.1" height="123.4" rx="2" style="--i:12"/><rect x="244.9" y="101.2" width="13.1" height="103.8" rx="2" style="--i:13"/><rect x="262.0" y="117.8" width="13.1" height="87.2" rx="2" style="--i:14"/><rect x="279.1" y="123.5" width="13.1" height="81.5" rx="2" style="--i:15"/><rect x="296.3" y="147.5" width="13.1" height="57.5" rx="2" style="--i:16"/><rect x="313.4" y="165.6" width="13.1" height="39.4" rx="2" style="--i:17"/><rect x="330.6" y="178.9" width="13.1" height="26.1" rx="2" style="--i:18"/><rect x="347.7" y="190.2" width="13.1" height="14.8" rx="2" style="--i:19"/><rect x="364.9" y="194.8" width="13.1" height="10.2" rx="2" style="--i:20"/></g><path class="q-curve" d="M20.0 200.2 L24.5 199.3 L29.0 198.3 L33.5 197.1 L38.0 195.8 L42.5 194.3 L47.0 192.6 L51.5 190.6 L56.0 188.5 L60.5 186.1 L65.0 183.4 L69.5 180.5 L74.0 177.3 L78.5 173.8 L83.0 170.0 L87.5 166.0 L92.0 161.6 L96.5 157.0 L101.0 152.1 L105.5 147.0 L110.0 141.6 L114.5 136.1 L119.0 130.3 L123.5 124.5 L128.0 118.6 L132.5 112.6 L137.0 106.6 L141.5 100.8 L146.0 95.0 L150.5 89.4 L155.0 84.1 L159.5 79.0 L164.0 74.3 L168.5 70.0 L173.0 66.2 L177.5 62.9 L182.0 60.1 L186.5 57.9 L191.0 56.3 L195.5 55.3 L200.0 55.0 L204.5 55.3 L209.0 56.3 L213.5 57.9 L218.0 60.1 L222.5 62.9 L227.0 66.2 L231.5 70.0 L236.0 74.3 L240.5 79.0 L245.0 84.1 L249.5 89.4 L254.0 95.0 L258.5 100.8 L263.0 106.6 L267.5 112.6 L272.0 118.6 L276.5 124.5 L281.0 130.3 L285.5 136.1 L290.0 141.6 L294.5 147.0 L299.0 152.1 L303.5 157.0 L308.0 161.6 L312.5 166.0 L317.0 170.0 L321.5 173.8 L326.0 177.3 L330.5 180.5 L335.0 183.4 L339.5 186.1 L344.0 188.5 L348.5 190.6 L353.0 192.6 L357.5 194.3 L362.0 195.8 L366.5 197.1 L371.0 198.3 L375.5 199.3 L380.0 200.2"/><line x1="20" y1="205" x2="380" y2="205" class="q-axis"/></svg></div>
+					<div class="lesson-body">
+						<span class="lesson-num">01 · Wahrscheinlichkeit</span>
+						<h3>Zufall sehen</h3>
+						<p>Münzwurf und Gesetz der großen Zahlen, gezinkte Würfel, sechs Verteilungen, der zentrale Grenzwertsatz, Bayes, Konfidenzintervalle und Regression.</p>
+						<span class="lesson-go">Würfeln →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--q lesson--q-sichtbar reveal" href="./sichtbar/">
+					<div class="lesson-art" aria-hidden="true"><svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice"><path d="M200 52 Q177.9 132.1 110 180" stroke="#6be3a8" class="q-edge"/><path d="M200 52 Q267.9 99.9 290 180" stroke="#6be3a8" class="q-edge"/><path d="M110 180 Q132.1 99.9 200 52" stroke="#ffb366" class="q-edge"/><path d="M110 180 Q200.0 152.0 290 180" stroke="#ffb366" class="q-edge"/><path d="M290 180 Q222.1 132.1 200 52" stroke="#ff7a9c" class="q-edge"/><path d="M290 180 Q200.0 208.0 110 180" stroke="#ff7a9c" class="q-edge"/><circle cx="200" cy="52" r="26" stroke="#6be3a8" class="q-node"/><text x="200" y="59" fill="#6be3a8">A</text><circle cx="110" cy="180" r="26" stroke="#ffb366" class="q-node"/><text x="110" y="187" fill="#ffb366">B</text><circle cx="290" cy="180" r="26" stroke="#ff7a9c" class="q-node"/><text x="290" y="187" fill="#ff7a9c">C</text><circle r="7" class="q-ball"><animateMotion dur="4.5s" repeatCount="indefinite" path="M200 52 Q267.9 99.9 290 180 Q200.0 208.0 110 180 Q132.1 99.9 200 52"/></circle></svg></div>
+					<div class="lesson-body">
+						<span class="lesson-num">02 · Visuell erklärt</span>
+						<h3>Mathe sichtbar</h3>
+						<p>Markov-Ketten, Übergangsmatrix, bedingte Wahrscheinlichkeit als Kugelregen, Eigenvektoren, Hauptkomponenten und Bildfilter.</p>
+						<span class="lesson-go">Hinschauen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--q lesson--q-momentum reveal" href="./momentum/">
+					<div class="lesson-art" aria-hidden="true"><svg viewBox="-200 -115 400 230" preserveAspectRatio="xMidYMid slice"><g transform="rotate(-18)"><ellipse cx="0" cy="0" rx="20" ry="6" class="q-cont"/><ellipse cx="0" cy="0" rx="50" ry="15" class="q-cont"/><ellipse cx="0" cy="0" rx="80" ry="24" class="q-cont"/><ellipse cx="0" cy="0" rx="110" ry="33" class="q-cont"/><ellipse cx="0" cy="0" rx="140" ry="42" class="q-cont"/><ellipse cx="0" cy="0" rx="170" ry="51" class="q-cont"/><path d="M-150.0 40.0 L-140.0 -32.8 L-130.0 26.9 L-120.0 -22.1 L-110.0 18.1 L-100.0 -14.8 L-90.0 12.2 L-80.0 -10.0 L-70.0 8.2 L-60.0 -6.7 L-50.0 5.5 L-40.0 -4.5 L-30.0 3.7 L-20.0 -3.0 L-10.0 2.5 L0.0 -2.0 L10.0 1.7 L20.0 -1.4" class="q-zig"/><path d="M-150 40 C -100 -40, -60 30, -20 -6 S 10 2, 0 0" class="q-smooth" id="qmPath"/><circle r="7" class="q-ball2"><animateMotion dur="3.2s" repeatCount="indefinite" path="M-150 40 C -100 -40, -60 30, -20 -6 S 10 2, 0 0"/></circle><circle r="4" cx="0" cy="0" class="q-goal"/></g></svg></div>
+					<div class="lesson-body">
+						<span class="lesson-num">03 · Optimierung</span>
+						<h3>Warum Momentum funktioniert</h3>
+						<p>Der schwere Ball im schmalen Tal, Eigenrichtungen, die Landkarte von α und β, kritische Dämpfung und ein Modell-Fit.</p>
+						<span class="lesson-go">Anrollen →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--q lesson--q-mcmc reveal" href="./mcmc/">
+					<div class="lesson-art" aria-hidden="true"><svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice"><g class="q-dots"><circle cx="117.5" cy="107.7" r="2.2" style="--d:0.000s"/><circle cx="291.6" cy="122.5" r="2.2" style="--d:0.025s"/><circle cx="285.0" cy="77.5" r="2.2" style="--d:0.050s"/><circle cx="159.2" cy="84.1" r="2.2" style="--d:0.075s"/><circle cx="236.1" cy="47.3" r="2.2" style="--d:0.100s"/><circle cx="343.9" cy="125.3" r="2.2" style="--d:0.125s"/><circle cx="260.8" cy="90.9" r="2.2" style="--d:0.150s"/><circle cx="150.5" cy="33.9" r="2.2" style="--d:0.175s"/><circle cx="64.7" cy="151.9" r="2.2" style="--d:0.200s"/><circle cx="250.1" cy="86.4" r="2.2" style="--d:0.225s"/><circle cx="115.6" cy="77.3" r="2.2" style="--d:0.250s"/><circle cx="160.8" cy="61.4" r="2.2" style="--d:0.275s"/><circle cx="154.8" cy="38.4" r="2.2" style="--d:0.300s"/><circle cx="221.6" cy="59.8" r="2.2" style="--d:0.325s"/><circle cx="158.6" cy="76.3" r="2.2" style="--d:0.350s"/><circle cx="119.8" cy="90.5" r="2.2" style="--d:0.375s"/><circle cx="62.2" cy="90.2" r="2.2" style="--d:0.400s"/><circle cx="225.2" cy="45.3" r="2.2" style="--d:0.425s"/><circle cx="230.2" cy="39.9" r="2.2" style="--d:0.450s"/><circle cx="188.8" cy="43.9" r="2.2" style="--d:0.475s"/><circle cx="198.8" cy="74.2" r="2.2" style="--d:0.500s"/><circle cx="52.8" cy="163.8" r="2.2" style="--d:0.525s"/><circle cx="220.9" cy="57.4" r="2.2" style="--d:0.550s"/><circle cx="216.4" cy="31.5" r="2.2" style="--d:0.575s"/><circle cx="159.9" cy="74.3" r="2.2" style="--d:0.600s"/><circle cx="177.8" cy="51.9" r="2.2" style="--d:0.625s"/><circle cx="179.2" cy="59.7" r="2.2" style="--d:0.650s"/><circle cx="149.6" cy="104.3" r="2.2" style="--d:0.675s"/><circle cx="313.9" cy="121.7" r="2.2" style="--d:0.700s"/><circle cx="213.5" cy="60.8" r="2.2" style="--d:0.725s"/><circle cx="154.1" cy="25.0" r="2.2" style="--d:0.750s"/><circle cx="211.8" cy="77.1" r="2.2" style="--d:0.775s"/><circle cx="295.0" cy="105.5" r="2.2" style="--d:0.800s"/><circle cx="225.1" cy="74.8" r="2.2" style="--d:0.825s"/><circle cx="228.4" cy="45.3" r="2.2" style="--d:0.850s"/><circle cx="246.7" cy="55.7" r="2.2" style="--d:0.875s"/><circle cx="263.4" cy="79.8" r="2.2" style="--d:0.900s"/><circle cx="222.0" cy="60.9" r="2.2" style="--d:0.925s"/><circle cx="261.7" cy="49.1" r="2.2" style="--d:0.950s"/><circle cx="160.8" cy="54.9" r="2.2" style="--d:0.975s"/><circle cx="368.8" cy="151.7" r="2.2" style="--d:1.000s"/><circle cx="155.9" cy="62.0" r="2.2" style="--d:1.025s"/><circle cx="222.9" cy="59.3" r="2.2" style="--d:1.050s"/><circle cx="253.5" cy="48.9" r="2.2" style="--d:1.075s"/><circle cx="212.4" cy="55.9" r="2.2" style="--d:1.100s"/><circle cx="145.0" cy="71.2" r="2.2" style="--d:1.125s"/><circle cx="237.2" cy="65.2" r="2.2" style="--d:1.150s"/><circle cx="76.6" cy="128.8" r="2.2" style="--d:1.175s"/><circle cx="18.3" cy="171.1" r="2.2" style="--d:1.200s"/><circle cx="146.4" cy="69.6" r="2.2" style="--d:1.225s"/><circle cx="183.1" cy="57.9" r="2.2" style="--d:1.250s"/><circle cx="151.6" cy="62.9" r="2.2" style="--d:1.275s"/><circle cx="305.4" cy="126.7" r="2.2" style="--d:1.300s"/><circle cx="181.5" cy="60.6" r="2.2" style="--d:1.325s"/><circle cx="198.5" cy="46.5" r="2.2" style="--d:1.350s"/><circle cx="213.8" cy="48.0" r="2.2" style="--d:1.375s"/><circle cx="227.5" cy="69.3" r="2.2" style="--d:1.400s"/><circle cx="358.4" cy="152.6" r="2.2" style="--d:1.425s"/><circle cx="-3.9" cy="255.3" r="2.2" style="--d:1.450s"/><circle cx="71.7" cy="107.6" r="2.2" style="--d:1.475s"/><circle cx="126.9" cy="106.6" r="2.2" style="--d:1.500s"/><circle cx="197.2" cy="79.2" r="2.2" style="--d:1.525s"/><circle cx="241.8" cy="60.1" r="2.2" style="--d:1.550s"/><circle cx="309.6" cy="136.0" r="2.2" style="--d:1.575s"/><circle cx="258.7" cy="80.8" r="2.2" style="--d:1.600s"/><circle cx="127.9" cy="106.7" r="2.2" style="--d:1.625s"/><circle cx="116.4" cy="113.2" r="2.2" style="--d:1.650s"/><circle cx="95.5" cy="109.6" r="2.2" style="--d:1.675s"/><circle cx="177.5" cy="73.8" r="2.2" style="--d:1.700s"/><circle cx="361.1" cy="188.6" r="2.2" style="--d:1.725s"/><circle cx="373.0" cy="164.9" r="2.2" style="--d:1.750s"/><circle cx="305.1" cy="111.8" r="2.2" style="--d:1.775s"/><circle cx="349.8" cy="143.7" r="2.2" style="--d:1.800s"/><circle cx="333.1" cy="101.6" r="2.2" style="--d:1.825s"/><circle cx="187.2" cy="65.1" r="2.2" style="--d:1.850s"/><circle cx="251.4" cy="49.2" r="2.2" style="--d:1.875s"/><circle cx="90.6" cy="121.6" r="2.2" style="--d:1.900s"/><circle cx="245.9" cy="73.4" r="2.2" style="--d:1.925s"/><circle cx="364.6" cy="172.6" r="2.2" style="--d:1.950s"/><circle cx="348.4" cy="149.1" r="2.2" style="--d:1.975s"/><circle cx="299.0" cy="79.8" r="2.2" style="--d:2.000s"/><circle cx="230.7" cy="97.5" r="2.2" style="--d:2.025s"/><circle cx="58.0" cy="155.2" r="2.2" style="--d:2.050s"/><circle cx="232.5" cy="39.3" r="2.2" style="--d:2.075s"/><circle cx="125.5" cy="51.1" r="2.2" style="--d:2.100s"/><circle cx="212.1" cy="78.9" r="2.2" style="--d:2.125s"/><circle cx="183.4" cy="61.0" r="2.2" style="--d:2.150s"/><circle cx="295.6" cy="92.8" r="2.2" style="--d:2.175s"/><circle cx="54.7" cy="145.8" r="2.2" style="--d:2.200s"/><circle cx="169.0" cy="69.1" r="2.2" style="--d:2.225s"/><circle cx="119.2" cy="64.5" r="2.2" style="--d:2.250s"/><circle cx="189.5" cy="60.0" r="2.2" style="--d:2.275s"/><circle cx="271.5" cy="108.0" r="2.2" style="--d:2.300s"/><circle cx="278.4" cy="74.2" r="2.2" style="--d:2.325s"/><circle cx="106.0" cy="76.0" r="2.2" style="--d:2.350s"/><circle cx="180.1" cy="49.3" r="2.2" style="--d:2.375s"/><circle cx="11.1" cy="205.9" r="2.2" style="--d:2.400s"/><circle cx="229.7" cy="58.2" r="2.2" style="--d:2.425s"/><circle cx="90.2" cy="134.6" r="2.2" style="--d:2.450s"/><circle cx="122.6" cy="85.9" r="2.2" style="--d:2.475s"/><circle cx="279.0" cy="108.6" r="2.2" style="--d:2.500s"/><circle cx="337.2" cy="124.2" r="2.2" style="--d:2.525s"/><circle cx="220.6" cy="47.3" r="2.2" style="--d:2.550s"/><circle cx="239.4" cy="81.1" r="2.2" style="--d:2.575s"/><circle cx="213.2" cy="69.8" r="2.2" style="--d:2.600s"/><circle cx="231.9" cy="71.1" r="2.2" style="--d:2.625s"/><circle cx="250.3" cy="53.7" r="2.2" style="--d:2.650s"/><circle cx="151.9" cy="50.8" r="2.2" style="--d:2.675s"/><circle cx="294.4" cy="112.1" r="2.2" style="--d:2.700s"/><circle cx="262.9" cy="75.4" r="2.2" style="--d:2.725s"/><circle cx="119.3" cy="92.2" r="2.2" style="--d:2.750s"/><circle cx="182.0" cy="79.8" r="2.2" style="--d:2.775s"/><circle cx="248.6" cy="63.3" r="2.2" style="--d:2.800s"/><circle cx="239.4" cy="78.9" r="2.2" style="--d:2.825s"/><circle cx="222.2" cy="110.9" r="2.2" style="--d:2.850s"/><circle cx="123.5" cy="102.3" r="2.2" style="--d:2.875s"/><circle cx="151.3" cy="78.6" r="2.2" style="--d:2.900s"/><circle cx="269.7" cy="89.7" r="2.2" style="--d:2.925s"/><circle cx="252.8" cy="78.7" r="2.2" style="--d:2.950s"/><circle cx="286.2" cy="112.7" r="2.2" style="--d:2.975s"/><circle cx="140.4" cy="86.2" r="2.2" style="--d:3.000s"/><circle cx="279.3" cy="63.0" r="2.2" style="--d:3.025s"/><circle cx="130.5" cy="60.4" r="2.2" style="--d:3.050s"/><circle cx="220.2" cy="55.7" r="2.2" style="--d:3.075s"/><circle cx="281.9" cy="63.0" r="2.2" style="--d:3.100s"/><circle cx="268.9" cy="46.1" r="2.2" style="--d:3.125s"/><circle cx="133.9" cy="61.5" r="2.2" style="--d:3.150s"/><circle cx="140.2" cy="55.1" r="2.2" style="--d:3.175s"/><circle cx="261.5" cy="65.5" r="2.2" style="--d:3.200s"/><circle cx="242.2" cy="70.9" r="2.2" style="--d:3.225s"/><circle cx="163.4" cy="77.4" r="2.2" style="--d:3.250s"/><circle cx="195.1" cy="55.8" r="2.2" style="--d:3.275s"/><circle cx="376.4" cy="185.2" r="2.2" style="--d:3.300s"/><circle cx="262.9" cy="102.8" r="2.2" style="--d:3.325s"/><circle cx="263.4" cy="115.8" r="2.2" style="--d:3.350s"/><circle cx="252.5" cy="51.8" r="2.2" style="--d:3.375s"/><circle cx="105.0" cy="96.6" r="2.2" style="--d:3.400s"/><circle cx="313.8" cy="124.8" r="2.2" style="--d:3.425s"/><circle cx="235.6" cy="66.2" r="2.2" style="--d:3.450s"/><circle cx="136.7" cy="97.0" r="2.2" style="--d:3.475s"/><circle cx="197.0" cy="82.9" r="2.2" style="--d:3.500s"/><circle cx="230.2" cy="75.7" r="2.2" style="--d:3.525s"/><circle cx="266.8" cy="85.7" r="2.2" style="--d:3.550s"/><circle cx="73.9" cy="147.5" r="2.2" style="--d:3.575s"/><circle cx="182.0" cy="74.7" r="2.2" style="--d:3.600s"/><circle cx="208.0" cy="44.4" r="2.2" style="--d:3.625s"/><circle cx="29.1" cy="223.5" r="2.2" style="--d:3.650s"/><circle cx="259.3" cy="84.3" r="2.2" style="--d:3.675s"/><circle cx="91.0" cy="90.8" r="2.2" style="--d:3.700s"/><circle cx="184.2" cy="43.0" r="2.2" style="--d:3.725s"/><circle cx="246.3" cy="67.3" r="2.2" style="--d:3.750s"/><circle cx="91.6" cy="115.3" r="2.2" style="--d:3.775s"/><circle cx="148.0" cy="81.4" r="2.2" style="--d:3.800s"/><circle cx="296.9" cy="106.1" r="2.2" style="--d:3.825s"/><circle cx="215.2" cy="54.9" r="2.2" style="--d:3.850s"/><circle cx="413.2" cy="259.2" r="2.2" style="--d:3.875s"/><circle cx="286.8" cy="102.2" r="2.2" style="--d:3.900s"/><circle cx="187.9" cy="52.9" r="2.2" style="--d:3.925s"/><circle cx="197.4" cy="47.1" r="2.2" style="--d:3.950s"/><circle cx="338.4" cy="155.7" r="2.2" style="--d:3.975s"/><circle cx="207.2" cy="69.0" r="2.2" style="--d:4.000s"/><circle cx="204.5" cy="44.9" r="2.2" style="--d:4.025s"/><circle cx="241.2" cy="69.6" r="2.2" style="--d:4.050s"/><circle cx="227.7" cy="87.4" r="2.2" style="--d:4.075s"/><circle cx="23.8" cy="202.7" r="2.2" style="--d:4.100s"/><circle cx="193.1" cy="38.6" r="2.2" style="--d:4.125s"/><circle cx="218.0" cy="54.1" r="2.2" style="--d:4.150s"/><circle cx="262.3" cy="72.6" r="2.2" style="--d:4.175s"/><circle cx="218.7" cy="56.5" r="2.2" style="--d:4.200s"/><circle cx="260.1" cy="75.1" r="2.2" style="--d:4.225s"/></g><path d="M137.6 82.0 L168.8 63.0 L215.6 47.8 L257.2 74.4 L288.4 101.0 L309.2 123.8" class="q-trail"/></svg></div>
+					<div class="lesson-body">
+						<span class="lesson-num">04 · Sampling</span>
+						<h3>Die MCMC-Galerie</h3>
+						<p>Monte-Carlo-Pfeile, Metropolis-Hastings Schritt für Schritt, fünf Sampler auf sechs Landschaften und Autokorrelation.</p>
+						<span class="lesson-go">Losschicken →</span>
+					</div>
+				</a>
+				<a class="lesson lesson--q lesson--q-gauss reveal" href="./gauss/">
+					<div class="lesson-art" aria-hidden="true"><svg viewBox="0 0 400 230" preserveAspectRatio="xMidYMid slice"><path d="M20.0 102.6 L24.5 112.5 L29.0 121.5 L33.5 129.3 L38.0 135.5 L42.5 140.0 L47.0 142.6 L51.5 143.7 L56.0 143.2 L60.5 141.7 L65.0 139.3 L69.5 136.5 L74.0 133.3 L78.5 130.0 L83.0 130.9 L87.5 131.8 L92.0 132.9 L96.5 134.0 L101.0 135.0 L105.5 135.7 L110.0 136.0 L114.5 135.6 L119.0 134.4 L123.5 132.3 L128.0 129.6 L132.5 126.4 L137.0 123.0 L141.5 119.8 L146.0 116.9 L150.5 114.7 L155.0 113.0 L159.5 112.0 L164.0 115.7 L168.5 119.9 L173.0 124.2 L177.5 128.4 L182.0 132.1 L186.5 135.0 L191.0 136.6 L195.5 136.5 L200.0 134.6 L204.5 130.8 L209.0 125.1 L213.5 117.9 L218.0 109.4 L222.5 100.2 L227.0 90.7 L231.5 81.2 L236.0 72.0 L240.5 63.5 L245.0 60.0 L249.5 57.3 L254.0 55.6 L258.5 54.8 L263.0 54.7 L267.5 55.2 L272.0 55.8 L276.5 56.4 L281.0 56.7 L285.5 56.7 L290.0 56.3 L294.5 55.7 L299.0 55.1 L303.5 54.7 L308.0 54.7 L312.5 55.3 L317.0 56.4 L321.5 58.0 L326.0 64.2 L330.5 70.7 L335.0 77.3 L339.5 83.7 L344.0 89.7 L348.5 94.9 L353.0 98.8 L357.5 101.4 L362.0 102.4 L366.5 101.7 L371.0 99.6 L375.5 96.4 L380.0 92.5 L380.0 117.2 L375.5 114.5 L371.0 112.3 L366.5 110.9 L362.0 110.4 L357.5 110.6 L353.0 111.5 L348.5 112.9 L344.0 114.4 L339.5 115.7 L335.0 116.5 L330.5 116.6 L326.0 116.0 L321.5 114.5 L317.0 108.1 L312.5 101.2 L308.0 94.0 L303.5 86.7 L299.0 79.8 L294.5 73.8 L290.0 69.0 L285.5 65.9 L281.0 64.7 L276.5 65.6 L272.0 68.5 L267.5 73.2 L263.0 79.5 L258.5 86.8 L254.0 94.8 L249.5 103.2 L245.0 111.7 L240.5 120.0 L236.0 123.8 L231.5 127.1 L227.0 129.9 L222.5 132.2 L218.0 134.2 L213.5 136.0 L209.0 137.8 L204.5 140.0 L200.0 142.6 L195.5 145.8 L191.0 149.3 L186.5 153.1 L182.0 156.9 L177.5 160.4 L173.0 163.4 L168.5 165.8 L164.0 167.5 L159.5 168.5 L155.0 164.8 L150.5 160.6 L146.0 156.2 L141.5 151.8 L137.0 147.8 L132.5 144.5 L128.0 142.3 L123.5 141.5 L119.0 142.4 L114.5 144.8 L110.0 148.7 L105.5 153.8 L101.0 159.7 L96.5 165.9 L92.0 172.1 L87.5 177.8 L83.0 182.6 L78.5 186.5 L74.0 185.0 L69.5 182.4 L65.0 178.6 L60.5 173.7 L56.0 167.9 L51.5 161.7 L47.0 155.4 L42.5 149.2 L38.0 143.5 L33.5 138.5 L29.0 134.2 L24.5 130.5 L20.0 127.4Z" class="q-band"/><path class="q-samp" style="--k:0" d="M20.0 124.6 L24.5 128.2 L29.0 132.2 L33.5 136.8 L38.0 141.7 L42.5 146.6 L47.0 151.2 L51.5 154.8 L56.0 157.0 L60.5 157.6 L65.0 156.5 L69.5 153.8 L74.0 150.0 L78.5 145.3 L83.0 142.5 L87.5 140.3 L92.0 138.8 L96.5 138.0 L101.0 137.7 L105.5 137.6 L110.0 137.3 L114.5 136.6 L119.0 135.4 L123.5 133.8 L128.0 132.0 L132.5 130.6 L137.0 130.0 L141.5 130.4 L146.0 132.2 L150.5 135.2 L155.0 139.2 L159.5 144.0 L164.0 148.1 L168.5 151.1 L173.0 152.9 L177.5 153.3 L182.0 152.3 L186.5 150.4 L191.0 147.7 L195.5 144.8 L200.0 141.8 L204.5 139.1 L209.0 136.4 L213.5 133.6 L218.0 130.3 L222.5 126.0 L227.0 120.7 L231.5 114.1 L236.0 106.4 L240.5 97.9 L245.0 88.4 L249.5 79.8 L254.0 72.5 L258.5 66.7 L263.0 62.6 L267.5 60.0 L272.0 58.6 L276.5 58.0 L281.0 57.9 L285.5 57.8 L290.0 57.7 L294.5 57.5 L299.0 57.6 L303.5 58.3 L308.0 59.9 L312.5 62.6 L317.0 66.5 L321.5 71.4 L326.0 79.0 L330.5 86.2 L335.0 92.8 L339.5 98.2 L344.0 102.4 L348.5 105.2 L353.0 106.9 L357.5 107.7 L362.0 108.3 L366.5 108.9 L371.0 110.1 L375.5 111.8 L380.0 114.2"/><path class="q-samp" style="--k:1" d="M20.0 105.1 L24.5 114.4 L29.0 123.1 L33.5 130.7 L38.0 137.0 L42.5 142.1 L47.0 146.1 L51.5 149.5 L56.0 152.7 L60.5 155.8 L65.0 158.9 L69.5 162.2 L74.0 165.3 L78.5 168.1 L83.0 168.4 L87.5 167.3 L92.0 164.8 L96.5 161.1 L101.0 156.6 L105.5 151.8 L110.0 147.4 L114.5 143.9 L119.0 141.5 L123.5 140.4 L128.0 140.3 L132.5 141.1 L137.0 142.1 L141.5 142.9 L146.0 143.3 L150.5 142.9 L155.0 141.8 L159.5 140.1 L164.0 138.4 L168.5 137.3 L173.0 136.9 L177.5 137.1 L182.0 137.7 L186.5 138.3 L191.0 138.5 L195.5 137.7 L200.0 135.5 L204.5 131.7 L209.0 126.4 L213.5 119.9 L218.0 112.7 L222.5 105.2 L227.0 98.2 L231.5 91.8 L236.0 86.5 L240.5 82.3 L245.0 80.0 L249.5 77.8 L254.0 75.5 L258.5 72.9 L263.0 70.2 L267.5 67.5 L272.0 65.1 L276.5 63.5 L281.0 63.2 L285.5 64.5 L290.0 67.4 L294.5 71.8 L299.0 77.3 L303.5 83.5 L308.0 89.6 L312.5 95.2 L317.0 99.9 L321.5 103.6 L326.0 103.8 L330.5 103.7 L335.0 103.4 L339.5 103.2 L344.0 103.3 L348.5 103.7 L353.0 104.3 L357.5 104.8 L362.0 104.9 L366.5 104.2 L371.0 102.4 L375.5 99.7 L380.0 96.1"/><path class="q-samp" style="--k:2" d="M20.0 108.2 L24.5 115.8 L29.0 123.4 L33.5 130.4 L38.0 136.4 L42.5 140.9 L47.0 143.9 L51.5 145.7 L56.0 146.4 L60.5 146.7 L65.0 146.8 L69.5 147.1 L74.0 147.8 L78.5 148.8 L83.0 151.0 L87.5 152.3 L92.0 152.7 L96.5 152.1 L101.0 150.4 L105.5 148.0 L110.0 145.3 L114.5 142.7 L119.0 140.9 L123.5 140.2 L128.0 140.7 L132.5 142.5 L137.0 145.3 L141.5 148.5 L146.0 151.8 L150.5 154.6 L155.0 156.6 L159.5 157.6 L164.0 155.3 L168.5 152.8 L173.0 150.3 L177.5 147.9 L182.0 145.7 L186.5 143.9 L191.0 142.1 L195.5 140.0 L200.0 137.2 L204.5 133.3 L209.0 127.9 L213.5 121.2 L218.0 113.1 L222.5 104.2 L227.0 94.9 L231.5 85.8 L236.0 77.3 L240.5 69.9 L245.0 66.8 L249.5 64.7 L254.0 63.3 L258.5 62.4 L263.0 61.8 L267.5 61.3 L272.0 60.8 L276.5 60.6 L281.0 60.8 L285.5 61.9 L290.0 64.3 L294.5 68.1 L299.0 73.3 L303.5 79.7 L308.0 87.0 L312.5 94.5 L317.0 101.8 L321.5 108.4 L326.0 110.8 L330.5 111.9 L335.0 112.1 L339.5 111.4 L344.0 110.4 L348.5 109.4 L353.0 108.5 L357.5 108.0 L362.0 107.6 L366.5 107.3 L371.0 106.5 L375.5 105.2 L380.0 102.9"/><path d="M20.0 115.0 L24.5 121.5 L29.0 127.8 L33.5 133.9 L38.0 139.5 L42.5 144.6 L47.0 149.0 L51.5 152.7 L56.0 155.6 L60.5 157.7 L65.0 158.9 L69.5 159.4 L74.0 159.2 L78.5 158.2 L83.0 156.7 L87.5 154.8 L92.0 152.5 L96.5 150.0 L101.0 147.3 L105.5 144.8 L110.0 142.4 L114.5 140.2 L119.0 138.4 L123.5 136.9 L128.0 136.0 L132.5 135.5 L137.0 135.4 L141.5 135.8 L146.0 136.6 L150.5 137.6 L155.0 138.9 L159.5 140.3 L164.0 141.6 L168.5 142.8 L173.0 143.8 L177.5 144.4 L182.0 144.5 L186.5 144.0 L191.0 142.9 L195.5 141.1 L200.0 138.6 L204.5 135.4 L209.0 131.5 L213.5 126.9 L218.0 121.8 L222.5 116.2 L227.0 110.3 L231.5 104.1 L236.0 97.9 L240.5 91.8 L245.0 85.8 L249.5 80.3 L254.0 75.2 L258.5 70.8 L263.0 67.1 L267.5 64.2 L272.0 62.2 L276.5 61.0 L281.0 60.7 L285.5 61.3 L290.0 62.6 L294.5 64.7 L299.0 67.5 L303.5 70.7 L308.0 74.4 L312.5 78.2 L317.0 82.2 L321.5 86.2 L326.0 90.1 L330.5 93.7 L335.0 96.9 L339.5 99.7 L344.0 102.1 L348.5 103.9 L353.0 105.2 L357.5 106.0 L362.0 106.4 L366.5 106.3 L371.0 106.0 L375.5 105.5 L380.0 104.8" class="q-mean"/><circle cx="38.0" cy="139.5" r="5" class="q-pt"/><circle cx="119.0" cy="138.4" r="5" class="q-pt"/><circle cx="200.0" cy="138.6" r="5" class="q-pt"/><circle cx="281.0" cy="60.7" r="5" class="q-pt"/><circle cx="362.0" cy="106.4" r="5" class="q-pt"/></svg></div>
+					<div class="lesson-body">
+						<span class="lesson-num">05 · Funktionen als Zufall</span>
+						<h3>Gauß-Prozesse</h3>
+						<p>Die Glocke in 2D, von Punkten zu Funktionen, Kernel, Regression mit Unsicherheitsband und die marginale Likelihood.</p>
+						<span class="lesson-go">Kurven ziehen →</span>
+					</div>
+				</a>
+			</div>
+		</section>
+
 		<!-- Labor-Highlight -->
 		<section class="featured" id="neu" aria-label="Highlight aus dem Labor">
 			<a class="feature reveal" href="./ereignishorizont/">
 				<canvas id="teaser" aria-hidden="true"></canvas>
 				<div class="feature-body">
-					<p class="mono eyebrow"><span class="num">03</span> Aus dem Labor</p>
+					<p class="mono eyebrow"><span class="num">04</span> Aus dem Labor</p>
 					<h2>Ereignis&shy;horizont</h2>
 					<p>Ein Schwarzes Loch, live im Browser geraytraced. Licht wird von der Gravitation gebogen, die
 						Akkretionsscheibe glüht mit Doppler-Effekt, und ein Drone-Sound wird tiefer, je näher du dem
@@ -333,7 +392,7 @@
 		<section class="archive" id="archiv">
 			<div class="sec-head sec-head--row">
 				<div>
-					<p class="mono eyebrow"><span class="num">04</span> Archiv</p>
+					<p class="mono eyebrow"><span class="num">05</span> Archiv</p>
 					<h2>Alles. <em>Auf einen Blick.</em></h2>
 				</div>
 				<label class="search">
@@ -345,6 +404,7 @@
 				<button type="button" data-filter="all" aria-pressed="true">Alle<sup></sup></button>
 				<button type="button" data-filter="learn" aria-pressed="false" style="--c: var(--c-learn)">Verstehen<sup></sup></button>
 				<button type="button" data-filter="play" aria-pressed="false" style="--c: var(--c-play)">Spielen lernen<sup></sup></button>
+				<button type="button" data-filter="quant" aria-pressed="false" style="--c: var(--c-quant)">Quant-Mathe<sup></sup></button>
 				<button type="button" data-filter="audio" aria-pressed="false" style="--c: var(--c-audio)">Audio &amp; Visuals<sup></sup></button>
 				<button type="button" data-filter="lab" aria-pressed="false" style="--c: var(--c-lab)">Experimente<sup></sup></button>
 				<span class="mono result-count" id="resultCount" aria-live="polite"></span>
@@ -572,6 +632,48 @@
 					</div>
 				</a>
 
+				<!-- Quant-Mathe -->
+				<a class="card reveal" data-cat="quant" href="./zufall/" style="--h: 150">
+					<div class="thumb thumb--quant"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Quant · Statistik</span><span class="pill">Neu</span></div>
+						<h3>Zufall sehen <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Gesetz der großen Zahlen, Verteilungen, Grenzwertsatz, Bayes und Regression.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="quant" href="./sichtbar/" style="--h: 205">
+					<div class="thumb thumb--quant"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Quant · Lineare Algebra</span><span class="pill">Neu</span></div>
+						<h3>Mathe sichtbar <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Markov-Ketten, bedingte Wahrscheinlichkeit, Eigenvektoren, PCA und Bildfilter.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="quant" href="./momentum/" style="--h: 35">
+					<div class="thumb thumb--quant"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Quant · Optimierung</span><span class="pill">Neu</span></div>
+						<h3>Warum Momentum funktioniert <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Gradientenabstieg mit Schwung: Tal, Eigenrichtungen, Konvergenzkarte, Dämpfung.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="quant" href="./mcmc/" style="--h: 275">
+					<div class="thumb thumb--quant"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Quant · Sampling</span><span class="pill">Neu</span></div>
+						<h3>Die MCMC-Galerie <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Metropolis-Hastings, Adaptive MH, MALA, HMC und Gibbs auf sechs Zielverteilungen.</p>
+					</div>
+				</a>
+				<a class="card reveal" data-cat="quant" href="./gauss/" style="--h: 340">
+					<div class="thumb thumb--quant"></div>
+					<div class="card-body">
+						<div class="card-meta"><span>Quant · Bayes</span><span class="pill">Neu</span></div>
+						<h3>Gauß-Prozesse <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M5 13L13 5M6 5h7v7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></h3>
+						<p>Normalverteilung über Funktionen: Kernel, Posterior mit Unsicherheit, Likelihood.</p>
+					</div>
+				</a>
+
 				<!-- Experimente -->
 				<a class="card reveal" data-cat="lab" href="./ereignishorizont/" style="--h: 28">
 					<div class="thumb thumb--lab"></div>
@@ -627,6 +729,7 @@
 			<nav aria-label="Fußzeile">
 				<a href="#verstehen">Verstehen</a>
 				<a href="#spielen">Spielen lernen</a>
+				<a href="#quant">Quant-Mathe</a>
 				<a href="#archiv">Archiv</a>
 				<button type="button" class="linklike" data-open-palette>Suchen <kbd>⌘K</kbd></button>
 			</nav>
@@ -639,7 +742,7 @@
 		<div class="pal-box">
 			<label class="pal-input">
 				<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg>
-				<input type="text" id="palInput" placeholder="Wohin willst du? Feuer, Klavier, Schwarzes Loch …" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="palList" aria-autocomplete="list" />
+				<input type="text" id="palInput" placeholder="Wohin willst du? Feuer, Klavier, MCMC, Schwarzes Loch …" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="palList" aria-autocomplete="list" />
 				<kbd>Esc</kbd>
 			</label>
 			<ul class="pal-list" id="palList" role="listbox"></ul>
