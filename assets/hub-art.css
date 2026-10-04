@@ -1,0 +1,1157 @@
+/* Animierte Motive der Hub-Karten (Lektionen, Instrumente, Projekt-Vorschauen) */
+
+.thumb {
+	position: relative;
+	height: 150px;
+	overflow: hidden;
+	border-bottom: 1px solid var(--line);
+}
+
+.thumb::before,
+.thumb::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	transition: transform 0.8s cubic-bezier(.2, .8, .2, 1);
+}
+
+.card:hover .thumb::before {
+	transform: scale(1.08) rotate(-2deg);
+}
+
+/* Audio: Equalizer-Balken */
+.thumb--audio::before {
+	background:
+		radial-gradient(ellipse at 50% 120%, hsla(var(--h), 95%, 60%, 0.75), transparent 65%),
+		linear-gradient(160deg, hsl(calc(var(--h) + 40), 60%, 12%), hsl(var(--h), 50%, 6%));
+}
+
+.thumb--audio::after {
+	inset: auto 0 0 0;
+	height: 100%;
+	background: repeating-linear-gradient(90deg, hsla(var(--h), 100%, 85%, 0.85) 0 3px, transparent 3px 9px);
+	-webkit-mask: linear-gradient(to top, #000, transparent 75%);
+	mask: linear-gradient(to top, #000, transparent 75%);
+	clip-path: polygon(0 100%, 0 70%, 8% 40%, 16% 62%, 24% 25%, 32% 55%, 40% 35%, 48% 68%, 56% 18%, 64% 50%, 72% 32%, 80% 60%, 88% 42%, 96% 66%, 100% 50%, 100% 100%);
+	transform-origin: bottom;
+	animation: eq 2.4s ease-in-out infinite alternate;
+}
+
+.card:nth-child(2n) .thumb--audio::after {
+	animation-duration: 1.8s;
+}
+
+.card:nth-child(3n) .thumb--audio::after {
+	animation-duration: 3.1s;
+}
+
+@keyframes eq {
+	to {
+		transform: scaleY(0.55);
+	}
+}
+
+/* Verstehen: Raster mit leuchtendem Fokus */
+.thumb--learn::before {
+	background:
+		radial-gradient(circle at 50% 110%, hsla(var(--h), 95%, 60%, 0.8), transparent 60%),
+		linear-gradient(180deg, hsl(var(--h), 30%, 8%), hsl(var(--h), 40%, 4%));
+}
+
+.thumb--learn::after {
+	background-image:
+		linear-gradient(hsla(var(--h), 90%, 75%, 0.14) 1px, transparent 1px),
+		linear-gradient(90deg, hsla(var(--h), 90%, 75%, 0.14) 1px, transparent 1px);
+	background-size: 18px 18px;
+	-webkit-mask: radial-gradient(circle at 50% 100%, #000, transparent 75%);
+	mask: radial-gradient(circle at 50% 100%, #000, transparent 75%);
+}
+
+.lesson--fire {
+	--c: #ffb04d;
+}
+
+.lesson--tel {
+	--c: #4fd6c0;
+}
+
+.lesson--power {
+	--c: #ffe14d;
+}
+
+/* Feuer: drei flackernde Flammenzungen */
+.lesson--fire .lesson-art i {
+	position: absolute;
+	bottom: -12%;
+	left: 50%;
+	width: 46%;
+	aspect-ratio: 0.62;
+	border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
+	background: radial-gradient(ellipse at 50% 78%, #fff6d8 0%, #ffd27a 22%, #ff8a2b 48%, rgba(255, 70, 20, 0.45) 66%, transparent 74%);
+	filter: blur(6px);
+	transform-origin: 50% 100%;
+	mix-blend-mode: screen;
+	animation: flick 1.6s ease-in-out infinite alternate;
+}
+
+.lesson--fire .lesson-art i:nth-child(1) {
+	transform: translateX(-80%) scale(0.75);
+	animation-duration: 1.3s;
+}
+
+.lesson--fire .lesson-art i:nth-child(2) {
+	transform: translateX(-50%);
+}
+
+.lesson--fire .lesson-art i:nth-child(3) {
+	transform: translateX(-20%) scale(0.7);
+	animation-duration: 1.1s;
+}
+
+@keyframes flick {
+	50% {
+		border-radius: 46% 54% 44% 50% / 66% 58% 42% 34%;
+		filter: blur(7px) brightness(1.15);
+	}
+
+	to {
+		border-radius: 54% 46% 50% 44% / 58% 66% 34% 42%;
+	}
+}
+
+/* Telegraf: laufender Papierstreifen */
+.lesson--tel .lesson-art {
+	display: grid;
+	place-items: center;
+	background:
+		radial-gradient(circle at 50% 50%, rgba(79, 214, 192, 0.18), transparent 60%),
+		#050404;
+}
+
+.lesson--tel .lesson-art span {
+	width: 100%;
+	padding: 12px 0;
+	background: #e9dfc8;
+	color: #1c1612;
+	font-family: ui-monospace, monospace;
+	font-size: 2rem;
+	font-weight: 700;
+	letter-spacing: 0.15em;
+	white-space: nowrap;
+	text-align: center;
+	box-shadow: 0 0 40px rgba(79, 214, 192, 0.25);
+	animation: tape 6s linear infinite;
+}
+
+@keyframes tape {
+	from {
+		transform: translateX(60%);
+	}
+
+	to {
+		transform: translateX(-60%);
+	}
+}
+
+/* Radio: Wellenringe */
+.lesson--radio {
+	--c: #c79bff;
+}
+
+.lesson--radio .lesson-art::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	bottom: 18%;
+	width: 4px;
+	height: 46%;
+	margin-left: -2px;
+	background: #9aa0a8;
+	border-radius: 2px;
+}
+
+.lesson--radio .lesson-art i {
+	position: absolute;
+	left: 50%;
+	top: 36%;
+	width: 40px;
+	height: 40px;
+	margin: -20px 0 0 -20px;
+	border-radius: 50%;
+	border: 2px solid #c79bff;
+	opacity: 0;
+	animation: ring 3s linear infinite;
+}
+
+.lesson--radio .lesson-art i:nth-child(2) {
+	animation-delay: 1s;
+}
+
+.lesson--radio .lesson-art i:nth-child(3) {
+	animation-delay: 2s;
+}
+
+@keyframes ring {
+	0% {
+		transform: scale(0.3);
+		opacity: 0.9;
+	}
+
+	100% {
+		transform: scale(7);
+		opacity: 0;
+	}
+}
+
+/* Internet: Knoten mit wanderndem Paket */
+.lesson--net {
+	--c: #6fe3a3;
+}
+
+.lesson--net .lesson-art {
+	background:
+		radial-gradient(circle at 15% 50%, #6fe3a3 0 6px, transparent 7px),
+		radial-gradient(circle at 38% 28%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+		radial-gradient(circle at 38% 72%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+		radial-gradient(circle at 62% 28%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+		radial-gradient(circle at 62% 72%, rgba(111, 227, 163, 0.6) 0 5px, transparent 6px),
+		radial-gradient(circle at 85% 50%, #6fe3a3 0 6px, transparent 7px),
+		#050404;
+}
+
+.lesson--net .lesson-art i {
+	position: absolute;
+	width: 14px;
+	height: 10px;
+	margin: -5px 0 0 -7px;
+	border-radius: 3px;
+	background: hsl(calc(var(--k) * 70), 70%, 68%);
+	animation: hop 3.2s ease-in-out infinite;
+	animation-delay: calc(var(--k) * -0.8s);
+}
+
+.lesson--net .lesson-art i:nth-child(1) {
+	--k: 1;
+}
+
+.lesson--net .lesson-art i:nth-child(2) {
+	--k: 2;
+	animation-name: hop-low;
+}
+
+.lesson--net .lesson-art i:nth-child(3) {
+	--k: 3;
+}
+
+.lesson--net .lesson-art i:nth-child(4) {
+	--k: 4;
+	animation-name: hop-low;
+}
+
+@keyframes hop {
+	0% {
+		left: 15%;
+		top: 50%;
+	}
+
+	33% {
+		left: 38%;
+		top: 28%;
+	}
+
+	66% {
+		left: 62%;
+		top: 28%;
+	}
+
+	100% {
+		left: 85%;
+		top: 50%;
+	}
+}
+
+@keyframes hop-low {
+	0% {
+		left: 15%;
+		top: 50%;
+	}
+
+	33% {
+		left: 38%;
+		top: 72%;
+	}
+
+	66% {
+		left: 62%;
+		top: 72%;
+	}
+
+	100% {
+		left: 85%;
+		top: 50%;
+	}
+}
+
+/* Magnet: Hufeisen mit Feldbögen */
+.lesson--mag {
+	--c: #ff6b6b;
+}
+
+.lesson--mag .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 30%;
+	width: 120px;
+	height: 110px;
+	margin-left: -60px;
+	border: 26px solid #9aa0a8;
+	border-top: 0;
+	border-radius: 0 0 70px 70px;
+}
+
+.lesson--mag .lesson-art b::before,
+.lesson--mag .lesson-art b::after {
+	content: "";
+	position: absolute;
+	top: -4px;
+	width: 26px;
+	height: 30px;
+}
+
+.lesson--mag .lesson-art b::before {
+	left: -26px;
+	background: #ff6b6b;
+}
+
+.lesson--mag .lesson-art b::after {
+	right: -26px;
+	background: #6b8bff;
+}
+
+.lesson--mag .lesson-art i {
+	position: absolute;
+	left: 50%;
+	top: 30%;
+	width: 96px;
+	height: 40px;
+	margin: -20px 0 0 -48px;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-bottom: 0;
+	border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+	animation: field 2.4s ease-in-out infinite;
+}
+
+.lesson--mag .lesson-art i:nth-of-type(2) {
+	width: 136px;
+	height: 62px;
+	margin: -42px 0 0 -68px;
+	animation-delay: 0.3s;
+}
+
+.lesson--mag .lesson-art i:nth-of-type(3) {
+	width: 176px;
+	height: 84px;
+	margin: -64px 0 0 -88px;
+	animation-delay: 0.6s;
+}
+
+@keyframes field {
+	50% {
+		border-color: rgba(255, 107, 107, 0.7);
+	}
+}
+
+/* Licht: Prisma mit Regenbogen */
+.lesson--light {
+	--c: #ffd166;
+}
+
+.lesson--light .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 110px;
+	height: 96px;
+	margin: -54px 0 0 -55px;
+	background: rgba(200, 230, 255, 0.16);
+	border: 0;
+	clip-path: polygon(50% 0, 100% 100%, 0 100%);
+	z-index: 2;
+}
+
+.lesson--light .lesson-art i {
+	position: absolute;
+	left: 0;
+	top: calc(50% + 6px);
+	width: calc(50% - 30px);
+	height: 3px;
+	margin-top: -1px;
+	background: #fff;
+	box-shadow: 0 0 12px #fff;
+	transform-origin: right center;
+	transform: rotate(-9deg);
+}
+
+.lesson--light .lesson-art u {
+	position: absolute;
+	left: 54%;
+	top: 50%;
+	width: 50%;
+	height: 70px;
+	margin-top: -18px;
+	background: linear-gradient(180deg, #ff4d4d, #ffa64d, #ffe14d, #6fe3a3, #59b8ff, #a77bff);
+	clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 30%);
+	opacity: 0.9;
+	filter: blur(1px);
+	animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+	50% {
+		opacity: 0.65;
+	}
+}
+
+/* Schall: Lautsprecher mit Wellen */
+.lesson--sound {
+	--c: #ff9f6b;
+}
+
+.lesson--sound .lesson-art b {
+	position: absolute;
+	left: 22%;
+	top: 50%;
+	width: 26px;
+	height: 52px;
+	margin-top: -26px;
+	background: #9aa0a8;
+	clip-path: polygon(0 30%, 40% 30%, 100% 0, 100% 100%, 40% 70%, 0 70%);
+}
+
+.lesson--sound .lesson-art i {
+	position: absolute;
+	left: calc(22% + 20px);
+	top: 50%;
+	width: 60px;
+	height: 60px;
+	margin-top: -30px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-right-color: #ff9f6b;
+	opacity: 0;
+	animation: sound 2.1s linear infinite;
+}
+
+.lesson--sound .lesson-art i:nth-of-type(2) {
+	animation-delay: 0.7s;
+}
+
+.lesson--sound .lesson-art i:nth-of-type(3) {
+	animation-delay: 1.4s;
+}
+
+@keyframes sound {
+	0% {
+		transform: scale(0.4);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(4.5);
+		opacity: 0;
+	}
+}
+
+/* Schwerkraft: Mond kreist um einen Planeten */
+.lesson--grav {
+	--c: #8fd3ff;
+}
+
+.lesson--grav .lesson-art {
+	background:
+		radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+		radial-gradient(1px 1px at 70% 20%, #fff, transparent),
+		radial-gradient(1px 1px at 85% 70%, #fff, transparent),
+		radial-gradient(1px 1px at 35% 80%, #fff, transparent),
+		#04050a;
+}
+
+.lesson--grav .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 64px;
+	height: 64px;
+	margin: -32px 0 0 -32px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 35% 30%, #8fd3ff, #1d5b9a 70%, #0b2747);
+	box-shadow: 0 0 40px rgba(120, 190, 255, 0.45);
+}
+
+.lesson--grav .lesson-art i {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 170px;
+	height: 170px;
+	margin: -85px 0 0 -85px;
+	border-radius: 50%;
+	border: 1px dashed rgba(183, 139, 255, 0.35);
+	animation: orbit 5s linear infinite;
+}
+
+.lesson--grav .lesson-art i::after {
+	content: "";
+	position: absolute;
+	top: -7px;
+	left: 50%;
+	width: 14px;
+	height: 14px;
+	margin-left: -7px;
+	border-radius: 50%;
+	background: #d8d4cc;
+	box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes orbit {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Energie: schwingendes Pendel */
+.lesson--energy {
+	--c: #c6f16b;
+}
+
+.lesson--energy .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 14%;
+	width: 2px;
+	height: 62%;
+	margin-left: -1px;
+	background: rgba(244, 239, 230, 0.7);
+	transform-origin: top center;
+	animation: swing 2.2s ease-in-out infinite alternate;
+}
+
+.lesson--energy .lesson-art b::after {
+	content: "";
+	position: absolute;
+	bottom: -14px;
+	left: -14px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 35% 30%, #fff, #c6f16b 45%, #3a4a10);
+	box-shadow: 0 0 26px rgba(198, 241, 107, 0.55);
+}
+
+.lesson--energy .lesson-art::before {
+	content: "";
+	position: absolute;
+	left: calc(50% - 40px);
+	top: 14%;
+	width: 80px;
+	height: 6px;
+	margin-top: -6px;
+	background: #3a352f;
+}
+
+@keyframes swing {
+	from {
+		transform: rotate(38deg);
+	}
+
+	to {
+		transform: rotate(-38deg);
+	}
+}
+
+/* Schwimmen: schaukelndes Boot auf Wellen */
+.lesson--float {
+	--c: #4ee6c9;
+}
+
+.lesson--float .lesson-art {
+	background: linear-gradient(180deg, #0d1a2e 0 55%, #2f8fd8 55%, #06172e);
+}
+
+.lesson--float .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 55%;
+	width: 110px;
+	height: 34px;
+	margin: -22px 0 0 -55px;
+	background: #e0453a;
+	clip-path: polygon(0 0, 100% 0, 84% 100%, 16% 100%);
+	animation: bob 2.6s ease-in-out infinite;
+}
+
+.lesson--float .lesson-art b::before {
+	content: "";
+	position: absolute;
+	left: 30%;
+	top: 0;
+	width: 40%;
+	height: 6px;
+	background: #ffcf5a;
+}
+
+.lesson--float .lesson-art i {
+	position: absolute;
+	left: -10%;
+	right: -10%;
+	top: 55%;
+	height: 10px;
+	margin-top: -4px;
+	background: radial-gradient(circle at 10px -4px, transparent 12px, rgba(255, 255, 255, 0.45) 13px, transparent 15px) 0 0 / 26px 10px repeat-x;
+	animation: waves 3s linear infinite;
+}
+
+@keyframes bob {
+	50% {
+		transform: translateY(5px) rotate(3deg);
+	}
+}
+
+@keyframes waves {
+	to {
+		transform: translateX(26px);
+	}
+}
+
+/* Wärme: zappelnde Teilchen von kalt nach heiß */
+.lesson--heat {
+	--c: #ff7a5c;
+}
+
+.lesson--heat .lesson-art {
+	background: linear-gradient(90deg, rgba(92, 200, 255, 0.18), rgba(255, 122, 92, 0.22)), #050404;
+}
+
+.lesson--heat .lesson-art i {
+	position: absolute;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	left: var(--x);
+	top: var(--y);
+	background: var(--k);
+	box-shadow: 0 0 12px var(--k);
+	animation: jiggle var(--s) ease-in-out infinite alternate;
+}
+
+.lesson--heat .lesson-art i:nth-child(1) {
+	--x: 14%;
+	--y: 34%;
+	--k: #5cc8ff;
+	--s: 1.6s;
+}
+
+.lesson--heat .lesson-art i:nth-child(2) {
+	--x: 28%;
+	--y: 60%;
+	--k: #8fd3ff;
+	--s: 1.2s;
+}
+
+.lesson--heat .lesson-art i:nth-child(3) {
+	--x: 48%;
+	--y: 40%;
+	--k: #e6e6dc;
+	--s: 0.7s;
+}
+
+.lesson--heat .lesson-art i:nth-child(4) {
+	--x: 66%;
+	--y: 62%;
+	--k: #ffb366;
+	--s: 0.35s;
+}
+
+.lesson--heat .lesson-art i:nth-child(5) {
+	--x: 82%;
+	--y: 32%;
+	--k: #ff7a5c;
+	--s: 0.2s;
+}
+
+@keyframes jiggle {
+	0% {
+		transform: translate(-6px, 4px);
+	}
+
+	50% {
+		transform: translate(5px, -6px);
+	}
+
+	100% {
+		transform: translate(-3px, -2px);
+	}
+}
+
+/* Atome: Kern mit Elektronenbahnen */
+.lesson--atom {
+	--c: #d4ff3a;
+}
+
+.lesson--atom .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 26px;
+	height: 26px;
+	margin: -13px 0 0 -13px;
+	border-radius: 50%;
+	background:
+		radial-gradient(circle at 30% 30%, #ff5a5a 0 5px, transparent 6px),
+		radial-gradient(circle at 70% 35%, #b8bcc6 0 5px, transparent 6px),
+		radial-gradient(circle at 45% 72%, #b8bcc6 0 5px, transparent 6px),
+		radial-gradient(circle at 75% 70%, #ff5a5a 0 5px, transparent 6px);
+	box-shadow: 0 0 30px rgba(212, 255, 58, 0.45);
+}
+
+.lesson--atom .lesson-art i {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 180px;
+	height: 64px;
+	margin: -32px 0 0 -90px;
+	border-radius: 50%;
+	border: 1.5px solid rgba(90, 176, 255, 0.45);
+	transform: rotate(var(--r));
+}
+
+.lesson--atom .lesson-art i::after {
+	content: "";
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	margin: -5px 0 0 -5px;
+	border-radius: 50%;
+	background: #5ab0ff;
+	box-shadow: 0 0 10px #5ab0ff;
+	offset-path: ellipse(90px 32px at 90px 32px);
+	animation: electron var(--s) linear infinite;
+}
+
+.lesson--atom .lesson-art i:nth-of-type(1) {
+	--r: 0deg;
+	--s: 2.4s;
+}
+
+.lesson--atom .lesson-art i:nth-of-type(2) {
+	--r: 60deg;
+	--s: 3.1s;
+}
+
+.lesson--atom .lesson-art i:nth-of-type(3) {
+	--r: -60deg;
+	--s: 2.7s;
+}
+
+@keyframes electron {
+	from {
+		offset-distance: 0%;
+	}
+
+	to {
+		offset-distance: 100%;
+	}
+}
+
+/* Telefon: Wählscheibe, die eine Ziffer wählt */
+.lesson--phone {
+	--c: #ff8fb1;
+}
+
+.lesson--phone .lesson-art {
+	display: grid;
+	place-items: center;
+	background:
+		radial-gradient(circle at 50% 50%, rgba(255, 143, 177, 0.18), transparent 60%),
+		#050404;
+}
+
+.lesson--phone .lesson-art b {
+	width: 130px;
+	height: 130px;
+	border-radius: 50%;
+	background:
+		radial-gradient(circle, #050404 0 24px, transparent 25px),
+		repeating-conic-gradient(from 10deg, rgba(255, 143, 177, 0.9) 0 18deg, transparent 18deg 30deg);
+	-webkit-mask: radial-gradient(circle, transparent 0 34px, #000 35px 58px, transparent 59px);
+	mask: radial-gradient(circle, transparent 0 34px, #000 35px 58px, transparent 59px);
+	box-shadow: 0 0 40px rgba(255, 143, 177, 0.3);
+	animation: dial 4s ease-in-out infinite;
+}
+
+@keyframes dial {
+	30% {
+		transform: rotate(150deg);
+	}
+
+	40%,
+	to {
+		transform: rotate(0);
+	}
+}
+
+/* Fernsehen: Röhre mit Testbild und wanderndem Strahl */
+.lesson--tv {
+	--c: #9fe7ff;
+}
+
+.lesson--tv .lesson-art {
+	display: grid;
+	place-items: center;
+}
+
+.lesson--tv .lesson-art b {
+	position: relative;
+	width: 190px;
+	height: 130px;
+	border-radius: 22px / 18px;
+	overflow: hidden;
+	background:
+		repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0 2px, transparent 2px 4px),
+		linear-gradient(90deg, #e8e8e8 0 14.3%, #e8e05a 0 28.6%, #5ae0e0 0 42.9%, #5ae05a 0 57.1%, #e05ae0 0 71.4%, #e05a5a 0 85.7%, #5a5ae0 0);
+	box-shadow: 0 0 0 6px #1a1a1a, 0 0 40px rgba(159, 231, 255, 0.35);
+	filter: saturate(0.8);
+}
+
+.lesson--tv .lesson-art b::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 18px;
+	background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.55), transparent);
+	animation: beam 2.4s linear infinite;
+}
+
+@keyframes beam {
+	from {
+		top: -18px;
+	}
+
+	to {
+		top: 100%;
+	}
+}
+
+/* Sprach-KI: Text, der Token für Token entsteht */
+.lesson--ki {
+	--c: #ff7ad9;
+}
+
+.lesson--ki .lesson-art {
+	display: grid;
+	place-items: center;
+	background:
+		radial-gradient(circle at 50% 55%, rgba(255, 122, 217, 0.2), transparent 60%),
+		#050404;
+}
+
+.lesson--ki .lesson-art span {
+	position: relative;
+	z-index: 1;
+	font-family: "Syne", sans-serif;
+	font-weight: 700;
+	font-size: clamp(1.4rem, 3vw, 2rem);
+	color: #f4efe6;
+	letter-spacing: 0.02em;
+	white-space: nowrap;
+	text-shadow: 0 0 24px rgba(255, 122, 217, 0.6);
+	clip-path: inset(0 100% 0 0);
+	animation: typeon 4.5s steps(14) infinite;
+}
+
+.lesson--ki .lesson-art i {
+	position: absolute;
+	left: 50%;
+	bottom: 18%;
+	width: 10px;
+	border-radius: 4px 4px 0 0;
+	background: linear-gradient(to top, #9b8cff, #ff7ad9);
+	animation: probs 2.2s ease-in-out infinite alternate;
+}
+
+.lesson--ki .lesson-art i:nth-of-type(1) {
+	margin-left: -26px;
+	height: 34px;
+}
+
+.lesson--ki .lesson-art i:nth-of-type(2) {
+	margin-left: -5px;
+	height: 18px;
+	animation-delay: -0.7s;
+}
+
+.lesson--ki .lesson-art i:nth-of-type(3) {
+	margin-left: 16px;
+	height: 10px;
+	animation-delay: -1.4s;
+}
+
+@keyframes typeon {
+	70%,
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@keyframes probs {
+	to {
+		transform: scaleY(0.4);
+		transform-origin: bottom;
+	}
+}
+
+/* Agenten: Punkt, der durch die Schleife wandert */
+.lesson--agent {
+	--c: #6f9bff;
+}
+
+.lesson--agent .lesson-art {
+	background:
+		radial-gradient(circle at 50% 50%, rgba(111, 155, 255, 0.18), transparent 60%),
+		#050404;
+}
+
+.lesson--agent .lesson-art b {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 130px;
+	height: 130px;
+	margin: -65px 0 0 -65px;
+	border-radius: 50%;
+	border: 1.5px dashed rgba(111, 155, 255, 0.45);
+}
+
+.lesson--agent .lesson-art b::after {
+	content: "";
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	margin: -6px 0 0 -6px;
+	border-radius: 50%;
+	background: #5af0ff;
+	box-shadow: 0 0 14px #5af0ff;
+	offset-path: circle(65px at 65px 65px);
+	animation: electron 3.6s linear infinite;
+}
+
+.lesson--agent .lesson-art i {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 30px;
+	height: 30px;
+	margin: -15px 0 0 -15px;
+	border-radius: 50%;
+	background: #141210;
+	border: 2px solid #6f9bff;
+	transform: rotate(var(--a)) translateY(-65px);
+}
+
+.lesson--agent .lesson-art i:nth-of-type(1) {
+	--a: 0deg;
+}
+
+.lesson--agent .lesson-art i:nth-of-type(2) {
+	--a: 120deg;
+}
+
+.lesson--agent .lesson-art i:nth-of-type(3) {
+	--a: 240deg;
+}
+
+
+/* Strom: Elektronen im Draht */
+.lesson--power .lesson-art b {
+	position: absolute;
+	inset: 22% 18%;
+	border: 4px solid #d9a548;
+	border-radius: 6px;
+	box-shadow: 0 0 30px rgba(255, 225, 77, 0.25), inset 0 0 30px rgba(255, 225, 77, 0.12);
+}
+
+.lesson--power .lesson-art b::before {
+	content: "";
+	position: absolute;
+	inset: -4px;
+	border-radius: 6px;
+	background: repeating-linear-gradient(90deg, #59b8ff 0 4px, transparent 4px 14px);
+	-webkit-mask: linear-gradient(#000 0 0) top / 100% 4px no-repeat, linear-gradient(#000 0 0) bottom / 100% 4px no-repeat;
+	mask: linear-gradient(#000 0 0) top / 100% 4px no-repeat, linear-gradient(#000 0 0) bottom / 100% 4px no-repeat;
+	animation: drift-e 1s linear infinite;
+}
+
+.lesson--power .lesson-art b::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: -22px;
+	width: 40px;
+	height: 40px;
+	margin-left: -20px;
+	border-radius: 50%;
+	background: radial-gradient(circle, #fff7cf 0%, #ffe14d 45%, rgba(255, 225, 77, 0) 72%);
+	box-shadow: 0 0 60px 20px rgba(255, 225, 77, 0.35);
+	animation: glow-b 2.4s ease-in-out infinite;
+}
+
+@keyframes drift-e {
+	to {
+		background-position: 14px 0;
+	}
+}
+
+@keyframes glow-b {
+	50% {
+		opacity: 0.75;
+		transform: scale(0.92);
+	}
+}
+
+/* Experimente: Konische Felder */
+.thumb--lab::before {
+	background:
+		conic-gradient(from calc(var(--h) * 1deg) at 35% 60%, hsl(var(--h), 85%, 55%), hsl(calc(var(--h) + 90), 80%, 45%), hsl(calc(var(--h) + 200), 70%, 30%), hsl(var(--h), 85%, 55%));
+	filter: blur(18px) saturate(1.2);
+	transform: scale(1.3);
+}
+
+.card:hover .thumb--lab::before {
+	transform: scale(1.45) rotate(20deg);
+}
+
+.thumb--lab::after {
+	background: radial-gradient(circle at 70% 40%, transparent 0 22%, rgba(10, 9, 8, 0.55) 22.5% 23.5%, transparent 24%),
+		linear-gradient(to bottom, transparent 40%, rgba(10, 9, 8, 0.5));
+}
+
+/* Gitarre: sechs schwingende Saiten über einem Schallloch */
+.lesson--guitar {
+	--c: #f5b14c;
+}
+
+.lesson--guitar .lesson-art {
+	background:
+		radial-gradient(circle at 72% 50%, #050404 0 17%, #6b4320 17.5% 19%, transparent 19.5%),
+		radial-gradient(ellipse at 70% 50%, #4a2c14, #24150a 60%, #120b06);
+}
+
+.lesson--guitar .lesson-art i {
+	position: absolute;
+	left: -5%;
+	right: -5%;
+	height: 2px;
+	top: calc(28% + var(--n) * 8.8%);
+	background: linear-gradient(90deg, #8a6a40, #f1d9b0 50%, #8a6a40);
+	box-shadow: 0 0 10px rgba(245, 177, 76, 0.35);
+	transform-origin: center;
+	animation: strum 1.6s ease-out infinite;
+	animation-delay: calc(var(--n) * 0.05s);
+}
+
+.lesson--guitar .lesson-art i:nth-of-type(1) { --n: 0; height: 3.4px; }
+.lesson--guitar .lesson-art i:nth-of-type(2) { --n: 1; height: 3px; }
+.lesson--guitar .lesson-art i:nth-of-type(3) { --n: 2; height: 2.6px; }
+.lesson--guitar .lesson-art i:nth-of-type(4) { --n: 3; height: 2.2px; background: linear-gradient(90deg, #8c8780, #fff 50%, #8c8780); }
+.lesson--guitar .lesson-art i:nth-of-type(5) { --n: 4; height: 1.8px; background: linear-gradient(90deg, #8c8780, #fff 50%, #8c8780); }
+.lesson--guitar .lesson-art i:nth-of-type(6) { --n: 5; height: 1.4px; background: linear-gradient(90deg, #8c8780, #fff 50%, #8c8780); }
+
+.lesson--guitar .lesson-art b {
+	position: absolute;
+	top: 18%;
+	bottom: 18%;
+	width: 3px;
+	left: calc(8% + var(--f) * 1%);
+	background: linear-gradient(180deg, transparent, #c9c0b2 20%, #c9c0b2 80%, transparent);
+	opacity: 0.55;
+}
+
+.lesson--guitar .lesson-art b:nth-of-type(1) { --f: 0; width: 7px; background: #e8e1d4; opacity: 0.8; }
+.lesson--guitar .lesson-art b:nth-of-type(2) { --f: 12; }
+.lesson--guitar .lesson-art b:nth-of-type(3) { --f: 23; }
+.lesson--guitar .lesson-art b:nth-of-type(4) { --f: 33; }
+
+@keyframes strum {
+	0% { transform: scaleY(1); }
+	6% { transform: scaleY(5); filter: brightness(1.6); }
+	14% { transform: scaleY(0.6); }
+	22% { transform: scaleY(3); }
+	40% { transform: scaleY(1.2); }
+	100% { transform: scaleY(1); }
+}
+
+/* Klavier: Tasten, die nacheinander aufleuchten */
+.lesson--piano {
+	--c: #b3a4ff;
+}
+
+.lesson--piano .lesson-art {
+	background: radial-gradient(ellipse at 50% 120%, rgba(179, 164, 255, 0.35), transparent 60%), #08070b;
+}
+
+.lesson--piano .lesson-art span {
+	position: absolute;
+	left: 6%;
+	right: 6%;
+	bottom: 0;
+	height: 58%;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	gap: 3px;
+}
+
+.lesson--piano .lesson-art span i {
+	border-radius: 0 0 6px 6px;
+	background: linear-gradient(180deg, #d8d1c6, #f6f2ea 70%);
+	animation: key 3.2s ease-in-out infinite;
+	animation-delay: calc(var(--k) * 0.18s);
+}
+
+.lesson--piano .lesson-art span em {
+	position: absolute;
+	top: 0;
+	width: 6%;
+	height: 60%;
+	border-radius: 0 0 4px 4px;
+	background: #19171d;
+	left: calc(var(--x) * 1%);
+	transform: translateX(-50%);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.lesson--piano .lesson-art u {
+	position: absolute;
+	bottom: 60%;
+	width: 6%;
+	border-radius: 4px;
+	background: #b3a4ff;
+	box-shadow: 0 0 16px #b3a4ff;
+	left: calc(var(--x) * 1%);
+	animation: fall 3.2s linear infinite;
+	animation-delay: calc(var(--d) * 0.18s - 0.9s);
+	opacity: 0;
+}
+
+@keyframes key {
+	0%, 18%, 100% { background: linear-gradient(180deg, #d8d1c6, #f6f2ea 70%); }
+	4%, 10% { background: linear-gradient(180deg, #c7bbff, #b3a4ff); box-shadow: 0 0 22px rgba(179, 164, 255, 0.6); }
+}
+
+@keyframes fall {
+	0% { top: -20%; height: 18%; opacity: 0.95; }
+	27% { top: 40%; height: 0%; opacity: 0.95; }
+	28%, 100% { opacity: 0; }
+}
+
