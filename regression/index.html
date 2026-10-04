@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Lineare Regression von null an — Newbobb Lab</title>
+	<meta name="description"
+		content="Lineare Regression ohne Bibliothek: eine Gerade durch Punkte legen, den Fehler messen, mit Gradientenabstieg lernen und die exakte Lösung ausrechnen. Interaktiv im Browser." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/ml.css" />
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#ml">newbobb <span>/ machine learning</span></a>
+		<nav class="v-series" aria-label="Rubrik Machine Learning">
+			<a href="../regression/" aria-current="page">Regression</a>
+			<a href="../pca/">PCA</a>
+			<a href="../neuronales-netz/">Neuronales Netz</a>
+			<a href="../markov/">Markov-Kette</a>
+			<a href="../entscheidungsbaum/">Entscheidungsbaum</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Machine Learning · Projekt 1 · von null an</p>
+			<h1>Lineare<br /><em>Regression</em></h1>
+			<p class="v-lede">Das „Hallo Welt“ des maschinellen Lernens: eine Gerade, die möglichst gut durch eine
+				Punktwolke läuft. Wir bauen sie ohne Bibliothek, nur mit Plus, Mal und etwas Geduld. Und am Ende
+				steckt darin schon alles, was auch große neuronale Netze tun.</p>
+			<ol class="v-toc">
+				<li><a href="#gerade">Eine Gerade raten</a></li>
+				<li><a href="#fehler">Den Fehler messen</a></li>
+				<li><a href="#abstieg">Bergab lernen</a></li>
+				<li><a href="#exakt">Die exakte Lösung</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Gerade -->
+		<section class="chapter" id="gerade">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Das Modell</span>
+				<h2>Eine Gerade raten</h2>
+				<p>Stell dir vor, du notierst für ein paar Wohnungen die Größe und die Miete. Die Punkte streuen,
+					aber man sieht einen Trend: größer heißt teurer. Diesen Trend wollen wir als Formel haben, damit wir
+					für eine neue Wohnung die Miete <strong>vorhersagen</strong> können.</p>
+				<p>Das einfachste Modell dafür ist eine Gerade. Sie hat genau zwei Stellschrauben:</p>
+				<div class="formula">ŷ = m · x + b
+					<small>m ist die Steigung, b der Achsenabschnitt. ŷ („y-Dach“) ist die Vorhersage für die Eingabe x.</small>
+				</div>
+				<p>„Lernen“ heißt hier nichts anderes, als <strong>m</strong> und <strong>b</strong> so zu wählen,
+					dass die Gerade gut zu den Punkten passt. Probier es zuerst von Hand.</p>
+				<p class="merke"><b>Merke</b>Ein Modell ist eine Formel mit Stellschrauben. Lernen heißt, die
+					Stellschrauben an Beispieldaten anzupassen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh an Steigung und Achsenabschnitt, bis die Gerade gut passt. Tipp auf die Fläche,
+					um Punkte hinzuzufügen, zieh Punkte zum Verschieben, tipp einen Punkt an, um ihn zu löschen.</p>
+				<div class="stage-view">
+					<canvas id="cvHand" class="touch" aria-label="Streudiagramm mit einstellbarer Gerade"></canvas>
+					<span class="stage-tag">Daten und Gerade</span>
+					<span class="stage-readout" id="handReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Steigung m</span><output id="mOut"></output></span>
+						<input id="mIn" type="range" min="-2" max="3" step="0.01" value="0.2" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Achsenabschnitt b</span><output id="bOut"></output></span>
+						<input id="bIn" type="range" min="-6" max="10" step="0.05" value="5" />
+					</label>
+					<div class="chips">
+						<button class="btn" type="button" id="btnSquares" aria-pressed="false">Fehler als Quadrate</button>
+						<button class="btn" type="button" id="btnRandom">Neue Zufallsdaten</button>
+						<button class="btn" type="button" id="btnClear">Alle löschen</button>
+					</div>
+					<p class="stage-note" id="handNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Fehler -->
+		<section class="chapter flip" id="fehler">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Die Verlustfunktion</span>
+				<h2>Den Fehler messen</h2>
+				<p>„Passt gut“ ist zu ungenau für einen Computer. Wir brauchen eine Zahl. Dazu schauen wir uns für
+					jeden Punkt den Abstand zur Geraden an, das <strong>Residuum</strong>: wie weit lag die Vorhersage
+					daneben?</p>
+				<p>Manche Abstände sind positiv, manche negativ. Damit sie sich nicht gegenseitig aufheben, wird jeder
+					Abstand <strong>quadriert</strong>. Der Durchschnitt dieser Quadrate ist der
+					<strong>mittlere quadratische Fehler</strong>, kurz MSE.</p>
+				<div class="formula">MSE = (1/n) · Σ (yᵢ − (m·xᵢ + b))²
+					<small>Schalte oben „Fehler als Quadrate“ ein: Der MSE ist genau die durchschnittliche Fläche dieser Quadrate.</small>
+				</div>
+				<p>Das Quadrieren hat einen Nebeneffekt: Große Fehler zählen überproportional. Ein Punkt, der doppelt
+					so weit daneben liegt, kostet viermal so viel. Deshalb reißen Ausreißer die Gerade stark zu sich.
+				</p>
+				<p>Jetzt kann man das Problem umdrehen: Jede Kombination aus m und b hat einen Fehlerwert. Zeichnet
+					man alle auf, entsteht eine <strong>Landschaft</strong>. Rechts ist sie zu sehen: dunkel heißt
+					kleiner Fehler. Irgendwo liegt der tiefste Punkt. Den suchen wir.</p>
+				<p class="merke"><b>Merke</b>Die Verlustfunktion macht aus „passt gut“ eine Zahl. Lernen wird damit zur
+					Suche nach dem tiefsten Punkt einer Landschaft.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Klick in die Landschaft, um m und b direkt zu wählen. Links siehst du sofort die
+					passende Gerade.</p>
+				<div class="duo">
+					<div>
+						<canvas id="cvFitSmall" aria-label="Gerade zu den gewählten Werten"></canvas>
+						<span class="stage-tag">Gerade</span>
+					</div>
+					<div>
+						<canvas id="cvLand" class="touch" aria-label="Fehler-Landschaft über Steigung und Achsenabschnitt"></canvas>
+						<span class="stage-tag">Fehler-Landschaft</span>
+					</div>
+				</div>
+				<div class="stage-controls">
+					<div class="stats">
+						<div class="stat"><small>Steigung m</small><b id="landM"></b></div>
+						<div class="stat"><small>Achsenabschnitt b</small><b id="landB"></b></div>
+						<div class="stat"><small>MSE</small><b id="landL"></b></div>
+					</div>
+					<p class="stage-note">Waagrecht: Steigung m von −2 bis 3. Senkrecht: Achsenabschnitt b von −6 bis 10.
+						Das Kreuz markiert das Minimum.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Gradientenabstieg -->
+		<section class="chapter" id="abstieg">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Gradientenabstieg</span>
+				<h2>Bergab lernen</h2>
+				<p>Bei zwei Stellschrauben könnte man die ganze Landschaft abrastern. Ein großes Sprachmodell hat aber
+					Milliarden davon. Dafür gibt es einen Trick, der überall im Machine Learning steckt: den
+					<strong>Gradientenabstieg</strong>.</p>
+				<p>Stell dir vor, du stehst im Nebel auf einem Hügel und willst ins Tal. Du siehst nichts, aber du
+					spürst, in welche Richtung der Boden abfällt. Also machst du einen kleinen Schritt bergab. Und noch
+					einen. Und noch einen.</p>
+				<p>Die „gefühlte Neigung“ ist die <strong>Ableitung</strong> des Fehlers nach m und nach b. Für den MSE
+					lässt sie sich direkt hinschreiben:</p>
+				<div class="formula">∂MSE/∂m = −(2/n) · Σ xᵢ · (yᵢ − ŷᵢ)<br />∂MSE/∂b = −(2/n) · Σ (yᵢ − ŷᵢ)
+					<small>Danach: m ← m − α · ∂MSE/∂m und b ← b − α · ∂MSE/∂b. α ist die Lernrate.</small>
+				</div>
+				<p>Die <strong>Lernrate</strong> ist die Schrittlänge. Zu klein: Es dauert ewig. Zu groß: Man springt
+					über das Tal hinaus, landet auf der anderen Seite noch höher und schaukelt sich auf, bis alles
+					explodiert. Probier beides aus.</p>
+				<p class="merke"><b>Merke</b>Gradientenabstieg: Neigung ausrechnen, kleinen Schritt bergab machen,
+					wiederholen. So lernen auch die größten neuronalen Netze.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Mit zu großer Lernrate springt jeder Schritt über das Minimum hinweg und landet weiter oben als vorher. Der Fehler wächst von Schritt zu Schritt, bis die Zahlen explodieren.">
+					<p class="quiz-q">Der Fehler wird beim Training mit jedem Schritt größer statt kleiner. Was ist die
+						wahrscheinlichste Ursache?</p>
+					<div class="quiz-options">
+						<button type="button">Zu wenige Datenpunkte</button>
+						<button type="button">Die Lernrate ist zu klein</button>
+						<button type="button">Die Lernrate ist zu groß</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte den Abstieg und beobachte den Pfad durch die Landschaft. Dann stell die Lernrate
+					ganz nach rechts.</p>
+				<div class="duo">
+					<div>
+						<canvas id="cvGdFit" aria-label="Gerade während des Trainings"></canvas>
+						<span class="stage-tag">Gerade</span>
+					</div>
+					<div>
+						<canvas id="cvGdLand" class="touch" aria-label="Pfad des Gradientenabstiegs"></canvas>
+						<span class="stage-tag">Pfad</span>
+					</div>
+				</div>
+				<div class="stage-view">
+					<canvas id="cvLoss" aria-label="Fehlerkurve über die Trainingsschritte"></canvas>
+					<span class="stage-tag">Fehler pro Schritt (log)</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Lernrate α</span><output id="lrOut"></output></span>
+						<input id="lrIn" type="range" min="0" max="100" step="1" value="40" />
+					</label>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnRun">▶ Abstieg starten</button>
+						<button class="btn" type="button" id="btnStep">Ein Schritt</button>
+						<button class="btn" type="button" id="btnReset">Zurück auf Start</button>
+					</div>
+					<div class="stats">
+						<div class="stat"><small>Schritt</small><b id="gdStep">0</b></div>
+						<div class="stat"><small>m</small><b id="gdM"></b></div>
+						<div class="stat"><small>b</small><b id="gdB"></b></div>
+						<div class="stat"><small>MSE</small><b id="gdL"></b></div>
+					</div>
+					<p class="stage-note" id="gdNote">Tipp in die Landschaft, um einen anderen Startpunkt zu wählen.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Exakte Lösung -->
+		<section class="chapter flip" id="exakt">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Kleinste Quadrate</span>
+				<h2>Die exakte Lösung</h2>
+				<p>Für die Gerade gibt es eine Abkürzung. Weil die Fehler-Landschaft eine glatte Schüssel ist, liegt
+					das Minimum genau dort, wo beide Ableitungen null sind. Löst man das auf, fallen zwei Formeln
+					heraus, die schon Gauß und Legendre um 1805 benutzt haben:</p>
+				<div class="formula">m = Σ (xᵢ − x̄)(yᵢ − ȳ) / Σ (xᵢ − x̄)²<br />b = ȳ − m · x̄
+					<small>x̄ und ȳ sind die Mittelwerte. Die beste Gerade läuft immer durch den Schwerpunkt (x̄, ȳ).</small>
+				</div>
+				<p>Wie gut die Gerade insgesamt erklärt, misst <strong>R²</strong>: 1 heißt, alle Punkte liegen exakt
+					drauf; 0 heißt, die Gerade ist nicht besser als einfach immer den Mittelwert zu raten.</p>
+				<p>Warum dann überhaupt Gradientenabstieg? Weil die exakte Formel nur für so einfache Modelle
+					existiert. Für ein neuronales Netz gibt es keine. Bergab gehen funktioniert dagegen immer.</p>
+				<div class="code">
+					<div class="code-head"><span>regression.js · komplett, ohne Bibliothek</span></div>
+					<pre><span class="k">function</span> <span class="n">fit</span>(xs, ys) {
+  <span class="k">const</span> n = xs.length;
+  <span class="k">const</span> mx = xs.reduce((a, x) => a + x, 0) / n;
+  <span class="k">const</span> my = ys.reduce((a, y) => a + y, 0) / n;
+  <span class="k">let</span> num = 0, den = 0;
+  <span class="k">for</span> (<span class="k">let</span> i = 0; i &lt; n; i++) {
+    num += (xs[i] - mx) * (ys[i] - my);
+    den += (xs[i] - mx) ** 2;
+  }
+  <span class="k">const</span> m = num / den;
+  <span class="k">return</span> { m, b: my - m * mx };
+}
+
+<span class="c">// Dasselbe mit Gradientenabstieg</span>
+<span class="k">function</span> <span class="n">train</span>(xs, ys, lr = 0.01, steps = 1000) {
+  <span class="k">let</span> m = 0, b = 0;
+  <span class="k">const</span> n = xs.length;
+  <span class="k">for</span> (<span class="k">let</span> s = 0; s &lt; steps; s++) {
+    <span class="k">let</span> gm = 0, gb = 0;
+    <span class="k">for</span> (<span class="k">let</span> i = 0; i &lt; n; i++) {
+      <span class="k">const</span> err = ys[i] - (m * xs[i] + b);
+      gm += (-2 / n) * xs[i] * err;
+      gb += (-2 / n) * err;
+    }
+    m -= lr * gm;
+    b -= lr * gb;
+  }
+  <span class="k">return</span> { m, b };
+}</pre>
+				</div>
+				<p class="merke"><b>Merke</b>Für die Gerade gibt es eine Formel. Für fast alles andere im Machine
+					Learning nicht, da bleibt nur der Gradientenabstieg.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Hier wird immer die exakte Gerade berechnet. Zieh einen Punkt weit nach oben und sieh,
+					wie stark ein einzelner Ausreißer alles verbiegt.</p>
+				<div class="stage-view">
+					<canvas id="cvExact" class="touch" aria-label="Streudiagramm mit exakter Regressionsgerade"></canvas>
+					<span class="stage-tag">Kleinste Quadrate</span>
+					<span class="stage-readout" id="exactReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Vorhersage für x =</span><output id="predOut"></output></span>
+						<input id="predIn" type="range" min="0" max="10" step="0.1" value="7.5" />
+					</label>
+					<div class="stats">
+						<div class="stat"><small>m</small><b id="exM"></b></div>
+						<div class="stat"><small>b</small><b id="exB"></b></div>
+						<div class="stat"><small>R²</small><b id="exR"></b></div>
+						<div class="stat"><small>Punkte</small><b id="exN"></b></div>
+					</div>
+					<button class="btn" type="button" id="btnExactToHand">Lösung in Kapitel 1 übernehmen</button>
+					<p class="stage-note">Alle vier Ansichten teilen sich dieselben Datenpunkte.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in Machine Learning · Projekt 2</p>
+		<a href="../pca/">Hauptkomponentenanalyse <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/ml.js"></script>
+	<script src="./regression.js"></script>
+</body>
+
+</html>

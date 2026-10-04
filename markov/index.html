@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Markov-Ketten-Textgenerator — Newbobb Lab</title>
+	<meta name="description"
+		content="Ein Textgenerator mit Markov-Ketten, von null an: Wortpaare zählen, die Kette als Graph sehen, Ordnung und Zeichenebene ausprobieren und eigene Texte nachahmen lassen." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/ml.css" />
+	<style>
+		.corpus {
+			max-height: 260px;
+			overflow-y: auto;
+			padding: 16px 18px;
+			line-height: 1.9;
+			font-size: 0.98rem;
+			background: #070806;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.corpus .w {
+			padding: 2px 3px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background 0.15s;
+		}
+
+		.corpus .w:hover {
+			background: rgba(255, 255, 255, 0.08);
+		}
+
+		.corpus .w.is-sel {
+			background: var(--accent);
+			color: var(--accent-ink);
+		}
+
+		.corpus .w.is-next {
+			background: color-mix(in srgb, var(--c-b) 30%, transparent);
+			box-shadow: inset 0 -2px 0 var(--c-b);
+		}
+
+		.gen {
+			margin: 0;
+			padding: 18px;
+			min-height: 170px;
+			font-family: "Syne", sans-serif;
+			font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+			line-height: 1.5;
+			color: var(--ink);
+			background: #070806;
+			border-bottom: 1px solid var(--line);
+			overflow-wrap: anywhere;
+		}
+
+		.gen.char {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.98rem;
+		}
+
+		.gen mark {
+			background: none;
+			color: var(--accent);
+		}
+
+		.walk-text {
+			margin: 0;
+			padding: 12px 18px;
+			min-height: 3.4em;
+			font-family: "Syne", sans-serif;
+			font-size: 1.1rem;
+			border-bottom: 1px solid var(--line);
+			background: #070806;
+		}
+
+		.walk-text b {
+			color: var(--accent);
+		}
+
+		#countProbs .prob {
+			grid-template-columns: minmax(70px, 12ch) minmax(0, 1fr) 10ch;
+		}
+
+		.field {
+			display: grid;
+			gap: 4px;
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#ml">newbobb <span>/ machine learning</span></a>
+		<nav class="v-series" aria-label="Rubrik Machine Learning">
+			<a href="../regression/">Regression</a>
+			<a href="../pca/">PCA</a>
+			<a href="../neuronales-netz/">Neuronales Netz</a>
+			<a href="../markov/" aria-current="page">Markov-Kette</a>
+			<a href="../entscheidungsbaum/">Entscheidungsbaum</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Machine Learning · Projekt 4 · von null an</p>
+			<h1>Markov-<br /><em>Ketten</em></h1>
+			<p class="v-lede">Ein Textgenerator in zwanzig Zeilen: Er zählt, welches Wort auf welches folgt, und würfelt
+				dann neue Sätze zusammen. Das klingt verblüffend echt und ist der Urgroßvater von ChatGPT.</p>
+			<ol class="v-toc">
+				<li><a href="#zaehlen">Was kommt danach?</a></li>
+				<li><a href="#graph">Die Kette als Graph</a></li>
+				<li><a href="#generator">Der Generator</a></li>
+				<li><a href="#code">Der ganze Code</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Zählen -->
+		<section class="chapter" id="zaehlen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Statistik</span>
+				<h2>Was kommt danach?</h2>
+				<p>Lies einen Text und notiere für jedes Wort, welches Wort direkt danach kommt. Nach
+					<em>„es“</em> folgt in einem Märchen oft <em>„war“</em>, nach <em>„war“</em> oft
+					<em>„einmal“</em>. Zählt man das für alle Wörter, hat man eine Tabelle von
+					<strong>Übergängen</strong>.</p>
+				<p>Teilt man die Zählungen durch die Gesamtzahl, werden daraus
+					<strong>Wahrscheinlichkeiten</strong>: Nach „der“ kommt zu 30 % „König“, zu 20 % „Wald“ und so
+					weiter. Mehr „Training“ braucht ein Markov-Modell nicht.</p>
+				<p>Das Besondere, und der Namensgeber: Das Modell schaut nur auf das <strong>aktuelle</strong> Wort.
+					Alles davor ist vergessen. Der russische Mathematiker Andrei Markow hat 1913 genau so die Abfolge
+					von Vokalen und Konsonanten in Puschkins „Eugen Onegin“ untersucht, mit Bleistift, über 20 000
+					Buchstaben.</p>
+				<p class="merke"><b>Merke</b>Eine Markov-Kette merkt sich für jeden Zustand, wie oft welcher nächste
+					Zustand folgt. Die Vergangenheit davor spielt keine Rolle.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Klick auf ein Wort im Text. Blau markiert ist jedes Wort, das direkt danach folgt.</p>
+				<div class="corpus" id="corpusView" aria-label="Trainingstext, Wörter anklickbar"></div>
+				<div class="stage-controls">
+					<p class="stage-note" id="countNote" style="color: var(--ink)"></p>
+					<div class="probs" id="countProbs"></div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Graph -->
+		<section class="chapter flip" id="graph">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Zustände und Übergänge</span>
+				<h2>Die Kette als Graph</h2>
+				<p>Man kann die Tabelle auch zeichnen: Jedes Wort ist ein Kreis, jeder mögliche Übergang ein Pfeil mit
+					seiner Wahrscheinlichkeit. Der Satzpunkt ist ein eigener Zustand, von dem aus ein neuer Satz
+					beginnt.</p>
+				<p>Text erzeugen heißt jetzt: Starte irgendwo und folge den Pfeilen. An jeder Kreuzung entscheidet ein
+					Würfel, gewichtet mit den Wahrscheinlichkeiten. Das ist ein <strong>Zufallsspaziergang</strong>.</p>
+				<p>Schon mit drei kurzen Trainingssätzen entstehen Sätze, die so nie im Text standen, etwa „der Hund
+					jagt die Maus“. Aber auch Unsinn wie „die Katze jagt die Katze jagt die Katze“. Die Kette weiß ja
+					nicht mehr, dass sie das gerade schon gesagt hat.</p>
+				<p class="merke"><b>Merke</b>Text erzeugen = durch den Graphen spazieren und an jeder Kreuzung
+					gewichtet würfeln.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Drück „Ein Schritt“ und sieh dem Würfel zu. Oder lass die Kette laufen.</p>
+				<p class="walk-text" id="walkText" aria-live="polite"></p>
+				<div class="stage-view">
+					<canvas id="cvGraph" aria-label="Markov-Kette als Graph"></canvas>
+					<span class="stage-tag">Zustände</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnWalkStep">Ein Schritt</button>
+						<button class="btn" type="button" id="btnWalkRun">▶ Laufen lassen</button>
+						<button class="btn" type="button" id="btnWalkClear">Text löschen</button>
+					</div>
+					<div class="chips" role="group" aria-label="Mini-Text">
+						<button class="btn" type="button" data-mini="0" aria-pressed="true">Hund und Katze</button>
+						<button class="btn" type="button" data-mini="1" aria-pressed="false">Wetter</button>
+					</div>
+					<p class="stage-note" id="walkNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Generator -->
+		<section class="chapter wide" id="generator">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Gedächtnis</span>
+				<h2>Der Generator</h2>
+				<p>Das Vergessen ist die große Schwäche. Die Lösung: Statt nur auf das letzte Wort schaut man auf die
+					letzten <strong>zwei oder drei</strong>. Das nennt man die <strong>Ordnung</strong> der Kette. Ein
+					Zustand ist dann nicht mehr „jagt“, sondern „Hund jagt“.</p>
+				<p>Mehr Ordnung heißt flüssigerer Text. Aber es gibt einen Haken: Je länger der Zustand, desto seltener
+					kommt er im Text vor. Bald gibt es für jeden Zustand nur noch eine einzige Fortsetzung, und die
+					Kette schreibt den Originaltext einfach ab. Grün markiert sind Stellen, an denen sie wirklich eine
+					Wahl hatte.</p>
+				<p>Statt Wörtern kann man auch <strong>Buchstaben</strong> verketten. Bei Ordnung 2 kommt
+					Kauderwelsch heraus, bei Ordnung 5 erfundene Wörter, die verdächtig deutsch klingen.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="gen" id="genOut" aria-live="polite"></div>
+				<div class="stage-controls">
+					<div class="chips" role="group" aria-label="Trainingstext">
+						<button class="btn" type="button" data-corpus="maerchen" aria-pressed="true">Märchen</button>
+						<button class="btn" type="button" data-corpus="wetter" aria-pressed="false">Wetterbericht</button>
+						<button class="btn" type="button" data-corpus="rezept" aria-pressed="false">Kochbuch</button>
+						<button class="btn" type="button" data-corpus="eigen" aria-pressed="false">Eigener Text</button>
+					</div>
+					<textarea class="text-in" id="ownText" hidden
+						placeholder="Füge hier einen längeren Text ein, mindestens ein paar Absätze. Songtexte, Nachrichten, deine Chatnachrichten …"></textarea>
+					<div class="chips" role="group" aria-label="Ebene">
+						<button class="btn" type="button" data-level="word" aria-pressed="true">Wörter</button>
+						<button class="btn" type="button" data-level="char" aria-pressed="false">Buchstaben</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Ordnung (Gedächtnis)</span><output id="ordOut"></output></span>
+						<input id="ordIn" type="range" min="1" max="4" step="1" value="1" />
+					</label>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnGen">Neuen Text würfeln</button>
+					</div>
+					<div class="stats">
+						<div class="stat"><small>Zustände</small><b id="gStates"></b></div>
+						<div class="stat"><small>Ø Möglichkeiten</small><b id="gBranch"></b></div>
+						<div class="stat"><small>Echte Wahl</small><b id="gChoice"></b></div>
+					</div>
+					<p class="stage-note" id="genNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Code -->
+		<section class="chapter" id="code">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Von null an</span>
+				<h2>Der ganze Code</h2>
+				<p>Das ist wirklich alles. Ein Wörterbuch von Zuständen zu Listen möglicher Nachfolger. Wer ein Wort
+					doppelt so oft gesehen hat, legt es einfach doppelt in die Liste, dann stimmt die Wahrscheinlichkeit
+					beim Ziehen automatisch.</p>
+				<p>Und der Bezug zur modernen KI? Ein großes Sprachmodell macht im Kern dasselbe: Es sagt das nächste
+					Wort vorher. Nur schaut es nicht auf zwei Wörter, sondern auf hunderttausende. Und statt einer
+					Tabelle, die für jeden genauen Zustand Buch führt, benutzt es ein <a href="../neuronales-netz/">neuronales
+						Netz</a>, das auch Zustände versteht, die es so nie gesehen hat. Wie das funktioniert, zeigt
+					<a href="../ki/">Wie Sprach-KI funktioniert</a>.</p>
+				<p class="merke"><b>Merke</b>Markov-Kette und Sprachmodell raten beide das nächste Wort. Der
+					Unterschied ist, wie viel Kontext sie sehen und wie klug sie verallgemeinern.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Bei hoher Ordnung ist fast jede Wortfolge im Text einzigartig. Für jeden Zustand gibt es dann nur noch eine Fortsetzung, und die Kette schreibt den Trainingstext Stück für Stück ab.">
+					<p class="quiz-q">Warum schreibt eine Markov-Kette mit hoher Ordnung oft wörtlich den Trainingstext
+						ab?</p>
+					<div class="quiz-options">
+						<button type="button">Weil sie zu wenig Rechenleistung hat</button>
+						<button type="button">Weil sie absichtlich zitiert</button>
+						<button type="button">Weil lange Wortfolgen meist nur einmal vorkommen und es nur eine Fortsetzung gibt</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<div class="code" style="margin: 0; border: 0; border-radius: 0">
+					<div class="code-head"><span>markov.js · komplett, ohne Bibliothek</span></div>
+					<pre><span class="k">function</span> <span class="n">train</span>(text, order = 2) {
+  <span class="k">const</span> words = text.match(<span class="n">/[\p{L}\d]+|[.,!?]/gu</span>);
+  <span class="k">const</span> chain = <span class="k">new</span> Map();
+  <span class="k">for</span> (<span class="k">let</span> i = order; i &lt; words.length; i++) {
+    <span class="k">const</span> state = words.slice(i - order, i).join(<span class="n">" "</span>);
+    <span class="k">if</span> (!chain.has(state)) chain.set(state, []);
+    chain.get(state).push(words[i]); <span class="c">// Duplikate = Gewicht</span>
+  }
+  <span class="k">return</span> chain;
+}
+
+<span class="k">function</span> <span class="n">generate</span>(chain, order, length = 50) {
+  <span class="k">const</span> states = [...chain.keys()];
+  <span class="k">let</span> out = states[Math.floor(Math.random() * states.length)].split(<span class="n">" "</span>);
+  <span class="k">while</span> (out.length &lt; length) {
+    <span class="k">const</span> next = chain.get(out.slice(-order).join(<span class="n">" "</span>));
+    <span class="k">if</span> (!next) <span class="k">break</span>; <span class="c">// Sackgasse: Zustand kam nur am Textende vor</span>
+    out.push(next[Math.floor(Math.random() * next.length)]);
+  }
+  <span class="k">return</span> out.join(<span class="n">" "</span>).replace(<span class="n">/ ([.,!?])/g</span>, <span class="n">"$1"</span>);
+}
+
+<span class="k">const</span> chain = train(meinText, 2);
+console.log(generate(chain, 2));</pre>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in Machine Learning · Projekt 5</p>
+		<a href="../entscheidungsbaum/">Entscheidungsbaum <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/ml.js"></script>
+	<script src="./korpus.js"></script>
+	<script src="./markov.js"></script>
+</body>
+
+</html>

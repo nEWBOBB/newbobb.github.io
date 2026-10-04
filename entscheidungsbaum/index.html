@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Entscheidungsbaum — Newbobb Lab</title>
+	<meta name="description"
+		content="Ein Entscheidungsbaum von null an: Ja-Nein-Fragen, Gini-Unreinheit, der beste Schnitt, rekursiver Aufbau und Überanpassung. Interaktiv im Browser." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/ml.css" />
+	<style>
+		.tree-wrap {
+			padding: 10px 8px 4px;
+			background: #070806;
+			border-bottom: 1px solid var(--line);
+			overflow-x: auto;
+		}
+
+		#treeSvg {
+			display: block;
+			width: 100%;
+			min-width: 420px;
+			height: auto;
+		}
+
+		#treeSvg text {
+			font-family: "JetBrains Mono", monospace;
+		}
+
+		.split-q {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 1rem;
+			color: var(--ink);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#ml">newbobb <span>/ machine learning</span></a>
+		<nav class="v-series" aria-label="Rubrik Machine Learning">
+			<a href="../regression/">Regression</a>
+			<a href="../pca/">PCA</a>
+			<a href="../neuronales-netz/">Neuronales Netz</a>
+			<a href="../markov/">Markov-Kette</a>
+			<a href="../entscheidungsbaum/" aria-current="page">Entscheidungsbaum</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Machine Learning · Projekt 5 · von null an</p>
+			<h1>Entscheidungs&shy;<em>baum</em></h1>
+			<p class="v-lede">Wie beim Spiel „Wer bin ich?“: Ein Entscheidungsbaum stellt eine Ja-Nein-Frage nach der
+				anderen, bis die Antwort klar ist. Welche Fragen er stellt, findet er selbst heraus, mit einer
+				einzigen Zahl: der Unreinheit.</p>
+			<ol class="v-toc">
+				<li><a href="#schnitt">Der beste Schnitt</a></li>
+				<li><a href="#baum">Ein ganzer Baum</a></li>
+				<li><a href="#ueberanpassung">Zu tief gewachsen</a></li>
+				<li><a href="#code">Der ganze Code</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Schnitt -->
+		<section class="chapter" id="schnitt">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Gini-Unreinheit</span>
+				<h2>Der beste Schnitt</h2>
+				<p>Ein Entscheidungsbaum fragt immer nach genau einem Merkmal: „Ist x kleiner als 4?“ Auf der Fläche
+					rechts ist das eine senkrechte oder waagrechte Linie, die die Punkte in zwei Gruppen teilt.</p>
+				<p>Ein guter Schnitt macht beide Gruppen möglichst <strong>rein</strong>, also möglichst nur eine
+					Farbe. Gemessen wird das mit der <strong>Gini-Unreinheit</strong>: der Wahrscheinlichkeit, dass zwei
+					zufällig gezogene Punkte aus der Gruppe verschiedene Farben haben.</p>
+				<div class="formula">Gini = 1 − Σ pₖ²
+					<small>pₖ ist der Anteil der Klasse k in der Gruppe. Nur eine Farbe: Gini = 0. Halb und halb: Gini =
+						0,5.</small>
+				</div>
+				<p>Die Unreinheit beider Seiten wird gewichtet mit ihrer Größe zusammengezählt. Der Baum probiert
+					einfach <strong>jeden</strong> möglichen Schnitt aus, auf jeder Achse, und nimmt den mit der
+					kleinsten Unreinheit. Die Kurve unter der Fläche zeigt sie für alle Positionen.</p>
+				<p class="merke"><b>Merke</b>Der beste Schnitt ist der, nach dem beide Seiten am reinsten sind. Der
+					Baum findet ihn durch stures Ausprobieren.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Achse und schieb den Schnitt, bis die Unreinheit möglichst klein ist.</p>
+				<div class="stage-view">
+					<canvas id="cvSplit" aria-label="Punkte mit einem Schnitt"></canvas>
+					<span class="stage-tag">Eine Frage</span>
+					<span class="stage-readout" id="splitReadout"></span>
+				</div>
+				<div class="stage-view">
+					<canvas id="cvGini" aria-label="Gewichtete Gini-Unreinheit für jede Schnittposition"></canvas>
+					<span class="stage-tag">Unreinheit je Position</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" role="group" aria-label="Achse">
+						<button class="btn" type="button" data-axis="0" aria-pressed="true">Schnitt auf x</button>
+						<button class="btn" type="button" data-axis="1" aria-pressed="false">Schnitt auf y</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span class="split-q" id="splitQ"></span><output id="thrOut"></output></span>
+						<input id="thrIn" type="range" min="0" max="10" step="0.05" value="2.5" />
+					</label>
+					<div class="stats">
+						<div class="stat"><small>Gini links/unten</small><b id="gL"></b></div>
+						<div class="stat"><small>Gini rechts/oben</small><b id="gR"></b></div>
+						<div class="stat"><small>Gewichtet</small><b id="gW"></b></div>
+					</div>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnBest">Besten Schnitt finden</button>
+						<button class="btn" type="button" id="btnSplitNew">Neue Punkte</button>
+					</div>
+					<p class="stage-note" id="splitNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Baum -->
+		<section class="chapter wide" id="baum">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Rekursion</span>
+				<h2>Ein ganzer Baum</h2>
+				<p>Nach dem ersten Schnitt hat man zwei Gruppen. Für jede davon macht man <strong>genau dasselbe</strong>
+					noch einmal: besten Schnitt suchen, teilen. Und wieder. Das hört erst auf, wenn eine Gruppe rein ist
+					oder der Baum seine maximale Tiefe erreicht hat. Diese Idee, ein Problem mit sich selbst zu lösen,
+					heißt <strong>Rekursion</strong>.</p>
+				<p>Am Ende zerlegt der Baum die Fläche in Rechtecke, und jedes Blatt sagt die häufigste Farbe darin
+					vorher. Fahr mit der Maus über die Fläche, um den Weg durch den Baum zu sehen. Tippen setzt einen
+					Punkt in der gewählten Farbe.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="duo">
+					<div>
+						<canvas id="cvTree" class="touch" aria-label="Fläche, vom Baum in Rechtecke zerlegt"></canvas>
+						<span class="stage-tag">Zerlegung</span>
+						<span class="stage-readout" id="treeReadout"></span>
+					</div>
+					<div class="tree-wrap">
+						<svg id="treeSvg" role="img" aria-label="Der Entscheidungsbaum als Diagramm"></svg>
+					</div>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Maximale Tiefe</span><output id="depthOut"></output></span>
+						<input id="depthIn" type="range" min="0" max="6" step="1" value="2" />
+					</label>
+					<div class="chips" role="group" aria-label="Farbe neuer Punkte">
+						<button class="btn" type="button" data-cls="0" aria-pressed="true"><span style="color: #ff8a5c">●</span> Orange setzen</button>
+						<button class="btn" type="button" data-cls="1" aria-pressed="false"><span style="color: #5cc8ff">●</span> Blau setzen</button>
+						<button class="btn" type="button" data-cls="2" aria-pressed="false"><span style="color: #9be564">●</span> Grün setzen</button>
+					</div>
+					<div class="chips">
+						<button class="btn" type="button" id="btnTreeNew">Neue Punkte</button>
+						<button class="btn" type="button" id="btnTreeClear">Alle löschen</button>
+					</div>
+					<p class="stage-note" id="treeNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Überanpassung -->
+		<section class="chapter" id="ueberanpassung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Überanpassung</span>
+				<h2>Zu tief gewachsen</h2>
+				<p>Lässt man den Baum unbegrenzt wachsen, teilt er so lange, bis jedes Blatt rein ist. Auf den
+					Trainingsdaten erreicht er dann immer 100 %. Klingt toll, ist aber eine Falle.</p>
+				<p>Echte Daten sind verrauscht: Ein paar Punkte liegen zufällig auf der falschen Seite. Ein zu tiefer
+					Baum baut für jeden dieser Ausreißer ein eigenes kleines Kästchen. Er hat die Daten
+					<strong>auswendig gelernt</strong>, statt das Muster zu verstehen. Auf neuen Daten, die er nie
+					gesehen hat, wird er schlechter.</p>
+				<p>Deshalb hält man immer einen Teil der Daten zurück, die <strong>Testdaten</strong>. Die Kurve rechts
+					zeigt beide Trefferquoten über die Tiefe. Wo sie auseinanderlaufen, beginnt die Überanpassung.</p>
+				<p>Ein beliebter Ausweg ist der <strong>Random Forest</strong>: Hunderte Bäume, jeder auf einer
+					zufälligen Auswahl der Daten trainiert, stimmen gemeinsam ab. Ihre Fehler heben sich zum großen Teil
+					gegenseitig auf.</p>
+				<p class="merke"><b>Merke</b>100 % auf den Trainingsdaten heißt nichts. Was zählt, ist die Trefferquote
+					auf Daten, die das Modell nie gesehen hat.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Die Trainingsquote steigt mit der Tiefe immer weiter, weil der Baum sich jedem Punkt anpassen kann. Die Testquote zeigt, wie gut er verallgemeinert. Die beste Tiefe ist die mit der höchsten Testquote.">
+					<p class="quiz-q">Woran erkennt man die beste Tiefe für den Baum?</p>
+					<div class="quiz-options">
+						<button type="button">An der höchsten Trefferquote auf den Trainingsdaten</button>
+						<button type="button">An der höchsten Trefferquote auf den Testdaten</button>
+						<button type="button">So tief wie möglich ist immer am besten</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh die Tiefe nach rechts. Gefüllte Punkte sind Training, Ringe sind Testdaten.</p>
+				<div class="stage-view">
+					<canvas id="cvOver" aria-label="Zerlegung eines verrauschten Datensatzes"></canvas>
+					<span class="stage-tag">Verrauschte Daten</span>
+					<span class="stage-readout" id="overReadout"></span>
+				</div>
+				<div class="stage-view">
+					<canvas id="cvCurve" aria-label="Trefferquote auf Trainings- und Testdaten über die Tiefe"></canvas>
+					<span class="stage-tag">Trefferquote je Tiefe</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Maximale Tiefe</span><output id="odOut"></output></span>
+						<input id="odIn" type="range" min="1" max="14" step="1" value="3" />
+					</label>
+					<ul class="keys">
+						<li style="--k: #9be564">Training</li>
+						<li style="--k: #ffc777">Test</li>
+					</ul>
+					<div class="chips">
+						<button class="btn" type="button" id="btnOverNew">Neue Daten</button>
+					</div>
+					<p class="stage-note" id="overNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Code -->
+		<section class="chapter flip" id="code">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Von null an</span>
+				<h2>Der ganze Code</h2>
+				<p>Der Algorithmus heißt <strong>CART</strong> (Classification and Regression Trees) und stammt von
+					1984. Er besteht aus drei kleinen Funktionen: Unreinheit messen, besten Schnitt suchen, rekursiv
+					wachsen.</p>
+				<p>Entscheidungsbäume haben einen großen Vorteil gegenüber neuronalen Netzen: Man kann sie
+					<strong>lesen</strong>. Jede Vorhersage lässt sich als Kette von Fragen erklären. Deshalb werden sie
+					gern dort eingesetzt, wo Entscheidungen nachvollziehbar sein müssen, etwa bei Krediten oder in der
+					Medizin.</p>
+				<p class="merke"><b>Merke</b>Messen, bester Schnitt, rekursiv weiter: Mehr ist ein Entscheidungsbaum
+					nicht.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="code" style="margin: 0; border: 0; border-radius: 0">
+					<div class="code-head"><span>baum.js · komplett, ohne Bibliothek</span></div>
+					<pre><span class="k">function</span> <span class="n">gini</span>(points) {
+  <span class="k">const</span> counts = {};
+  points.forEach(p => counts[p.c] = (counts[p.c] || 0) + 1);
+  <span class="k">return</span> 1 - Object.values(counts)
+    .reduce((s, n) => s + (n / points.length) ** 2, 0);
+}
+
+<span class="k">function</span> <span class="n">bestSplit</span>(points) {
+  <span class="k">let</span> best = { score: Infinity };
+  <span class="k">for</span> (<span class="k">const</span> f <span class="k">of</span> [<span class="n">"x"</span>, <span class="n">"y"</span>]) {
+    <span class="k">for</span> (<span class="k">const</span> p <span class="k">of</span> points) {
+      <span class="k">const</span> thr = p[f];
+      <span class="k">const</span> L = points.filter(q => q[f] &lt;= thr);
+      <span class="k">const</span> R = points.filter(q => q[f] > thr);
+      <span class="k">if</span> (!L.length || !R.length) <span class="k">continue</span>;
+      <span class="k">const</span> score = (L.length * gini(L) + R.length * gini(R)) / points.length;
+      <span class="k">if</span> (score &lt; best.score) best = { f, thr, L, R, score };
+    }
+  }
+  <span class="k">return</span> best;
+}
+
+<span class="k">function</span> <span class="n">grow</span>(points, depth, maxDepth) {
+  <span class="k">const</span> counts = {};
+  points.forEach(p => counts[p.c] = (counts[p.c] || 0) + 1);
+  <span class="k">const</span> pred = Object.keys(counts)
+    .reduce((a, b) => counts[a] >= counts[b] ? a : b);
+  <span class="k">if</span> (depth >= maxDepth || gini(points) === 0) <span class="k">return</span> { pred };
+  <span class="k">const</span> s = bestSplit(points);
+  <span class="k">if</span> (!s.L) <span class="k">return</span> { pred };
+  <span class="k">return</span> { f: s.f, thr: s.thr,
+    left: grow(s.L, depth + 1, maxDepth),
+    right: grow(s.R, depth + 1, maxDepth) };
+}
+
+<span class="k">function</span> <span class="n">predict</span>(node, p) {
+  <span class="k">while</span> (!(<span class="n">"pred"</span> <span class="k">in</span> node))
+    node = p[node.f] &lt;= node.thr ? node.left : node.right;
+  <span class="k">return</span> node.pred;
+}</pre>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Zurück zum Anfang der Rubrik · Projekt 1</p>
+		<a href="../regression/">Lineare Regression <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/ml.js"></script>
+	<script src="./baum.js"></script>
+</body>
+
+</html>

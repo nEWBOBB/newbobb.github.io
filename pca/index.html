@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Hauptkomponentenanalyse — Newbobb Lab</title>
+	<meta name="description"
+		content="Hauptkomponentenanalyse (PCA) von null an: die Richtung mit der meisten Streuung finden, Kovarianzmatrix und Eigenvektoren verstehen, Power-Iteration ausprobieren und drei Dimensionen auf zwei eindampfen." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/ml.css" />
+	<style>
+		.matrix {
+			display: inline-grid;
+			grid-template-columns: repeat(2, auto);
+			gap: 2px 18px;
+			padding: 6px 12px;
+			border-left: 2px solid var(--muted);
+			border-right: 2px solid var(--muted);
+			border-radius: 6px;
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.95rem;
+			font-variant-numeric: tabular-nums;
+			text-align: right;
+		}
+
+		.matrix-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 14px 22px;
+			align-items: center;
+			width: 100%;
+			font-size: 0.88rem;
+			color: var(--muted);
+		}
+
+		#cv3d {
+			cursor: grab;
+			touch-action: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#ml">newbobb <span>/ machine learning</span></a>
+		<nav class="v-series" aria-label="Rubrik Machine Learning">
+			<a href="../regression/">Regression</a>
+			<a href="../pca/" aria-current="page">PCA</a>
+			<a href="../neuronales-netz/">Neuronales Netz</a>
+			<a href="../markov/">Markov-Kette</a>
+			<a href="../entscheidungsbaum/">Entscheidungsbaum</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Machine Learning · Projekt 2 · von null an</p>
+			<h1>Haupt&shy;komponenten&shy;<em>analyse</em></h1>
+			<p class="v-lede">Daten haben oft viel zu viele Spalten. Die PCA findet die wenigen Richtungen, in denen
+				wirklich etwas passiert, und wirft den Rest weg. Klingt nach Magie, ist aber nur geschickt gedreht.
+			</p>
+			<ol class="v-toc">
+				<li><a href="#richtung">Die beste Richtung</a></li>
+				<li><a href="#kovarianz">Kovarianz und Eigenvektoren</a></li>
+				<li><a href="#iteration">Power-Iteration</a></li>
+				<li><a href="#dimensionen">Von 3D nach 2D</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Richtung -->
+		<section class="chapter" id="richtung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Die Idee</span>
+				<h2>Die beste Richtung</h2>
+				<p>Stell dir vor, du misst bei vielen Menschen Körpergröße und Schuhgröße. Die beiden Werte hängen
+					stark zusammen: Wer groß ist, hat meist auch große Füße. Eigentlich steckt in den zwei Spalten fast
+					nur <strong>eine</strong> Information, so etwas wie „wie groß ist die Person insgesamt“.</p>
+				<p>Die PCA sucht genau diese Richtung. Sie legt eine Achse durch die Punktwolke und
+					<strong>projiziert</strong> jeden Punkt darauf, wie einen Schatten. Dann misst sie, wie weit die
+					Schatten auseinanderliegen, also ihre <strong>Varianz</strong>.</p>
+				<p>Die Achse mit der größten Varianz behält am meisten von den Unterschieden zwischen den Punkten. Sie
+					heißt <strong>erste Hauptkomponente</strong>. Die zweite steht senkrecht darauf und bekommt den Rest.
+				</p>
+				<p class="merke"><b>Merke</b>Die erste Hauptkomponente ist die Richtung, in der die Daten am meisten
+					streuen. Wer nur sie behält, verliert am wenigsten.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh die Achse und finde die Richtung, in der die Schatten am weitesten
+					auseinanderliegen. Punkte kannst du setzen, ziehen und antippen zum Löschen.</p>
+				<div class="stage-view">
+					<canvas id="cvAxis" class="touch" aria-label="Punktwolke mit drehbarer Projektionsachse"></canvas>
+					<span class="stage-tag">Projektion auf eine Achse</span>
+					<span class="stage-readout" id="axisReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Winkel der Achse</span><output id="angOut"></output></span>
+						<input id="angIn" type="range" min="0" max="180" step="0.5" value="100" />
+					</label>
+					<div class="prob" style="width: 100%">
+						<span>Behalten</span>
+						<div class="track"><div class="fill" id="keepBar"></div></div>
+						<output id="keepOut"></output>
+					</div>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnFind">Beste Richtung finden</button>
+						<button class="btn" type="button" id="btnNew">Neue Wolke</button>
+						<button class="btn" type="button" id="btnRound">Runde Wolke</button>
+					</div>
+					<p class="stage-note" id="axisNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Kovarianz -->
+		<section class="chapter flip" id="kovarianz">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Die Mathematik</span>
+				<h2>Kovarianz und Eigen&shy;vektoren</h2>
+				<p>Man muss nicht alle Winkel durchprobieren. Alles, was man braucht, steckt in einer kleinen Tabelle,
+					der <strong>Kovarianzmatrix</strong>. Dafür zieht man zuerst von jeder Spalte ihren Mittelwert ab,
+					sodass die Wolke um den Nullpunkt liegt.</p>
+				<div class="formula">C = (1/n) · Xᵀ · X
+					<small>Auf der Diagonale steht die Varianz jeder Spalte, daneben die Kovarianz: Wachsen beide
+						Spalten gemeinsam, ist sie positiv; läuft eine hoch, wenn die andere runter geht, negativ.</small>
+				</div>
+				<p>Die Hauptkomponenten sind die <strong>Eigenvektoren</strong> dieser Matrix. Ein Eigenvektor ist eine
+					Richtung, die von der Matrix nicht gedreht, sondern nur gestreckt wird. Der Streckfaktor, der
+					<strong>Eigenwert</strong>, ist genau die Varianz in dieser Richtung.</p>
+				<p>Dreht man die Wolke so, dass die Eigenvektoren auf den Achsen liegen, sind die neuen Spalten
+					<strong>unkorreliert</strong>: Die Kovarianz daneben wird null. Das ist die ganze PCA.</p>
+				<p class="merke"><b>Merke</b>PCA = Kovarianzmatrix ausrechnen, ihre Eigenvektoren finden, die Daten in
+					dieses neue Koordinatensystem drehen.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Bei einer runden Wolke streuen die Punkte in alle Richtungen gleich. Beide Eigenwerte sind fast gleich groß, jede Richtung ist so gut wie jede andere. Wegwerfen kann man hier nichts, ohne viel zu verlieren.">
+					<p class="quiz-q">Was zeigt die PCA bei einer kreisrunden Punktwolke?</p>
+					<div class="quiz-options">
+						<button type="button">Eine sehr klare erste Hauptkomponente</button>
+						<button type="button">Zwei fast gleich große Eigenwerte, keine Richtung ist besonders</button>
+						<button type="button">Gar nichts, sie stürzt ab</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Die Pfeile sind die Eigenvektoren, ihre Länge zeigt die Streuung. Dreh die Wolke in
+					das neue Koordinatensystem.</p>
+				<div class="stage-view">
+					<canvas id="cvEig" aria-label="Punktwolke mit Eigenvektoren und Streuungsellipse"></canvas>
+					<span class="stage-tag" id="eigTag">Zentrierte Daten</span>
+				</div>
+				<div class="stage-controls">
+					<div class="matrix-row">
+						<span>C =</span>
+						<span class="matrix" id="covM"></span>
+						<span id="eigVals"></span>
+					</div>
+					<div class="probs" id="explained"></div>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnRotate" aria-pressed="false">In Hauptkomponenten drehen</button>
+					</div>
+					<p class="stage-note">Gleiche Punktwolke wie in Kapitel 1. Ändere sie dort, hier rechnet alles mit.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Power-Iteration -->
+		<section class="chapter" id="iteration">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Von Hand gerechnet</span>
+				<h2>Power-Iteration</h2>
+				<p>Wie findet ein Computer Eigenvektoren, ohne Bibliothek? Mit einem verblüffend einfachen Trick:
+					Nimm irgendeinen Pfeil, multipliziere ihn mit der Matrix, mach ihn wieder auf Länge 1. Wiederhole.
+				</p>
+				<p>Bei jeder Multiplikation wird der Anteil in Richtung der größten Streuung am stärksten verlängert.
+					Nach ein paar Runden zeigt der Pfeil von ganz allein auf die erste Hauptkomponente. Für die zweite
+					zieht man die erste aus der Matrix heraus (<strong>Deflation</strong>) und macht dasselbe noch einmal.
+				</p>
+				<div class="code">
+					<div class="code-head"><span>pca.js · ohne Bibliothek</span></div>
+					<pre><span class="k">function</span> <span class="n">covariance</span>(X) { <span class="c">// X: Zeilen = Punkte</span>
+  <span class="k">const</span> n = X.length, d = X[0].length;
+  <span class="k">const</span> mean = Array(d).fill(0);
+  X.forEach(r => r.forEach((v, j) => mean[j] += v / n));
+  <span class="k">const</span> C = [...Array(d)].map(() => Array(d).fill(0));
+  <span class="k">for</span> (<span class="k">const</span> r <span class="k">of</span> X)
+    <span class="k">for</span> (<span class="k">let</span> i = 0; i &lt; d; i++)
+      <span class="k">for</span> (<span class="k">let</span> j = 0; j &lt; d; j++)
+        C[i][j] += (r[i] - mean[i]) * (r[j] - mean[j]) / n;
+  <span class="k">return</span> C;
+}
+
+<span class="k">function</span> <span class="n">powerIteration</span>(C, steps = 100) {
+  <span class="k">let</span> v = C.map(() => Math.random());
+  <span class="k">for</span> (<span class="k">let</span> s = 0; s &lt; steps; s++) {
+    <span class="k">const</span> w = C.map(row => row.reduce((a, c, j) => a + c * v[j], 0));
+    <span class="k">const</span> len = Math.hypot(...w);
+    v = w.map(x => x / len);
+  }
+  <span class="k">const</span> Cv = C.map(row => row.reduce((a, c, j) => a + c * v[j], 0));
+  <span class="k">const</span> lambda = Cv.reduce((a, x, i) => a + x * v[i], 0);
+  <span class="k">return</span> { v, lambda };
+}
+
+<span class="k">function</span> <span class="n">pca</span>(X, k) {
+  <span class="k">let</span> C = covariance(X);
+  <span class="k">const</span> comps = [];
+  <span class="k">for</span> (<span class="k">let</span> c = 0; c &lt; k; c++) {
+    <span class="k">const</span> { v, lambda } = powerIteration(C);
+    comps.push({ v, lambda });
+    <span class="c">// Deflation: gefundene Richtung aus C entfernen</span>
+    C = C.map((row, i) => row.map((x, j) => x - lambda * v[i] * v[j]));
+  }
+  <span class="k">return</span> comps;
+}</pre>
+				</div>
+				<p class="merke"><b>Merke</b>Immer wieder mit der Kovarianzmatrix multiplizieren lässt jeden Pfeil
+					zur Richtung der größten Streuung wandern.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Setz einen Startpfeil, indem du auf die Fläche tippst. Dann drück „Mal C“ und sieh zu,
+					wie er sich zur ersten Hauptkomponente dreht.</p>
+				<div class="stage-view">
+					<canvas id="cvPow" class="touch" aria-label="Power-Iteration: ein Pfeil dreht sich zur Hauptkomponente"></canvas>
+					<span class="stage-tag">Pfeil auf dem Einheitskreis</span>
+					<span class="stage-readout" id="powReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnPow">× C und normieren</button>
+						<button class="btn" type="button" id="btnPowAuto">▶ Automatisch</button>
+						<button class="btn" type="button" id="btnPowReset">Neuer Startpfeil</button>
+					</div>
+					<div class="stats">
+						<div class="stat"><small>Runde</small><b id="powStep">0</b></div>
+						<div class="stat"><small>Abweichung</small><b id="powErr"></b></div>
+						<div class="stat"><small>Rayleigh λ</small><b id="powLam"></b></div>
+					</div>
+					<p class="stage-note" id="powNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Dimensionen -->
+		<section class="chapter wide" id="dimensionen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Dimensionen reduzieren</span>
+				<h2>Von 3D nach 2D</h2>
+				<p>Richtig nützlich wird die PCA, wenn es viele Spalten gibt. Hier sind drei Gruppen von Punkten im
+					Raum, die fast in einer schiefen Ebene liegen. Links kannst du die Wolke drehen. Rechts steht das,
+					was die PCA daraus macht: die beiden Hauptkomponenten als neue Achsen. Die Gruppen sind sofort
+					sauber zu erkennen, obwohl eine ganze Dimension weggeworfen wurde.</p>
+				<p>Genau so werden Bilder, Gene oder Wörter mit hunderten Spalten auf zwei Dimensionen gebracht, damit
+					Menschen sie anschauen können.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh links, um die 3D-Wolke zu drehen. Mit dem Regler machst du die Ebene dicker und
+					siehst, wie die dritte Komponente wichtiger wird.</p>
+				<div class="duo">
+					<div>
+						<canvas id="cv3d" aria-label="Drehbare 3D-Punktwolke mit drei Gruppen"></canvas>
+						<span class="stage-tag">Original · 3 Spalten</span>
+					</div>
+					<div>
+						<canvas id="cv2d" aria-label="Projektion auf die ersten beiden Hauptkomponenten"></canvas>
+						<span class="stage-tag">PCA · 2 Spalten</span>
+					</div>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Dicke der Ebene</span><output id="thickOut"></output></span>
+						<input id="thickIn" type="range" min="0" max="100" step="1" value="15" />
+					</label>
+					<div class="probs" id="explained3"></div>
+					<ul class="keys">
+						<li style="--k: #ff8a5c">Gruppe A</li>
+						<li style="--k: #5cc8ff">Gruppe B</li>
+						<li style="--k: #9be564">Gruppe C</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in Machine Learning · Projekt 3</p>
+		<a href="../neuronales-netz/">Neuronales Netz von null an <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/ml.js"></script>
+	<script src="./pca.js"></script>
+</body>
+
+</html>

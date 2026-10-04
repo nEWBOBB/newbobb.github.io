@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>Neuronales Netz von null an — Newbobb Lab</title>
+	<meta name="description"
+		content="Ein neuronales Netz ohne Bibliothek: ein einzelnes Neuron, versteckte Schichten, Backpropagation Schritt für Schritt und ein Netz, das live im Browser Kreis, XOR und Spirale lernt." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="../assets/ml.css" />
+	<style>
+		.controls-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+			gap: 10px 18px;
+			width: 100%;
+		}
+
+		.field {
+			display: grid;
+			gap: 4px;
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+
+		#bpSvg text {
+			font-family: "JetBrains Mono", monospace;
+		}
+
+		.bp-phase {
+			font-family: "JetBrains Mono", monospace;
+			font-size: 0.82rem;
+			color: var(--accent);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../#ml">newbobb <span>/ machine learning</span></a>
+		<nav class="v-series" aria-label="Rubrik Machine Learning">
+			<a href="../regression/">Regression</a>
+			<a href="../pca/">PCA</a>
+			<a href="../neuronales-netz/" aria-current="page">Neuronales Netz</a>
+			<a href="../markov/">Markov-Kette</a>
+			<a href="../entscheidungsbaum/">Entscheidungsbaum</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Machine Learning · Projekt 3 · von null an</p>
+			<h1>Neuronales<br /><em>Netz</em></h1>
+			<p class="v-lede">Kein TensorFlow, kein PyTorch: nur Arrays, Multiplikation und die Kettenregel. Wir bauen
+				ein neuronales Netz Neuron für Neuron auf und sehen zu, wie es lernt, Punkte zu trennen, die keine
+				Gerade trennen kann.</p>
+			<ol class="v-toc">
+				<li><a href="#neuron">Ein Neuron</a></li>
+				<li><a href="#netz">Ein ganzes Netz</a></li>
+				<li><a href="#innen">Was die Neuronen sehen</a></li>
+				<li><a href="#backprop">Backpropagation</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Neuron -->
+		<section class="chapter" id="neuron">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Der Baustein</span>
+				<h2>Ein Neuron</h2>
+				<p>Ein künstliches Neuron ist erstaunlich simpel. Es bekommt Zahlen herein, multipliziert jede mit
+					einem <strong>Gewicht</strong>, zählt alles zusammen und addiert einen <strong>Bias</strong>. Das ist
+					fast die Gerade aus der <a href="../regression/">Regression</a>.</p>
+				<div class="formula">z = w₁·x₁ + w₂·x₂ + b &nbsp;&nbsp; a = σ(z) = 1 / (1 + e⁻ᶻ)
+					<small>σ, die Sigmoid-Funktion, presst jede Zahl auf einen Wert zwischen 0 und 1: eine
+						Wahrscheinlichkeit für „blau“.</small>
+				</div>
+				<p>Die Fläche rechts zeigt für jeden Ort, was das Neuron sagen würde: blau oder orange. Die Grenze
+					dazwischen ist immer eine <strong>gerade Linie</strong>. Für manche Daten reicht das. Lade aber mal
+					die XOR-Daten, bei denen Blau in zwei gegenüberliegenden Ecken liegt: Keine Einstellung der Welt
+					trennt sie mit einer Geraden.</p>
+				<p>Das war 1969 ein echter Schock. Marvin Minsky und Seymour Papert bewiesen genau das, und die
+					Forschung an neuronalen Netzen schlief für über ein Jahrzehnt fast ein.</p>
+				<p class="merke"><b>Merke</b>Ein Neuron = gewichtete Summe + Aktivierungsfunktion. Allein kann es nur
+					mit einer Geraden trennen.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Stell die Gewichte so ein, dass alle blauen Punkte im blauen Bereich liegen. Oder lass
+					das Neuron selbst lernen.</p>
+				<div class="stage-view">
+					<canvas id="cvNeuron" aria-label="Entscheidungsfläche eines einzelnen Neurons"></canvas>
+					<span class="stage-tag">Ein Neuron</span>
+					<span class="stage-readout" id="neuronReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Gewicht w₁</span><output id="w1Out"></output></span>
+						<input id="w1In" type="range" min="-3" max="3" step="0.01" value="0.4" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Gewicht w₂</span><output id="w2Out"></output></span>
+						<input id="w2In" type="range" min="-3" max="3" step="0.01" value="-0.8" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Bias b</span><output id="bOut"></output></span>
+						<input id="bIn" type="range" min="-5" max="5" step="0.05" value="0" />
+					</label>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnNeuronLearn">Selbst lernen lassen</button>
+						<button class="btn" type="button" id="btnNeuronLinear" aria-pressed="true">Trennbare Daten</button>
+						<button class="btn" type="button" id="btnNeuronXor" aria-pressed="false">XOR-Daten</button>
+					</div>
+					<p class="stage-note" id="neuronNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Netz -->
+		<section class="chapter wide" id="netz">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Versteckte Schichten</span>
+				<h2>Ein ganzes Netz</h2>
+				<p>Der Ausweg: Neuronen hintereinanderschalten. Die erste Schicht zieht ein paar Geraden, die nächste
+					kombiniert sie. Dazwischen sitzt eine <strong>nicht-lineare</strong> Aktivierung wie tanh oder
+					ReLU. Ohne sie wäre das ganze Netz wieder nur eine einzige Gerade, egal wie viele Schichten es hat.
+				</p>
+				<p>Unten trainiert ein echtes Netz, von Hand programmiert, live in deinem Browser. Links siehst du,
+					wie es die Fläche einfärbt, rechts das Netz selbst: blaue Verbindungen sind positive Gewichte,
+					orange negative, die Dicke zeigt die Stärke. Probier die Spirale mit nur zwei Neuronen, dann mit
+					acht in zwei Schichten.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="duo">
+					<div>
+						<canvas id="cvNet" aria-label="Entscheidungsfläche des Netzes mit Trainingspunkten"></canvas>
+						<span class="stage-tag">Vorhersage</span>
+						<span class="stage-readout" id="netReadout"></span>
+					</div>
+					<div>
+						<canvas id="cvDiagram" aria-label="Aufbau des Netzes mit Gewichten"></canvas>
+						<span class="stage-tag">Netz</span>
+					</div>
+				</div>
+				<div class="stage-view">
+					<canvas id="cvNetLoss" aria-label="Fehlerkurve des Trainings"></canvas>
+					<span class="stage-tag">Fehler (Kreuzentropie)</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" role="group" aria-label="Datensatz">
+						<button class="btn" type="button" data-set="circle" aria-pressed="true">Kreis</button>
+						<button class="btn" type="button" data-set="xor" aria-pressed="false">XOR</button>
+						<button class="btn" type="button" data-set="moons" aria-pressed="false">Monde</button>
+						<button class="btn" type="button" data-set="spiral" aria-pressed="false">Spirale</button>
+						<button class="btn" type="button" data-set="linear" aria-pressed="false">Linear</button>
+					</div>
+					<div class="controls-grid">
+						<label class="range">
+							<span class="range-head"><span>Versteckte Schichten</span><output id="layOut"></output></span>
+							<input id="layIn" type="range" min="1" max="3" step="1" value="1" />
+						</label>
+						<label class="range">
+							<span class="range-head"><span>Neuronen pro Schicht</span><output id="neuOut"></output></span>
+							<input id="neuIn" type="range" min="1" max="8" step="1" value="4" />
+						</label>
+						<label class="range">
+							<span class="range-head"><span>Lernrate</span><output id="nlrOut"></output></span>
+							<input id="nlrIn" type="range" min="0" max="100" step="1" value="55" />
+						</label>
+						<label class="field">Aktivierung
+							<select class="select" id="actIn">
+								<option value="tanh">tanh</option>
+								<option value="relu">ReLU</option>
+								<option value="sigmoid">Sigmoid</option>
+							</select>
+						</label>
+					</div>
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnTrain">▶ Trainieren</button>
+						<button class="btn" type="button" id="btnEpoch">Eine Epoche</button>
+						<button class="btn" type="button" id="btnNetReset">Neu würfeln</button>
+					</div>
+					<div class="stats">
+						<div class="stat"><small>Epoche</small><b id="nEpoch">0</b></div>
+						<div class="stat"><small>Fehler</small><b id="nLoss"></b></div>
+						<div class="stat"><small>Trefferquote</small><b id="nAcc"></b></div>
+						<div class="stat"><small>Parameter</small><b id="nParams"></b></div>
+					</div>
+					<p class="stage-note" id="netNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Innen -->
+		<section class="chapter" id="innen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Merkmale</span>
+				<h2>Was die Neuronen sehen</h2>
+				<p>Jedes versteckte Neuron ist für sich wieder nur eine kleine Entscheidungsfläche. Rechts sind sie
+					alle einzeln zu sehen, für das Netz aus Kapitel 2. In der ersten Schicht sind es immer Geraden mit
+					weichem Übergang. In späteren Schichten entstehen daraus Ecken, Bögen und Inseln.</p>
+				<p>Das ist die Grundidee des <strong>Deep Learning</strong>: Frühe Schichten lernen einfache Merkmale,
+					spätere setzen sie zu immer komplexeren zusammen. In einem Bilderkennungs-Netz sind das zuerst
+					Kanten, dann Ecken, dann Augen, dann Gesichter. Niemand hat das vorgegeben, es entsteht beim
+					Training von selbst.</p>
+				<p class="merke"><b>Merke</b>Versteckte Schichten bauen aus einfachen Merkmalen komplexe. Deshalb
+					„tief“.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Ohne nicht-lineare Aktivierung ist jede Schicht eine lineare Abbildung, und lineare Abbildungen hintereinander sind wieder eine lineare Abbildung. Das ganze Netz könnte dann nur eine Gerade ziehen.">
+					<p class="quiz-q">Was passiert, wenn man die Aktivierungsfunktionen weglässt?</p>
+					<div class="quiz-options">
+						<button type="button">Das ganze Netz kann wieder nur eine Gerade ziehen</button>
+						<button type="button">Das Netz lernt schneller und genauer</button>
+						<button type="button">Nichts, die Aktivierung ist nur Kosmetik</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Trainier oben ein Netz und schau hier, welche Teilaufgabe jedes Neuron übernommen hat.
+				</p>
+				<div class="stage-view">
+					<canvas id="cvFeatures" aria-label="Entscheidungsflächen der einzelnen versteckten Neuronen"></canvas>
+					<span class="stage-tag">Versteckte Neuronen</span>
+				</div>
+				<div class="stage-controls">
+					<p class="stage-note">Jede Zeile ist eine Schicht. Blau: das Neuron feuert stark, orange: stark negativ
+						(bei ReLU: still).</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Backprop -->
+		<section class="chapter flip" id="backprop">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Die Kettenregel</span>
+				<h2>Back&shy;propagation</h2>
+				<p>Wie weiß ein Gewicht tief im Netz, in welche Richtung es sich ändern soll? Das ist der Trick, der
+					1986 durch David Rumelhart, Geoffrey Hinton und Ronald Williams berühmt wurde.</p>
+				<ol class="steps">
+					<li><strong>Vorwärts:</strong> Die Eingabe läuft Schicht für Schicht durch das Netz. Am Ende steht
+						eine Vorhersage.</li>
+					<li><strong>Fehler:</strong> Vorhersage und richtige Antwort werden verglichen.</li>
+					<li><strong>Rückwärts:</strong> Der Fehler wird von hinten nach vorne durchgereicht. Jedes Neuron
+						bekommt seinen Anteil an der Schuld, gewichtet mit der Stärke seiner Verbindung. Mathematisch ist
+						das die <strong>Kettenregel</strong> der Ableitung.</li>
+					<li><strong>Anpassen:</strong> Jedes Gewicht macht einen kleinen Schritt gegen seinen Gradienten,
+						genau wie beim <a href="../regression/#abstieg">Gradientenabstieg</a>.</li>
+				</ol>
+				<details class="code">
+					<summary class="code-head"><span>netz.js · das komplette Netz, ohne Bibliothek</span></summary>
+					<pre><span class="k">const</span> act = { f: Math.tanh, d: a => 1 - a * a }; <span class="c">// Ableitung über die Aktivierung</span>
+<span class="k">const</span> sigmoid = z => 1 / (1 + Math.exp(-z));
+
+<span class="k">function</span> <span class="n">makeNet</span>(sizes) { <span class="c">// z. B. [2, 4, 4, 1]</span>
+  <span class="k">const</span> W = [], B = [];
+  <span class="k">for</span> (<span class="k">let</span> l = 1; l &lt; sizes.length; l++) {
+    <span class="k">const</span> s = Math.sqrt(1 / sizes[l - 1]);
+    W.push([...Array(sizes[l])].map(() =>
+      [...Array(sizes[l - 1])].map(() => (Math.random() * 2 - 1) * s)));
+    B.push(Array(sizes[l]).fill(0));
+  }
+  <span class="k">return</span> { W, B };
+}
+
+<span class="k">function</span> <span class="n">forward</span>(net, x) {
+  <span class="k">const</span> A = [x];
+  net.W.forEach((Wl, l) => {
+    <span class="k">const</span> last = l === net.W.length - 1;
+    A.push(Wl.map((row, j) => {
+      <span class="k">const</span> z = row.reduce((s, w, i) => s + w * A[l][i], net.B[l][j]);
+      <span class="k">return</span> last ? sigmoid(z) : act.f(z);
+    }));
+  });
+  <span class="k">return</span> A; <span class="c">// alle Aktivierungen, A.at(-1)[0] ist die Vorhersage</span>
+}
+
+<span class="k">function</span> <span class="n">trainStep</span>(net, x, y, lr) {
+  <span class="k">const</span> A = forward(net, x);
+  <span class="c">// Sigmoid + Kreuzentropie: Fehler am Ausgang ist einfach a - y</span>
+  <span class="k">let</span> delta = [A.at(-1)[0] - y];
+  <span class="k">for</span> (<span class="k">let</span> l = net.W.length - 1; l >= 0; l--) {
+    <span class="k">const</span> prev = A[l].map((a, i) => l === 0 ? 0 :
+      act.d(a) * delta.reduce((s, d, j) => s + d * net.W[l][j][i], 0));
+    delta.forEach((d, j) => {
+      net.B[l][j] -= lr * d;
+      A[l].forEach((a, i) => (net.W[l][j][i] -= lr * d * a));
+    });
+    delta = prev;
+  }
+}</pre>
+				</details>
+				<p class="merke"><b>Merke</b>Backpropagation reicht den Fehler rückwärts durchs Netz und sagt jedem
+					Gewicht, wie viel Schuld es trägt. Dann geht es einen kleinen Schritt bergab.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Ein Mini-Netz, ein einziges Beispiel: Eingabe (1, 0) soll 1 ergeben. Klick dich durch
+					vorwärts, rückwärts und anpassen und sieh, wie der Fehler sinkt.</p>
+				<div class="stage-view">
+					<svg id="bpSvg" viewBox="0 0 520 320" role="img" aria-label="Mini-Netz mit Werten und Gradienten"></svg>
+					<span class="stage-tag">2 → 2 → 1</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips">
+						<button class="btn primary" type="button" id="btnBp">Vorwärts</button>
+						<button class="btn" type="button" id="btnBpFast">10 Runden</button>
+						<button class="btn" type="button" id="btnBpReset">Neu anfangen</button>
+					</div>
+					<div class="stats">
+						<div class="stat"><small>Runde</small><b id="bpRound">0</b></div>
+						<div class="stat"><small>Vorhersage</small><b id="bpOut">–</b></div>
+						<div class="stat"><small>Fehler</small><b id="bpLoss">–</b></div>
+					</div>
+					<p class="stage-note"><span class="bp-phase" id="bpPhase"></span> <span id="bpNote"></span></p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in Machine Learning · Projekt 4</p>
+		<a href="../markov/">Markov-Ketten-Textgenerator <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="../assets/ml.js"></script>
+	<script src="./netz.js"></script>
+</body>
+
+</html>

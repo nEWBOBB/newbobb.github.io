@@ -1,0 +1,258 @@
+/* Rubrik „Machine Learning“: Ergänzungen zum Design der Reihe „Verstehen“ */
+
+:root {
+	--accent: #9be564;
+	--accent-2: #3ddc97;
+	--accent-ink: #0d1a05;
+	--c-a: #ff8a5c;
+	--c-b: #5cc8ff;
+}
+
+/* Code von Hand */
+.code {
+	margin: 18px 0;
+	border: 1px solid var(--line);
+	border-radius: 16px;
+	background: #070806;
+	overflow: hidden;
+}
+
+.code-head {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 14px;
+	font-size: 0.72rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--faint);
+	border-bottom: 1px solid var(--line);
+}
+
+.code pre {
+	margin: 0;
+	padding: 14px 16px;
+	overflow-x: auto;
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 0.8rem;
+	line-height: 1.6;
+	color: var(--ink);
+	tab-size: 2;
+}
+
+.code .c {
+	color: var(--faint);
+}
+
+.code .k {
+	color: var(--accent);
+}
+
+.code .n {
+	color: #ffc777;
+}
+
+details.code summary {
+	cursor: pointer;
+	list-style: none;
+}
+
+details.code summary::-webkit-details-marker {
+	display: none;
+}
+
+details.code summary::after {
+	content: "anzeigen ▾";
+	color: var(--accent);
+}
+
+details.code[open] summary::after {
+	content: "verbergen ▴";
+}
+
+/* Eingaben */
+.text-in,
+.select {
+	width: 100%;
+	font: inherit;
+	font-size: 0.98rem;
+	color: var(--ink);
+	background: #0a0b09;
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	padding: 11px 14px;
+}
+
+textarea.text-in {
+	min-height: 120px;
+	resize: vertical;
+	line-height: 1.5;
+}
+
+.select {
+	width: auto;
+	padding: 9px 12px;
+}
+
+.text-in:focus-visible,
+.select:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	width: 100%;
+}
+
+.chips .btn {
+	padding: 8px 14px;
+}
+
+/* Zahlen-Kacheln unter einer Bühne */
+.stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+	gap: 8px;
+	width: 100%;
+}
+
+.stat {
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: var(--panel-2);
+	border: 1px solid var(--line);
+}
+
+.stat small {
+	display: block;
+	font-size: 0.68rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--faint);
+}
+
+.stat b {
+	display: block;
+	margin-top: 2px;
+	font-size: 1.15rem;
+	font-weight: 500;
+	font-variant-numeric: tabular-nums;
+}
+
+.stat b.good {
+	color: var(--good);
+}
+
+.stat b.bad {
+	color: var(--bad);
+}
+
+/* Zwei Ansichten nebeneinander */
+.duo {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	border-bottom: 1px solid var(--line);
+}
+
+.duo > div {
+	position: relative;
+	background: #070806;
+}
+
+.duo > div + div {
+	border-left: 1px solid var(--line);
+}
+
+.duo canvas {
+	display: block;
+	width: 100%;
+}
+
+/* Balken für Wahrscheinlichkeiten */
+.probs {
+	display: grid;
+	gap: 6px;
+	width: 100%;
+}
+
+.prob {
+	display: grid;
+	grid-template-columns: minmax(70px, 12ch) minmax(0, 1fr) 6ch;
+	gap: 10px;
+	align-items: center;
+	font-size: 0.9rem;
+}
+
+.prob span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.prob .track {
+	height: 14px;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.06);
+	overflow: hidden;
+}
+
+.prob .fill {
+	height: 100%;
+	border-radius: 6px;
+	background: linear-gradient(90deg, var(--accent-2), var(--accent));
+	transition: width 0.35s cubic-bezier(.2, .8, .2, 1);
+}
+
+.prob output {
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+	color: var(--muted);
+	font-size: 0.82rem;
+}
+
+.prob.is-pick span {
+	color: var(--accent);
+}
+
+/* Farblegende */
+.keys {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 16px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.82rem;
+	color: var(--muted);
+}
+
+.keys li::before {
+	content: "";
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin-right: 6px;
+	border-radius: 50%;
+	background: var(--k);
+	vertical-align: -1px;
+}
+
+canvas.touch {
+	cursor: crosshair;
+	touch-action: none;
+}
+
+@media (max-width: 560px) {
+	.duo {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.duo > div + div {
+		border-left: 0;
+		border-top: 1px solid var(--line);
+	}
+}
