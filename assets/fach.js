@@ -20,6 +20,7 @@ window.FACH_PROJEKTE = {
 		{ href: "schall", title: "Musik und Schall", desc: "Obertöne mischen: Fourier zum Anhören." },
 		{ href: "schwerkraft", title: "Wie Schwerkraft funktioniert", desc: "Die Wurfparabel: eine quadratische Funktion, die fliegt." },
 		{ href: "ki", title: "Wie Sprach-KI funktioniert", desc: "Wörter als Vektoren: mit Bedeutung rechnen." },
+		{ href: "ml", title: "7 ML-Algorithmen zum Anfassen", desc: "Kleinste Quadrate, Gradientenabstieg und Entropie zum Ausprobieren." },
 	],
 	physics: [
 		{ href: "schall", title: "Musik und Schall", desc: "Schallwellen, Hörtest, Obertöne, Saiten und Harmonie." },
@@ -56,6 +57,7 @@ window.FACH_PROJEKTE = {
 		{ href: "internet", title: "Wie das Internet funktioniert", desc: "Bits, Pakete, Router und DNS." },
 		{ href: "ki", title: "Wie Sprach-KI funktioniert", desc: "Tokens, Attention und ein Mini-Modell zum Trainieren." },
 		{ href: "agenten", title: "Wie KI-Agenten arbeiten", desc: "Agenten-Schleife, Werkzeuge und MCP." },
+		{ href: "ml", title: "7 ML-Algorithmen zum Anfassen", desc: "Regression, Bäume, SVM, KNN und k-Means selbst trainieren." },
 	],
 };
 

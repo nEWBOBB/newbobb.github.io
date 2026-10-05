@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>7 ML-Algorithmen zum Anfassen — Newbobb Lab</title>
+	<meta name="description"
+		content="Maschinelles Lernen interaktiv: Lineare und logistische Regression, Entscheidungsbaum, Random Forest, Support Vector Machine, k-nächste Nachbarn und k-Means selbst trainieren und verstehen." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<style>
+		:root {
+			--accent: #7ee0c3;
+			--accent-2: #9b8cff;
+			--accent-ink: #04201a;
+			--ca: #ff7a8a;
+			--cb: #6bb8ff;
+			--cc: #c6f16b;
+		}
+
+		.chips {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.chips .lbl {
+			align-self: center;
+			font-size: 0.78rem;
+			color: var(--faint);
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.ml-canvas {
+			cursor: crosshair;
+			touch-action: manipulation;
+		}
+
+		.cls-a {
+			color: var(--ca);
+		}
+
+		.cls-b {
+			color: var(--cb);
+		}
+
+		.cls-c {
+			color: var(--cc);
+		}
+
+		.panel {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 14px;
+			background: var(--panel-2);
+			border: 1px solid var(--line);
+		}
+
+		.panel small {
+			display: block;
+			margin-bottom: 8px;
+			font-size: 0.7rem;
+			letter-spacing: 0.16em;
+			text-transform: uppercase;
+			color: var(--faint);
+		}
+
+		/* Balken */
+		.probs {
+			display: grid;
+			gap: 6px;
+			width: 100%;
+		}
+
+		.prob {
+			display: grid;
+			grid-template-columns: minmax(84px, 13ch) minmax(0, 1fr) 7ch;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.9rem;
+		}
+
+		.prob span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.prob .track {
+			height: 14px;
+			border-radius: 6px;
+			background: rgba(255, 255, 255, 0.06);
+			overflow: hidden;
+		}
+
+		.prob .fill {
+			height: 100%;
+			width: 0;
+			border-radius: 6px;
+			background: var(--bar, linear-gradient(90deg, var(--accent-2), var(--accent)));
+			transition: width 0.3s cubic-bezier(.2, .8, .2, 1);
+		}
+
+		.prob output {
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+			color: var(--muted);
+			font-size: 0.82rem;
+			white-space: nowrap;
+		}
+
+		.prob.is-best span {
+			color: var(--accent);
+		}
+
+		.prob.is-btn {
+			cursor: pointer;
+			border-radius: 8px;
+		}
+
+		.prob.is-btn:hover span {
+			text-decoration: underline;
+		}
+
+		/* Entscheidungsbaum */
+		.tree-wrap {
+			padding: 18px 10px 10px;
+			background: #070605;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.tree-wrap svg {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.tnode {
+			cursor: pointer;
+		}
+
+		.tnode rect.box {
+			fill: #1b1815;
+			stroke: rgba(255, 255, 255, 0.22);
+			stroke-width: 1.5;
+		}
+
+		.tnode.is-sel rect.box {
+			stroke: var(--accent);
+			stroke-width: 3;
+		}
+
+		.tnode.is-path rect.box {
+			stroke: #ffd166;
+			stroke-width: 3;
+		}
+
+		.tnode.leaf-yes rect.box {
+			fill: #12301f;
+		}
+
+		.tnode.leaf-no rect.box {
+			fill: #3a1a1e;
+		}
+
+		.tnode text {
+			fill: var(--ink);
+			font-family: "Space Grotesk", sans-serif;
+			text-anchor: middle;
+		}
+
+		.tnode text.sub {
+			fill: var(--muted);
+			font-size: 12px;
+		}
+
+		.tedge {
+			stroke: rgba(255, 255, 255, 0.28);
+			stroke-width: 1.5;
+			fill: none;
+		}
+
+		.tedge.is-path {
+			stroke: #ffd166;
+			stroke-width: 3;
+		}
+
+		.tlabel {
+			fill: var(--muted);
+			font-size: 12px;
+			font-family: "JetBrains Mono", monospace;
+			text-anchor: middle;
+		}
+
+		.data-table {
+			width: 100%;
+			max-height: 220px;
+			overflow: auto;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+		}
+
+		.data-table table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.8rem;
+		}
+
+		.data-table th,
+		.data-table td {
+			padding: 4px 8px;
+			text-align: left;
+			white-space: nowrap;
+		}
+
+		.data-table th {
+			position: sticky;
+			top: 0;
+			background: var(--panel-2);
+			color: var(--faint);
+			font-weight: 500;
+		}
+
+		.data-table tr.dim td {
+			opacity: 0.28;
+		}
+
+		.data-table td.yes {
+			color: var(--good);
+		}
+
+		.data-table td.no {
+			color: var(--bad);
+		}
+
+		.day {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+			gap: 8px;
+			width: 100%;
+		}
+
+		.day label {
+			display: grid;
+			gap: 2px;
+			font-size: 0.74rem;
+			color: var(--faint);
+		}
+
+		.day select {
+			font: inherit;
+			font-size: 0.92rem;
+			color: var(--ink);
+			background: #0a0908;
+			border: 1px solid var(--line);
+			border-radius: 10px;
+			padding: 7px 8px;
+		}
+
+		/* Random Forest: drei kleine Bäume */
+		.mini-trees {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 8px;
+			width: 100%;
+		}
+
+		.mini-trees figure {
+			margin: 0;
+			display: grid;
+			gap: 4px;
+		}
+
+		.mini-trees canvas {
+			display: block;
+			width: 100%;
+			border-radius: 10px;
+			background: #070605;
+			border: 1px solid var(--line);
+		}
+
+		.mini-trees figcaption {
+			font-size: 0.72rem;
+			color: var(--faint);
+			text-align: center;
+		}
+
+		#elbow {
+			display: block;
+			width: 100%;
+		}
+
+		/* Überblick */
+		.overview {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.92rem;
+		}
+
+		.overview th,
+		.overview td {
+			padding: 10px 12px;
+			text-align: left;
+			border-bottom: 1px solid var(--line);
+			vertical-align: top;
+		}
+
+		.overview th {
+			color: var(--faint);
+			font-weight: 500;
+			font-size: 0.78rem;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+		}
+
+		.overview td:first-child {
+			font-weight: 600;
+			white-space: nowrap;
+		}
+
+		.overview-wrap {
+			overflow-x: auto;
+			border: 1px solid var(--line);
+			border-radius: 18px;
+			background: var(--panel);
+		}
+
+		.tag {
+			display: inline-block;
+			padding: 1px 8px;
+			border-radius: 99px;
+			font-size: 0.76rem;
+			border: 1px solid currentColor;
+			white-space: nowrap;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ maschinelles lernen</span></a>
+		<nav class="v-series" aria-label="Kapitel">
+			<a href="#linear">Lineare Regression</a>
+			<a href="#logistisch">Logistische Regression</a>
+			<a href="#baum">Entscheidungsbaum</a>
+			<a href="#wald">Random Forest</a>
+			<a href="#svm">SVM</a>
+			<a href="#knn">KNN</a>
+			<a href="#kmeans">k-Means</a>
+			<a href="#ueberblick">Überblick</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Labor · Maschinelles Lernen</p>
+			<h1>7 Algorithmen<br />zum <em>Anfassen</em></h1>
+			<p class="v-lede">Maschinelles Lernen heißt: Ein Programm findet die Regel selbst, statt dass jemand sie
+				hineinschreibt. Hier trainierst du die sieben Klassiker, die jede Einsteigerin und jeder Einsteiger
+				kennen sollte, mit eigenen Datenpunkten. Tippe Punkte hinein, verschiebe Regler und schau zu, wie die
+				Maschine lernt.</p>
+			<ol class="v-toc">
+				<li><a href="#linear">Lineare Regression</a></li>
+				<li><a href="#logistisch">Logistische Regression</a></li>
+				<li><a href="#baum">Entscheidungsbaum</a></li>
+				<li><a href="#wald">Random Forest</a></li>
+				<li><a href="#svm">Support Vector Machine</a></li>
+				<li><a href="#knn">k-nächste Nachbarn</a></li>
+				<li><a href="#kmeans">k-Means-Clustering</a></li>
+				<li><a href="#ueberblick">Welcher wofür?</a></li>
+			</ol>
+		</section>
+
+		<!-- 1 Lineare Regression -->
+		<section class="chapter" id="linear">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Regression · seit 1805</span>
+				<h2>Lineare Regression</h2>
+				<p>Die einfachste Form des Lernens: eine <strong>Gerade durch eine Punktwolke</strong> legen. Hat man
+					sie einmal, kann man für jedes neue <em>x</em> einen Wert <em>y</em> vorhersagen, zum Beispiel den
+					Preis einer Wohnung aus ihrer Fläche.</p>
+				<p>Aber welche Gerade ist die beste? Für jeden Punkt misst man den <strong>Fehler</strong>, also den
+					senkrechten Abstand zur Geraden. Diese Fehler werden quadriert und gemittelt. Die beste Gerade ist
+					die mit dem kleinsten <strong>mittleren quadratischen Fehler</strong> (MSE).</p>
+				<div class="formula">ŷ = m · x + b
+					<small>m ist die Steigung, b der Achsenabschnitt. Lernen heißt: m und b finden.</small>
+				</div>
+				<p>Für Geraden kann man die beste Lösung direkt ausrechnen, die Methode der kleinsten Quadrate. Fast
+					alle anderen Modelle lernen aber mit dem <strong>Gradientenabstieg</strong>: m und b ein kleines
+					Stück in die Richtung schieben, in der der Fehler sinkt, und das immer wieder. Genau so werden auch
+					riesige neuronale Netze trainiert.</p>
+				<p class="merke"><b>Merke</b>Lineare Regression sucht die Gerade mit dem kleinsten mittleren
+					quadratischen Fehler. Der Gradientenabstieg findet sie Schritt für Schritt.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Durch das Quadrieren zählt ein doppelt so großer Fehler viermal so viel. Ein einzelner weit entfernter Punkt zieht die Gerade deshalb stark zu sich. Probier es aus: Setz einen Punkt weit weg von den anderen.">
+					<p class="quiz-q">Was passiert mit der Geraden, wenn du einen einzelnen Ausreißer weit oben
+						hinzufügst?</p>
+					<div class="quiz-options">
+						<button type="button">Nichts, ein einzelner Punkt zählt kaum</button>
+						<button type="button">Sie kippt deutlich zu ihm hin, weil große Fehler quadriert werden</button>
+						<button type="button">Sie geht genau durch den Ausreißer</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh selbst an Steigung und Achsenabschnitt, bis der Fehler klein ist. Dann lass den
+					Gradientenabstieg ran. Tippe in die Fläche, um Punkte zu setzen oder zu löschen.</p>
+				<div class="stage-view">
+					<canvas class="ml-canvas" id="linCanvas" aria-label="Punktwolke mit Regressionsgerade"></canvas>
+					<span class="stage-tag">Fläche → Preis</span>
+					<span class="stage-readout" id="linReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Steigung m</span><output id="linMOut"></output></span>
+						<input id="linM" type="range" min="-1.5" max="1.5" step="0.01" value="0" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Achsenabschnitt b</span><output id="linBOut"></output></span>
+						<input id="linB" type="range" min="-0.5" max="1.2" step="0.01" value="0.5" />
+					</label>
+					<button class="btn primary" id="linRun" type="button" aria-pressed="false">Gradientenabstieg</button>
+					<button class="btn" id="linSolve" type="button">Direkt ausrechnen</button>
+					<button class="btn" id="linSq" type="button" aria-pressed="false">Fehlerquadrate</button>
+					<button class="btn" id="linNew" type="button">Neue Daten</button>
+					<p class="stage-note" id="linNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 Logistische Regression -->
+		<section class="chapter flip" id="logistisch">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Klassifikation · seit 1958</span>
+				<h2>Logistische Regression</h2>
+				<p>Oft will man keine Zahl vorhersagen, sondern eine <strong>Ja-oder-Nein-Antwort</strong>: Ist die
+					Mail Spam? Besteht jemand die Prüfung? Eine Gerade passt dafür schlecht, denn sie schießt über 1 und
+					unter 0 hinaus.</p>
+				<p>Die logistische Regression rechnet zuerst wie die lineare Regression einen Wert <em>z</em> aus. Dann
+					quetscht sie ihn durch die <strong>Sigmoid-Kurve</strong>, ein liegendes S. Heraus kommt immer eine
+					Zahl zwischen 0 und 1: eine <strong>Wahrscheinlichkeit</strong>.</p>
+				<div class="formula">p = 1 / (1 + e<sup>−(w · x + b)</sup>)
+					<small>w bestimmt, wie steil das S ist, b, wo es steht. Ab p = 0,5 sagt das Modell „Ja“.</small>
+				</div>
+				<p>Die Stelle, an der die Kurve 50 % kreuzt, ist die <strong>Entscheidungsgrenze</strong>. Trainiert
+					wird wieder mit dem Gradientenabstieg. Gemessen wird der Fehler aber anders: Eine selbstsichere
+					falsche Antwort („99 % bestanden“, aber durchgefallen) wird besonders hart bestraft.</p>
+				<p class="merke"><b>Merke</b>Logistische Regression liefert eine Wahrscheinlichkeit zwischen 0 und 1.
+					Trotz ihres Namens ist sie ein Klassifikator.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Wenn sich die Klassen überlappen, kann keine Kurve alle Punkte richtig trennen. Das Modell wird dann vorsichtig: Die Kurve wird flacher, und im Überlappungsbereich gibt es Wahrscheinlichkeiten nahe 50 %.">
+					<p class="quiz-q">Setz ein paar „bestanden“-Punkte links und „durchgefallen“-Punkte rechts. Was
+						passiert mit der Kurve?</p>
+					<div class="quiz-options">
+						<button type="button">Sie wird flacher, das Modell ist sich weniger sicher</button>
+						<button type="button">Sie wird steiler</button>
+						<button type="button">Sie dreht sich um und fällt von links nach rechts</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe oben für „bestanden“, unten für „durchgefallen“. Mit dem Prüfregler fragst du
+					das Modell nach einer neuen Person.</p>
+				<div class="stage-view">
+					<canvas class="ml-canvas" id="logCanvas" aria-label="Sigmoid-Kurve über Lernstunden"></canvas>
+					<span class="stage-tag">Prüfung</span>
+					<span class="stage-readout" id="logReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Neue Person lernt</span><output id="logProbeOut"></output></span>
+						<input id="logProbe" type="range" min="0" max="1" step="0.01" value="0.55" />
+					</label>
+					<button class="btn primary" id="logRun" type="button" aria-pressed="false">Trainieren</button>
+					<button class="btn" id="logNew" type="button">Neue Daten</button>
+					<button class="btn" id="logClear" type="button">Leeren</button>
+					<p class="stage-note" id="logNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 Entscheidungsbaum -->
+		<section class="chapter" id="baum">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Klassifikation · seit 1986</span>
+				<h2>Entscheidungsbaum</h2>
+				<p>Ein Entscheidungsbaum ist eine Kette von Fragen, wie beim Spiel „Wer bin ich?“. Jede Frage teilt
+					die Daten in Gruppen. Am Ende jedes Astes steht eine Antwort.</p>
+				<p>Das Beispiel ist ein Klassiker: 14 Tage, an denen jemand entschieden hat, ob er Tennis spielt. Der
+					Baum soll aus Wetter, Temperatur, Luftfeuchte und Wind lernen, wann gespielt wird.</p>
+				<p>Welche Frage stellt man zuerst? Die, nach der die Gruppen am <strong>reinsten</strong> sind, also
+					möglichst nur „Ja“ oder nur „Nein“ enthalten. Gemessen wird die Unordnung mit der
+					<strong>Entropie</strong>: 0 bit heißt völlig rein, 1 bit heißt halb-halb. Der
+					<strong>Informationsgewinn</strong> sagt, wie stark eine Frage die Unordnung senkt.</p>
+				<p class="merke"><b>Merke</b>Ein Entscheidungsbaum stellt immer die Frage, die die meiste Unordnung
+					beseitigt, und wiederholt das in jedem Ast, bis die Gruppen rein sind.</p>
+				<div class="fact">
+					<b>Der große Vorteil</b>
+					<p>Ein Baum ist <strong>erklärbar</strong>. Man kann jede Entscheidung als Wenn-dann-Regel
+						vorlesen. Bei den meisten anderen Modellen geht das nicht.</p>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Bei bewölktem Wetter wurde in allen vier Fällen gespielt. Die Gruppe ist schon rein, ihre Entropie ist 0, also gibt es nichts mehr zu fragen.">
+					<p class="quiz-q">Warum muss der Ast „Bewölkt“ nicht weiter geteilt werden?</p>
+					<div class="quiz-options">
+						<button type="button">Weil er zu wenige Tage enthält</button>
+						<button type="button">Weil Bewölkt das häufigste Wetter ist</button>
+						<button type="button">Weil dort an allen Tagen gespielt wurde, die Gruppe ist schon rein</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle einen Knoten und entscheide, welche Frage er stellen soll. Die Balken zeigen den
+					Informationsgewinn jeder Frage.</p>
+				<div class="tree-wrap" id="treeWrap"></div>
+				<div class="stage-controls">
+					<div class="panel">
+						<small id="treeGainHead">Informationsgewinn</small>
+						<div class="probs" id="treeGains"></div>
+					</div>
+					<button class="btn primary" id="treeBest" type="button">Beste Frage</button>
+					<button class="btn" id="treeAll" type="button">Ganzen Baum lernen</button>
+					<button class="btn" id="treeReset" type="button">Zurücksetzen</button>
+					<p class="stage-note" id="treeNote"></p>
+					<div class="data-table" id="treeTable"></div>
+					<div class="panel">
+						<small>Ein neuer Tag: Wird gespielt?</small>
+						<div class="day" id="treeDay"></div>
+						<p class="stage-note" id="treeDayNote" style="margin-top: 10px"></p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 Random Forest -->
+		<section class="chapter flip" id="wald">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Ensemble · seit 2001</span>
+				<h2>Random Forest</h2>
+				<p>Ein einzelner Baum hat eine Schwäche: Er lernt die Trainingsdaten <strong>zu genau</strong>,
+					inklusive aller Zufälle. Das heißt <strong>Überanpassung</strong>. Seine Grenzen werden zackig, und
+					bei neuen Daten liegt er öfter daneben.</p>
+				<p>Die Lösung ist die Weisheit der Vielen. Ein Random Forest trainiert viele Bäume, und jeder bekommt
+					absichtlich etwas anderes zu sehen:</p>
+				<ul>
+					<li>eine <strong>zufällige Stichprobe</strong> der Daten, mit Zurücklegen gezogen (manche Punkte
+						doppelt, andere gar nicht), und</li>
+					<li>bei jeder Frage nur eine <strong>zufällige Auswahl</strong> der Merkmale.</li>
+				</ul>
+				<p>Am Ende stimmen alle Bäume ab, die <strong>Mehrheit</strong> entscheidet. Die Fehler der einzelnen
+					Bäume sind verschieden und heben sich zum großen Teil auf.</p>
+				<p class="merke"><b>Merke</b>Viele unterschiedliche, einzeln mittelmäßige Bäume ergeben zusammen eine
+					sehr gute Vorhersage.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Mit jedem weiteren Baum wird die Abstimmung stabiler. Ab einer gewissen Zahl ändert sich das Ergebnis kaum noch, aber schlechter wird es nicht. Anders als bei der Tiefe gibt es hier kein Zuviel, nur mehr Rechenzeit.">
+					<p class="quiz-q">Was passiert, wenn du die Zahl der Bäume immer weiter erhöhst?</p>
+					<div class="quiz-options">
+						<button type="button">Der Wald überanpasst sich immer stärker</button>
+						<button type="button">Die Grenze wird glatter und stabiler, ab einem Punkt ändert sich kaum noch etwas</button>
+						<button type="button">Die Genauigkeit erreicht irgendwann 100 %</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Vergleiche die drei einzelnen Bäume unten mit der Abstimmung des ganzen Waldes. Fahr
+					mit der Maus über die Fläche, um die Stimmen zu sehen.</p>
+				<div class="stage-view">
+					<canvas class="ml-canvas" id="rfCanvas" aria-label="Entscheidungskarte des Random Forest"></canvas>
+					<span class="stage-tag">Mehrheit aller Bäume</span>
+					<span class="stage-readout" id="rfReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="mini-trees" id="rfMini"></div>
+					<label class="range">
+						<span class="range-head"><span>Bäume</span><output id="rfNOut"></output></span>
+						<input id="rfN" type="range" min="1" max="60" step="1" value="25" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Max. Tiefe</span><output id="rfDOut"></output></span>
+						<input id="rfD" type="range" min="1" max="12" step="1" value="8" />
+					</label>
+					<div class="chips" role="group" aria-label="Klasse für neue Punkte">
+						<span class="lbl">Tippen setzt</span>
+						<button class="btn" type="button" data-rf-cls="0" aria-pressed="true"><span class="cls-a">●</span>&nbsp;Rot</button>
+						<button class="btn" type="button" data-rf-cls="1" aria-pressed="false"><span class="cls-b">▲</span>&nbsp;Blau</button>
+					</div>
+					<button class="btn primary" id="rfRoll" type="button">Neu würfeln</button>
+					<button class="btn" id="rfNew" type="button">Neue Daten</button>
+					<p class="stage-note" id="rfNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 SVM -->
+		<section class="chapter" id="svm">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Klassifikation · seit 1992</span>
+				<h2>Support Vector Machine</h2>
+				<p>Zwei Gruppen lassen sich oft durch viele verschiedene Linien trennen. Die SVM wählt die mit dem
+					<strong>breitesten Sicherheitsabstand</strong>: Sie legt die Linie wie eine Straße zwischen die
+					Gruppen und macht die Straße so breit wie möglich. Diese Breite heißt <strong>Margin</strong>.</p>
+				<p>Das Besondere: Nur die Punkte am Straßenrand bestimmen die Lösung. Sie heißen
+					<strong>Stützvektoren</strong> (Support Vectors), daher der Name. Alle anderen Punkte könntest du
+					verschieben oder löschen, ohne dass sich etwas ändert.</p>
+				<p>Der Regler <strong>C</strong> sagt, wie streng die SVM ist. Großes C: Kein Punkt darf auf der
+					Straße liegen, auch wenn sie dafür schmal wird. Kleines C: Ein paar Ausnahmen sind erlaubt, dafür
+					wird die Straße breit und robust.</p>
+				<p>Und wenn keine gerade Linie passt? Dann hilft der <strong>Kernel-Trick</strong>. Die Daten werden
+					gedanklich in einen höheren Raum gehoben, in dem eine flache Trennung möglich ist. Zurück in der
+					Ebene sieht die Grenze dann gekrümmt aus.</p>
+				<p class="merke"><b>Merke</b>Eine SVM sucht die Trennlinie mit dem größten Abstand zu beiden Gruppen.
+					Nur die Stützvektoren am Rand zählen.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Ein Punkt weit weg von der Straße ist kein Stützvektor. Er hat keinen Einfluss auf die Lösung. Probier es: Lösch einen Punkt ohne Ring, dann einen mit Ring.">
+					<p class="quiz-q">Du löschst einen Punkt, der weit von der Trennlinie entfernt liegt. Was ändert
+						sich?</p>
+					<div class="quiz-options">
+						<button type="button">Gar nichts</button>
+						<button type="button">Die Linie verschiebt sich ein wenig</button>
+						<button type="button">Die Margin wird schmaler</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Setz einen Punkt mitten auf die Straße und schau, wie sie ausweicht. Dann probier den
+					Ring mit der linearen und der gekrümmten Grenze.</p>
+				<div class="stage-view">
+					<canvas class="ml-canvas" id="svmCanvas" aria-label="Trennlinie und Margin der SVM"></canvas>
+					<span class="stage-tag">Merkmal 1 · Merkmal 2</span>
+					<span class="stage-readout" id="svmReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" role="group" aria-label="Grenze">
+						<span class="lbl">Grenze</span>
+						<button class="btn" type="button" data-svm-kernel="lin" aria-pressed="true">Gerade</button>
+						<button class="btn" type="button" data-svm-kernel="rbf" aria-pressed="false">Gekrümmt (RBF-Kernel)</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Strenge C</span><output id="svmCOut"></output></span>
+						<input id="svmC" type="range" min="-1" max="2.5" step="0.05" value="1" />
+					</label>
+					<div class="chips" role="group" aria-label="Klasse für neue Punkte">
+						<span class="lbl">Tippen setzt</span>
+						<button class="btn" type="button" data-svm-cls="0" aria-pressed="true"><span class="cls-a">●</span>&nbsp;Rot</button>
+						<button class="btn" type="button" data-svm-cls="1" aria-pressed="false"><span class="cls-b">▲</span>&nbsp;Blau</button>
+					</div>
+					<div class="chips" role="group" aria-label="Beispieldaten">
+						<span class="lbl">Daten</span>
+						<button class="btn" type="button" data-svm-set="sep">Trennbar</button>
+						<button class="btn" type="button" data-svm-set="noise">Mit Ausreißern</button>
+						<button class="btn" type="button" data-svm-set="ring">Ring</button>
+					</div>
+					<p class="stage-note" id="svmNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6 KNN -->
+		<section class="chapter flip" id="knn">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">06 · Klassifikation · seit 1951</span>
+				<h2>k-nächste Nachbarn</h2>
+				<p>Der faulste Algorithmus von allen, und gerade deshalb genial: KNN <strong>lernt gar
+					nichts</strong>. Er merkt sich einfach alle Beispiele. Erst wenn ein neuer Punkt kommt, schaut er
+					nach, welche <strong>k</strong> bekannten Punkte am nächsten liegen. Die häufigste Klasse unter
+					diesen Nachbarn gewinnt.</p>
+				<p>„Sag mir, wer deine Nachbarn sind, und ich sag dir, wer du bist.“</p>
+				<p>Die ganze Kunst liegt im <strong>k</strong>. Mit k = 1 hört der Algorithmus auf einen einzigen
+					Nachbarn, auch wenn das ein Ausreißer ist. Die Grenzen werden zerfranst. Mit großem k entscheidet
+					eine breite Mehrheit, die Grenzen werden glatt, aber kleine Gruppen gehen unter.</p>
+				<p class="merke"><b>Merke</b>KNN klassifiziert einen neuen Punkt nach der Mehrheit seiner k nächsten
+					Nachbarn. Kleines k ist empfindlich, großes k ist grob.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Bei KNN passiert beim „Training“ nichts, die Arbeit kommt bei jeder Vorhersage: Für jeden neuen Punkt müssen die Abstände zu allen gespeicherten Punkten berechnet werden. Bei Millionen Datenpunkten wird das langsam.">
+					<p class="quiz-q">Wann muss KNN am meisten rechnen?</p>
+					<div class="quiz-options">
+						<button type="button">Beim Training</button>
+						<button type="button">Gar nicht, KNN ist immer schnell</button>
+						<button type="button">Bei jeder einzelnen Vorhersage</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe irgendwohin, um den Stern dorthin zu setzen. Dann zieh k von 1 bis ganz nach
+					oben und schalte die Karte ein.</p>
+				<div class="stage-view">
+					<canvas class="ml-canvas" id="knnCanvas" aria-label="Neuer Punkt und seine k nächsten Nachbarn"></canvas>
+					<span class="stage-tag">Merkmal 1 · Merkmal 2</span>
+					<span class="stage-readout" id="knnReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="panel">
+						<small>Abstimmung der Nachbarn</small>
+						<div class="probs" id="knnVotes"></div>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>k (Zahl der Nachbarn)</span><output id="knnKOut"></output></span>
+						<input id="knnK" type="range" min="1" max="25" step="1" value="3" />
+					</label>
+					<button class="btn" id="knnMap" type="button" aria-pressed="false">Karte zeigen</button>
+					<button class="btn" id="knnNew" type="button">Neue Daten</button>
+					<p class="stage-note" id="knnNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 7 k-Means -->
+		<section class="chapter" id="kmeans">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">07 · Clustering · seit 1957</span>
+				<h2>k-Means-Clustering</h2>
+				<p>Bisher hatten alle Daten eine richtige Antwort: Preis, bestanden, Rot oder Blau. Das heißt
+					<strong>überwachtes Lernen</strong>. Beim <strong>unüberwachten Lernen</strong> gibt es keine
+					Antworten, nur Punkte. Der Algorithmus soll selbst Gruppen finden, etwa Kundentypen in einem
+					Online-Shop.</p>
+				<p>k-Means wiederholt zwei einfache Schritte:</p>
+				<ol>
+					<li><strong>Zuordnen:</strong> Jeder Punkt gehört zum nächstgelegenen Zentrum ✕.</li>
+					<li><strong>Verschieben:</strong> Jedes Zentrum wandert in die Mitte (den Mittelwert, englisch
+						<em>mean</em>) seiner Punkte.</li>
+				</ol>
+				<p>Das geht so lange, bis sich nichts mehr bewegt. Die Zahl der Gruppen <strong>k</strong> musst du
+					vorher festlegen. Ein Hinweis ist der <strong>Ellbogen</strong> in der Kurve unten: Ab dort bringt
+					ein weiteres Zentrum kaum noch Verbesserung.</p>
+				<p class="merke"><b>Merke</b>k-Means findet k Gruppen ohne vorgegebene Antworten, indem es abwechselnd
+					Punkte zuordnet und Zentren in die Mitte schiebt.</p>
+				<div class="quiz" data-answer="1"
+					data-why="k-Means landet immer in einem Zustand, in dem sich nichts mehr bewegt, aber nicht unbedingt im besten. Je nach Startposition der Zentren kommen verschiedene Gruppierungen heraus. In der Praxis startet man deshalb mehrmals und nimmt das beste Ergebnis.">
+					<p class="quiz-q">Klick mehrmals auf „Neue Zentren“ und lass es laufen. Kommt immer dieselbe
+						Gruppierung heraus?</p>
+					<div class="quiz-options">
+						<button type="button">Ja, k-Means findet immer die beste Lösung</button>
+						<button type="button">Nein, das Ergebnis hängt vom Start ab</button>
+						<button type="button">Nein, k-Means ist reiner Zufall</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Geh mit „Schritt“ langsam durch die beiden Phasen. Dann probier ein falsches k und
+					schau in die Ellbogen-Kurve.</p>
+				<div class="stage-view">
+					<canvas class="ml-canvas" id="kmCanvas" aria-label="Punkte und Clusterzentren"></canvas>
+					<span class="stage-tag" id="kmPhase">Start</span>
+					<span class="stage-readout" id="kmReadout"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>k (Zahl der Gruppen)</span><output id="kmKOut"></output></span>
+						<input id="kmK" type="range" min="1" max="7" step="1" value="3" />
+					</label>
+					<button class="btn primary" id="kmStep" type="button">Schritt</button>
+					<button class="btn" id="kmRun" type="button" aria-pressed="false">Abspielen</button>
+					<button class="btn" id="kmInit" type="button">Neue Zentren</button>
+					<button class="btn" id="kmNew" type="button">Neue Daten</button>
+					<p class="stage-note" id="kmNote"></p>
+					<div class="panel">
+						<small>Ellbogen: Restabstand je k</small>
+						<canvas id="elbow" aria-label="Ellbogen-Kurve"></canvas>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Überblick -->
+		<section class="chapter wide" id="ueberblick">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">08 · Überblick</span>
+				<h2>Welcher wofür?</h2>
+				<p>Alle sieben Algorithmen lernen aus Beispielen, aber sie lösen verschiedene Aufgaben. Die erste Frage
+					ist immer: <strong>Was soll herauskommen?</strong> Eine Zahl, eine Klasse oder Gruppen, die noch
+					niemand kennt?</p>
+			</div>
+			<div class="overview-wrap reveal">
+				<table class="overview">
+					<thead>
+						<tr>
+							<th>Algorithmus</th>
+							<th>Aufgabe</th>
+							<th>Lernen</th>
+							<th>Stärke</th>
+							<th>Schwäche</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="#linear">Lineare Regression</a></td>
+							<td><span class="tag cls-c">Zahl</span></td>
+							<td>überwacht</td>
+							<td>schnell, leicht zu deuten</td>
+							<td>nur gerade Zusammenhänge</td>
+						</tr>
+						<tr>
+							<td><a href="#logistisch">Logistische Regression</a></td>
+							<td><span class="tag cls-b">Klasse</span></td>
+							<td>überwacht</td>
+							<td>liefert Wahrscheinlichkeiten</td>
+							<td>nur gerade Grenzen</td>
+						</tr>
+						<tr>
+							<td><a href="#baum">Entscheidungsbaum</a></td>
+							<td><span class="tag cls-b">Klasse</span> <span class="tag cls-c">Zahl</span></td>
+							<td>überwacht</td>
+							<td>als Regeln vorlesbar</td>
+							<td>überanpasst sich leicht</td>
+						</tr>
+						<tr>
+							<td><a href="#wald">Random Forest</a></td>
+							<td><span class="tag cls-b">Klasse</span> <span class="tag cls-c">Zahl</span></td>
+							<td>überwacht</td>
+							<td>sehr genau, robust</td>
+							<td>schwer zu erklären</td>
+						</tr>
+						<tr>
+							<td><a href="#svm">SVM</a></td>
+							<td><span class="tag cls-b">Klasse</span></td>
+							<td>überwacht</td>
+							<td>klare Grenzen, Kernel-Trick</td>
+							<td>langsam bei sehr vielen Daten</td>
+						</tr>
+						<tr>
+							<td><a href="#knn">KNN</a></td>
+							<td><span class="tag cls-b">Klasse</span> <span class="tag cls-c">Zahl</span></td>
+							<td>überwacht</td>
+							<td>kein Training nötig</td>
+							<td>langsame Vorhersage</td>
+						</tr>
+						<tr>
+							<td><a href="#kmeans">k-Means</a></td>
+							<td><span class="tag cls-a">Gruppen</span></td>
+							<td>unüberwacht</td>
+							<td>einfach, schnell</td>
+							<td>k muss man vorgeben</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="chapter-text reveal">
+				<div class="quiz" data-answer="3"
+					data-why="Es gibt keine vorgegebenen Antworten, gesucht sind Gruppen, die noch niemand kennt. Das ist unüberwachtes Lernen, also ein Fall für k-Means.">
+					<p class="quiz-q">Ein Online-Shop will seine Kundschaft in Typen einteilen, kennt diese Typen aber
+						noch nicht. Welcher Algorithmus passt?</p>
+					<div class="quiz-options">
+						<button type="button">Lineare Regression</button>
+						<button type="button">Logistische Regression</button>
+						<button type="button">KNN</button>
+						<button type="button">k-Means</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Gesucht ist eine Zahl (Euro), und der Zusammenhang zwischen Fläche und Miete ist ungefähr gerade. Genau dafür ist die lineare Regression gemacht.">
+					<p class="quiz-q">Du willst aus der Wohnfläche die Monatsmiete in Euro schätzen. Womit fängst du
+						an?</p>
+					<div class="quiz-options">
+						<button type="button">Lineare Regression</button>
+						<button type="button">k-Means</button>
+						<button type="button">Logistische Regression</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Bei einem Kredit muss man oft begründen können, warum abgelehnt wurde. Ein Entscheidungsbaum lässt sich als Folge von Wenn-dann-Regeln vorlesen. Ein Random Forest wäre vielleicht genauer, aber hunderte Bäume erklären sich nicht so leicht.">
+					<p class="quiz-q">Eine Bank muss jede Kreditablehnung nachvollziehbar begründen. Welches Modell ist
+						am leichtesten zu erklären?</p>
+					<div class="quiz-options">
+						<button type="button">Random Forest</button>
+						<button type="button">Entscheidungsbaum</button>
+						<button type="button">SVM mit RBF-Kernel</button>
+					</div>
+				</div>
+				<div class="fact">
+					<b>Und neuronale Netze?</b>
+					<p>Sie sind die große Erweiterung dieser Ideen: viele logistische Regressionen hintereinander
+						geschaltet, trainiert mit dem Gradientenabstieg aus Kapitel 1. Wie daraus eine Sprach-KI wird,
+						zeigt der Teil <a href="../ki/">Wie Sprach-KI funktioniert</a>.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter im Labor</p>
+		<a href="../ki/">Wie Sprach-KI funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./ml.js"></script>
+</body>
+
+</html>
