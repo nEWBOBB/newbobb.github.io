@@ -120,3 +120,141 @@
 		}
 	});
 })();
+
+// Psychologie: Zahlenspanne des Arbeitsgedächtnisses
+(() => {
+	const digit = document.getElementById("spanDigit");
+	const hint = document.getElementById("spanHint");
+	const out = document.getElementById("spanOut");
+	const note = document.getElementById("spanNote");
+	const btn = document.getElementById("btnSpan");
+	const input = document.getElementById("spanIn");
+	const ok = document.getElementById("btnSpanOk");
+	let len = 3;
+	let fails = 0;
+	let best = 0;
+	let seq = "";
+	let timer;
+
+	function show() {
+		seq = "";
+		for (let i = 0; i < len; i++) {
+			let d;
+			do d = String(Math.floor(Math.random() * 10));
+			while (d === seq[seq.length - 1]);
+			seq += d;
+		}
+		btn.disabled = true;
+		input.disabled = ok.disabled = true;
+		input.value = "";
+		hint.textContent = `${len} Ziffern · gut merken`;
+		let i = 0;
+		const tick = () => {
+			if (i < seq.length) {
+				digit.textContent = seq[i++];
+				timer = setTimeout(() => {
+					digit.textContent = "";
+					timer = setTimeout(tick, 220);
+				}, 700);
+			} else {
+				digit.textContent = "?";
+				hint.textContent = "Jetzt eintippen";
+				input.disabled = ok.disabled = false;
+				input.focus({ preventScroll: true });
+			}
+		};
+		digit.textContent = "";
+		timer = setTimeout(tick, 500);
+	}
+
+	function check() {
+		if (input.disabled) return;
+		const right = input.value.replace(/\D/g, "") === seq;
+		input.disabled = ok.disabled = true;
+		if (right) {
+			best = Math.max(best, len);
+			out.textContent = `Bestwert ${best}`;
+			fails = 0;
+			digit.textContent = "✓";
+			len++;
+			hint.textContent = `Richtig! Weiter mit ${len} Ziffern`;
+			timer = setTimeout(show, 1100);
+		} else {
+			fails++;
+			digit.textContent = "✗";
+			hint.textContent = `Es war ${seq}`;
+			if (fails >= 2) {
+				btn.disabled = false;
+				btn.textContent = "↺ Nochmal";
+				note.textContent = best
+					? `Deine Zahlenspanne: ${best} Ziffern. ${
+							best >= 8 ? "Weit über dem Durchschnitt! Hast du Päckchen gebildet?" : best >= 6 ? "Genau im typischen Bereich von 7 ± 2." : "Etwas unter dem Schnitt. Versuch beim nächsten Mal, Paare zu bilden: „47“ statt „4, 7“."
+						}`
+					: "Gleich nochmal versuchen, beim ersten Mal ist man oft nervös.";
+				len = 3;
+				fails = 0;
+			} else timer = setTimeout(show, 1600);
+		}
+	}
+
+	btn.addEventListener("click", () => {
+		clearTimeout(timer);
+		best = 0;
+		out.textContent = "Bestwert –";
+		note.textContent = "Nach zwei Fehlern hintereinander ist Schluss.";
+		show();
+	});
+	ok.addEventListener("click", check);
+	input.addEventListener("keydown", (e) => e.key === "Enter" && check());
+})();
+
+// Psychologie: Basisraten-Fehler mit 1000 Menschen
+(() => {
+	const canvas = document.getElementById("bayesCanvas");
+	const { ctx, size } = fitCanvas(canvas, (w) => (w < 520 ? 1.25 : 1.6));
+	const prev = document.getElementById("prev");
+	const sens = document.getElementById("sens");
+	const fpr = document.getElementById("fpr");
+	const out = document.getElementById("bayesOut");
+	const note = document.getElementById("bayesNote");
+	const TP = "#ff9ec7";
+	const FP = "#ffd166";
+	const pct = (v) => `${v.toLocaleString("de-DE", { maximumFractionDigits: 1 })} %`;
+
+	function draw() {
+		const { w, h } = size;
+		const p = Number(prev.value) / 1000;
+		const sick = Math.round(1000 * p);
+		const tp = Math.round(sick * (Number(sens.value) / 100));
+		const fn = sick - tp;
+		const fp = Math.round((1000 - sick) * (Number(fpr.value) / 100));
+		const cols = 40;
+		const rows = 1000 / cols;
+		const cell = Math.min((w - 20) / cols, (h - 46) / rows);
+		const ox = (w - cell * cols) / 2;
+		const oy = 36 + (h - 46 - cell * rows) / 2;
+		ctx.clearRect(0, 0, w, h);
+		for (let i = 0; i < 1000; i++) {
+			const x = ox + (i % cols) * cell + cell / 2;
+			const y = oy + Math.floor(i / cols) * cell + cell / 2;
+			ctx.beginPath();
+			ctx.arc(x, y, cell * 0.36, 0, Math.PI * 2);
+			if (i < tp) ctx.fillStyle = TP;
+			else if (i < tp + fn) ctx.fillStyle = "rgba(255,158,199,0.35)";
+			else if (i < tp + fn + fp) ctx.fillStyle = FP;
+			else ctx.fillStyle = "rgba(255,255,255,0.12)";
+			ctx.fill();
+		}
+		const share = tp + fp ? (tp / (tp + fp)) * 100 : 0;
+		out.textContent = `${Math.round(share)} % wirklich krank`;
+		document.getElementById("prevOut").textContent = pct(p * 100);
+		document.getElementById("sensOut").textContent = `${sens.value} %`;
+		document.getElementById("fprOut").textContent = `${fpr.value} %`;
+		note.textContent = `${tp + fp} Menschen werden positiv getestet. Davon sind ${tp} wirklich krank und ${fp} sind gesund und haben einen Fehlalarm. Ein positiver Test heißt hier: ${Math.round(
+			share
+		)} % Risiko, nicht ${sens.value} %.`;
+	}
+	[prev, sens, fpr].forEach((el) => el.addEventListener("input", draw));
+	window.addEventListener("resize", draw);
+	draw();
+})();

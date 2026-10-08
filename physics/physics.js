@@ -150,3 +150,187 @@
 		note.textContent = "Die Spur rechts ist eine Sinuswelle, wie auf der Mathe-Seite.";
 	});
 })();
+
+// Physik: Interferenz zweier Kreiswellen
+(() => {
+	const canvas = document.getElementById("waveCanvas");
+	const lam = document.getElementById("lam");
+	const sep = document.getElementById("sep");
+	const btn2 = document.getElementById("btnSrc2");
+	const out = document.getElementById("waveOut");
+	const note = document.getElementById("waveNote");
+	const GW = 200; // Rechenraster, wird auf die Canvas hochskaliert
+	let GH = 120;
+	let two = false;
+	const buf = document.createElement("canvas");
+	const bctx = buf.getContext("2d");
+	let img;
+	let r1;
+	let r2;
+	let src = [];
+	const { ctx, size } = fitCanvas(canvas, (w) => (w < 520 ? 1.1 : 1.6));
+
+	function setup() {
+		if (!size.w) return;
+		GH = Math.round((GW * size.h) / size.w);
+		buf.width = GW;
+		buf.height = GH;
+		img = bctx.createImageData(GW, GH);
+		const L = Number(lam.value);
+		const d = Number(sep.value) * L;
+		const y = GH * 0.18;
+		src = two ? [[GW / 2 - d / 2, y], [GW / 2 + d / 2, y]] : [[GW / 2, y]];
+		r1 = new Float32Array(GW * GH);
+		r2 = new Float32Array(GW * GH);
+		for (let j = 0; j < GH; j++)
+			for (let i = 0; i < GW; i++) {
+				const n = j * GW + i;
+				r1[n] = Math.hypot(i - src[0][0], j - src[0][1]);
+				r2[n] = two ? Math.hypot(i - src[1][0], j - src[1][1]) : 0;
+			}
+		document.getElementById("lamOut").textContent = `${(L / 10).toFixed(1).replace(".", ",")} cm`;
+		document.getElementById("sepOut").textContent = `${sep.value.replace(".", ",")} λ`;
+		out.textContent = two ? "2 Quellen" : "1 Quelle";
+		const lines = Math.floor(Number(sep.value) + 0.5) * 2;
+		note.textContent = two
+			? `Abstand ${sep.value.replace(".", ",")} λ: Es entstehen ${lines} ruhige Streifen, auf denen sich Berg und Tal auslöschen. Größerer Abstand, mehr Streifen.`
+			: "Eine Quelle macht einfache Kreiswellen. Schalte die zweite dazu.";
+	}
+
+	whenVisible(canvas, (dt, t) => {
+		if (!img) return;
+		const k = (2 * Math.PI) / Number(lam.value);
+		const wt = t * 5;
+		const d = img.data;
+		for (let n = 0; n < r1.length; n++) {
+			let v = Math.sin(k * r1[n] - wt) / (1 + r1[n] * 0.012);
+			if (two) v = (v + Math.sin(k * r2[n] - wt) / (1 + r2[n] * 0.012)) * 0.5;
+			const b = 0.5 + 0.5 * v;
+			const p = n * 4;
+			d[p] = 20 + 130 * b;
+			d[p + 1] = 22 + 165 * b;
+			d[p + 2] = 34 + 221 * b;
+			d[p + 3] = 255;
+		}
+		bctx.putImageData(img, 0, 0);
+		ctx.imageSmoothingEnabled = true;
+		ctx.drawImage(buf, 0, 0, size.w, size.h);
+		ctx.fillStyle = "#ff9ec7";
+		for (const [x, y] of src) {
+			ctx.beginPath();
+			ctx.arc((x / GW) * size.w, (y / GH) * size.h, 5, 0, Math.PI * 2);
+			ctx.fill();
+		}
+	});
+
+	[lam, sep].forEach((el) => el.addEventListener("input", setup));
+	window.addEventListener("resize", setup);
+	btn2.addEventListener("click", () => {
+		two = !two;
+		btn2.setAttribute("aria-pressed", two);
+		setup();
+	});
+	setup();
+})();
+
+// Physik: Lichtuhren und Zeitdilatation
+(() => {
+	const canvas = document.getElementById("relCanvas");
+	const { ctx, size } = fitCanvas(canvas, (w) => (w < 520 ? 1 : 1.6));
+	const vel = document.getElementById("vel");
+	const out = document.getElementById("relOut");
+	const note = document.getElementById("relNote");
+	const ACC = getComputedStyle(document.documentElement).getPropertyValue("--fach").trim();
+	const T0 = 1.2; // Sekunden pro Tick der ruhenden Uhr
+	const fmt = (v, d = 2) => v.toFixed(d).replace(".", ",");
+	let t = 0;
+	let x = 0;
+	let trail = [];
+	const beta = () => Number(vel.value) / 100;
+	const gamma = () => 1 / Math.sqrt(1 - beta() ** 2);
+	const tri = (p) => 1 - Math.abs(1 - 2 * p);
+
+	function update() {
+		const g = gamma();
+		out.textContent = `γ = ${fmt(g)}`;
+		document.getElementById("vOut").textContent = `${vel.value} % von c`;
+		note.textContent = `Bei ${vel.value} % der Lichtgeschwindigkeit: Während auf der Erde 10 Jahre vergehen, altern die Reisenden nur ${fmt(
+			10 / g,
+			1
+		)} Jahre.`;
+	}
+	vel.addEventListener("input", () => {
+		trail = [];
+		update();
+	});
+	update();
+
+	function clock(cx, base, Lc, py, label, ticks, color) {
+		ctx.fillStyle = "rgba(255,255,255,0.55)";
+		ctx.fillRect(cx - 18, base - Lc - 4, 36, 4);
+		ctx.fillRect(cx - 18, base, 36, 4);
+		ctx.fillStyle = color;
+		ctx.shadowColor = color;
+		ctx.shadowBlur = 14;
+		ctx.beginPath();
+		ctx.arc(cx, py, 5, 0, Math.PI * 2);
+		ctx.fill();
+		ctx.shadowBlur = 0;
+		ctx.fillStyle = "rgba(244,239,230,0.55)";
+		ctx.font = "11px JetBrains Mono, monospace";
+		ctx.textAlign = "left";
+		ctx.fillText(label, 12, base - Lc - 16);
+		ctx.textAlign = "right";
+		ctx.fillStyle = "#f4efe6";
+		ctx.font = "700 22px Syne, sans-serif";
+		ctx.fillText(`${ticks} ${ticks === 1 ? "Tick" : "Ticks"}`, size.w - 12, base - Lc / 2 + 8);
+	}
+
+	whenVisible(canvas, (dt) => {
+		const { w, h } = size;
+		const lane = h / 2;
+		const Lc = lane * 0.52;
+		const c = (2 * Lc) / T0; // Lichtgeschwindigkeit in Pixel pro Sekunde
+		const g = gamma();
+		t += dt;
+		x += beta() * c * dt;
+		const start = 40;
+		const end = w * 0.72;
+		if (start + x > end) {
+			x = 0;
+			trail = [];
+		}
+		ctx.clearRect(0, 0, w, h);
+
+		// Ruhende Uhr oben
+		const b1 = lane - 22;
+		clock(start + 30, b1, Lc, b1 - Lc * tri((t / T0) % 1), "Uhr auf der Erde · ruht", Math.floor(t / T0), "#ff9ec7");
+
+		// Bewegte Uhr unten: Das Licht läuft im Zickzack
+		const b2 = h - 22;
+		const cx = start + 30 + x;
+		const py = b2 - Lc * tri((t / (T0 * g)) % 1);
+		trail.push([cx, py]);
+		if (trail.length > 400) trail.shift();
+		ctx.strokeStyle = ACC;
+		ctx.globalAlpha = 0.55;
+		ctx.lineWidth = 1.5;
+		ctx.beginPath();
+		trail.forEach(([a, b], i) => (i ? ctx.lineTo(a, b) : ctx.moveTo(a, b)));
+		ctx.stroke();
+		ctx.globalAlpha = 1;
+		clock(cx, b2, Lc, py, `Uhr in der Rakete · ${vel.value} % von c`, Math.floor(t / (T0 * g)), ACC);
+
+		ctx.strokeStyle = "rgba(255,255,255,0.08)";
+		ctx.beginPath();
+		ctx.moveTo(0, lane + 2);
+		ctx.lineTo(w, lane + 2);
+		ctx.stroke();
+	});
+
+	document.getElementById("btnRelReset").addEventListener("click", () => {
+		t = 0;
+		x = 0;
+		trail = [];
+	});
+})();

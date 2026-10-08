@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Chemie — Newbobb Lab</title>
 	<meta name="description"
-		content="Chemie interaktiv: Teilchen stoßen zusammen und reagieren. Temperatur, Aktivierungsenergie und Katalysator selbst einstellen und sehen, warum Wärme Reaktionen schneller macht." />
+		content="Chemie interaktiv: Stoßtheorie, eine Titration mit Rotkohl-Indikator und das dynamische Gleichgewicht nach Le Chatelier." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,6 +38,8 @@
 				Teilchen hart genug zusammenprallen. Dreh an der Temperatur und sieh selbst.</p>
 			<ol class="v-toc">
 				<li><a href="#stoss">Die Stoßtheorie</a></li>
+				<li><a href="#ph">Die pH-Skala</a></li>
+				<li><a href="#gleichgewicht">Hin und zurück</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -83,6 +85,94 @@
 						<li style="--c:#ffffff">Stoß ohne Reaktion</li>
 					</ul>
 					<p class="stage-note" id="chemNote">Stöße bisher: 0, davon erfolgreich: 0</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="ph">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Säuren und Basen</span>
+				<h2>Die pH-Skala</h2>
+				<p>Zitrone ist sauer, Seife ist glitschig. Beides hat mit einem winzigen Teilchen zu tun: dem
+					<strong>Wasserstoff-Ion H⁺</strong>. Säuren geben H⁺ ab, Basen (Laugen) fangen es ein.</p>
+				<p>Der <strong>pH-Wert</strong> zählt, wie viele H⁺ im Wasser schwimmen. Die Skala geht von 0 (sehr sauer)
+					über 7 (neutral, reines Wasser) bis 14 (sehr basisch). Der Haken: Sie ist
+					<strong>logarithmisch</strong>. Jede Stufe bedeutet zehnmal so viel oder zehnmal so wenig H⁺.</p>
+				<p>Gießt man Lauge in Säure, fängt die Lauge die H⁺ weg, und es entsteht Wasser und Salz. Das heißt
+					<strong>Neutralisation</strong>. Lange passiert dabei fast nichts, dann springt der pH-Wert plötzlich.
+					Rotkohlsaft zeigt es dir mit seiner Farbe an.</p>
+				<p class="merke"><b>Merke</b>pH 7 ist neutral. Darunter sauer, darüber basisch. Eine Stufe Unterschied
+					heißt zehnmal so sauer.</p>
+				<div class="formula">pH = −log₁₀ [H⁺] · H⁺ + OH⁻ → H₂O
+					<small>[H⁺] ist die Menge an Wasserstoff-Ionen in Mol pro Liter.</small>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Jede pH-Stufe ist ein Faktor 10. Zwei Stufen sind also 10 · 10 = 100. Cola mit pH 2,5 enthält rund 30 000-mal mehr H⁺ als reines Wasser.">
+					<p class="quiz-q">Saft A hat pH 3, Saft B pH 5. Wie viel saurer ist A?</p>
+					<div class="quiz-options">
+						<button type="button">Etwas weniger als doppelt so sauer</button>
+						<button type="button">100-mal so sauer</button>
+						<button type="button">2-mal so sauer</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Gib Tropfen für Tropfen Natronlauge in die Salzsäure. Wann schlägt die Farbe um?</p>
+				<div class="stage-view">
+					<canvas id="phCanvas" aria-label="Titration mit Rotkohl-Indikator und pH-Kurve"></canvas>
+					<span class="stage-tag">50 ml Salzsäure + Rotkohlsaft</span>
+					<span class="stage-readout" id="phOut">pH 1,0</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Natronlauge zugegeben</span><output id="naohOut">0 ml</output></span>
+						<input type="range" id="naoh" min="0" max="2000" value="0" />
+					</label>
+					<button class="btn" id="btnDrip" type="button">💧 1 Tropfen (0,05 ml)</button>
+					<p class="stage-note" id="phNote">Sehr sauer, wie Magensäure.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="gleichgewicht">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Chemisches Gleichgewicht</span>
+				<h2>Hin und zurück</h2>
+				<p>Viele Reaktionen laufen in <strong>beide Richtungen</strong>. Aus A wird B, aber aus B wird auch wieder
+					A. Am Anfang gibt es nur A, also überwiegt die Hinreaktion. Je mehr B entsteht, desto öfter läuft auch
+					die Rückreaktion.</p>
+				<p>Irgendwann laufen beide gleich schnell. Dann ändert sich von außen nichts mehr, obwohl innen ständig
+					Teilchen umgebaut werden. Das ist ein <strong>dynamisches Gleichgewicht</strong>.</p>
+				<p>Stört man es, etwa indem man mehr A hineinkippt oder B herausnimmt, weicht das System aus und stellt ein
+					neues Gleichgewicht ein. Das heißt <strong>Prinzip von Le Chatelier</strong>. Die Industrie nutzt es
+					beim Haber-Bosch-Verfahren, das den Dünger für die halbe Menschheit liefert.</p>
+				<p class="merke"><b>Merke</b>Gleichgewicht heißt nicht Stillstand. Es heißt: Hin und zurück passiert
+					gleich oft.</p>
+				<div class="formula">A ⇌ B · K = [B] / [A] = k_hin / k_rück
+					<small>K ist die Gleichgewichtskonstante. Sie hängt von der Temperatur ab, nicht von der Startmenge.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Warte, bis sich die Kurven beruhigen. Dann kipp A dazu oder nimm B weg. Was macht das
+					System?</p>
+				<div class="stage-view">
+					<canvas id="eqCanvas" aria-label="Teilchen A und B im Gleichgewicht mit Zeitverlauf"></canvas>
+					<span class="stage-tag">A ⇌ B</span>
+					<span class="stage-readout" id="eqOut">A 120 · B 0</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Hinreaktion A → B</span><output id="kfOut">mittel</output></span>
+						<input type="range" id="kf" min="1" max="10" value="4" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Rückreaktion B → A</span><output id="kbOut">langsam</output></span>
+						<input type="range" id="kb" min="1" max="10" value="2" />
+					</label>
+					<button class="btn primary" id="btnAddA" type="button">+ 60 A dazugeben</button>
+					<button class="btn" id="btnTakeB" type="button">− Hälfte von B entfernen</button>
+					<button class="btn" id="btnEqReset" type="button">↺ Neu</button>
+					<p class="stage-note" id="eqNote">Am Anfang gibt es nur A.</p>
 				</div>
 			</div>
 		</section>

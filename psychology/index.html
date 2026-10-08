@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Psychologie — Newbobb Lab</title>
 	<meta name="description"
-		content="Psychologie interaktiv: der Stroop-Test. Miss selbst, wie dein Gehirn beim Lesen automatisch schneller ist als beim Hinsehen, und was das über Aufmerksamkeit verrät." />
+		content="Psychologie interaktiv: der Stroop-Effekt, ein Test deiner Zahlenspanne im Arbeitsgedächtnis und der Basisraten-Fehler mit 1000 Menschen." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -99,6 +99,32 @@
 			font-variant-numeric: tabular-nums;
 		}
 
+		.span-in {
+			flex: 1 1 180px;
+			min-width: 0;
+			padding: 12px 14px;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			background: var(--panel-2);
+			color: var(--ink);
+			font: 500 1.05rem "JetBrains Mono", monospace;
+			letter-spacing: 0.12em;
+		}
+
+		.span-in::placeholder {
+			letter-spacing: 0.02em;
+			color: var(--faint);
+		}
+
+		.span-in:focus {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		.span-in:disabled {
+			opacity: 0.5;
+		}
+
 		@media (max-width: 520px) {
 			.ink-buttons {
 				grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -126,6 +152,8 @@
 				Menschen ticken, fängt am besten bei sich selbst an. Mit einem Test, den du nicht schummeln kannst.</p>
 			<ol class="v-toc">
 				<li><a href="#stroop">Der Stroop-Effekt</a></li>
+				<li><a href="#gedaechtnis">Die magische Sieben</a></li>
+				<li><a href="#basisrate">Der Test lügt nicht</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -174,6 +202,101 @@
 						<div class="bar" style="--c:#ff8a7a"><span>Wort ≠ Farbe</span><i id="barDiff"></i><b id="msDiff">–</b></div>
 					</div>
 					<p class="stage-note" id="stroopNote">Die Hälfte der Wörter passt zur Farbe, die andere Hälfte nicht.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="gedaechtnis">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Gedächtnis</span>
+				<h2>Die magische Sieben</h2>
+				<p>Lies eine Telefonnummer einmal und tipp sie dann ein. Bei kurzen Nummern klappt das, bei langen nicht.
+					Der Grund ist das <strong>Arbeitsgedächtnis</strong>: der Notizzettel im Kopf, auf dem du gerade
+					denkst.</p>
+				<p>1956 zeigte der Psychologe George Miller, dass dieser Zettel winzig ist: Die meisten Menschen können
+					sich etwa <strong>7 ± 2 Dinge</strong> gleichzeitig merken. Neuere Studien sagen sogar eher 4. Wer
+					sich nicht wiederholt, vergisst sie nach rund 20 Sekunden.</p>
+				<p>Der Trick heißt <strong>Chunking</strong>: Mehrere Dinge zu einem Päckchen bündeln. 1 9 8 9 2 0 0 1
+					sind acht Ziffern, „1989, 2001“ nur zwei Jahreszahlen. Schachmeister sehen keine 32 Figuren, sondern
+					bekannte Stellungen. Darum ist <strong>Wissen</strong> der beste Gedächtnistrainer.</p>
+				<p class="merke"><b>Merke</b>Dein Kopf kann wenig auf einmal festhalten. Schreib Dinge auf, bündle sie
+					und baue Wissen auf, dann passt mehr in jedes Päckchen.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Gruppen aus zwei bis vier Ziffern sind Päckchen, die das Arbeitsgedächtnis als eine Einheit speichert. Darum schreibt man Telefonnummern, IBANs und Kreditkarten in Blöcken.">
+					<p class="quiz-q">Warum stehen Telefonnummern meist als „0171 234 56 78“ und nicht als
+						„01712345678“?</p>
+					<div class="quiz-options">
+						<button type="button">Das ist nur eine alte Gewohnheit der Post</button>
+						<button type="button">Blöcke sind Päckchen, die man sich leichter merkt</button>
+						<button type="button">Sonst würde das Telefon sie nicht erkennen</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Merk dir die Ziffern, die nacheinander aufblinken, und tipp sie danach ein. Wie weit kommst
+					du?</p>
+				<div class="stage-view">
+					<div class="stroop" aria-live="polite">
+						<div class="stroop-word f-big" id="spanDigit">?</div>
+						<div class="stroop-hint" id="spanHint">Start mit 3 Ziffern</div>
+					</div>
+					<span class="stage-tag">Zahlenspanne</span>
+					<span class="stage-readout" id="spanOut">Bestwert –</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSpan" type="button">▶ Start</button>
+					<input class="span-in" id="spanIn" type="text" inputmode="numeric" autocomplete="off" maxlength="14"
+						placeholder="Ziffern" aria-label="Gemerkte Ziffern" disabled />
+					<button class="btn" id="btnSpanOk" type="button" disabled>Prüfen ↵</button>
+					<p class="stage-note" id="spanNote">Nach zwei Fehlern hintereinander ist Schluss.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="basisrate">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Denkfehler</span>
+				<h2>Der Test lügt nicht. Oder?</h2>
+				<p>Eine seltene Krankheit trifft 1 von 100 Menschen. Ein Test erkennt 90 % der Kranken. Bei Gesunden
+					schlägt er in 9 % der Fälle fälschlich an. Dein Test ist positiv. Wie wahrscheinlich bist du krank?</p>
+				<p>Die meisten, auch viele Ärztinnen und Ärzte, schätzen um die 90 %. Richtig sind <strong>etwa 9
+					%</strong>. Wir übersehen die <strong>Basisrate</strong>: Es gibt so viel mehr Gesunde als Kranke, dass
+					die wenigen Fehlalarme bei den Gesunden die echten Treffer weit übertreffen.</p>
+				<p>Der Psychologe Gerd Gigerenzer hat gezeigt: Mit Prozenten scheitern wir, mit <strong>Häufigkeiten</strong>
+					verstehen wir es sofort. Stell dir einfach 1000 Menschen vor. Genau das macht das Bild rechts.</p>
+				<p class="merke"><b>Merke</b>Frag bei jedem Test und jeder Statistik zuerst: Wie häufig ist das
+					überhaupt? Seltene Dinge erzeugen viele falsche Alarme.</p>
+				<div class="formula">P(krank | positiv) = richtig Positive / alle Positiven
+					<small>Das ist der Satz von Bayes, nur mit Menschen statt Formeln gezählt.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zähl mit: Von allen, die positiv getestet wurden, wie viele sind wirklich krank? Mach die
+					Krankheit dann häufiger.</p>
+				<div class="stage-view">
+					<canvas id="bayesCanvas" aria-label="1000 Menschen, nach Krankheit und Testergebnis gefärbt"></canvas>
+					<span class="stage-tag">1000 Menschen</span>
+					<span class="stage-readout" id="bayesOut">9 % wirklich krank</span>
+				</div>
+				<div class="stage-controls">
+					<ul class="f-legend">
+						<li style="--c:#ff9ec7">krank, positiv</li>
+						<li style="--c:#ffd166">gesund, aber positiv</li>
+						<li style="--c:rgba(255,158,199,0.35)">krank, übersehen</li>
+					</ul>
+					<label class="range">
+						<span class="range-head"><span>Wie häufig ist die Krankheit?</span><output id="prevOut">1 %</output></span>
+						<input type="range" id="prev" min="1" max="300" value="10" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Erkennt Kranke</span><output id="sensOut">90 %</output></span>
+						<input type="range" id="sens" min="50" max="99" value="90" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Fehlalarm bei Gesunden</span><output id="fprOut">9 %</output></span>
+						<input type="range" id="fpr" min="1" max="20" value="9" />
+					</label>
+					<p class="stage-note" id="bayesNote"></p>
 				</div>
 			</div>
 		</section>

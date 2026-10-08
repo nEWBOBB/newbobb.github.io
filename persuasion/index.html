@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Überzeugen — Newbobb Lab</title>
 	<meta name="description"
-		content="Überzeugen interaktiv: die sechs Prinzipien der Beeinflussung nach Robert Cialdini. Erkenne in echten Werbe- und Alltagssätzen, welcher Trick gerade bei dir wirkt." />
+		content="Überzeugen interaktiv: Cialdinis sechs Hebel, der Framing-Effekt nach Kahneman und Tversky und Aristoteles' Ethos, Pathos und Logos." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -48,6 +48,7 @@
 
 		.ad-card p {
 			margin: 0;
+			color: inherit;
 			font-size: 1.08rem;
 			line-height: 1.4;
 			font-weight: 500;
@@ -95,6 +96,48 @@
 			margin: 0;
 		}
 
+		.frame-choices {
+			display: grid;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.frame-choices .btn {
+			justify-content: flex-start;
+			text-align: left;
+			border-radius: 14px;
+			padding: 12px 16px;
+		}
+
+		.fr-result {
+			display: grid;
+			gap: 10px;
+			width: 100%;
+		}
+
+		.fr-result div {
+			display: grid;
+			grid-template-columns: 9em 1fr 3em;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.84rem;
+			color: var(--muted);
+		}
+
+		.fr-result i {
+			display: block;
+			height: 12px;
+			border-radius: 6px;
+			background: var(--c);
+			width: 0;
+			transition: width 0.7s;
+		}
+
+		.fr-result b {
+			text-align: right;
+			color: var(--ink);
+		}
+
 		@media (max-width: 520px) {
 			.principles {
 				grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -118,6 +161,8 @@
 				verkaufen. Und merkt sofort, wenn jemand sie bei einem selbst benutzt.</p>
 			<ol class="v-toc">
 				<li><a href="#prinzipien">Die sechs Hebel</a></li>
+				<li><a href="#framing">Derselbe Satz, andere Wahl</a></li>
+				<li><a href="#rhetorik">Ethos, Pathos, Logos</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -159,6 +204,85 @@
 					<div class="principles" id="principles"></div>
 					<button class="btn primary" id="btnNext" type="button" hidden>Weiter →</button>
 					<p class="stage-note" id="adNote">Wähle einen Hebel.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="framing">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Framing</span>
+				<h2>Derselbe Satz, andere Wahl</h2>
+				<p>„90 % fettfrei“ klingt gesund. „Enthält 10 % Fett“ klingt nach Diät-Sünde. Es ist exakt dasselbe
+					Produkt. Wie etwas eingerahmt wird, der <strong>Frame</strong>, verändert, wie wir es bewerten.</p>
+				<p>1981 legten Amos Tversky und Daniel Kahneman Hunderten Menschen dieselbe Entscheidung vor, nur
+					unterschiedlich formuliert. Wenn von <strong>geretteten</strong> Leben die Rede war, wählte die Mehrheit
+					die sichere Lösung. Wenn von <strong>Toten</strong> die Rede war, wählte die Mehrheit das Risiko.</p>
+				<p>Der Grund heißt <strong>Verlustaversion</strong>: Ein Verlust schmerzt uns etwa doppelt so stark, wie
+					ein gleich großer Gewinn uns freut. Bei Gewinnen gehen wir auf Nummer sicher, um Verluste zu vermeiden,
+					zocken wir.</p>
+				<p class="merke"><b>Merke</b>Wenn dich ein Angebot überzeugt, formuliere es im Kopf einmal um: Gewinn
+					als Verlust, Prozent als Anzahl. Bleibt die Entscheidung gleich?</p>
+				<div class="quiz" data-answer="0"
+					data-why="Ein Rabatt fühlt sich wie ein Gewinn an, ein Aufschlag wie ein Verlust. Darum heißen Kartenpreise an der Tankstelle oft „Barzahlerrabatt“ und nie „Kartenaufschlag“, obwohl der Preisunterschied derselbe ist.">
+					<p class="quiz-q">Barzahlung kostet 1,70 €, mit Karte 1,75 €. Wie klingt das für Kunden besser?</p>
+					<div class="quiz-options">
+						<button type="button">„5 Cent Rabatt bei Barzahlung“</button>
+						<button type="button">„5 Cent Aufschlag bei Kartenzahlung“</button>
+						<button type="button">Beides wirkt genau gleich</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Entscheide als Gesundheitsministerin oder Gesundheitsminister. Danach kommt dieselbe Frage
+					nochmal, anders verpackt.</p>
+				<div class="stage-view">
+					<div class="ad">
+						<div class="ad-card" id="frCard"><small id="frWhere">Szenario</small>
+							<p id="frText">…</p>
+						</div>
+					</div>
+					<span class="stage-tag" id="frTag">Frage 1 / 2</span>
+				</div>
+				<div class="stage-controls">
+					<div class="frame-choices" id="frChoices"></div>
+					<div class="fr-result" id="frResult" hidden></div>
+					<p class="stage-note" id="frNote">Es gibt keine falsche Antwort.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="rhetorik">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Rhetorik</span>
+				<h2>Ethos, Pathos, Logos</h2>
+				<p>Vor 2300 Jahren schrieb Aristoteles das erste Lehrbuch über Überzeugen. Er fand genau drei Wege, wie
+					eine Rede Menschen gewinnt:</p>
+				<ul class="p-list">
+					<li><strong>Ethos</strong>, der Charakter: Glaubt man <em>dir</em>? Erfahrung, Ehrlichkeit,
+						Ansehen.</li>
+					<li><strong>Pathos</strong>, das Gefühl: Berührt es? Geschichten, Bilder, Angst, Hoffnung.</li>
+					<li><strong>Logos</strong>, der Verstand: Ist es schlüssig? Zahlen, Beweise, Schlussfolgerungen.</li>
+				</ul>
+				<p>Gute Reden mischen alle drei. Nur Logos ist trocken, nur Pathos wirkt manipulativ, und ohne Ethos hört
+					erst gar keiner zu. Naval Ravikant sagt es so: Wer überzeugen kann, braucht keine Macht.</p>
+				<p class="merke"><b>Merke</b>Frag dich bei jeder Botschaft: Wer spricht da, welches Gefühl soll ich
+					haben, und was ist das eigentliche Argument?</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Welcher der drei Wege steckt in diesem Satz? 9 Beispiele.</p>
+				<div class="stage-view">
+					<div class="ad">
+						<div class="ad-card" id="rhCard"><small id="rhWhere">Rede</small>
+							<p id="rhText">…</p>
+						</div>
+					</div>
+					<span class="stage-tag">Aristoteles' Dreieck</span>
+					<span class="stage-readout" id="rhOut">1 / 9</span>
+				</div>
+				<div class="stage-controls">
+					<div class="principles" id="rhButtons"></div>
+					<button class="btn primary" id="rhNext" type="button" hidden>Weiter →</button>
+					<p class="stage-note" id="rhNote">Wähle Ethos, Pathos oder Logos.</p>
 				</div>
 			</div>
 		</section>

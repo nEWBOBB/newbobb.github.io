@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Mikroökonomie — Newbobb Lab</title>
 	<meta name="description"
-		content="Mikroökonomie interaktiv: Angebot und Nachfrage am Beispiel Eiscreme. Kurven verschieben, Gleichgewichtspreis finden und sehen, warum ein Höchstpreis zu Schlangen führt." />
+		content="Mikroökonomie interaktiv: Angebot und Nachfrage, komparativer Vorteil auf Robinsons Insel und der gewinnmaximierende Preis mit Konsumentenrente." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,6 +26,64 @@
 			gap: 8px;
 			width: 100%;
 		}
+		.isle {
+			display: grid;
+			gap: 12px;
+			padding: 48px 18px 22px;
+		}
+
+		.who {
+			display: flex;
+			justify-content: space-between;
+			gap: 10px;
+			padding: 12px 14px;
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			background: var(--panel-2);
+		}
+
+		.who span {
+			font-family: "JetBrains Mono", monospace;
+			color: var(--muted);
+		}
+
+		.tot {
+			display: grid;
+			grid-template-columns: 8.5em 1fr 2.6em;
+			gap: 10px;
+			align-items: center;
+			font-size: 0.86rem;
+			color: var(--muted);
+		}
+
+		.tot i {
+			position: relative;
+			height: 14px;
+			border-radius: 7px;
+			background: rgba(255, 255, 255, 0.06);
+		}
+
+		.tot em {
+			position: absolute;
+			inset: 0 auto 0 0;
+			border-radius: 7px;
+			background: var(--c);
+			transition: width 0.3s;
+		}
+
+		.tot u {
+			position: absolute;
+			top: -4px;
+			bottom: -4px;
+			width: 2px;
+			background: var(--ink);
+		}
+
+		.tot b {
+			color: var(--ink);
+			text-align: right;
+			font-variant-numeric: tabular-nums;
+		}
 	</style>
 </head>
 
@@ -44,6 +102,8 @@
 				wichtigstes Bild sind zwei Linien, die sich kreuzen. Am Kreuzungspunkt entsteht der Preis.</p>
 			<ol class="v-toc">
 				<li><a href="#markt">Angebot und Nachfrage</a></li>
+				<li><a href="#handel">Warum Handel beide reicher macht</a></li>
+				<li><a href="#preis">Der beste Preis</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -95,6 +155,109 @@
 						<input type="range" id="ceil" min="10" max="101" value="101" />
 					</label>
 					<p class="stage-note" id="marketNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="handel">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Arbeitsteilung</span>
+				<h2>Warum Handel beide reicher macht</h2>
+				<p>Robinson und Freitag leben auf einer Insel. Jeder hat 8 Stunden am Tag. Robinson ist in allem besser:
+					Pro Stunde fängt er <strong>4 Fische</strong> oder pflückt <strong>2 Kokosnüsse</strong>. Freitag
+					schafft nur <strong>1 Fisch</strong> oder <strong>1 Kokosnuss</strong>. Lohnt sich Handel für Robinson
+					überhaupt?</p>
+				<p>Ja! Entscheidend ist, was eine Kokosnuss jeden <strong>kostet</strong>, nicht in Stunden, sondern in
+					verpassten Fischen. Für eine Kokosnuss verzichtet Robinson auf 2 Fische, Freitag nur auf 1. Diesen
+					Verzicht nennt man <strong>Opportunitätskosten</strong>.</p>
+				<p>Freitag ist also billiger beim Kokosnusspflücken, obwohl er langsamer ist. Wenn jeder macht, was ihn am
+					wenigsten kostet, und sie dann tauschen, haben <strong>beide zusammen mehr</strong>. Diese Idee von
+					David Ricardo aus dem Jahr 1817 heißt <strong>komparativer Vorteil</strong>.</p>
+				<p class="merke"><b>Merke</b>Man muss nicht der Beste sein, um gebraucht zu werden. Es reicht, etwas
+					relativ günstiger zu können. Darum lohnt sich Handel zwischen Menschen und zwischen Ländern.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Jede Stunde, die die Anwältin tippt, kostet sie eine Stunde Beratung, für die sie viel mehr bekommt, als sie der Assistenz zahlt. Ihre Opportunitätskosten fürs Tippen sind hoch. Also lohnt es sich, das abzugeben, auch wenn sie schneller tippt.">
+					<p class="quiz-q">Eine Anwältin tippt schneller als ihre Assistenz. Soll sie ihre Briefe selbst
+						tippen?</p>
+					<div class="quiz-options">
+						<button type="button">Ja, sie ist ja schneller</button>
+						<button type="button">Nein, in der Zeit verdient sie als Anwältin viel mehr</button>
+						<button type="button">Egal, das Ergebnis ist dasselbe</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Ohne Handel arbeitet jeder 4 Stunden pro Sache. Verteil die Stunden so, dass zusammen von
+					beidem mehr herauskommt.</p>
+				<div class="stage-view">
+					<div class="isle">
+						<div class="who"><b>Robinson</b><span id="robOut">16 🐟 · 8 🥥</span></div>
+						<div class="who"><b>Freitag</b><span id="friOut">4 🐟 · 4 🥥</span></div>
+						<div class="tot" style="--c:#8fb8ff"><span>🐟 Fische</span><i><em id="fishBar"></em><u></u></i><b id="fishOut">20</b></div>
+						<div class="tot" style="--c:#7bdc9a"><span>🥥 Kokosnüsse</span><i><em id="cocoBar"></em><u></u></i><b id="cocoOut">12</b></div>
+					</div>
+					<span class="stage-tag">Eine Insel, zwei Leute</span>
+					<span class="stage-readout" id="tradeOut">wie ohne Handel</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Robinson: Stunden Fischen</span><output id="robHOut">4 h</output></span>
+						<input type="range" id="robH" min="0" max="8" value="4" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Freitag: Stunden Fischen</span><output id="friHOut">4 h</output></span>
+						<input type="range" id="friH" min="0" max="8" value="4" />
+					</label>
+					<button class="btn primary" id="btnSpec" type="button">⇄ Spezialisieren</button>
+					<p class="stage-note" id="tradeNote">Der Strich in den Balken zeigt, wie viel es ohne Handel gibt.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="preis">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Unternehmen</span>
+				<h2>Der beste Preis</h2>
+				<p>Du verkaufst Limonade. Ist sie zu teuer, kauft kaum jemand. Ist sie zu billig, verkaufst du viel, aber
+					verdienst fast nichts pro Becher. Irgendwo dazwischen liegt der Preis mit dem <strong>größten
+					Gewinn</strong>.</p>
+				<p>Der <strong>Umsatz</strong> ist Preis mal Menge, im Bild eine Fläche. Davon gehen die
+					<strong>Kosten</strong> ab, was bleibt, ist der Gewinn. Und die Kundschaft? Wer mehr zu zahlen bereit
+					war, als der Preis kostet, macht ein Schnäppchen. Das nennt man <strong>Konsumentenrente</strong>.</p>
+				<p>Hast du keine Konkurrenz, ist der Gewinn-Preis hoch. Dann bleiben Kunden weg, die gern mehr als die
+					Kosten bezahlt hätten. Diesen verlorenen Handel nennen Ökonomen <strong>Wohlfahrtsverlust</strong>.
+					Im Wettbewerb drücken andere Stände den Preis nach unten, Richtung Kosten.</p>
+				<p class="merke"><b>Merke</b>Gewinn = (Preis − Stückkosten) · Menge. Der beste Preis für den Verkäufer
+					ist selten der beste für alle.</p>
+				<div class="formula">Gewinn = (P − k) · Q(P) · Q = 100 − 10 · P
+					<small>P ist der Preis, k die Kosten pro Becher, Q die verkaufte Menge pro Tag.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Such den Preis mit dem größten Gewinn. Ändere dann die Kosten. Wohin wandert der beste
+					Preis?</p>
+				<div class="stage-view">
+					<canvas id="priceCanvas" aria-label="Nachfragekurve mit Umsatz-, Kosten- und Gewinnfläche"></canvas>
+					<span class="stage-tag">Limonadenstand</span>
+					<span class="stage-readout" id="priceOut">Gewinn 0 €</span>
+				</div>
+				<div class="stage-controls">
+					<ul class="f-legend">
+						<li style="--c:#ffd166">Gewinn</li>
+						<li style="--c:rgba(255,255,255,0.3)">Kosten</li>
+						<li style="--c:#7bdc9a">Konsumentenrente</li>
+						<li style="--c:#ff8a7a">verlorener Handel</li>
+					</ul>
+					<label class="range">
+						<span class="range-head"><span>Preis pro Becher</span><output id="pOut">3,00 €</output></span>
+						<input type="range" id="price" min="0" max="100" value="30" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Kosten pro Becher</span><output id="kOut">2,00 €</output></span>
+						<input type="range" id="cost" min="0" max="80" value="20" />
+					</label>
+					<button class="btn primary" id="btnBest" type="button">★ Besten Preis finden</button>
+					<p class="stage-note" id="priceNote"></p>
 				</div>
 			</div>
 		</section>

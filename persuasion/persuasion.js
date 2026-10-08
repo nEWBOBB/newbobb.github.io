@@ -73,3 +73,159 @@
 	});
 	show();
 })();
+
+// Überzeugen: Framing-Effekt nach Tversky und Kahneman
+(() => {
+	const FRAMES = [
+		{
+			key: "gain",
+			name: "Gewinn-Frame",
+			text: "Eine neue Seuche bedroht 600 Menschen. Zwei Programme stehen zur Wahl.",
+			opts: ["Programm A: 200 Menschen werden sicher gerettet.", "Programm B: Mit 1/3 Wahrscheinlichkeit werden alle 600 gerettet, mit 2/3 niemand."],
+		},
+		{
+			key: "loss",
+			name: "Verlust-Frame",
+			text: "Eine neue Seuche bedroht 600 Menschen. Zwei Programme stehen zur Wahl.",
+			opts: ["Programm C: 400 Menschen werden sicher sterben.", "Programm D: Mit 1/3 Wahrscheinlichkeit stirbt niemand, mit 2/3 sterben alle 600."],
+		},
+	];
+	const STUDY = { gain: 72, loss: 22 }; // Anteil „sicher“ in der Originalstudie von 1981
+	const card = document.getElementById("frCard");
+	const where = document.getElementById("frWhere");
+	const text = document.getElementById("frText");
+	const tag = document.getElementById("frTag");
+	const choices = document.getElementById("frChoices");
+	const result = document.getElementById("frResult");
+	const note = document.getElementById("frNote");
+	let order;
+	let step;
+	let picks;
+
+	function start() {
+		order = Math.random() < 0.5 ? [0, 1] : [1, 0];
+		step = 0;
+		picks = {};
+		result.hidden = true;
+		show();
+	}
+
+	function show() {
+		const f = FRAMES[order[step]];
+		card.classList.add("is-out");
+		setTimeout(() => {
+			where.textContent = step ? "Szenario, ein paar Tage später" : "Szenario";
+			text.textContent = f.text;
+			card.classList.remove("is-out");
+		}, 200);
+		tag.textContent = `Frage ${step + 1} / 2`;
+		choices.hidden = false;
+		choices.innerHTML = f.opts.map((o, k) => `<button class="btn" type="button" data-k="${k}">${o}</button>`).join("");
+		note.textContent = step ? "Kommt dir das bekannt vor? Entscheide trotzdem spontan." : "Es gibt keine falsche Antwort.";
+	}
+
+	function finish() {
+		choices.innerHTML = `<button class="btn primary" type="button" data-again>↺ Nochmal</button>`;
+		where.textContent = "Auflösung";
+		text.textContent = "A und C sind dasselbe: 200 leben, 400 sterben. B und D sind auch dasselbe. Nur die Worte sind anders.";
+		tag.textContent = "Ergebnis";
+		const same = picks.gain === picks.loss;
+		result.hidden = false;
+		result.innerHTML = `
+			<div style="--c:#7bdc9a"><span>„gerettet“: sicher</span><i></i><b>${STUDY.gain} %</b></div>
+			<div style="--c:#ff6a8a"><span>„sterben“: sicher</span><i></i><b>${STUDY.loss} %</b></div>`;
+		requestAnimationFrame(() =>
+			result.querySelectorAll("i").forEach((el, k) => (el.style.width = `${k ? STUDY.loss : STUDY.gain}%`))
+		);
+		const word = (k) => (k === 0 ? "sicher" : "riskant");
+		note.textContent = same
+			? `Du hast beide Male ${word(picks.gain)} gewählt. Konsequent! In der Studie von 1981 kippte die Mehrheit: 72 % wählten bei „gerettet“ sicher, aber nur 22 % bei „sterben“.`
+			: `Du hast bei „gerettet“ ${word(picks.gain)} und bei „sterben“ ${word(picks.loss)} gewählt, obwohl es dieselbe Entscheidung war. So ging es auch den meisten in der Studie.`;
+	}
+
+	choices.addEventListener("click", (e) => {
+		const b = e.target.closest("button");
+		if (!b) return;
+		if (b.hasAttribute("data-again")) return start();
+		picks[FRAMES[order[step]].key] = Number(b.dataset.k);
+		step++;
+		step < 2 ? show() : finish();
+	});
+	start();
+})();
+
+// Überzeugen: Ethos, Pathos und Logos erkennen
+(() => {
+	const P = ["Ethos", "Pathos", "Logos"];
+	const CASES = [
+		{ where: "Arzt im Fernsehen", text: "Ich behandle seit 30 Jahren Herzpatienten. Glauben Sie mir: Bewegung ist die beste Medizin.", p: 0, why: "Er überzeugt mit seiner Erfahrung und seinem Ansehen, nicht mit Daten." },
+		{ where: "Spendenaufruf", text: "Mia ist sieben. Jeden Morgen läuft sie zwei Stunden, um Wasser zu holen. Statt zur Schule.", p: 1, why: "Ein einzelnes Kind mit Namen berührt uns viel stärker als jede Statistik." },
+		{ where: "Stadtrat", text: "Der neue Radweg kostet 2 Mio. €. Er spart jährlich 300 000 € Unfallkosten. Nach 7 Jahren hat er sich bezahlt.", p: 2, why: "Zahlen und eine klare Rechnung: reiner Verstand." },
+		{ where: "Werbung", text: "Stell dir vor, wie stolz du bist, wenn du endlich die Ziellinie überquerst.", p: 1, why: "Hier wird ein Gefühl gemalt: Stolz, Triumph. Ein Argument kommt nicht vor." },
+		{ where: "Bewerbung", text: "Als Kapitänin meines Teams habe ich gelernt, Verantwortung zu übernehmen, auch wenn es schwierig wurde.", p: 0, why: "Sie baut Vertrauen in ihren Charakter auf. Das ist Ethos." },
+		{ where: "Debatte", text: "Wenn alle Menschen sterblich sind und Sokrates ein Mensch ist, dann ist Sokrates sterblich.", p: 2, why: "Ein klassischer logischer Schluss, das Lieblingsbeispiel von Aristoteles selbst." },
+		{ where: "Wahlkampf", text: "Sie nehmen uns unsere Jobs, unsere Zukunft und die Zukunft unserer Kinder!", p: 1, why: "Angst und Wut sind starke Gefühle. Pathos ohne Logos ist das Werkzeug von Demagogen." },
+		{ where: "Produktvergleich", text: "Akku A hält 18 Stunden, Akku B nur 11. A kostet dabei nur 5 € mehr.", p: 2, why: "Ein nachprüfbarer Vergleich in Zahlen." },
+		{ where: "Werbespot", text: "Ich bin seit zehn Jahren Profisportler. Und ich vertraue nur auf diese Schuhe.", p: 0, why: "Er leiht den Schuhen seine Glaubwürdigkeit. (Ob er dafür bezahlt wird, sagt er nicht.)" },
+	];
+	const box = document.getElementById("rhButtons");
+	const card = document.getElementById("rhCard");
+	const where = document.getElementById("rhWhere");
+	const text = document.getElementById("rhText");
+	const out = document.getElementById("rhOut");
+	const note = document.getElementById("rhNote");
+	const btnNext = document.getElementById("rhNext");
+	box.innerHTML = P.map((p, i) => `<button class="btn" type="button" data-i="${i}">${p}</button>`).join("");
+	const buttons = [...box.querySelectorAll("button")];
+	let i = 0;
+	let right = 0;
+
+	function show() {
+		const c = CASES[i];
+		card.classList.add("is-out");
+		setTimeout(() => {
+			where.textContent = c.where;
+			text.textContent = c.text;
+			card.classList.remove("is-out");
+		}, 200);
+		buttons.forEach((b) => {
+			b.disabled = false;
+			b.classList.remove("is-right", "is-wrong");
+		});
+		btnNext.hidden = true;
+		out.textContent = `${i + 1} / ${CASES.length}`;
+		note.textContent = "Wähle Ethos, Pathos oder Logos.";
+	}
+
+	box.addEventListener("click", (e) => {
+		const b = e.target.closest("button");
+		if (!b || b.disabled) return;
+		const c = CASES[i];
+		const pick = Number(b.dataset.i);
+		buttons.forEach((x) => (x.disabled = true));
+		buttons[c.p].classList.add("is-right");
+		if (pick === c.p) right++;
+		else b.classList.add("is-wrong");
+		note.textContent = (pick === c.p ? "Richtig. " : `Nicht ganz, das ist ${P[c.p]}. `) + c.why;
+		btnNext.hidden = false;
+		btnNext.textContent = i + 1 < CASES.length ? "Weiter →" : "Ergebnis";
+	});
+
+	btnNext.addEventListener("click", () => {
+		if (i >= CASES.length) {
+			i = 0;
+			right = 0;
+			return show();
+		}
+		i++;
+		if (i < CASES.length) return show();
+		where.textContent = "Ergebnis";
+		text.textContent = `${right} von ${CASES.length} richtig erkannt.`;
+		note.textContent =
+			right >= 7
+				? "Sehr gut. Du durchschaust, womit eine Botschaft arbeitet. Probier es bei der nächsten Werbung oder Rede aus."
+				: "Ein guter Anfang. Tipp: Frag nach dem Wer (Ethos), dem Gefühl (Pathos) und dem Beweis (Logos).";
+		btnNext.textContent = "↺ Nochmal";
+	});
+	show();
+})();

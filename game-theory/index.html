@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Spieltheorie — Newbobb Lab</title>
 	<meta name="description"
-		content="Spieltheorie interaktiv: Spiel das Gefangenendilemma gegen einen unbekannten Gegner und lass sieben Strategien in Axelrods Turnier gegeneinander antreten. Warum Kooperation am Ende gewinnt." />
+		content="Spieltheorie interaktiv: Gefangenendilemma, Axelrods Turnier, das Nash-Gleichgewicht beim Zwei-Drittel-Spiel, Falken und Tauben und die Tragik der Allmende." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -152,6 +152,9 @@
 			<ol class="v-toc">
 				<li><a href="#dilemma">Das Gefangenendilemma</a></li>
 				<li><a href="#turnier">Axelrods Turnier</a></li>
+				<li><a href="#nash">Errate zwei Drittel</a></li>
+				<li><a href="#falken">Falken und Tauben</a></li>
+				<li><a href="#allmende">Die Tragik der Allmende</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -231,6 +234,144 @@
 					<button class="btn primary" id="btnTour" type="button">🏆 Turnier starten</button>
 					<p class="stage-note" id="tourNote">Jede Strategie spielt 200 Runden gegen jede andere und gegen sich
 						selbst.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="nash">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Nash-Gleichgewicht</span>
+				<h2>Errate zwei Drittel</h2>
+				<p>Ein berühmtes Spiel: 100 Leute schreiben eine Zahl von 0 bis 100 auf. Gewonnen hat, wer am nächsten an
+					<strong>zwei Dritteln des Durchschnitts</strong> liegt. Welche Zahl nimmst du?</p>
+				<p>Denk Schritt für Schritt. Wenn alle zufällig wählen, liegt der Schnitt bei 50, also tippst du 33. Aber
+					wenn alle so denken, ist der Schnitt 33, also 22. Und dann 15, 10, 7 … bis ganz unten bei
+					<strong>0</strong>.</p>
+				<p>Die 0 ist das <strong>Nash-Gleichgewicht</strong>, benannt nach dem Mathematiker John Nash: ein Zustand,
+					in dem niemand besser wird, wenn er als Einziger seine Wahl ändert. Wer aber 0 sagt, verliert in echten
+					Spielen fast immer. Bei einem Zeitungswettbewerb mit Tausenden Lesern lag der Sieger bei etwa
+					<strong>13</strong>.</p>
+				<p class="merke"><b>Merke</b>Es reicht nicht, selbst klug zu sein. Du musst einschätzen, wie klug die
+					anderen sind, und wie klug sie dich halten.</p>
+				<div class="fact">
+					<b>Keynes' Schönheitswettbewerb</b>
+					<p>Der Ökonom John Maynard Keynes verglich die Börse 1936 mit so einem Spiel: Man soll nicht die
+						Aktie kaufen, die man selbst am besten findet, sondern die, von der man glaubt, dass die anderen
+						sie für die beliebteste halten.</p>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle deine Zahl. 99 andere spielen mit. Stell dann ein, wie weit die anderen
+					vorausdenken.</p>
+				<div class="stage-view">
+					<canvas id="guessCanvas" aria-label="Verteilung aller Tipps mit Zielwert"></canvas>
+					<span class="stage-tag">100 Spieler</span>
+					<span class="stage-readout" id="guessOut">Dein Tipp: 33</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Deine Zahl</span><output id="myOut">33</output></span>
+						<input type="range" id="myGuess" min="0" max="100" value="33" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Denktiefe der anderen</span><output id="depthOut">normal</output></span>
+						<input type="range" id="depth" min="0" max="4" value="1" />
+					</label>
+					<button class="btn primary" id="btnGuess" type="button">▶ Spielen</button>
+					<p class="stage-note" id="guessNote">Die anderen sind eine Mischung, wie in echten Experimenten.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="falken">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Evolutionäre Spieltheorie</span>
+				<h2>Falken und Tauben</h2>
+				<p>Zwei Tiere finden Futter im Wert <strong>V</strong>. Ein <strong>Falke</strong> kämpft immer. Eine
+					<strong>Taube</strong> droht nur und weicht zurück, wenn es ernst wird.</p>
+				<ul>
+					<li><strong>Falke gegen Taube:</strong> Der Falke bekommt alles, die Taube nichts, aber sie bleibt
+						unverletzt.</li>
+					<li><strong>Taube gegen Taube:</strong> Sie teilen, jede bekommt V / 2.</li>
+					<li><strong>Falke gegen Falke:</strong> Sie kämpfen. Einer gewinnt, einer wird verletzt (Kosten
+						<strong>C</strong>). Im Schnitt bekommt jeder (V − C) / 2.</li>
+				</ul>
+				<p>Wer mehr Punkte sammelt, hat mehr Nachwuchs. Sind fast alle Tauben, räumen Falken ab und vermehren sich.
+					Sind fast alle Falken, verletzen sie sich ständig, und Tauben sind besser dran. Am Ende pendelt sich ein
+					<strong>festes Verhältnis</strong> ein. John Maynard Smith nannte das 1973 eine <strong>evolutionär
+					stabile Strategie</strong>.</p>
+				<p class="merke"><b>Merke</b>Ist Kämpfen teuer, bleibt die Welt friedlicher. Der Anteil der Falken
+					pendelt sich bei V / C ein.</p>
+				<div class="formula">Anteil Falken = V / C (wenn C &gt; V)
+					<small>Ist die Beute mehr wert als jede Verletzung, setzen sich nur Falken durch.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte mit wenigen Falken. Mach dann Kämpfe teurer oder die Beute wertvoller.</p>
+				<div class="stage-view">
+					<canvas id="hawkCanvas" aria-label="Anteil der Falken über viele Generationen"></canvas>
+					<span class="stage-tag">Population</span>
+					<span class="stage-readout" id="hawkOut">10 % Falken</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Wert der Beute V</span><output id="vvOut">4</output></span>
+						<input type="range" id="valV" min="1" max="20" value="4" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Kosten einer Verletzung C</span><output id="ccOut">10</output></span>
+						<input type="range" id="costC" min="1" max="20" value="10" />
+					</label>
+					<button class="btn primary" id="btnHawk" type="button">↺ Neu mit 10 % Falken</button>
+					<button class="btn" id="btnHawk90" type="button">↺ Neu mit 90 % Falken</button>
+					<p class="stage-note" id="hawkNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="allmende">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Gemeingüter</span>
+				<h2>Die Tragik der Allmende</h2>
+				<p>Vier Fischer teilen sich einen See. Die Fische vermehren sich jedes Jahr, am schnellsten, wenn der See
+					halb voll ist. Fängt jeder ein bisschen, bleibt der See für immer gesund. Aber jeder Fisch, den
+					<em>du</em> nicht fängst, landet vielleicht im Netz der anderen.</p>
+				<p>Also fängt jeder etwas mehr. Der Gewinn gehört dir allein, der Schaden wird auf alle verteilt. Bis der
+					See leer ist. Der Ökologe Garrett Hardin nannte das 1968 die <strong>Tragik der Allmende</strong>.
+					Dasselbe passiert mit Weiden, Grundwasser und dem Klima.</p>
+				<p>Lange glaubte man, nur der Staat oder Privatbesitz könnten das verhindern. Die Ökonomin
+					<strong>Elinor Ostrom</strong> zeigte, dass Gemeinschaften es oft selbst schaffen: mit klaren Regeln,
+					gegenseitiger Kontrolle und Strafen für Schummler. Dafür bekam sie 2009 als erste Frau den
+					Wirtschaftsnobelpreis.</p>
+				<p class="merke"><b>Merke</b>Was allen gehört, wird leicht übernutzt. Die Lösung ist kein guter Wille
+					allein, sondern Regeln, an die sich alle halten können.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Dein Verzicht allein rettet den See nicht, wenn die anderen weiter überfischen. Genau das ist die Falle: Jeder Einzelne hat einen Grund, mehr zu nehmen. Erst eine gemeinsame Regel, die für alle gilt und kontrolliert wird, ändert die Rechnung für jeden.">
+					<p class="quiz-q">Was hilft am zuverlässigsten gegen die Tragik der Allmende?</p>
+					<div class="quiz-options">
+						<button type="button">Selbst ein gutes Vorbild sein und weniger nehmen</button>
+						<button type="button">Abwarten, die Natur regelt das</button>
+						<button type="button">Gemeinsame Regeln mit Kontrolle, die für alle gelten</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Du bist einer von vier Fischern. Wähle jede Saison deinen Fang. Hält der See 10 Saisons
+					durch? Probier es dann mit Fangquote.</p>
+				<div class="stage-view">
+					<canvas id="lakeCanvas" aria-label="Fischbestand im See über die Saisons"></canvas>
+					<span class="stage-tag" id="lakeTag">Saison 1 / 10</span>
+					<span class="stage-readout" id="lakeOut">Dein Fang: 0</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Dein Fang diese Saison</span><output id="catchOut">4 Fische</output></span>
+						<input type="range" id="catch" min="0" max="15" value="4" />
+					</label>
+					<button class="btn primary" id="btnFish" type="button">🎣 Fischen</button>
+					<button class="btn" id="btnQuota" type="button" aria-pressed="false">⚖ Fangquote für alle</button>
+					<button class="btn" id="btnLakeReset" type="button">↺ Neuer See</button>
+					<p class="stage-note" id="lakeNote">Im See schwimmen 100 Fische. Mehr passen nicht hinein.</p>
 				</div>
 			</div>
 		</section>

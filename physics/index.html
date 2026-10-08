@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Physik — Newbobb Lab</title>
 	<meta name="description"
-		content="Physik interaktiv: ein Federpendel, das die Sinuswelle aus der Mathematik in echte Bewegung verwandelt, dazu alle Physik-Projekte des Newbobb Lab von Schall bis Schwarzes Loch." />
+		content="Physik interaktiv: ein Federpendel, Interferenz zweier Wellen und Einsteins Lichtuhr zur Zeitdilatation, dazu alle Physik-Projekte des Newbobb Lab von Schall bis Schwarzes Loch." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,6 +42,8 @@
 				taucht hier wieder auf: als Gewicht, das an einer Feder auf und ab schwingt.</p>
 			<ol class="v-toc">
 				<li><a href="#feder">Das Federpendel</a></li>
+				<li><a href="#wellen">Wenn Wellen sich treffen</a></li>
+				<li><a href="#relativ">Die Uhr, die langsamer tickt</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -89,6 +91,101 @@
 					</label>
 					<button class="btn primary" id="btnPull" type="button">↓ Auslenken</button>
 					<p class="stage-note" id="springNote">Je härter die Feder, desto schneller die Schwingung.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="wellen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Wellen</span>
+				<h2>Wenn Wellen sich treffen</h2>
+				<p>Wirf zwei Steine gleichzeitig in einen Teich. Wo sich die Wellen treffen, passiert etwas Seltsames:
+					An manchen Stellen türmen sie sich doppelt so hoch, an anderen ist das Wasser <strong>völlig
+					ruhig</strong>.</p>
+				<p>Trifft ein Wellenberg auf einen Wellenberg, addieren sie sich: <strong>konstruktive
+					Interferenz</strong>. Trifft ein Berg auf ein Tal, löschen sie sich aus: <strong>destruktive
+					Interferenz</strong>. Es entsteht ein festes Muster aus Streifen.</p>
+				<p>Genau dieses Muster bewies 1801 Thomas Young mit Licht durch zwei schmale Spalte: <strong>Licht ist
+					eine Welle</strong>. Dasselbe passiert mit Schall, Funkwellen und sogar mit einzelnen Elektronen.</p>
+				<p class="merke"><b>Merke</b>Wellen tragen sich nicht weg, sie addieren sich. Wo ihr Weg sich um eine
+					halbe Wellenlänge unterscheidet, wird es still oder dunkel.</p>
+				<div class="formula">Gangunterschied = n · λ → hell · (n + ½) · λ → dunkel
+					<small>λ (Lambda) ist die Wellenlänge, n eine ganze Zahl.</small>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Ein Mikrofon nimmt den Lärm auf, und der Kopfhörer spielt genau die umgekehrte Welle ab: Berg wird Tal. Beide löschen sich im Ohr aus. Das funktioniert am besten bei gleichmäßigen, tiefen Geräuschen wie Flugzeugbrummen.">
+					<p class="quiz-q">Wie funktionieren Kopfhörer mit aktiver Geräuschunterdrückung?</p>
+					<div class="quiz-options">
+						<button type="button">Sie spielen den Lärm mit umgekehrter Welle ab, sodass er sich auslöscht</button>
+						<button type="button">Sie sind besonders dick gepolstert</button>
+						<button type="button">Sie spielen ein lautes Rauschen, das den Lärm übertönt</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte die zweite Quelle ein. Dann ändere Abstand und Wellenlänge und beobachte die
+					ruhigen Streifen.</p>
+				<div class="stage-view">
+					<canvas id="waveCanvas" aria-label="Interferenzmuster zweier Wellenquellen"></canvas>
+					<span class="stage-tag">Wellenwanne</span>
+					<span class="stage-readout" id="waveOut">1 Quelle</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSrc2" type="button" aria-pressed="false">◎ Zweite Quelle</button>
+					<label class="range">
+						<span class="range-head"><span>Wellenlänge λ</span><output id="lamOut">mittel</output></span>
+						<input type="range" id="lam" min="8" max="40" value="18" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Abstand der Quellen</span><output id="sepOut">3 λ</output></span>
+						<input type="range" id="sep" min="1" max="8" value="3" step="0.5" />
+					</label>
+					<p class="stage-note" id="waveNote">Eine Quelle macht einfache Kreiswellen.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="relativ">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Relativitätstheorie</span>
+				<h2>Die Uhr, die langsamer tickt</h2>
+				<p>1905 nahm Albert Einstein eine Beobachtung ernst: Licht ist für jeden gleich schnell, egal wie schnell
+					man sich selbst bewegt. Rund <strong>300 000 km pro Sekunde</strong>. Daraus folgt etwas Verrücktes.</p>
+				<p>Stell dir eine <strong>Lichtuhr</strong> vor: Ein Lichtblitz springt zwischen zwei Spiegeln hin und her,
+					jeder Sprung ist ein Tick. Fliegt die Uhr an dir vorbei, siehst du das Licht schräg laufen, im
+					Zickzack. Der Weg ist länger. Weil das Licht aber nicht schneller werden kann, braucht jeder Tick
+					länger. <strong>Die bewegte Uhr geht langsamer.</strong></p>
+				<p>Das ist keine Täuschung. Alles in der Rakete läuft langsamer: Uhren, Herzschlag, Altern. Bei
+					Alltagstempo ist der Effekt winzig, nahe der Lichtgeschwindigkeit wird er riesig.</p>
+				<p class="merke"><b>Merke</b>Zeit ist nicht für alle gleich. Wer sich schnell bewegt, altert langsamer.
+					Das nennt man Zeitdilatation.</p>
+				<div class="formula">γ = 1 / √(1 − v²/c²) · Δt' = γ · Δt
+					<small>γ (Gamma) sagt, um wie viel die bewegte Uhr langsamer geht. c ist die Lichtgeschwindigkeit.</small>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Die Uhren in GPS-Satelliten gehen wegen ihrer Geschwindigkeit etwas langsamer und wegen der schwächeren Schwerkraft dort oben etwas schneller. Unterm Strich laufen sie 38 Mikrosekunden pro Tag vor. Ohne Korrektur läge dein Navi nach einem Tag rund 10 km daneben.">
+					<p class="quiz-q">Wo musst du die Relativitätstheorie im Alltag berücksichtigen?</p>
+					<div class="quiz-options">
+						<button type="button">Nirgends, das betrifft nur Raumschiffe</button>
+						<button type="button">Beim Autofahren auf der Autobahn</button>
+						<button type="button">Bei jedem GPS-Navi im Handy</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Beschleunige die untere Uhr. Vergleiche die Ticks. Ab welchem Tempo wird es dramatisch?</p>
+				<div class="stage-view">
+					<canvas id="relCanvas" aria-label="Ruhende und bewegte Lichtuhr"></canvas>
+					<span class="stage-tag">Lichtuhren</span>
+					<span class="stage-readout" id="relOut">γ = 1,00</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Tempo der Rakete</span><output id="vOut">60 % von c</output></span>
+						<input type="range" id="vel" min="0" max="99" value="60" />
+					</label>
+					<button class="btn" id="btnRelReset" type="button">↺ Uhren auf null</button>
+					<p class="stage-note" id="relNote"></p>
 				</div>
 			</div>
 		</section>

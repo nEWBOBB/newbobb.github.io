@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Mathematik — Newbobb Lab</title>
 	<meta name="description"
-		content="Mathematik interaktiv: Wie aus einem Punkt auf dem Kreis die Sinuswelle entsteht, und warum sie in Physik, Musik und Technik überall auftaucht." />
+		content="Mathematik interaktiv: Vom Kreis zur Sinuswelle, die Macht der Verdopplung beim exponentiellen Wachstum und ein Galton-Brett, auf dem aus Zufall eine Glockenkurve wird." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,6 +42,8 @@
 				geschrieben. Hier siehst du eine ihrer schönsten Ideen: Ein Kreis, der sich dreht, wird zu einer Welle.</p>
 			<ol class="v-toc">
 				<li><a href="#kreis">Vom Kreis zur Welle</a></li>
+				<li><a href="#wachstum">Die Macht der Verdopplung</a></li>
+				<li><a href="#zufall">Ordnung aus Zufall</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -87,6 +89,103 @@
 						<input type="range" id="r2" min="5" max="80" value="33" />
 					</label>
 					<p class="stage-note" id="circleNote">sin(0°) = 0,00 · cos(0°) = 1,00</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="wachstum">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Exponentialfunktion</span>
+				<h2>Die Macht der Verdopplung</h2>
+				<p>Es gibt zwei Arten zu wachsen. <strong>Linear</strong> heißt: Jedes Jahr kommt derselbe Betrag dazu.
+					<strong>Exponentiell</strong> heißt: Jedes Jahr kommt derselbe <em>Anteil</em> dazu. Am Anfang sehen
+					beide fast gleich aus. Dann zieht die Exponentialkurve davon, und zwar immer schneller.</p>
+				<p>Der Grund: Beim exponentiellen Wachstum wächst auch das, was schon dazugekommen ist. Bei Geld heißt
+					das <strong>Zinseszins</strong>, bei Viren <strong>Ansteckungskette</strong>, bei Computern
+					<strong>Mooresches Gesetz</strong>.</p>
+				<p>Eine Faustregel zum Kopfrechnen: Teile 72 durch die Wachstumsrate in Prozent, und du bekommst die
+					<strong>Verdopplungszeit</strong>. Bei 6 % pro Jahr verdoppelt sich etwas also alle 12 Jahre.</p>
+				<p class="merke"><b>Merke</b>Unser Gehirn denkt linear. Exponentielles Wachstum unterschätzen wir
+					fast immer, im Guten (Sparen, Lernen) wie im Schlechten (Schulden, Seuchen).</p>
+				<div class="formula">K(t) = K₀ · (1 + p)ᵗ · Verdopplung ≈ 72 / p%
+					<small>K₀ ist der Startwert, p die Rate pro Jahr, t die Zahl der Jahre.</small>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Die Seerosen verdoppeln sich jeden Tag. Wenn der Teich an Tag 30 voll ist, war er einen Tag vorher genau halb voll. An Tag 25 bedeckten sie nur gut 3 % des Teichs, und kaum jemand hätte sich Sorgen gemacht.">
+					<p class="quiz-q">Seerosen verdoppeln ihre Fläche jeden Tag. An Tag 30 ist der Teich ganz bedeckt. Wann
+						war er halb bedeckt?</p>
+					<div class="quiz-options">
+						<button type="button">An Tag 15</button>
+						<button type="button">An Tag 29</button>
+						<button type="button">An Tag 20</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Stell eine Rate ein und schau, wann die Kurven auseinanderlaufen. Schalte dann auf die
+					logarithmische Achse.</p>
+				<div class="stage-view">
+					<canvas id="growCanvas" aria-label="Lineares und exponentielles Wachstum im Vergleich"></canvas>
+					<span class="stage-tag">1 000 € Startwert</span>
+					<span class="stage-readout" id="growOut">Verdopplung alle 10 Jahre</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Wachstum pro Jahr</span><output id="growROut">7 %</output></span>
+						<input type="range" id="growR" min="1" max="20" value="7" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Jahre</span><output id="growTOut">40</output></span>
+						<input type="range" id="growT" min="5" max="60" value="40" />
+					</label>
+					<button class="btn" id="btnLog" type="button" aria-pressed="false">log Logarithmische Achse</button>
+					<p class="stage-note" id="growNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="zufall">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Wahrscheinlichkeit</span>
+				<h2>Ordnung aus Zufall</h2>
+				<p>Eine Kugel fällt durch ein Brett voller Nägel. An jedem Nagel springt sie zufällig nach links oder
+					rechts. Wo sie landet, kann niemand vorhersagen. Aber lass tausend Kugeln fallen, und es entsteht
+					jedes Mal dieselbe Form: eine <strong>Glockenkurve</strong>.</p>
+				<p>Warum? Ganz außen landet eine Kugel nur, wenn sie zehnmal hintereinander in dieselbe Richtung springt.
+					Dafür gibt es genau einen Weg. In die Mitte führen dagegen <strong>252 verschiedene Wege</strong>.
+					Die Zahl der Wege steht im <strong>Pascalschen Dreieck</strong>.</p>
+				<p>Diese Glocke heißt <strong>Normalverteilung</strong>. Sie taucht überall auf, wo sich viele kleine
+					Zufälle addieren: bei Körpergrößen, Messfehlern, Prüfungsnoten. Das ist der zentrale Grenzwertsatz,
+					einer der wichtigsten Sätze der Mathematik.</p>
+				<p class="merke"><b>Merke</b>Einzelne Zufälle sind unberechenbar. Viele Zufälle zusammen sind
+					erstaunlich berechenbar. Darauf beruhen Versicherungen, Umfragen und Casinos.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Eine Münze hat kein Gedächtnis. Jeder Wurf ist unabhängig, die Chance bleibt 50 %. Der Glaube, dass jetzt „mal Zahl dran ist“, heißt Spielerfehlschluss. Erst über sehr viele Würfe gleicht sich das Verhältnis an.">
+					<p class="quiz-q">Eine faire Münze zeigt fünfmal hintereinander Kopf. Wie wahrscheinlich ist beim
+						sechsten Wurf Zahl?</p>
+					<div class="quiz-options">
+						<button type="button">Höher als 50 %, Zahl ist überfällig</button>
+						<button type="button">Niedriger als 50 %, Kopf ist gerade dran</button>
+						<button type="button">Genau 50 %</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Lass 500 Kugeln fallen. Kipp dann das Brett und schau, wie sich die Glocke verschiebt.</p>
+				<div class="stage-view">
+					<canvas id="galtonCanvas" aria-label="Galton-Brett mit Häufigkeitsverteilung"></canvas>
+					<span class="stage-tag">Galton-Brett</span>
+					<span class="stage-readout" id="galtonOut">0 Kugeln</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnDrop" type="button">● 500 Kugeln</button>
+					<button class="btn" id="btnDrop1" type="button">● 1 Kugel</button>
+					<button class="btn" id="btnGReset" type="button">↺ Leeren</button>
+					<label class="range">
+						<span class="range-head"><span>Chance für rechts</span><output id="galtonPOut">50 %</output></span>
+						<input type="range" id="galtonP" min="10" max="90" value="50" />
+					</label>
+					<p class="stage-note" id="galtonNote">Die gestrichelte Linie zeigt, was die Mathematik vorhersagt.</p>
 				</div>
 			</div>
 		</section>

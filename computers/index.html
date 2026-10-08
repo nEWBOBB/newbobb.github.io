@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Informatik — Newbobb Lab</title>
 	<meta name="description"
-		content="Informatik interaktiv: acht Schalter, ein Byte. Bits umlegen, Zahlen und Buchstaben entstehen sehen und deinen Namen in Nullen und Einsen übersetzen." />
+		content="Informatik interaktiv: Bits und Bytes, ein Halbaddierer aus Logikgattern und Sortieralgorithmen im Wettrennen." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -126,6 +126,95 @@
 			color: var(--accent);
 			margin-right: 6px;
 		}
+		.adder {
+			display: block;
+			width: 100%;
+			height: auto;
+			padding: 34px 10px 8px;
+		}
+
+		.adder .wires path {
+			fill: none;
+			stroke: rgba(255, 255, 255, 0.18);
+			stroke-width: 3;
+			transition: stroke 0.2s;
+		}
+
+		.adder .wires path.on,
+		.adder .dot.on {
+			stroke: var(--accent);
+		}
+
+		.adder .dot {
+			fill: rgba(255, 255, 255, 0.3);
+			stroke: transparent;
+		}
+
+		.adder .dot.on {
+			fill: var(--accent);
+		}
+
+		.adder .gate {
+			fill: var(--panel-2);
+			stroke: var(--ink);
+			stroke-width: 2;
+		}
+
+		.adder .gate-line {
+			fill: none;
+			stroke: var(--ink);
+			stroke-width: 2;
+		}
+
+		.adder .gate-label,
+		.adder .lamp text,
+		.adder .io {
+			fill: var(--muted);
+			font: 600 11px "JetBrains Mono", monospace;
+			text-anchor: middle;
+		}
+
+		.adder .io {
+			fill: var(--ink);
+			font-size: 15px;
+		}
+
+		.adder .lamp circle {
+			fill: rgba(255, 255, 255, 0.06);
+			stroke: rgba(255, 255, 255, 0.25);
+			stroke-width: 2;
+			transition: fill 0.2s, filter 0.2s;
+		}
+
+		.adder .lamp.on circle {
+			fill: #ffd166;
+			stroke: #ffd166;
+			filter: drop-shadow(0 0 10px #ffd166);
+		}
+
+		.truth {
+			width: 100%;
+			border-collapse: collapse;
+			font: 0.82rem "JetBrains Mono", monospace;
+			color: var(--muted);
+			text-align: center;
+		}
+
+		.truth th,
+		.truth td {
+			padding: 6px 4px;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.truth th {
+			color: var(--faint);
+			font-weight: 500;
+		}
+
+		.truth tr.is-now td {
+			color: var(--accent-ink);
+			background: var(--accent);
+		}
 	</style>
 </head>
 
@@ -144,6 +233,8 @@
 				rechnen. Jedes Foto, jedes Lied und jede KI besteht am Ende aus Bits. Hier legst du sie selbst um.</p>
 			<ol class="v-toc">
 				<li><a href="#byte">Ein Byte</a></li>
+				<li><a href="#gatter">Wie ein Chip rechnet</a></li>
+				<li><a href="#sortieren">Wie sortiert man schnell?</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -187,6 +278,118 @@
 					<input class="text-in" id="textIn" type="text" maxlength="16" value="Hallo" aria-label="Text in Binärcode übersetzen" />
 					<p class="binary" id="binary"></p>
 					<p class="stage-note" id="byteNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="gatter">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Logikgatter</span>
+				<h2>Wie ein Chip rechnet</h2>
+				<p>Ein Prozessor besteht aus Milliarden winziger Schalter, den Transistoren. Ein paar davon zusammen bilden
+					ein <strong>Logikgatter</strong>: eine Mini-Schaltung, die aus zwei Bits ein neues macht.</p>
+				<ul>
+					<li><strong>UND</strong> (AND): Ausgang 1 nur, wenn beide Eingänge 1 sind.</li>
+					<li><strong>ODER</strong> (OR): Ausgang 1, wenn mindestens einer 1 ist.</li>
+					<li><strong>Exklusiv-ODER</strong> (XOR): Ausgang 1, wenn genau einer 1 ist.</li>
+				</ul>
+				<p>Und jetzt das Wunder: Mit nur einem XOR und einem UND kann man <strong>addieren</strong>. XOR liefert die
+					Ziffer, UND den Übertrag. Im Zweiersystem ist 1 + 1 = 10, also Ziffer 0, Übertrag 1. Diese Schaltung
+					heißt <strong>Halbaddierer</strong>. Reiht man viele davon aneinander, rechnet der Chip mit 64-Bit-Zahlen,
+					Milliarden Mal pro Sekunde.</p>
+				<p class="merke"><b>Merke</b>Computer können nicht denken. Sie schalten nur sehr schnell sehr viele
+					Gatter. Alles andere, auch KI, ist darauf gebaut.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Ein UND-Gatter gibt nur 1 aus, wenn beide Eingänge 1 sind. Genau so funktioniert eine Sicherheitsschaltung an einer Presse: Sie startet nur, wenn beide Hände auf beiden Knöpfen liegen, damit keine Hand dazwischen gerät.">
+					<p class="quiz-q">Eine Maschine darf nur laufen, wenn Knopf A <em>und</em> Knopf B gedrückt sind. Welches
+						Gatter brauchst du?</p>
+					<div class="quiz-options">
+						<button type="button">UND</button>
+						<button type="button">ODER</button>
+						<button type="button">XOR</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schalte A und B ein und aus. Was zeigen die Lampen bei 1 + 1?</p>
+				<div class="stage-view">
+					<svg class="adder" id="adder" viewBox="0 0 360 230" role="img" aria-label="Halbaddierer aus XOR- und UND-Gatter">
+						<g class="wires">
+							<path data-w="a" d="M58 60 H110 V58 H172" />
+							<path data-w="a" d="M110 60 V148 H172" />
+							<path data-w="b" d="M58 170 H134 V172 H172" />
+							<path data-w="b" d="M134 170 V82 H172" />
+							<path data-w="s" d="M226 70 H290" />
+							<path data-w="c" d="M226 160 H290" />
+						</g>
+						<circle class="dot" data-w="a" cx="110" cy="60" r="3.5" />
+						<circle class="dot" data-w="b" cx="134" cy="170" r="3.5" />
+						<path class="gate" d="M160 40 Q196 40 226 70 Q196 100 160 100 Q176 70 160 40 Z" />
+						<path class="gate-line" d="M152 40 Q168 70 152 100" />
+						<text class="gate-label" x="186" y="75">XOR</text>
+						<path class="gate" d="M168 130 H196 A30 30 0 0 1 196 190 H168 Z" />
+						<text class="gate-label" x="187" y="165">UND</text>
+						<g class="lamp" data-w="s"><circle cx="306" cy="70" r="16" /><text x="306" y="105">Summe</text></g>
+						<g class="lamp" data-w="c"><circle cx="306" cy="160" r="16" /><text x="306" y="195">Übertrag</text></g>
+						<text class="io" x="34" y="65">A</text>
+						<text class="io" x="34" y="175">B</text>
+					</svg>
+					<span class="stage-tag">Halbaddierer</span>
+					<span class="stage-readout" id="addOut">0 + 0 = 00₂</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn" id="btnA" type="button" aria-pressed="false">A = 0</button>
+					<button class="btn" id="btnB" type="button" aria-pressed="false">B = 0</button>
+					<table class="truth" id="truth">
+						<tr><th>A</th><th>B</th><th>XOR</th><th>UND</th><th>Ergebnis</th></tr>
+						<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+						<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+						<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+						<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>10₂ = 2</td></tr>
+					</table>
+					<p class="stage-note" id="addNote">Beide aus: 0 + 0 = 0.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="sortieren">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Algorithmen</span>
+				<h2>Wie sortiert man schnell?</h2>
+				<p>Ein <strong>Algorithmus</strong> ist eine genaue Schritt-für-Schritt-Anleitung. Für dieselbe Aufgabe
+					gibt es oft viele, und manche sind <strong>unglaublich viel schneller</strong> als andere.</p>
+				<p><strong>Bubble Sort</strong> vergleicht immer zwei Nachbarn und tauscht sie, wenn sie falsch herum
+					stehen. Einfach, aber langsam: Bei n Dingen braucht es etwa n² / 2 Vergleiche.
+					<strong>Quicksort</strong> wählt ein Element als Grenze und wirft alles Kleinere nach links, alles
+					Größere nach rechts, dann dasselbe mit jeder Hälfte. <strong>Mergesort</strong> teilt die Liste immer
+					weiter und fügt sortierte Stücke reißverschlussartig zusammen.</p>
+				<p>Die beiden schnellen brauchen nur etwa <strong>n · log₂ n</strong> Vergleiche. Bei 60 Zahlen ist der
+					Unterschied klein. Bei einer Million Einträgen sind es 500 Milliarden gegen 20 Millionen. Das ist der
+					Unterschied zwischen einer Woche und einer Sekunde.</p>
+				<p class="merke"><b>Merke</b>Schnellere Computer helfen ein bisschen. Bessere Algorithmen helfen
+					gewaltig. Teile und herrsche ist eine der stärksten Ideen der Informatik.</p>
+				<div class="formula">Bubble ≈ n² / 2 · Quick, Merge ≈ n · log₂ n
+					<small>Informatiker schreiben das als O(n²) und O(n log n), die „Groß-O-Notation“.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Sortiere die Balken mit Bubble Sort. Misch neu und probier dann Quicksort. Zähl die
+					Vergleiche.</p>
+				<div class="stage-view">
+					<canvas id="sortCanvas" aria-label="Balken werden sortiert"></canvas>
+					<span class="stage-tag" id="sortTag">60 Zahlen</span>
+					<span class="stage-readout" id="sortOut">0 Vergleiche</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" type="button" data-sort="bubble">Bubble Sort</button>
+					<button class="btn primary" type="button" data-sort="quick">Quicksort</button>
+					<button class="btn primary" type="button" data-sort="merge">Mergesort</button>
+					<button class="btn" id="btnShuffle" type="button">🔀 Mischen</button>
+					<label class="range">
+						<span class="range-head"><span>Tempo</span><output id="speedOut">mittel</output></span>
+						<input type="range" id="speed" min="1" max="5" value="3" />
+					</label>
+					<p class="stage-note" id="sortNote">Rot: wird gerade verglichen.</p>
 				</div>
 			</div>
 		</section>

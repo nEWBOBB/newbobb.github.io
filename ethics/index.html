@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Ethik — Newbobb Lab</title>
 	<meta name="description"
-		content="Ethik interaktiv: sechs moralische Dilemmas vom Weichenproblem bis zur Notlüge. Finde heraus, ob du eher nach Folgen, nach Pflichten oder nach Charakter entscheidest." />
+		content="Ethik interaktiv: sechs Dilemmas zu den drei großen Denkschulen, Rawls' Schleier des Nichtwissens und Kants kategorischer Imperativ am Trampelpfad." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -91,6 +91,80 @@
 			border-radius: 0 12px 12px 0;
 			margin: 0;
 		}
+		.worlds {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 10px;
+			padding: 46px 14px 16px;
+		}
+
+		.world {
+			display: grid;
+			gap: 8px;
+			padding: 12px;
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			background: var(--panel-2);
+			color: var(--ink);
+			font: inherit;
+			text-align: left;
+			cursor: pointer;
+			transition: border-color 0.2s, background 0.2s;
+		}
+
+		.world:hover,
+		.world[aria-pressed="true"] {
+			border-color: var(--accent);
+		}
+
+		.world[aria-pressed="true"] {
+			background: color-mix(in srgb, var(--accent) 12%, var(--panel-2));
+		}
+
+		.world:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: 2px;
+		}
+
+		.world b {
+			font-size: 0.95rem;
+		}
+
+		.world small {
+			color: var(--faint);
+			font-size: 0.75rem;
+		}
+
+		.world .q {
+			display: grid;
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+			align-items: end;
+			gap: 4px;
+			height: 74px;
+		}
+
+		.world .q span {
+			position: relative;
+			border-radius: 4px 4px 0 0;
+			background: color-mix(in srgb, var(--accent) 55%, transparent);
+			transition: background 0.3s, box-shadow 0.3s;
+		}
+
+		.world .q span em {
+			position: absolute;
+			bottom: 100%;
+			left: 0;
+			right: 0;
+			text-align: center;
+			font: 500 0.66rem "JetBrains Mono", monospace;
+			font-style: normal;
+			color: var(--muted);
+		}
+
+		.world .q span.me {
+			background: #ff9ec7;
+			box-shadow: 0 0 16px rgba(255, 158, 199, 0.6);
+		}
 	</style>
 </head>
 
@@ -109,6 +183,8 @@
 				gibt drei große Antworten. Welche ist deine? Sechs Dilemmas verraten es.</p>
 			<ol class="v-toc">
 				<li><a href="#dilemmas">Sechs Dilemmas</a></li>
+				<li><a href="#schleier">Der Schleier des Nichtwissens</a></li>
+				<li><a href="#imperativ">Was wäre, wenn alle das täten?</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -156,6 +232,79 @@
 						<div style="--c:#7bdc9a"><span>Charakter</span><i></i><b></b></div>
 					</div>
 					<p class="stage-note" id="dNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="schleier">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Gerechtigkeit</span>
+				<h2>Der Schleier des Nichtwissens</h2>
+				<p>Was ist eine gerechte Gesellschaft? Der Philosoph John Rawls hatte 1971 eine geniale Idee: Stell dir vor,
+					du darfst die Regeln aussuchen, aber du weißt nicht, <strong>wer du darin sein wirst</strong>. Reich
+					oder arm, gesund oder krank, klug oder nicht.</p>
+				<p>Hinter diesem <strong>Schleier des Nichtwissens</strong> kannst du nicht für dich selbst schummeln.
+					Du musst eine Welt wählen, in der du an jeder Stelle leben könntest.</p>
+				<p>Rawls glaubte, kluge Menschen würden dann so wählen: Ungleichheit ist erlaubt, aber nur, wenn sie
+					auch <strong>den Schwächsten nützt</strong>. Das nennt man das <strong>Differenzprinzip</strong>. Ein
+					Utilitarist würde einfach die Welt mit dem höchsten Durchschnitt nehmen. Und du?</p>
+				<p class="merke"><b>Merke</b>Gerecht ist, was du auch dann wählen würdest, wenn du nicht wüsstest, wo
+					du landest.</p>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Gesellschaft. Jeder Balken ist ein Fünftel der Menschen und ihr Einkommen. Dann
+					lüfte den Schleier.</p>
+				<div class="stage-view">
+					<div class="worlds" id="worlds"></div>
+					<span class="stage-tag">Vier Welten</span>
+					<span class="stage-readout" id="veilOut">Noch keine Wahl</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnVeil" type="button" disabled>🎭 Schleier lüften</button>
+					<p class="stage-note" id="veilNote">Die Zahlen sind Einkommen in Tausend Euro pro Jahr.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="imperativ">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Kant</span>
+				<h2>Was wäre, wenn alle das täten?</h2>
+				<p>Eine Abkürzung quer über den Rasen spart dir 20 Sekunden. Einer allein macht keinen Schaden, das Gras
+					erholt sich. Also ist es okay, oder?</p>
+				<p>Immanuel Kant hätte gefragt: <strong>Was wäre, wenn das alle täten?</strong> Sein
+					<strong>kategorischer Imperativ</strong> von 1785 lautet ungefähr: Handle nur nach einer Regel, von
+					der du wollen kannst, dass sie für alle gilt.</p>
+				<p>Viele Dinge sind nur deshalb harmlos, weil die meisten sie <em>nicht</em> tun: Schwarzfahren, Müll
+					liegen lassen, bei der Steuer schummeln. Wer sich darauf verlässt, dass die anderen sich an die Regel
+					halten, ist ein <strong>Trittbrettfahrer</strong>. Ab einer bestimmten Menge kippt das System
+					plötzlich.</p>
+				<p class="merke"><b>Merke</b>Wenn deine Handlung nur funktioniert, weil andere es nicht so machen, ist
+					sie keine gute Regel.</p>
+				<div class="quiz" data-answer="1"
+					data-why="Kant fragt nicht nach den Folgen dieser einen Lüge, sondern nach der Regel dahinter. „Lügen, wenn es mir nützt“ kann kein Gesetz für alle sein: Dann würde niemand mehr irgendwem glauben, und Lügen würde gar nicht mehr funktionieren.">
+					<p class="quiz-q">Warum ist Lügen nach Kant falsch, selbst wenn es niemandem schadet?</p>
+					<div class="quiz-options">
+						<button type="button">Weil man erwischt werden könnte</button>
+						<button type="button">Weil eine Welt, in der alle lügen, Vertrauen und damit das Lügen selbst unmöglich macht</button>
+						<button type="button">Weil es in der Bibel verboten ist</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wie viele Menschen nehmen die Abkürzung? Schieb langsam hoch. Ab wann bleibt ein Trampelpfad?</p>
+				<div class="stage-view">
+					<canvas id="lawnCanvas" aria-label="Rasen mit Trampelpfad"></canvas>
+					<span class="stage-tag">Der Rasen</span>
+					<span class="stage-readout" id="lawnOut">Pfad: 0 %</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Anteil, der quer läuft</span><output id="shareOut">5 %</output></span>
+						<input type="range" id="share" min="0" max="100" value="5" />
+					</label>
+					<button class="btn" id="btnLawn" type="button">🌱 Rasen neu säen</button>
+					<p class="stage-note" id="lawnNote">Wenige Leute: Das Gras wächst schneller nach, als es zertreten wird.</p>
 				</div>
 			</div>
 		</section>

@@ -67,3 +67,177 @@
 	translate();
 	render();
 })();
+
+// Informatik: Halbaddierer aus XOR- und UND-Gatter
+(() => {
+	const svg = document.getElementById("adder");
+	const btnA = document.getElementById("btnA");
+	const btnB = document.getElementById("btnB");
+	const out = document.getElementById("addOut");
+	const note = document.getElementById("addNote");
+	const rows = [...document.querySelectorAll("#truth tr")].slice(1);
+	let a = 0;
+	let b = 0;
+
+	function render() {
+		const s = a ^ b;
+		const c = a & b;
+		const on = { a, b, s, c };
+		svg.querySelectorAll("[data-w]").forEach((el) => el.classList.toggle("on", !!on[el.dataset.w]));
+		btnA.textContent = `A = ${a}`;
+		btnB.textContent = `B = ${b}`;
+		btnA.setAttribute("aria-pressed", !!a);
+		btnB.setAttribute("aria-pressed", !!b);
+		rows.forEach((r, k) => r.classList.toggle("is-now", k === a * 2 + b));
+		out.textContent = `${a} + ${b} = ${c}${s}₂`;
+		note.textContent =
+			a && b
+				? "1 + 1 = 2, im Zweiersystem 10: Die Summe ist 0, und der Übertrag 1 wandert eine Stelle nach links. Genau wie bei 5 + 5 = 10."
+				: a || b
+					? "Genau ein Eingang ist an: XOR leuchtet, UND bleibt aus. 1 + 0 = 1."
+					: "Beide aus: 0 + 0 = 0.";
+	}
+	btnA.addEventListener("click", () => {
+		a ^= 1;
+		render();
+	});
+	btnB.addEventListener("click", () => {
+		b ^= 1;
+		render();
+	});
+	render();
+})();
+
+// Informatik: Sortieralgorithmen im Vergleich
+(() => {
+	const canvas = document.getElementById("sortCanvas");
+	const { ctx, size } = fitCanvas(canvas, (w) => (w < 520 ? 1.3 : 2));
+	const speed = document.getElementById("speed");
+	const out = document.getElementById("sortOut");
+	const tag = document.getElementById("sortTag");
+	const note = document.getElementById("sortNote");
+	const ACC = getComputedStyle(document.documentElement).getPropertyValue("--fach").trim();
+	const N = 60;
+	const STEPS = [1, 2, 4, 10, 30];
+	const SPEED = ["sehr langsam", "langsam", "mittel", "schnell", "sehr schnell"];
+	const NAMES = { bubble: "Bubble Sort", quick: "Quicksort", merge: "Mergesort" };
+	let arr = [];
+	let run = null;
+	let name = "";
+	let cmp = 0;
+	let hi = [];
+	let done = false;
+	const results = {};
+
+	function* bubble(a) {
+		for (let end = a.length - 1; end > 0; end--) {
+			let swapped = false;
+			for (let i = 0; i < end; i++) {
+				yield ["cmp", i, i + 1];
+				if (a[i] > a[i + 1]) {
+					[a[i], a[i + 1]] = [a[i + 1], a[i]];
+					swapped = true;
+				}
+			}
+			if (!swapped) return;
+		}
+	}
+	function* quick(a, lo = 0, hiI = a.length - 1) {
+		if (lo >= hiI) return;
+		const pivot = a[hiI];
+		let i = lo;
+		for (let j = lo; j < hiI; j++) {
+			yield ["cmp", j, hiI];
+			if (a[j] < pivot) {
+				[a[i], a[j]] = [a[j], a[i]];
+				i++;
+			}
+		}
+		[a[i], a[hiI]] = [a[hiI], a[i]];
+		yield* quick(a, lo, i - 1);
+		yield* quick(a, i + 1, hiI);
+	}
+	function* merge(a, lo = 0, hiI = a.length) {
+		if (hiI - lo < 2) return;
+		const mid = (lo + hiI) >> 1;
+		yield* merge(a, lo, mid);
+		yield* merge(a, mid, hiI);
+		const left = a.slice(lo, mid);
+		const right = a.slice(mid, hiI);
+		let i = 0;
+		let j = 0;
+		let k = lo;
+		while (i < left.length && j < right.length) {
+			yield ["cmp", lo + i, mid + j];
+			a[k++] = left[i] <= right[j] ? left[i++] : right[j++];
+		}
+		while (i < left.length) a[k++] = left[i++];
+		while (j < right.length) a[k++] = right[j++];
+	}
+	const ALGOS = { bubble, quick, merge };
+
+	const shuffle = () => {
+		arr = Array.from({ length: N }, (_, i) => i + 1);
+		for (let i = N - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[arr[i], arr[j]] = [arr[j], arr[i]];
+		}
+		run = null;
+		cmp = 0;
+		hi = [];
+		done = false;
+		out.textContent = "0 Vergleiche";
+		tag.textContent = `${N} Zahlen`;
+	};
+
+	function draw() {
+		const { w, h } = size;
+		ctx.clearRect(0, 0, w, h);
+		const bw = (w - 20) / N;
+		for (let i = 0; i < N; i++) {
+			const bh = (arr[i] / N) * (h - 46);
+			ctx.fillStyle = hi.includes(i) ? "#ff6a8a" : done ? ACC : "rgba(92,225,230,0.55)";
+			ctx.fillRect(10 + i * bw + 1, h - 10 - bh, Math.max(1, bw - 2), bh);
+		}
+	}
+
+	whenVisible(canvas, () => {
+		if (run) {
+			for (let s = 0; s < STEPS[speed.value - 1]; s++) {
+				const r = run.next();
+				if (r.done) {
+					run = null;
+					hi = [];
+					done = true;
+					results[name] = cmp;
+					const parts = Object.entries(results).map(([k, v]) => `${NAMES[k]} ${v}`);
+					note.textContent = `Fertig! ${NAMES[name]} brauchte ${cmp} Vergleiche. ${
+						parts.length > 1 ? `Bisher: ${parts.join(" · ")}.` : "Misch neu und probier einen anderen Algorithmus."
+					} Zum Vergleich: n² / 2 = ${(N * N) / 2}, n · log₂ n ≈ ${Math.round(N * Math.log2(N))}.`;
+					break;
+				}
+				cmp++;
+				hi = [r.value[1], r.value[2]];
+			}
+			out.textContent = `${cmp} Vergleiche`;
+		}
+		draw();
+	});
+
+	document.querySelectorAll("[data-sort]").forEach((b) =>
+		b.addEventListener("click", () => {
+			if (done || run) shuffle();
+			name = b.dataset.sort;
+			cmp = 0;
+			run = ALGOS[name](arr);
+			tag.textContent = NAMES[name];
+			note.textContent = "Rot: wird gerade verglichen.";
+		})
+	);
+	document.getElementById("btnShuffle").addEventListener("click", () => {
+		shuffle();
+		note.textContent = "Neu gemischt. Wähle einen Algorithmus.";
+	});
+	speed.addEventListener("input", () => (document.getElementById("speedOut").textContent = SPEED[speed.value - 1]));
+	shuffle();
+})();

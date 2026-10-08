@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Biologie — Newbobb Lab</title>
 	<meta name="description"
-		content="Biologie interaktiv: Hasen und Füchse im Räuber-Beute-Zyklus. Geburtenrate und Jagderfolg einstellen und sehen, wie zwei Populationen sich gegenseitig auf und ab treiben." />
+		content="Biologie interaktiv: Räuber-Beute-Zyklen, natürliche Selektion beim Birkenspanner zum Selberspielen und Mendels Vererbungsregeln mit Kreuzungsquadrat." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,6 +22,94 @@
 
 		#ecoCanvas {
 			cursor: crosshair;
+		}
+
+		#mothCanvas {
+			touch-action: manipulation;
+			cursor: crosshair;
+		}
+
+		.mendel {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+			gap: 18px;
+			align-items: center;
+			padding: 46px 18px 22px;
+		}
+
+		.punnett {
+			display: grid;
+			grid-template-columns: 2.2em 1fr 1fr;
+			gap: 4px;
+			font-family: "JetBrains Mono", monospace;
+			text-align: center;
+		}
+
+		.punnett b {
+			color: var(--faint);
+			font-weight: 500;
+			align-self: center;
+		}
+
+		.punnett span {
+			display: grid;
+			place-items: center;
+			gap: 4px;
+			aspect-ratio: 1;
+			border-radius: 12px;
+			background: var(--panel-2);
+			font-size: 0.95rem;
+		}
+
+		.punnett span::before {
+			content: "";
+			width: 1.6em;
+			height: 1.6em;
+			border-radius: 50%;
+			background: var(--pea);
+			box-shadow: inset -3px -4px 0 rgba(0, 0, 0, 0.18);
+		}
+
+		.peas {
+			display: grid;
+			grid-template-columns: repeat(10, minmax(0, 1fr));
+			gap: 3px;
+		}
+
+		.peas i {
+			aspect-ratio: 1;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.06);
+			transform: scale(0.4);
+			transition: transform 0.25s, background 0.25s;
+		}
+
+		.peas i.on {
+			transform: scale(1);
+		}
+
+		.parent {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			flex: 1 1 220px;
+		}
+
+		.parent span {
+			width: 4em;
+			color: var(--muted);
+			font-size: 0.86rem;
+		}
+
+		.parent .btn {
+			font-family: "JetBrains Mono", monospace;
+			padding-inline: 14px;
+		}
+
+		@media (max-width: 520px) {
+			.mendel {
+				grid-template-columns: minmax(0, 1fr);
+			}
 		}
 	</style>
 </head>
@@ -41,6 +129,8 @@
 				fressen, entstehen Muster, die man mit zwei Gleichungen vorhersagen kann.</p>
 			<ol class="v-toc">
 				<li><a href="#zyklus">Räuber und Beute</a></li>
+				<li><a href="#selektion">Du bist der Vogel</a></li>
+				<li><a href="#vererbung">Mendels Erbsen</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -91,6 +181,92 @@
 						<li style="--c:#ff8a5c">Füchse</li>
 					</ul>
 					<p class="stage-note" id="ecoNote">Beobachte, wer zuerst seinen Höhepunkt erreicht.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="selektion">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Evolution</span>
+				<h2>Du bist der Vogel</h2>
+				<p>Um 1850 waren fast alle Birkenspanner in England hell gesprenkelt, perfekt getarnt auf heller
+					Birkenrinde. Dann kam die Industrialisierung. Ruß färbte die Bäume schwarz, und fünfzig Jahre später
+					waren fast alle Falter in Manchester <strong>dunkel</strong>.</p>
+				<p>Kein Falter hat sich „angepasst“. Es gab einfach schon immer ein paar dunkle. Auf hellen Bäumen wurden
+					sie gefressen, auf rußigen Bäumen fielen plötzlich die hellen auf. Wer übrig bleibt, bekommt
+					Nachwuchs, und der sieht aus wie seine Eltern, mit kleinen Abweichungen.</p>
+				<p>Das ist <strong>natürliche Selektion</strong>, die Idee von Charles Darwin: Vielfalt, Vererbung und
+					ungleicher Erfolg. Mehr braucht es nicht. Über Jahrmillionen entstehen so Augen, Flügel und Gehirne.</p>
+				<p class="merke"><b>Merke</b>Evolution hat kein Ziel. Die Umwelt sortiert aus, was gerade nicht passt,
+					und das Übrige vermehrt sich.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Giraffen strecken sich nicht lang und vererben das. Diese Idee von Lamarck stimmt nicht. Es gab Giraffen mit etwas längeren und etwas kürzeren Hälsen. Die mit längeren kamen besser an Blätter, überlebten öfter und hatten mehr Junge.">
+					<p class="quiz-q">Warum haben Giraffen so lange Hälse?</p>
+					<div class="quiz-options">
+						<button type="button">Weil sie sich ihr Leben lang nach Blättern gestreckt haben</button>
+						<button type="button">Weil die Natur das so geplant hat</button>
+						<button type="button">Weil Giraffen mit längerem Hals öfter überlebten und mehr Junge bekamen</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Friss Falter, indem du auf sie tippst. Nach 15 Faltern vermehren sich die Überlebenden.
+					Spiel ein paar Generationen, dann schwärze die Bäume.</p>
+				<div class="stage-view">
+					<canvas id="mothCanvas" aria-label="Birkenspanner auf Baumrinde, tippe zum Fressen"></canvas>
+					<span class="stage-tag" id="mothTag">Generation 1</span>
+					<span class="stage-readout" id="mothOut">15 übrig</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnSoot" type="button" aria-pressed="false">🏭 Ruß auf die Bäume</button>
+					<button class="btn" id="btnAuto" type="button">🐦 Vogel: 10 Generationen</button>
+					<button class="btn" id="btnMothReset" type="button">↺ Neu</button>
+					<p class="stage-note" id="mothNote">Unten siehst du, wie viele Falter welche Helligkeit haben.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="vererbung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Genetik</span>
+				<h2>Mendels Erbsen</h2>
+				<p>Der Mönch Gregor Mendel kreuzte im Klostergarten von Brünn acht Jahre lang Erbsen, fast 30 000
+					Pflanzen. 1866 fand er die Regeln der <strong>Vererbung</strong>, Jahrzehnte bevor jemand Gene oder
+					DNA kannte.</p>
+				<p>Jede Pflanze hat für die Farbe <strong>zwei Erbanlagen</strong>, eine von jedem Elternteil. Die Anlage
+					<strong>G</strong> (gelb) ist <strong>dominant</strong>: Sie setzt sich durch. Die Anlage
+					<strong>g</strong> (grün) ist <strong>rezessiv</strong>: Sie zeigt sich nur, wenn beide Anlagen g
+					sind.</p>
+				<p>Bei der Fortpflanzung gibt jeder Elternteil zufällig eine seiner beiden Anlagen weiter. Das
+					<strong>Kreuzungsquadrat</strong> zeigt alle vier Möglichkeiten. Aus zwei gelben Gg-Pflanzen wird so im
+					Schnitt jede vierte Erbse grün: das berühmte Verhältnis <strong>3 : 1</strong>.</p>
+				<p class="merke"><b>Merke</b>Was man sieht (Phänotyp), ist nicht alles, was man hat (Genotyp).
+					Rezessive Anlagen können Generationen lang versteckt bleiben.</p>
+				<div class="quiz" data-answer="0"
+					data-why="Beide Eltern tragen versteckt die Anlage g in sich (Gg). Mit 25 % Wahrscheinlichkeit gibt jeder sein g weiter, und das Kind ist gg: grün. Genau so tauchen auch Erbkrankheiten oder rote Haare scheinbar aus dem Nichts auf.">
+					<p class="quiz-q">Zwei gelbe Erbsenpflanzen bekommen grüne Nachkommen. Wie ist das möglich?</p>
+					<div class="quiz-options">
+						<button type="button">Beide tragen die grüne Anlage versteckt in sich</button>
+						<button type="button">Eine Mutation hat die Farbe zufällig geändert</button>
+						<button type="button">Das ist unmöglich, die Erbsen wurden vertauscht</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle die Erbanlagen der Eltern. Ernte dann 100 Erbsen und vergleiche mit dem Quadrat.</p>
+				<div class="stage-view">
+					<div class="mendel">
+						<div class="punnett" id="punnett"></div>
+						<div class="peas" id="peas"></div>
+					</div>
+					<span class="stage-tag">Kreuzungsquadrat</span>
+					<span class="stage-readout" id="peaOut">Erwartet 3 : 1</span>
+				</div>
+				<div class="stage-controls">
+					<div class="parent" data-parent="0"><span>Mutter</span><button class="btn" type="button" data-g="GG">GG</button><button class="btn" type="button" data-g="Gg" aria-pressed="true">Gg</button><button class="btn" type="button" data-g="gg">gg</button></div>
+					<div class="parent" data-parent="1"><span>Vater</span><button class="btn" type="button" data-g="GG">GG</button><button class="btn" type="button" data-g="Gg" aria-pressed="true">Gg</button><button class="btn" type="button" data-g="gg">gg</button></div>
+					<button class="btn primary" id="btnHarvest" type="button">🌱 100 Erbsen ernten</button>
+					<p class="stage-note" id="peaNote">Beide Eltern sind gelb, tragen aber versteckt ein g.</p>
 				</div>
 			</div>
 		</section>
