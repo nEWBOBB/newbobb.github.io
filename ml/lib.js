@@ -146,6 +146,7 @@ const ML = (() => {
 		L.ctx = c.getContext("2d");
 		L.dirty = true;
 		L.render = (fn) => {
+			if (!(p.size.w > 0 && p.size.h > 0)) return;
 			const dpr = Math.min(window.devicePixelRatio || 1, 2);
 			const w = Math.round(p.size.w * dpr);
 			const h = Math.round(p.size.h * dpr);
@@ -226,6 +227,7 @@ const ML = (() => {
 	// Entscheidungsgebiete: fn(x, y) liefert die Wahrscheinlichkeit für Klasse B
 	const off = document.createElement("canvas");
 	function region(p, fn, res = 72, strength = 1) {
+		if (!(p.size.w > 0 && p.size.h > 0)) return;
 		const nx = res;
 		const ny = Math.max(8, Math.round((res * p.size.h) / p.size.w));
 		off.width = nx;
@@ -253,6 +255,7 @@ const ML = (() => {
 	// Gebiete für mehrere Gruppen: fn(x, y) liefert den Index in PAL
 	const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 	function regionMulti(p, fn, res = 72, alpha = 0.15) {
+		if (!(p.size.w > 0 && p.size.h > 0)) return;
 		const nx = res;
 		const ny = Math.max(8, Math.round((res * p.size.h) / p.size.w));
 		off.width = nx;
@@ -276,6 +279,7 @@ const ML = (() => {
 
 	// Höhenlinie fn(x, y) = level per Marching Squares
 	function contour(p, fn, level = 0, res = 60, style = {}) {
+		if (!(p.size.w > 0 && p.size.h > 0)) return;
 		const nx = res;
 		const ny = Math.max(8, Math.round((res * p.size.h) / p.size.w));
 		const gx = (i) => p.ix((i / nx) * p.size.w);

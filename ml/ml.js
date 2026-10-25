@@ -96,6 +96,36 @@ const ALGOS = [
 	}).join("");
 })();
 
+// Alltags-Detektiv: Karten umdrehen, um den Algorithmus dahinter zu sehen
+(() => {
+	const CASES = [
+		["🎬", "„Das könnte dir auch gefallen“ bei Netflix", "a03", "Ähnliche Nutzer finden, wie bei k-Nearest Neighbors, oft kombiniert mit neuronalen Netzen."],
+		["📧", "Spam landet von allein im Spamordner", "a04", "Klassisch Naive Bayes: Jedes Wort ist ein kleines Indiz für oder gegen Spam."],
+		["🏦", "Die Bank lehnt deinen Kredit ab", "a07", "Häufig Gradient Boosting oder logistische Regression auf Tabellendaten."],
+		["📱", "Das Handy entsperrt sich mit deinem Gesicht", "a18", "Ein CNN erkennt Kanten, Formen und schließlich dein Gesicht."],
+		["🛒", "Der Shop schickt dir passende Angebote", "a09", "Kunden werden mit Clustering wie k-Means in Gruppen eingeteilt."],
+		["💳", "Deine Karte wird nach einer seltsamen Zahlung gesperrt", "a11", "Ausreißer-Erkennung, etwa mit DBSCAN: Diese Zahlung passt zu keiner Gruppe."],
+		["🎮", "Eine KI schlägt Weltmeister in Go und Atari-Spielen", "a20", "Bestärkendes Lernen wie Q-Learning, mit neuronalen Netzen als Gedächtnis."],
+		["🏠", "Ein Portal schätzt den Wert deiner Wohnung", "a01", "Regression: Fläche, Lage und Baujahr werden zu einem Preis verrechnet."],
+	];
+	const box = $("detective");
+	box.innerHTML = CASES.map(
+		([ico, q, id, a]) =>
+			`<div class="card-flip"><button type="button" class="front" aria-expanded="false"><i>${ico}</i>${q}</button><div class="back"><b>${ALGOS.find((x) => x[0] === id)[1]}</b>${a}<a href="#${id}">Zum Labor →</a></div></div>`
+	).join("");
+	box.querySelectorAll(".card-flip").forEach((card) => {
+		const btn = card.querySelector(".front");
+		const set = (open) => {
+			card.classList.toggle("open", open);
+			btn.setAttribute("aria-expanded", String(open));
+			card.querySelector(".back a").tabIndex = open ? 0 : -1;
+		};
+		set(false);
+		btn.addEventListener("click", () => set(true));
+		card.querySelector(".back").addEventListener("click", (e) => !e.target.closest("a") && set(false));
+	});
+})();
+
 // Bühnen, die höher als das Fenster sind, scrollen normal mit statt zu kleben
 (() => {
 	const fit = () =>

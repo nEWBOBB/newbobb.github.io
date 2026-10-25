@@ -576,3 +576,130 @@ canvas {
 	font-size: clamp(2.3rem, 8.6vw, 6.6rem);
 	hyphens: manual;
 }
+
+/* ---------- Wozu das Ganze ---------- */
+
+.why {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+	gap: 10px;
+}
+
+.why article {
+	padding: 16px 16px 18px;
+	border-radius: 16px;
+	border: 1px solid var(--line);
+	background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 10%, var(--panel)), var(--panel) 60%);
+}
+
+.why b {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 0.74rem;
+	font-weight: 500;
+	color: var(--accent);
+}
+
+.why h3 {
+	margin: 6px 0 8px;
+	font-size: 1.1rem;
+}
+
+.why p {
+	margin: 0;
+	font-size: 0.9rem;
+	color: var(--muted);
+}
+
+.detective {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+	gap: 10px;
+}
+
+.card-flip {
+	position: relative;
+	min-height: 150px;
+	perspective: 900px;
+}
+
+.card-flip > * {
+	cursor: pointer;
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 14px 16px;
+	border-radius: 16px;
+	border: 1px solid var(--line);
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transition: transform 0.5s cubic-bezier(.2, .8, .2, 1);
+	font-size: 0.92rem;
+	line-height: 1.4;
+}
+
+.card-flip .front {
+	width: 100%;
+	font: inherit;
+	color: var(--ink);
+	text-align: left;
+	background: var(--panel);
+}
+
+.card-flip .front i {
+	font-style: normal;
+	font-size: 1.6rem;
+}
+
+.card-flip .back {
+	transform: rotateY(180deg);
+	background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+	border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+	color: var(--muted);
+	font-size: 0.86rem;
+}
+
+.card-flip .back b {
+	color: var(--accent);
+	font-size: 1rem;
+}
+
+.card-flip .back a {
+	margin-top: auto;
+	font-size: 0.82rem;
+	text-decoration: none;
+}
+
+.card-flip.open .front {
+	transform: rotateY(-180deg);
+}
+
+.card-flip.open .back {
+	transform: rotateY(0);
+}
+
+.card-flip .front:focus-visible,
+.card-flip .back a:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+	border-radius: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card-flip > * {
+		backface-visibility: visible;
+	}
+
+	.card-flip .back {
+		visibility: hidden;
+	}
+
+	.card-flip.open .back {
+		visibility: visible;
+	}
+
+	.card-flip.open .front {
+		visibility: hidden;
+	}
+}
