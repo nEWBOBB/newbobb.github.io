@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>20 ML-Algorithmen verstehen — Newbobb Lab</title>
+	<meta name="description"
+		content="Die 20 wichtigsten Algorithmen des maschinellen Lernens zum Anfassen: von linearer Regression über Random Forest, SVM und k-Means bis zu neuronalen Netzen und Q-Learning. Mit Laboren, Quiz und Spickzettel." />
+	<meta name="theme-color" content="#0b0a09" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="../assets/verstehen.css" />
+	<link rel="stylesheet" href="./ml.css" />
+</head>
+
+<body>
+	<div class="v-progress" aria-hidden="true"></div>
+	<header class="v-top">
+		<a class="v-home" href="../">newbobb <span>/ verstehen</span></a>
+		<nav class="v-series" aria-label="Teile dieser Seite">
+			<a href="#grundlagen">Grundlagen</a>
+			<a href="#a01">Regression</a>
+			<a href="#a02">Klassifikation</a>
+			<a href="#a06">Ensembles</a>
+			<a href="#a09">Clustering</a>
+			<a href="#a12">Dimensionen</a>
+			<a href="#a17">Neuronale Netze</a>
+			<a href="#a20">Belohnung</a>
+			<a href="#arena">Arena</a>
+			<a href="#spick">Spickzettel</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="v-hero">
+			<p class="v-kicker">Verstehen · Vertiefung · Maschinelles Lernen</p>
+			<h1>20 <em>ML-Algorithmen</em><br />zum Anfassen</h1>
+			<p class="v-lede">Ein Spickzettel zeigt dir die Namen. Hier baust du jeden Algorithmus selbst nach: Punkte
+				setzen, Regler drehen, zusehen, wie er lernt und wo er scheitert. Danach weißt du nicht nur, was er tut,
+				sondern auch, wann du ihn nehmen solltest.</p>
+			<div class="map" id="map" aria-label="Alle 20 Algorithmen"></div>
+			<p class="map-score" id="mapScore" aria-live="polite"></p>
+		</section>
+
+		<!-- 00 Grundlagen -->
+		<section class="chapter" id="grundlagen">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">00 · Bevor es losgeht</span>
+				<h2>Was heißt hier „lernen“?</h2>
+				<p>Ein klassisches Programm bekommt Regeln und rechnet damit. Beim maschinellen Lernen ist es umgekehrt:
+					Das Programm bekommt <strong>Beispiele</strong> und sucht sich die Regeln selbst. Je nachdem, was in den
+					Beispielen steckt, gibt es drei große Familien:</p>
+				<ul>
+					<li><strong>Überwachtes Lernen:</strong> Zu jedem Beispiel gibt es die richtige Antwort, etwa „Spam“
+						oder „kein Spam“. Ist die Antwort eine Zahl, heißt das <em>Regression</em>, ist sie eine Kategorie,
+						<em>Klassifikation</em>.</li>
+					<li><strong>Unüberwachtes Lernen:</strong> Es gibt nur Daten, keine Antworten. Der Algorithmus sucht
+						Gruppen oder eine einfachere Darstellung.</li>
+					<li><strong>Bestärkendes Lernen:</strong> Ein Agent probiert Aktionen aus und bekommt dafür Belohnung
+						oder Strafe.</li>
+				</ul>
+				<p>Die wichtigste Gefahr bei allem heißt <strong>Overfitting</strong>: Ein Modell lernt die
+					Trainingsdaten auswendig, samt Rauschen, und versagt bei neuen Daten. Deshalb hält man immer einen Teil
+					der Daten zurück, die <strong>Testdaten</strong>, und prüft nur damit, wie gut ein Modell wirklich ist.
+				</p>
+				<p class="merke"><b>Merke</b>Ein gutes Modell ist nicht das, das die Trainingsdaten perfekt trifft,
+					sondern das, das bei neuen Daten am wenigsten danebenliegt.</p>
+				<div class="quiz" data-answer="2"
+					data-why="Bei Grad 1 ist die Kurve zu einfach (Underfitting), bei sehr hohem Grad schlängelt sie sich durch jedes Rauschen (Overfitting). Der Testfehler ist irgendwo dazwischen am kleinsten. Das ist der Bias-Varianz-Kompromiss.">
+					<p class="quiz-q">Bei welchem Polynomgrad ist der Testfehler meistens am kleinsten?</p>
+					<div class="quiz-options">
+						<button type="button">Beim kleinsten Grad, also einer Geraden</button>
+						<button type="button">Beim größten Grad, weil die Kurve dann alle Punkte trifft</button>
+						<button type="button">Bei einem mittleren Grad</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh den Grad der Kurve hoch. Beobachte, was mit dem Fehler auf den hellen Testpunkten
+					passiert.</p>
+				<div class="stage-view">
+					<canvas id="c00" aria-label="Kurve durch Trainingspunkte und Testpunkte"></canvas>
+					<span class="stage-tag">● Training · ○ Test</span>
+					<span class="stage-readout" id="r00"></span>
+				</div>
+				<div class="stage-view">
+					<canvas id="c00b" aria-label="Trainings- und Testfehler je Grad"></canvas>
+					<span class="stage-tag">Fehler je Grad</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Grad des Polynoms</span><output id="deg00Out"></output></span>
+						<input id="deg00" type="range" min="1" max="14" step="1" value="1" />
+					</label>
+					<button class="btn" id="new00" type="button">Neue Daten</button>
+					<p class="stage-note" id="n00"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 01 Lineare Regression -->
+		<section class="chapter flip" id="a01">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">01 · Regression · überwacht</span>
+				<h2>Lineare Regression</h2>
+				<p>Die Mutter aller Lernverfahren. Gesucht ist eine Gerade, die zu den Punkten passt, etwa: Wie hängt der
+					Preis einer Wohnung von ihrer Fläche ab? Die Gerade hat zwei Stellschrauben, die
+					<strong>Steigung</strong> und den <strong>Achsenabschnitt</strong>.</p>
+				<p>Was heißt „passt“? Für jeden Punkt misst man den Abstand zur Geraden, das
+					<strong>Residuum</strong>, und quadriert ihn. Rechts siehst du diese Quadrate wirklich als Quadrate. Die
+					beste Gerade ist die, bei der ihre Fläche zusammen am kleinsten ist: die <strong>Methode der kleinsten
+						Quadrate</strong>.</p>
+				<p>Wie findet der Computer sie? Er startet irgendwo und dreht die Stellschrauben immer ein Stückchen in die
+					Richtung, in der der Fehler am stärksten sinkt. Das heißt <strong>Gradientenabstieg</strong> und ist
+					dasselbe Prinzip, mit dem auch riesige neuronale Netze trainiert werden.</p>
+				<div class="formula">ŷ = θ₀ + θ₁·x &nbsp;&nbsp; Fehler = Mittelwert von (y − ŷ)²<small>θ₀ ist der
+						Achsenabschnitt, θ₁ die Steigung. Mit mehr Merkmalen wird daraus ŷ = Xθ.</small></div>
+				<ul class="pc">
+					<li class="plus">Einfach, schnell, jedes Gewicht direkt deutbar</li>
+					<li class="minus">Nimmt einen linearen Zusammenhang an, Ausreißer ziehen stark</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Hauspreise, Nachfrageprognosen, als Vergleichsmaßstab für alles andere</p>
+				<div class="quiz" data-answer="1"
+					data-why="Der Fehler wird quadriert. Ein Punkt, der zehnmal so weit weg liegt, zählt hundertmal so viel. Deshalb reißt ein einzelner Ausreißer die Gerade zu sich.">
+					<p class="quiz-q">Warum zieht ein einzelner Ausreißer die Gerade so stark zu sich?</p>
+					<div class="quiz-options">
+						<button type="button">Weil er als erster Punkt behandelt wird</button>
+						<button type="button">Weil große Abstände quadriert werden und dadurch überproportional zählen</button>
+						<button type="button">Weil lineare Regression nur die äußersten Punkte beachtet</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Schieb die Regler, bis die orangen Quadrate möglichst klein sind. Dann lass den
+					Gradientenabstieg ran. Tippe in die Grafik, um Punkte hinzuzufügen oder zu löschen.</p>
+				<div class="stage-view">
+					<canvas id="c01" aria-label="Wohnfläche gegen Preis mit Regressionsgerade"></canvas>
+					<span class="stage-tag">Fläche (m²) → Preis (Tsd. €)</span>
+					<span class="stage-readout" id="r01"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Steigung θ₁ (Tsd. € pro m²)</span><output id="s01Out"></output></span>
+						<input id="s01" type="range" min="0" max="7" step="0.01" value="1" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Achsenabschnitt θ₀</span><output id="i01Out"></output></span>
+						<input id="i01" type="range" min="-200" max="400" step="1" value="250" />
+					</label>
+					<button class="btn primary" id="gd01" type="button">Gradientenabstieg</button>
+					<button class="btn" id="out01" type="button">Ausreißer dazu</button>
+					<button class="btn" id="new01" type="button">Neue Daten</button>
+					<p class="stage-note" id="n01"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 02 Logistische Regression -->
+		<section class="chapter" id="a02">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Klassifikation · überwacht</span>
+				<h2>Logistische Regression</h2>
+				<p>Trotz des Namens ein Klassifizierer. Die Frage ist nicht „wie viel?“, sondern „ja oder nein?“: Besteht
+					jemand die Prüfung, wenn er so viele Stunden gelernt hat?</p>
+				<p>Eine Gerade würde Werte unter 0 und über 1 liefern. Deshalb wird sie durch die <strong>Sigmoid-Funktion</strong>
+					geschickt, die jede Zahl sanft in den Bereich zwischen 0 und 1 drückt. Das Ergebnis ist eine
+					<strong>Wahrscheinlichkeit</strong>. Wo sie 50 % kreuzt, liegt die Entscheidungsgrenze.</p>
+				<p>Bestraft wird mit dem <strong>Log-Loss</strong>: Wer sich sicher ist und falsch liegt, zahlt sehr viel.
+					Wer bei 51 % falsch liegt, nur wenig. So lernt das Modell nicht nur die Grenze, sondern auch, wie sicher
+					es sein darf.</p>
+				<div class="formula">P(y = 1) = 1 / (1 + e<sup>−(θ₀ + θ₁·x)</sup>)<small>In zwei oder mehr Dimensionen wird
+						die Grenze zu einer Geraden, Ebene oder Hyperebene.</small></div>
+				<ul class="pc">
+					<li class="plus">Liefert echte Wahrscheinlichkeiten, gut deutbar, schnell</li>
+					<li class="minus">Die Grenze ist immer gerade (linear)</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Spam-Erkennung, Kreditausfall, medizinische Risiko-Scores</p>
+				<div class="quiz" data-answer="0"
+					data-why="Die Steilheit bestimmt, wie schnell die Kurve von 0 auf 1 springt. Sehr steil heißt: Das Modell ist sich überall sehr sicher. Wenn die Klassen sich überlappen, wird es dafür vom Log-Loss bestraft.">
+					<p class="quiz-q">Was bedeutet es, wenn die Sigmoid-Kurve fast senkrecht steht?</p>
+					<div class="quiz-options">
+						<button type="button">Das Modell ist sich bei fast jedem Punkt sehr sicher</button>
+						<button type="button">Das Modell ist besonders vorsichtig</button>
+						<button type="button">Die Klassen sind gleich häufig</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Stell Steilheit und Schwelle so ein, dass der Log-Loss möglichst klein wird. Tipp oben in
+					die Grafik für „bestanden“, unten für „durchgefallen“.</p>
+				<div class="stage-view">
+					<canvas id="c02" aria-label="Lernstunden gegen Bestehenswahrscheinlichkeit"></canvas>
+					<span class="stage-tag">Lernstunden → P(bestanden)</span>
+					<span class="stage-readout" id="r02"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Steilheit</span><output id="w02Out"></output></span>
+						<input id="w02" type="range" min="0.1" max="6" step="0.05" value="0.6" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Schwelle (50 %-Punkt)</span><output id="t02Out"></output></span>
+						<input id="t02" type="range" min="0" max="10" step="0.05" value="3" />
+					</label>
+					<button class="btn primary" id="fit02" type="button">Trainieren</button>
+					<button class="btn" id="new02" type="button">Neue Daten</button>
+					<p class="stage-note" id="n02"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 03 KNN -->
+		<section class="chapter flip" id="a03">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Klassifikation · überwacht</span>
+				<h2>k-Nearest Neighbors</h2>
+				<p>Das faulste Verfahren der Welt, im besten Sinne. Es lernt gar nichts, sondern merkt sich nur alle
+					Beispiele. Kommt ein neuer Punkt, schaut es nach seinen <strong>k nächsten Nachbarn</strong> und lässt
+					sie abstimmen. Die Mehrheit gewinnt.</p>
+				<p>Mit <strong>k = 1</strong> folgt die Grenze jedem einzelnen Punkt, auch jedem Ausreißer: Overfitting.
+					Mit sehr großem k wird alles zu Brei, und am Ende gewinnt einfach die häufigere Klasse. Dazwischen liegt
+					das gute k.</p>
+				<p>Der Haken: Für jede Vorhersage muss es den Abstand zu <em>allen</em> gespeicherten Punkten berechnen. Bei
+					Millionen Beispielen wird das langsam. Und in sehr vielen Dimensionen sind sich plötzlich alle Punkte
+					ungefähr gleich fern, der „Fluch der Dimensionalität“.</p>
+				<ul class="pc">
+					<li class="plus">Einfach, keine Trainingszeit, beliebig geformte Grenzen</li>
+					<li class="minus">Langsam bei vielen Daten, Merkmale müssen gleich skaliert sein</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Empfehlungen („Kunden wie du kauften…“), Bilderkennung im Kleinen, Ausreißersuche</p>
+				<div class="quiz" data-answer="2"
+					data-why="Wenn ein Merkmal in Euro (0 bis 100 000) und eines in Jahren (0 bis 100) gemessen wird, bestimmt fast nur das Euro-Merkmal den Abstand. Deshalb skaliert man alle Merkmale vorher auf ähnliche Bereiche.">
+					<p class="quiz-q">Ein Merkmal ist das Einkommen in Euro, eines das Alter in Jahren. Was geht bei KNN schief?</p>
+					<div class="quiz-options">
+						<button type="button">Nichts, KNN kommt mit allen Einheiten klar</button>
+						<button type="button">Das Alter dominiert den Abstand</button>
+						<button type="button">Das Einkommen dominiert den Abstand, das Alter spielt kaum eine Rolle</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Fahr mit der Maus über die Fläche oder tippe hinein: Der weiße Punkt fragt seine Nachbarn.
+					Probier dann k = 1.</p>
+				<div class="stage-view">
+					<canvas id="c03" aria-label="KNN-Klassifikation mit Nachbarn"></canvas>
+					<span class="stage-tag">k nächste Nachbarn</span>
+					<span class="stage-readout" id="r03"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>k</span><output id="k03Out"></output></span>
+						<input id="k03" type="range" min="1" max="41" step="2" value="5" />
+					</label>
+					<button class="btn" id="reg03" type="button" aria-pressed="true">Gebiete zeigen</button>
+					<button class="btn" id="new03" type="button">Neue Daten</button>
+					<p class="stage-note" id="n03"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 04 Naive Bayes -->
+		<section class="chapter" id="a04">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Klassifikation · überwacht</span>
+				<h2>Naive Bayes</h2>
+				<p>Der Klassiker der Spamfilter. Aus Beispielen zählt er, wie oft jedes Wort in Spam und in normalen
+					Nachrichten vorkommt. „Gratis“ steht oft in Spam, „Meeting“ selten. Jedes Wort ist ein kleines Indiz.</p>
+				<p>Mit dem <strong>Satz von Bayes</strong> werden die Indizien zu einer Wahrscheinlichkeit verrechnet. Der
+					„naive“ Teil: Er tut so, als wären alle Wörter <strong>voneinander unabhängig</strong>. Das stimmt nie
+					(„Geld“ und „gewinnen“ kommen gern zusammen vor), funktioniert aber erstaunlich gut und ist rasend
+					schnell.</p>
+				<p>Wichtig ist auch die <strong>A-priori-Wahrscheinlichkeit</strong>: Wenn nur jede zehnte Mail Spam ist,
+					braucht es stärkere Indizien, um eine Nachricht als Spam einzustufen.</p>
+				<div class="formula">P(Spam | Wörter) ∝ P(Spam) · P(w₁ | Spam) · P(w₂ | Spam) · …<small>Damit kein Wort mit
+						Wahrscheinlichkeit null alles zunichtemacht, zählt man zu jedem Wort eins dazu (Laplace-Glättung).</small></div>
+				<ul class="pc">
+					<li class="plus">Sehr schnell, braucht wenig Daten, gut für Text</li>
+					<li class="minus">Die Unabhängigkeitsannahme macht die Wahrscheinlichkeiten oft übertrieben sicher</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Spamfilter, Themenzuordnung von Texten, Stimmungsanalyse</p>
+				<div class="quiz" data-answer="1"
+					data-why="Naive Bayes multipliziert für jedes Vorkommen den Faktor erneut. Dreimal „gratis“ zählt wie drei unabhängige Indizien, obwohl es im Grunde dasselbe Indiz ist. Genau das ist die naive Unabhängigkeitsannahme.">
+					<p class="quiz-q">Was passiert, wenn du „gratis gratis gratis“ eintippst?</p>
+					<div class="quiz-options">
+						<button type="button">Nichts, ein Wort zählt nur einmal</button>
+						<button type="button">Die Spam-Wahrscheinlichkeit steigt mit jeder Wiederholung</button>
+						<button type="button">Der Filter erkennt die Wiederholung und wird misstrauisch</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tipp eine Nachricht ein und schau, welche Wörter in welche Richtung ziehen. Bring dem Filter
+					danach etwas Neues bei.</p>
+				<div class="nb-in">
+					<input class="text-in" id="t04" type="text" maxlength="120" value="Gratis Gewinn, jetzt klicken!"
+						aria-label="Nachricht" autocomplete="off" />
+				</div>
+				<div class="nb-words" id="w04" aria-live="polite"></div>
+				<div class="stage-controls">
+					<div class="verdict" id="v04"></div>
+					<label class="range">
+						<span class="range-head"><span>Anteil Spam im Postfach (A-priori)</span><output id="p04Out"></output></span>
+						<input id="p04" type="range" min="0.05" max="0.95" step="0.05" value="0.5" />
+					</label>
+					<div class="chips">
+						<button class="btn" type="button" data-msg="Hallo, sehen wir uns morgen zum Meeting?">Normal</button>
+						<button class="btn" type="button" data-msg="Ihr Konto wurde gesperrt, hier klicken">Phishing</button>
+						<button class="btn" type="button" data-msg="gratis gratis gratis">gratis ×3</button>
+						<button class="btn" type="button" data-msg="Gratis Brot zum Mittagessen morgen?">Gemischt</button>
+					</div>
+					<button class="btn" id="ls04" type="button">Als Spam lernen</button>
+					<button class="btn" id="lh04" type="button">Als normal lernen</button>
+					<p class="stage-note" id="n04"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 05 Entscheidungsbaum -->
+		<section class="chapter flip" id="a05">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">05 · Klassifikation · überwacht</span>
+				<h2>Entscheidungsbaum</h2>
+				<p>Funktioniert wie das Spiel „Wer bin ich?“: eine Ja-Nein-Frage nach der anderen. „Ist x kleiner als 0,4?“
+					Ja: links weiter, nein: rechts. Am Ende jedes Pfades steht eine Antwort.</p>
+				<p>Welche Frage zuerst? Die, die die Gruppen am saubersten trennt. Gemessen wird das mit der
+					<strong>Gini-Unreinheit</strong>: 0 heißt, in einer Gruppe ist nur eine Klasse, 0,5 heißt bunt gemischt.
+					Der Baum probiert alle möglichen Schnitte und nimmt den besten. Dann wiederholt er das in jeder Hälfte.</p>
+				<p>Weil jede Frage nur ein Merkmal betrifft, sind alle Grenzen <strong>senkrecht oder waagerecht</strong>.
+					Lässt man den Baum unbegrenzt wachsen, fragt er so lange, bis jeder Punkt sein eigenes Kästchen hat. Das
+					ist perfektes Auswendiglernen.</p>
+				<ul class="pc">
+					<li class="plus">Leicht zu erklären, keine Skalierung nötig, kann nichtlinear</li>
+					<li class="minus">Neigt stark zu Overfitting und ist instabil</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Kreditentscheidungen, die man begründen muss, Risikoanalyse, Diagnosepfade</p>
+				<div class="quiz" data-answer="0"
+					data-why="Mit großer Tiefe passt der Baum sich jedem Trainingspunkt an, auch dem Rauschen. Die Trainingsgenauigkeit geht auf 100 %, die Testgenauigkeit sinkt. Das ist Overfitting.">
+					<p class="quiz-q">Was passiert bei großer Tiefe mit der Genauigkeit auf Trainings- und Testdaten?</p>
+					<div class="quiz-options">
+						<button type="button">Training steigt auf fast 100 %, Test wird eher schlechter</button>
+						<button type="button">Beide steigen auf 100 %</button>
+						<button type="button">Beide sinken</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Erhöhe die Tiefe Schritt für Schritt und vergleiche Training und Test.</p>
+				<div class="stage-view">
+					<canvas id="c05" aria-label="Entscheidungsbaum mit Schnitten"></canvas>
+					<span class="stage-tag">● Training · ○ Test</span>
+					<span class="stage-readout" id="r05"></span>
+				</div>
+				<pre class="tree-txt" id="tree05" aria-label="Der Baum als Fragen"></pre>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Maximale Tiefe</span><output id="d05Out"></output></span>
+						<input id="d05" type="range" min="1" max="12" step="1" value="2" />
+					</label>
+					<button class="btn" id="new05" type="button">Neue Daten</button>
+					<p class="stage-note" id="n05"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 06 Random Forest -->
+		<section class="chapter" id="a06">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">06 · Ensemble · überwacht</span>
+				<h2>Random Forest</h2>
+				<p>Ein einzelner tiefer Baum ist ein Besserwisser mit Tunnelblick. Viele Bäume, die jeweils etwas andere
+					Daten gesehen haben, sind eine kluge Gruppe. Das ist die <strong>Weisheit der Vielen</strong>.</p>
+				<ol class="steps">
+					<li><strong>Bagging:</strong> Jeder Baum bekommt eine Zufallsstichprobe der Daten, mit Zurücklegen. Manche
+						Punkte sieht er doppelt, andere gar nicht.</li>
+					<li><strong>Zufällige Merkmale:</strong> Bei jeder Frage darf der Baum nur aus einem Teil der Merkmale
+						wählen. So werden die Bäume verschiedener.</li>
+					<li><strong>Abstimmung:</strong> Am Ende stimmen alle Bäume ab. Ihre Einzelfehler sind verschieden und
+						heben sich teilweise auf.</li>
+				</ol>
+				<p>Unten siehst du drei Einzelbäume: jeder für sich zackig und übermütig. Der Wald zusammen ergibt eine
+					ruhige, glatte Grenze.</p>
+				<ul class="pc">
+					<li class="plus">Sehr robust, kaum Einstellarbeit, starke Genauigkeit</li>
+					<li class="minus">Schwer zu deuten, groß und langsamer als ein einzelner Baum</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Fast jede Tabellen-Aufgabe, Betrugserkennung, Medizin, Fernerkundung</p>
+				<div class="quiz" data-answer="2"
+					data-why="Mittelt man viele Modelle mit unabhängigen Fehlern, sinkt die Streuung (Varianz). Die Fehler der Bäume sind durch Bagging und Merkmalszufall möglichst verschieden, also heben sie sich gegenseitig auf.">
+					<p class="quiz-q">Warum ist der Wald besser als jeder einzelne seiner Bäume?</p>
+					<div class="quiz-options">
+						<button type="button">Weil jeder Baum mehr Daten bekommt</button>
+						<button type="button">Weil die Bäume flacher sind</button>
+						<button type="button">Weil sich die verschiedenen Fehler der Bäume beim Abstimmen ausgleichen</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte mit einem Baum und pflanze immer mehr dazu.</p>
+				<div class="stage-view">
+					<canvas id="c06" aria-label="Entscheidungsgebiet des Waldes"></canvas>
+					<span class="stage-tag">Abstimmung des Waldes</span>
+					<span class="stage-readout" id="r06"></span>
+				</div>
+				<div class="mini-row">
+					<div><canvas id="c06a" aria-label="Einzelbaum 1"></canvas><span>Baum 1</span></div>
+					<div><canvas id="c06b" aria-label="Einzelbaum 2"></canvas><span>Baum 2</span></div>
+					<div><canvas id="c06c" aria-label="Einzelbaum 3"></canvas><span>Baum 3</span></div>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Anzahl Bäume</span><output id="n06sOut"></output></span>
+						<input id="n06s" type="range" min="1" max="80" step="1" value="1" />
+					</label>
+					<button class="btn" id="new06" type="button">Neue Daten</button>
+					<p class="stage-note" id="n06"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 07 Gradient Boosting -->
+		<section class="chapter flip" id="a07">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">07 · Ensemble · überwacht</span>
+				<h2>Gradient Boosting</h2>
+				<p>Auch hier arbeiten viele Bäume zusammen, aber nicht parallel, sondern <strong>nacheinander</strong>.
+					Jeder neue Baum ist winzig, oft nur eine einzige Frage, und er hat genau eine Aufgabe: die Fehler
+					auszubessern, die alle vorherigen zusammen noch machen.</p>
+				<ol class="steps">
+					<li>Starte mit einer simplen Vorhersage, zum Beispiel dem Mittelwert.</li>
+					<li>Berechne die <strong>Residuen</strong>: Wie weit liegt die Vorhersage bei jedem Punkt daneben?</li>
+					<li>Trainiere einen kleinen Baum, der genau diese Residuen vorhersagt (untere Grafik).</li>
+					<li>Addiere ihn, aber gedämpft mit der <strong>Lernrate</strong>. Weiter bei Schritt 2.</li>
+				</ol>
+				<p>Das ist wieder Gradientenabstieg, nur dass statt einer Zahl eine ganze Funktion verbessert wird. XGBoost,
+					LightGBM und CatBoost sind hochoptimierte Versionen davon und gewinnen seit Jahren die meisten
+					Wettbewerbe mit Tabellendaten.</p>
+				<ul class="pc">
+					<li class="plus">Oft die beste Genauigkeit bei Tabellendaten</li>
+					<li class="minus">Viele Stellschrauben, kann bei zu vielen Runden überanpassen</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Kaggle-Wettbewerbe, Kreditscoring, Preisvorhersagen, Ranking in Suchmaschinen</p>
+				<div class="quiz" data-answer="1"
+					data-why="Eine kleine Lernrate macht jeden Schritt vorsichtig. Man braucht mehr Bäume, aber das Ergebnis ist meist glatter und verallgemeinert besser. Eine große Lernrate lernt schnell und neigt zum Überanpassen.">
+					<p class="quiz-q">Was bewirkt eine kleinere Lernrate?</p>
+					<div class="quiz-options">
+						<button type="button">Man braucht weniger Bäume</button>
+						<button type="button">Man braucht mehr Bäume, bekommt aber meist ein robusteres Modell</button>
+						<button type="button">Die Bäume werden tiefer</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Füge Baum für Baum hinzu und schau zu, wie die Residuen unten schrumpfen.</p>
+				<div class="stage-view">
+					<canvas id="c07" aria-label="Boosting: Vorhersage und Residuen"></canvas>
+					<span class="stage-tag">Daten und Vorhersage</span>
+					<span class="stage-readout" id="r07"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Lernrate</span><output id="lr07Out"></output></span>
+						<input id="lr07" type="range" min="0.05" max="1" step="0.05" value="0.3" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Tiefe pro Baum</span><output id="d07Out"></output></span>
+						<input id="d07" type="range" min="1" max="4" step="1" value="1" />
+					</label>
+					<button class="btn primary" id="add07" type="button">+1 Baum</button>
+					<button class="btn" id="add07x" type="button">+20 Bäume</button>
+					<button class="btn" id="rst07" type="button">Zurück auf null</button>
+					<p class="stage-note" id="n07"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 08 SVM -->
+		<section class="chapter" id="a08">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">08 · Klassifikation · überwacht</span>
+				<h2>Support Vector Machine</h2>
+				<p>Zwischen zwei Gruppen passen oft unendlich viele trennende Geraden. Welche ist die beste? Die SVM sagt:
+					die mit dem <strong>breitesten Sicherheitsabstand</strong>, dem Margin. Stell dir die breiteste Straße
+					vor, die zwischen den Gruppen hindurchpasst.</p>
+				<p>Die Straße wird nur von den Punkten an ihrem Rand bestimmt, den <strong>Stützvektoren</strong> (mit Ring
+					markiert). Alle anderen Punkte könnte man löschen, ohne dass sich etwas ändert.</p>
+				<p>Der Regler <strong>C</strong> sagt, wie streng die Straße sein soll: Kleines C erlaubt ein paar Punkte auf
+					der Straße, dafür wird sie breit. Großes C duldet keine Fehler. Und der <strong>Kernel-Trick</strong>
+					hebt die Daten gedanklich in eine höhere Dimension, in der eine gerade Trennung möglich wird. Zurück in
+					2D sieht die Grenze dann rund aus.</p>
+				<ul class="pc">
+					<li class="plus">Stark in vielen Dimensionen, solide Theorie, wenig Daten reichen</li>
+					<li class="minus">Kernel und Parameter muss man gut wählen, langsam bei sehr vielen Daten</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Textklassifikation, Bilderkennung vor Deep Learning, Bioinformatik</p>
+				<div class="quiz" data-answer="2"
+					data-why="Nur die Stützvektoren haben ein Gewicht größer als null. Ein Punkt weit weg vom Margin trägt nichts zur Lösung bei, sein Löschen ändert die Grenze nicht.">
+					<p class="quiz-q">Du löschst einen Punkt weit weg von der Straße. Was passiert mit der Grenze?</p>
+					<div class="quiz-options">
+						<button type="button">Sie verschiebt sich ein bisschen</button>
+						<button type="button">Sie wird breiter</button>
+						<button type="button">Gar nichts, er war kein Stützvektor</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wähle eine Klasse und tippe Punkte in die Straße. Für den Ring brauchst du den RBF-Kernel.
+				</p>
+				<div class="stage-view">
+					<canvas id="c08" aria-label="SVM mit Margin und Stützvektoren"></canvas>
+					<span class="stage-tag">Straße · ◯ Stützvektoren</span>
+					<span class="stage-readout" id="r08"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="ds08" role="group" aria-label="Datensatz">
+						<button class="btn" type="button" data-v="sep" aria-pressed="true">Trennbar</button>
+						<button class="btn" type="button" data-v="over" aria-pressed="false">Überlappend</button>
+						<button class="btn" type="button" data-v="ring" aria-pressed="false">Ring</button>
+					</div>
+					<div class="chips" id="k08" role="group" aria-label="Kernel">
+						<button class="btn" type="button" data-v="linear" aria-pressed="true">Linear</button>
+						<button class="btn" type="button" data-v="rbf" aria-pressed="false">RBF-Kernel</button>
+					</div>
+					<div class="chips" id="cl08" role="group" aria-label="Klasse für neue Punkte">
+						<button class="btn cls-a" type="button" data-v="0" aria-pressed="true">● Klasse A</button>
+						<button class="btn cls-b" type="button" data-v="1" aria-pressed="false">● Klasse B</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>C (Strenge)</span><output id="C08Out"></output></span>
+						<input id="C08" type="range" min="-2" max="2" step="0.1" value="0" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>γ (Reichweite des RBF-Kernels)</span><output id="g08Out"></output></span>
+						<input id="g08" type="range" min="1" max="80" step="1" value="12" />
+					</label>
+					<p class="stage-note" id="n08"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 09 k-Means -->
+		<section class="chapter flip" id="a09">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">09 · Clustering · unüberwacht</span>
+				<h2>k-Means</h2>
+				<p>Jetzt gibt es keine Antworten mehr, nur Punkte. k-Means soll sie in <strong>k Gruppen</strong> teilen.
+					Der Ablauf ist ein Tanz aus zwei Schritten:</p>
+				<ol class="steps">
+					<li>Setze k Mittelpunkte irgendwohin.</li>
+					<li><strong>Zuordnen:</strong> Jeder Punkt gehört zum nächstgelegenen Mittelpunkt.</li>
+					<li><strong>Verschieben:</strong> Jeder Mittelpunkt wandert in die Mitte seiner Punkte.</li>
+					<li>Wiederholen, bis sich nichts mehr bewegt.</li>
+				</ol>
+				<p>Das endet garantiert, aber nicht unbedingt in der besten Lösung. Ein schlechter Start kann zwei
+					Mittelpunkte in einer Wolke einsperren. Deshalb startet man mehrmals oder setzt die Startpunkte klug
+					auseinander (<strong>k-Means++</strong>).</p>
+				<p>Und welches k? Die <strong>Ellbogen-Methode</strong>: Man zeichnet die Streuung innerhalb der Gruppen für
+					verschiedene k. Wo die Kurve abknickt, bringt eine weitere Gruppe kaum noch etwas.</p>
+				<ul class="pc">
+					<li class="plus">Einfach, schnell, skaliert auf riesige Datenmengen</li>
+					<li class="minus">k muss man vorgeben, nur runde Gruppen, empfindlich für Ausreißer</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Kundensegmente, Farbreduktion in Bildern, Vorsortieren großer Datenmengen</p>
+				<div class="quiz" data-answer="0"
+					data-why="k-Means teilt den Raum mit geraden Grenzen in Bereiche um jeden Mittelpunkt (Voronoi-Zellen). Langgezogene oder verschlungene Formen wie Monde oder Ringe kann es so nicht erfassen. Dafür eignet sich DBSCAN.">
+					<p class="quiz-q">Welche Gruppen kann k-Means grundsätzlich nicht gut finden?</p>
+					<div class="quiz-options">
+						<button type="button">Ineinander verschlungene oder ringförmige Gruppen</button>
+						<button type="button">Gruppen mit gleich vielen Punkten</button>
+						<button type="button">Gruppen, die weit auseinanderliegen</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Geh Schritt für Schritt durch und beobachte die zwei Phasen. Starte mehrmals neu.</p>
+				<div class="stage-view">
+					<canvas id="c09" aria-label="k-Means-Clustering"></canvas>
+					<span class="stage-tag" id="ph09">Start</span>
+					<span class="stage-readout" id="r09"></span>
+				</div>
+				<div class="stage-view">
+					<canvas id="c09b" aria-label="Ellbogen-Diagramm"></canvas>
+					<span class="stage-tag">Ellbogen: Streuung je k</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>k</span><output id="k09Out"></output></span>
+						<input id="k09" type="range" min="1" max="8" step="1" value="3" />
+					</label>
+					<button class="btn primary" id="st09" type="button">Schritt</button>
+					<button class="btn" id="run09" type="button">Bis fertig</button>
+					<button class="btn" id="rs09" type="button">Neu starten</button>
+					<button class="btn" id="pp09" type="button" aria-pressed="false">k-Means++</button>
+					<button class="btn" id="new09" type="button">Neue Daten</button>
+					<p class="stage-note" id="n09"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 10 Hierarchisches Clustering -->
+		<section class="chapter" id="a10">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">10 · Clustering · unüberwacht</span>
+				<h2>Hierarchisches Clustering</h2>
+				<p>Statt k vorher festzulegen, baut dieses Verfahren einen ganzen <strong>Stammbaum</strong> der Daten. Am
+					Anfang ist jeder Punkt sein eigener Cluster. Dann werden immer die zwei nächsten Cluster
+					zusammengelegt, bis nur noch einer übrig ist.</p>
+				<p>Das Ergebnis ist das <strong>Dendrogramm</strong>: Je höher eine Verbindung, desto weiter waren die
+					Gruppen auseinander, als sie verschmolzen. Wo du den Baum waagerecht <strong>durchschneidest</strong>,
+					bestimmst du hinterher, wie viele Gruppen es gibt. Ein großer Sprung in der Höhe ist ein guter Ort für
+					den Schnitt.</p>
+				<p>Wie misst man den Abstand zweier Gruppen? <strong>Single Linkage</strong> nimmt die zwei nächsten Punkte
+					(bildet gern lange Ketten), <strong>Complete Linkage</strong> die zwei fernsten (kompakte Gruppen),
+					<strong>Average</strong> den Durchschnitt.</p>
+				<ul class="pc">
+					<li class="plus">k muss nicht vorher feststehen, zeigt Struktur auf allen Ebenen</li>
+					<li class="minus">Rechenaufwendig, bei vielen Punkten unübersichtlich</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Stammbäume von Genen und Arten, Themen-Hierarchien in Texten</p>
+				<div class="quiz" data-answer="1"
+					data-why="Ein langer senkrechter Strich bedeutet: Zwei Gruppen blieben lange getrennt und verschmolzen erst bei großem Abstand. Wer dort schneidet, trennt natürliche Gruppen voneinander.">
+					<p class="quiz-q">Wo schneidet man das Dendrogramm am besten?</p>
+					<div class="quiz-options">
+						<button type="button">Immer genau in der Mitte</button>
+						<button type="button">Dort, wo eine lange senkrechte Lücke ohne Verschmelzung ist</button>
+						<button type="button">Ganz unten, damit möglichst viele Gruppen entstehen</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Verschmelze Schritt für Schritt oder zieh die Schnitthöhe. Vergleiche die Linkage-Arten.</p>
+				<div class="stage-view">
+					<canvas id="c10" aria-label="Punkte mit Clustern"></canvas>
+					<span class="stage-tag">Daten</span>
+					<span class="stage-readout" id="r10"></span>
+				</div>
+				<div class="stage-view">
+					<canvas id="c10b" aria-label="Dendrogramm"></canvas>
+					<span class="stage-tag">Dendrogramm</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="l10" role="group" aria-label="Linkage">
+						<button class="btn" type="button" data-v="single" aria-pressed="false">Single</button>
+						<button class="btn" type="button" data-v="complete" aria-pressed="false">Complete</button>
+						<button class="btn" type="button" data-v="average" aria-pressed="true">Average</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Schnitthöhe</span><output id="h10Out"></output></span>
+						<input id="h10" type="range" min="0" max="1" step="0.005" value="0" />
+					</label>
+					<button class="btn primary" id="st10" type="button">Verschmelzen</button>
+					<button class="btn" id="new10" type="button">Neue Daten</button>
+					<p class="stage-note" id="n10"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 11 DBSCAN -->
+		<section class="chapter flip" id="a11">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">11 · Clustering · unüberwacht</span>
+				<h2>DBSCAN</h2>
+				<p>Gruppen sind dort, wo es <strong>dicht</strong> ist. DBSCAN braucht dafür zwei Zahlen: einen Radius
+					<strong>ε</strong> und eine Mindestzahl <strong>minPts</strong>.</p>
+				<ul>
+					<li><strong>Kernpunkt:</strong> Hat mindestens minPts Nachbarn im Radius ε (großer Punkt).</li>
+					<li><strong>Randpunkt:</strong> Liegt in der Nähe eines Kernpunkts, ist aber selbst keiner.</li>
+					<li><strong>Rauschen:</strong> Weder noch. Diese Punkte gehören zu keiner Gruppe (grau, mit ×).</li>
+				</ul>
+				<p>Kernpunkte, die sich gegenseitig erreichen, bilden eine Kette und damit einen Cluster, egal wie
+					verschlungen. Darum findet DBSCAN Monde, Ringe und Schlangen, an denen k-Means scheitert. Die Anzahl der
+					Gruppen ergibt sich von selbst, und Ausreißer werden gleich mit erkannt.</p>
+				<ul class="pc">
+					<li class="plus">Beliebige Formen, findet Ausreißer, k nicht nötig</li>
+					<li class="minus">Empfindlich für ε, Probleme bei unterschiedlich dichten Gruppen</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Ausreißer- und Betrugserkennung, GPS-Daten, Hotspots auf Karten</p>
+				<div class="quiz" data-answer="2"
+					data-why="Mit winzigem ε hat kaum ein Punkt genug Nachbarn. Fast alles wird zu Rauschen. Mit riesigem ε verschmelzen dagegen alle Gruppen zu einer einzigen.">
+					<p class="quiz-q">Was passiert, wenn ε sehr klein ist?</p>
+					<div class="quiz-options">
+						<button type="button">Alles wird ein einziger großer Cluster</button>
+						<button type="button">Es entstehen genau zwei Cluster</button>
+						<button type="button">Fast alle Punkte werden als Rauschen markiert</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Der Kreis am Zeiger zeigt ε. Dreh ε und minPts, dann vergleiche mit k-Means.</p>
+				<div class="stage-view">
+					<canvas id="c11" aria-label="DBSCAN-Clustering"></canvas>
+					<span class="stage-tag" id="m11">DBSCAN</span>
+					<span class="stage-readout" id="r11"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="ds11" role="group" aria-label="Datensatz">
+						<button class="btn" type="button" data-v="moons" aria-pressed="true">Monde</button>
+						<button class="btn" type="button" data-v="rings" aria-pressed="false">Ringe</button>
+						<button class="btn" type="button" data-v="blobs" aria-pressed="false">Wolken + Rauschen</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>ε (Radius)</span><output id="e11Out"></output></span>
+						<input id="e11" type="range" min="0.01" max="0.2" step="0.005" value="0.06" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>minPts</span><output id="m11sOut"></output></span>
+						<input id="m11s" type="range" min="2" max="15" step="1" value="5" />
+					</label>
+					<button class="btn" id="km11" type="button" aria-pressed="false">Mit k-Means vergleichen</button>
+					<p class="stage-note" id="n11"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 12 PCA -->
+		<section class="chapter" id="a12">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">12 · Dimensionsreduktion · unüberwacht</span>
+				<h2>Hauptkomponentenanalyse (PCA)</h2>
+				<p>Viele Datensätze haben Hunderte Merkmale, die sich teils wiederholen. Größe in cm und Größe in Zoll sagen
+					dasselbe. PCA sucht neue Achsen, die das Wesentliche zusammenfassen.</p>
+				<p>Die erste <strong>Hauptkomponente</strong> ist die Richtung, in der die Daten am meisten
+					<strong>streuen</strong>. Die zweite steht senkrecht darauf und fängt den größten Rest ein, und so weiter.
+					Oft stecken schon in zwei, drei Komponenten 90 % der Information.</p>
+				<p>Hübscher Nebeneffekt: Die Richtung mit der größten Streuung ist genau die, bei der die Punkte am
+					<strong>wenigsten Abstand</strong> zur Linie haben. Maximale Information behalten und minimalen Fehler
+					beim Projizieren sind dasselbe Ziel.</p>
+				<div class="formula">Hauptkomponenten = Eigenvektoren der Kovarianzmatrix<small>Der zugehörige Eigenwert sagt,
+						wie viel Streuung in dieser Richtung steckt.</small></div>
+				<ul class="pc">
+					<li class="plus">Schnell, entfernt Redundanz, gut gegen Rauschen</li>
+					<li class="minus">Nur lineare Zusammenhänge, neue Achsen sind schwer zu deuten</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Vorverarbeitung, Visualisierung, Kompression, Gesichtserkennung (Eigenfaces)</p>
+				<div class="quiz" data-answer="1"
+					data-why="Die Streuung entlang der Linie plus der Fehler senkrecht dazu ergibt immer die Gesamtstreuung, das ist der Satz des Pythagoras. Wird das eine größer, wird das andere kleiner.">
+					<p class="quiz-q">Warum ist der Projektionsfehler genau dann am kleinsten, wenn die Varianz am größten ist?</p>
+					<div class="quiz-options">
+						<button type="button">Das ist Zufall bei diesen Daten</button>
+						<button type="button">Weil beide zusammen immer die Gesamtstreuung ergeben (Pythagoras)</button>
+						<button type="button">Weil PCA den Fehler ignoriert</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh die Linie und finde die Richtung mit der größten Streuung. Dann lass PCA rechnen und
+					projiziere.</p>
+				<div class="stage-view">
+					<canvas id="c12" aria-label="PCA mit drehbarer Projektionslinie"></canvas>
+					<span class="stage-tag">Projektion auf die Linie</span>
+					<span class="stage-readout" id="r12"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Winkel der Linie</span><output id="ang12Out"></output></span>
+						<input id="ang12" type="range" min="0" max="180" step="1" value="120" />
+					</label>
+					<div class="meter" aria-hidden="true">
+						<span>Varianz behalten</span><div class="track"><div class="fill" id="mv12"></div></div>
+						<span>Projektionsfehler</span><div class="track"><div class="fill bad" id="me12"></div></div>
+					</div>
+					<button class="btn primary" id="pc12" type="button">PCA finden</button>
+					<button class="btn" id="pj12" type="button" aria-pressed="false">Auf 1D projizieren</button>
+					<button class="btn" id="new12" type="button">Neue Wolke</button>
+					<p class="stage-note" id="n12"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 13 t-SNE -->
+		<section class="chapter flip" id="a13">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">13 · Dimensionsreduktion · unüberwacht</span>
+				<h2>t-SNE</h2>
+				<p>PCA klappt die Daten flach wie ein Schatten an der Wand. Wenn Gruppen hintereinander liegen, überlappen
+					ihre Schatten. t-SNE geht anders vor: Es will vor allem die <strong>Nachbarschaften</strong> erhalten.
+				</p>
+				<ol class="steps">
+					<li>Im hochdimensionalen Raum wird für jeden Punkt berechnet, wie „nah“ ihm jeder andere ist, als
+						Wahrscheinlichkeit.</li>
+					<li>Die Punkte werden zufällig auf eine 2D-Fläche gestreut.</li>
+					<li>Dann werden sie verschoben, bis die Nachbarschaften in 2D möglichst denen im Originalraum gleichen.
+						Nachbarn ziehen sich an, alle anderen stoßen sich ab.</li>
+				</ol>
+				<p>Die <strong>Perplexität</strong> sagt ungefähr, wie viele Nachbarn jeder Punkt beachtet. Achtung bei der
+					Deutung: Größe der Cluster und Abstände <strong>zwischen</strong> Clustern bedeuten in t-SNE-Bildern fast
+					nichts. Nur wer bei wem liegt, zählt.</p>
+				<ul class="pc">
+					<li class="plus">Zeigt Cluster in hochdimensionalen Daten beeindruckend klar</li>
+					<li class="minus">Rechenintensiv, jedes Mal etwas anders, nur zum Anschauen</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Visualisierung von Embeddings, Einzelzell-Genetik, Bild- und Wortdatenbanken</p>
+				<div class="quiz" data-answer="0"
+					data-why="t-SNE optimiert nur die lokalen Nachbarschaften. Wie weit zwei Cluster im Bild auseinanderliegen, ergibt sich eher zufällig. Für globale Abstände ist PCA verlässlicher.">
+					<p class="quiz-q">Zwei Cluster liegen im t-SNE-Bild weit auseinander. Was kannst du daraus schließen?</p>
+					<div class="quiz-options">
+						<button type="button">Wenig, Abstände zwischen Clustern sind bei t-SNE kaum aussagekräftig</button>
+						<button type="button">Sie sind im Originalraum besonders weit voneinander entfernt</button>
+						<button type="button">Einer der beiden ist Rauschen</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Fünf Gruppen leben in 10 Dimensionen. Schau zu, wie t-SNE sie auseinanderzieht, und
+					vergleiche mit dem PCA-Schatten.</p>
+				<div class="stage-view">
+					<canvas id="c13" aria-label="t-SNE-Einbettung"></canvas>
+					<span class="stage-tag" id="m13">t-SNE</span>
+					<span class="stage-readout" id="r13"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="v13" role="group" aria-label="Ansicht">
+						<button class="btn" type="button" data-v="tsne" aria-pressed="true">t-SNE</button>
+						<button class="btn" type="button" data-v="pca" aria-pressed="false">PCA</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Perplexität</span><output id="p13Out"></output></span>
+						<input id="p13" type="range" min="2" max="50" step="1" value="20" />
+					</label>
+					<button class="btn primary" id="rs13" type="button">Neu starten</button>
+					<button class="btn" id="new13" type="button">Neue Daten</button>
+					<p class="stage-note" id="n13"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 14 LDA -->
+		<section class="chapter" id="a14">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">14 · Klassifikation · überwacht</span>
+				<h2>Lineare Diskriminanzanalyse (LDA)</h2>
+				<p>Auch LDA sucht eine Richtung, auf die man die Daten projiziert, aber mit einem anderen Ziel als PCA. PCA
+					kennt keine Klassen und sucht die größte Streuung. LDA kennt die Klassen und sucht die Richtung, in der
+					sie sich <strong>am besten trennen</strong>.</p>
+				<p>„Am besten“ heißt nach Fisher: Die <strong>Mittelpunkte</strong> der Klassen sollen möglichst weit
+					auseinander liegen, und jede Klasse soll in sich möglichst <strong>schmal</strong> sein. Das Verhältnis
+					aus beidem heißt Fisher-Kriterium J.</p>
+				<p>Rechts siehst du, warum das wichtig ist: Die Richtung mit der größten Streuung (PCA) wirft beide Klassen
+					übereinander. Die LDA-Richtung trennt sie sauber. Als Klassifizierer nimmt LDA an, dass jede Klasse eine
+					Glockenkurve mit <strong>gleicher Form</strong> ist. Darum ist ihre Grenze eine Gerade.</p>
+				<div class="formula">J = (m₁ − m₀)² / (s₀² + s₁²)<small>m: Mittelwerte der projizierten Klassen, s²: ihre
+						Streuung.</small></div>
+				<ul class="pc">
+					<li class="plus">Klassifiziert und reduziert Dimensionen zugleich, schnell, stabil bei wenig Daten</li>
+					<li class="minus">Nimmt Normalverteilungen mit gleicher Kovarianz an</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Gesichtserkennung (Fisherfaces), Vorverarbeitung, Medizin, Marketing</p>
+				<div class="quiz" data-answer="1"
+					data-why="PCA ignoriert die Klassenzugehörigkeit vollständig. Liegt die größte Streuung entlang der Klassen statt zwischen ihnen, wirft PCA genau die trennende Information weg.">
+					<p class="quiz-q">Warum trennt die PCA-Richtung die Klassen hier so schlecht?</p>
+					<div class="quiz-options">
+						<button type="button">Weil PCA falsch gerechnet hat</button>
+						<button type="button">Weil PCA die Klassen gar nicht kennt und nur die größte Streuung sucht</button>
+						<button type="button">Weil die Klassen zu klein sind</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh die Projektionsrichtung und beobachte die Verteilungen unten. Vergleiche PCA und LDA.</p>
+				<div class="stage-view">
+					<canvas id="c14" aria-label="LDA: Projektion und Verteilungen"></canvas>
+					<span class="stage-tag">oben Daten · unten Projektion</span>
+					<span class="stage-readout" id="r14"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Projektionsrichtung</span><output id="ang14Out"></output></span>
+						<input id="ang14" type="range" min="0" max="180" step="1" value="90" />
+					</label>
+					<button class="btn" id="pca14" type="button">PCA-Richtung</button>
+					<button class="btn primary" id="lda14" type="button">LDA-Richtung</button>
+					<button class="btn" id="new14" type="button">Neue Daten</button>
+					<p class="stage-note" id="n14"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 15 QDA -->
+		<section class="chapter flip" id="a15">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">15 · Klassifikation · überwacht</span>
+				<h2>Quadratische Diskriminanzanalyse (QDA)</h2>
+				<p>QDA ist LDA ohne die Annahme, dass alle Klassen gleich geformt sind. Jede Klasse bekommt ihre
+					<strong>eigene Glocke</strong> mit eigener Breite und Ausrichtung (die Ellipsen rechts).</p>
+				<p>Ein neuer Punkt gehört zu der Klasse, deren Glocke an seiner Stelle höher ist. Weil die Glocken
+					verschieden geformt sind, ist die Grenze keine Gerade mehr, sondern eine <strong>quadratische
+						Kurve</strong>: ein Bogen, eine Ellipse oder eine Hyperbel.</p>
+				<p>Der Preis für die Freiheit: QDA muss für jede Klasse eine eigene Kovarianzmatrix schätzen. Bei 100
+					Merkmalen sind das über 5000 Zahlen pro Klasse. Mit wenig Daten wird QDA dann wackelig, und LDA ist die
+					bessere Wahl. Naive Bayes mit Glockenkurven ist übrigens ein QDA, das alle Korrelationen auf null setzt.</p>
+				<ul class="pc">
+					<li class="plus">Flexibler als LDA, gekrümmte Grenzen</li>
+					<li class="minus">Braucht mehr Daten, überanpasst schneller</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Klassifikation, wenn Klassen verschieden stark streuen, etwa gesund vs. krank</p>
+				<div class="quiz" data-answer="0"
+					data-why="Bei gleich geformten Glocken heben sich die quadratischen Anteile auf, übrig bleibt eine Gerade. QDA liefert dann praktisch dasselbe wie LDA, nur mit mehr geschätzten Parametern.">
+					<p class="quiz-q">Was passiert, wenn beide Klassen gleich geformt sind?</p>
+					<div class="quiz-options">
+						<button type="button">Die QDA-Grenze wird fast gerade, wie bei LDA</button>
+						<button type="button">QDA findet eine Ellipse</button>
+						<button type="button">QDA funktioniert dann nicht</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wechsle die Datensätze und vergleiche die gerade LDA-Grenze mit der gekrümmten QDA-Grenze.</p>
+				<div class="stage-view">
+					<canvas id="c15" aria-label="QDA und LDA im Vergleich"></canvas>
+					<span class="stage-tag">— QDA · - - LDA</span>
+					<span class="stage-readout" id="r15"></span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="ds15" role="group" aria-label="Datensatz">
+						<button class="btn" type="button" data-v="same" aria-pressed="false">Gleiche Form</button>
+						<button class="btn" type="button" data-v="wide" aria-pressed="true">Eng gegen weit</button>
+						<button class="btn" type="button" data-v="cross" aria-pressed="false">Gekreuzt</button>
+					</div>
+					<div class="chips" id="cl15" role="group" aria-label="Klasse für neue Punkte">
+						<button class="btn cls-a" type="button" data-v="0" aria-pressed="true">● Klasse A</button>
+						<button class="btn cls-b" type="button" data-v="1" aria-pressed="false">● Klasse B</button>
+					</div>
+					<button class="btn" id="sh15" type="button" aria-pressed="true">Glocken zeigen</button>
+					<p class="stage-note" id="n15"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 16 KNN-Regression -->
+		<section class="chapter" id="a16">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">16 · Regression · überwacht</span>
+				<h2>KNN-Regression</h2>
+				<p>Dieselbe Idee wie in Kapitel 3, nur für Zahlen statt Klassen. Um die Temperatur an einem Tag
+					vorherzusagen, nimmt man die k Tage mit den ähnlichsten Merkmalen und bildet den
+					<strong>Durchschnitt</strong> ihrer Werte.</p>
+				<p>So entsteht eine Treppenkurve, die keine Formel braucht und jede Form annehmen kann. Hier zeigt sich der
+					<strong>Bias-Varianz-Kompromiss</strong> besonders schön: Kleines k folgt jedem Zacken (hohe Varianz),
+					großes k glättet alles weg (hoher Bias), und am Rand flacht die Kurve ab, weil dort die Nachbarn nur von
+					einer Seite kommen.</p>
+				<p>Eine beliebte Verbesserung: <strong>Gewichtung nach Abstand</strong>. Nahe Nachbarn zählen mehr als
+					ferne.</p>
+				<ul class="pc">
+					<li class="plus">Einfach, keine Annahme über die Form</li>
+					<li class="minus">Langsam bei vielen Daten, kann nicht über die Daten hinaus extrapolieren</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Zeitreihen, Immobilienwerte („vergleichbare Objekte“), Lücken in Messdaten füllen</p>
+				<div class="quiz" data-answer="2"
+					data-why="KNN bildet immer einen Durchschnitt aus vorhandenen Werten. Außerhalb der Daten wiederholt es einfach die Randwerte. Einen Trend kann es nicht fortsetzen, eine lineare Regression schon.">
+					<p class="quiz-q">Was sagt KNN-Regression für einen Wert weit außerhalb der Trainingsdaten voraus?</p>
+					<div class="quiz-options">
+						<button type="button">Es setzt den Trend sinnvoll fort</button>
+						<button type="button">Es meldet einen Fehler</button>
+						<button type="button">Ungefähr den Durchschnitt der Punkte am Rand</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Fahr über die Grafik, um die Nachbarn eines Tages zu sehen. Such das k mit dem kleinsten
+					Testfehler.</p>
+				<div class="stage-view">
+					<canvas id="c16" aria-label="KNN-Regression einer Temperaturkurve"></canvas>
+					<span class="stage-tag">Tag im Jahr → Temperatur · ○ Test</span>
+					<span class="stage-readout" id="r16"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>k</span><output id="k16Out"></output></span>
+						<input id="k16" type="range" min="1" max="60" step="1" value="3" />
+					</label>
+					<button class="btn" id="w16" type="button" aria-pressed="false">Nach Abstand gewichten</button>
+					<button class="btn" id="new16" type="button">Neue Daten</button>
+					<p class="stage-note" id="n16"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 17 MLP -->
+		<section class="chapter flip" id="a17">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">17 · Neuronale Netze · überwacht</span>
+				<h2>Neuronales Netz (MLP)</h2>
+				<p>Ein künstliches Neuron ist eigentlich eine logistische Regression: gewichtete Summe der Eingänge, dann
+					eine Knickfunktion. Allein kann es nur gerade Grenzen. Der Trick ist das <strong>Stapeln</strong>: Die
+					Ausgaben einer Schicht sind die Eingaben der nächsten.</p>
+				<p>Jedes Neuron der ersten Schicht zieht eine gerade Linie. Die nächste Schicht kombiniert diese Linien zu
+					Ecken, Bögen und Inseln. Mit genug Neuronen lässt sich so <strong>jede beliebige Form</strong>
+					annähern.</p>
+				<p>Gelernt wird mit <strong>Backpropagation</strong>: Der Fehler am Ausgang wird rückwärts durch das Netz
+					verteilt, und jedes Gewicht wird per Gradientenabstieg ein Stück verbessert. Genau so, nur mit Milliarden
+					Gewichten, lernen auch Sprachmodelle.</p>
+				<ul class="pc">
+					<li class="plus">Extrem flexibel, lernt Merkmale selbst</li>
+					<li class="minus">Braucht viele Daten und Rechenzeit, schwer zu deuten, viele Stellschrauben</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Bild- und Spracherkennung, Übersetzung, Empfehlungen, Tabellen mit vielen Daten</p>
+				<div class="quiz" data-answer="1"
+					data-why="Ein einzelnes Neuron ist ein linearer Klassifizierer. Für XOR braucht man mindestens zwei Linien, also mindestens zwei verborgene Neuronen, deren Ergebnisse kombiniert werden.">
+					<p class="quiz-q">Warum schafft ein Netz mit nur einem verborgenen Neuron das XOR-Muster nicht?</p>
+					<div class="quiz-options">
+						<button type="button">Weil es zu wenig trainiert wurde</button>
+						<button type="button">Weil ein Neuron nur eine gerade Linie ziehen kann, XOR aber zwei braucht</button>
+						<button type="button">Weil XOR zu viele Punkte hat</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Starte das Training. Dann versuch die Spirale mit nur zwei Neuronen, und danach mit mehr.</p>
+				<div class="stage-view">
+					<canvas id="c17" aria-label="Entscheidungsgebiet des neuronalen Netzes"></canvas>
+					<span class="stage-tag" id="m17">Netz</span>
+					<span class="stage-readout" id="r17"></span>
+				</div>
+				<div class="stage-view">
+					<canvas id="c17b" aria-label="Aufbau des Netzes mit Gewichten"></canvas>
+					<span class="stage-tag">Gewichte · orange positiv · blau negativ</span>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="ds17" role="group" aria-label="Datensatz">
+						<button class="btn" type="button" data-v="circle" aria-pressed="true">Kreis</button>
+						<button class="btn" type="button" data-v="xor" aria-pressed="false">XOR</button>
+						<button class="btn" type="button" data-v="moons" aria-pressed="false">Monde</button>
+						<button class="btn" type="button" data-v="spiral" aria-pressed="false">Spirale</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Neuronen pro Schicht</span><output id="h17Out"></output></span>
+						<input id="h17" type="range" min="1" max="12" step="1" value="4" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Verborgene Schichten</span><output id="l17Out"></output></span>
+						<input id="l17" type="range" min="1" max="3" step="1" value="1" />
+					</label>
+					<button class="btn primary" id="go17" type="button">Trainieren</button>
+					<button class="btn" id="rs17" type="button">Neu würfeln</button>
+					<p class="stage-note" id="n17"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 18 CNN -->
+		<section class="chapter" id="a18">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">18 · Neuronale Netze · überwacht</span>
+				<h2>Convolutional Neural Network (CNN)</h2>
+				<p>Ein Bild mit 1000 × 1000 Pixeln hat eine Million Eingänge. Jedes mit jedem Neuron zu verbinden wäre
+					absurd. Und eine Katze bleibt eine Katze, egal ob sie links oder rechts im Bild sitzt.</p>
+				<p>Darum benutzt ein CNN <strong>Filter</strong>: kleine Gewichtsmuster, zum Beispiel 3 × 3, die wie eine
+					Lupe über das ganze Bild gleiten. An jeder Stelle werden Pixel und Gewichte multipliziert und addiert. Wo
+					das Muster passt, leuchtet die <strong>Merkmalskarte</strong> auf. Der gleiche Filter wird überall
+					benutzt, das spart riesig Gewichte.</p>
+				<ol class="steps">
+					<li><strong>Faltung:</strong> Filter erkennen einfache Muster wie Kanten.</li>
+					<li><strong>ReLU:</strong> Negative Werte werden auf null gesetzt.</li>
+					<li><strong>Pooling:</strong> Aus jedem 2 × 2-Feld bleibt nur das Maximum. Das Bild schrumpft, das Merkmal
+						bleibt.</li>
+				</ol>
+				<p>Tiefere Schichten kombinieren Kanten zu Ecken, Ecken zu Augen, Augen zu Gesichtern. Die Filter werden
+					nicht von Hand gebaut, sondern gelernt.</p>
+				<ul class="pc">
+					<li class="plus">Hervorragend für Bilder, wenige Gewichte dank geteilter Filter</li>
+					<li class="minus">Rechenintensiv, braucht viele Bilder zum Lernen</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Bildklassifikation, Objekterkennung, Medizinbilder, selbstfahrende Autos</p>
+				<div class="quiz" data-answer="2"
+					data-why="Der Filter für senkrechte Kanten zieht links ab und addiert rechts. Bei einer waagerechten Kante sind links und rechts gleich hell, das Ergebnis ist null. Er reagiert nur, wenn sich die Helligkeit von links nach rechts ändert.">
+					<p class="quiz-q">Warum reagiert der Filter „senkrechte Kanten“ nicht auf eine waagerechte Linie?</p>
+					<div class="quiz-options">
+						<button type="button">Weil er nur in der Bildmitte sucht</button>
+						<button type="button">Weil die Linie zu dünn ist</button>
+						<button type="button">Weil links und rechts im Fenster gleich hell sind und sich die Gewichte aufheben</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Mal links ein Bild, wähle einen Filter und fahr über die Merkmalskarte, um die Rechnung zu
+					sehen.</p>
+				<div class="cnn">
+					<div><canvas id="c18a" aria-label="Eingabebild zum Malen"></canvas><span>Eingabe 16×16 · malen</span></div>
+					<div class="kernel"><div id="k18" class="kgrid"></div><span>Filter 3×3</span></div>
+					<div><canvas id="c18b" aria-label="Merkmalskarte"></canvas><span id="fm18">Merkmalskarte 14×14</span></div>
+					<div><canvas id="c18c" aria-label="Nach Max-Pooling"></canvas><span>Max-Pooling 7×7</span></div>
+				</div>
+				<div class="stage-controls">
+					<div class="chips" id="f18" role="group" aria-label="Filter">
+						<button class="btn" type="button" data-v="v" aria-pressed="true">Senkrechte Kanten</button>
+						<button class="btn" type="button" data-v="h" aria-pressed="false">Waagerechte Kanten</button>
+						<button class="btn" type="button" data-v="d" aria-pressed="false">Diagonale</button>
+						<button class="btn" type="button" data-v="blur" aria-pressed="false">Weichzeichner</button>
+						<button class="btn" type="button" data-v="sharp" aria-pressed="false">Schärfen</button>
+					</div>
+					<div class="chips" id="i18" role="group" aria-label="Bild">
+						<button class="btn" type="button" data-img="square">Quadrat</button>
+						<button class="btn" type="button" data-img="cross">Kreuz</button>
+						<button class="btn" type="button" data-img="seven">Ziffer 7</button>
+						<button class="btn" type="button" data-img="circle">Kreis</button>
+						<button class="btn" type="button" data-img="clear">Leeren</button>
+					</div>
+					<button class="btn" id="relu18" type="button" aria-pressed="true">ReLU</button>
+					<button class="btn primary" id="scan18" type="button">Scan abspielen</button>
+					<p class="stage-note" id="n18"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 19 RNN -->
+		<section class="chapter flip" id="a19">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">19 · Neuronale Netze · überwacht</span>
+				<h2>Rekurrentes Netz (RNN / LSTM)</h2>
+				<p>Sprache, Musik und Börsenkurse sind <strong>Folgen</strong>. Was ein Wort bedeutet, hängt davon ab, was
+					davor kam. Ein RNN liest deshalb ein Element nach dem anderen und trägt einen <strong>versteckten
+						Zustand</strong> h weiter, eine Art Kurzzeitgedächtnis.</p>
+				<div class="formula">h<sub>t</sub> = tanh(w · h<sub>t−1</sub> + u · x<sub>t</sub>)<small>Derselbe Baustein mit
+						denselben Gewichten wird bei jedem Schritt wieder benutzt.</small></div>
+				<p>Das Problem: Eine Information vom Anfang muss durch jeden Schritt hindurch und wird jedes Mal mit w
+					multipliziert. Ist w kleiner als 1, <strong>verschwindet</strong> sie, ist w größer als 1,
+					<strong>explodiert</strong> sie. Lange Abhängigkeiten lernt ein einfaches RNN darum kaum.</p>
+				<p>Das <strong>LSTM</strong> löst das mit einer zweiten Spur, der Zellspeicher-Autobahn. Ein
+					<strong>Vergessens-Tor</strong> entscheidet bei jedem Schritt, wie viel erhalten bleibt. Steht es nahe 1,
+					rauscht die Information fast ungedämpft durch. Heute haben Transformer (siehe <a href="../ki/">Sprach-KI</a>)
+					RNNs bei Sprache weitgehend abgelöst, weil sie direkt auf alle früheren Wörter schauen können.</p>
+				<ul class="pc">
+					<li class="plus">Verarbeitet Folgen beliebiger Länge, hat ein Gedächtnis</li>
+					<li class="minus">Schwer zu trainieren, langsam, weil Schritt für Schritt</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Zeitreihen, Spracherkennung, Handschrift, früher maschinelle Übersetzung</p>
+				<div class="quiz" data-answer="0"
+					data-why="Nach 20 Schritten ist von einem Signal 0,8²⁰ ≈ 1 % übrig. Beim Lernen gilt dasselbe für den Gradienten: Frühe Eingaben bekommen fast kein Lernsignal mehr. Das ist das Problem der verschwindenden Gradienten.">
+					<p class="quiz-q">Bei w = 0,8: Wie viel vom ersten Eingang ist nach 20 Schritten noch übrig?</p>
+					<div class="quiz-options">
+						<button type="button">Etwa 1 %</button>
+						<button type="button">Etwa 80 %</button>
+						<button type="button">Etwa 16 %</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Tippe auf die Eingänge, um Signale zu setzen. Dreh dann w und das Vergessens-Tor und
+					vergleiche, was am Ende ankommt.</p>
+				<div class="stage-view">
+					<canvas id="c19" aria-label="Ausgerolltes RNN und LSTM"></canvas>
+					<span class="stage-tag">Zustand je Schritt</span>
+				</div>
+				<div class="stage-view">
+					<canvas id="c19b" aria-label="Wie viel vom ersten Signal ankommt"></canvas>
+					<span class="stage-tag">Signal vom ersten Schritt nach t Schritten</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>RNN-Rückkopplung w</span><output id="w19Out"></output></span>
+						<input id="w19" type="range" min="0.3" max="1.3" step="0.01" value="0.8" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>LSTM-Vergessens-Tor f</span><output id="f19Out"></output></span>
+						<input id="f19" type="range" min="0.5" max="1" step="0.01" value="0.97" />
+					</label>
+					<button class="btn" id="cl19" type="button">Nur erstes Signal</button>
+					<p class="stage-note" id="n19"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 20 Q-Learning -->
+		<section class="chapter" id="a20">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">20 · Bestärkendes Lernen</span>
+				<h2>Q-Learning</h2>
+				<p>Hier gibt es weder Antworten noch nur Daten, sondern eine <strong>Welt</strong>. Ein Agent probiert
+					Aktionen aus, bekommt Belohnung (Ziel: +10) oder Strafe (Falle: −10, jeder Schritt: −0,1) und soll
+					lernen, wie er auf Dauer am meisten Belohnung sammelt.</p>
+				<p>Dazu führt er eine Tabelle: Für jedes Feld und jede Richtung ein Wert <strong>Q</strong>, der schätzt,
+					wie viel Belohnung von dort noch zu holen ist. Nach jedem Schritt verbessert er den Eintrag:</p>
+				<div class="formula">Q(s,a) ← Q(s,a) + α · [r + γ · max Q(s′,·) − Q(s,a)]<small>α: Lernrate, γ: wie wichtig
+						die Zukunft ist, r: die gerade erhaltene Belohnung.</small></div>
+				<p>So sickert der Wert des Ziels Schritt für Schritt rückwärts durch die Welt, bis jedes Feld „weiß“, wohin
+					es geht. Dabei steckt der Agent im Dilemma zwischen <strong>Erkunden</strong> und
+					<strong>Ausnutzen</strong>: Mit Wahrscheinlichkeit ε wählt er zufällig, sonst das bisher Beste. Ohne
+					Erkunden findet er vielleicht nie den besseren Weg.</p>
+				<ul class="pc">
+					<li class="plus">Lernt optimales Verhalten ohne Vorbild, nur aus Belohnung</li>
+					<li class="minus">Braucht sehr viele Versuche, Tabelle wird bei großen Welten riesig</li>
+				</ul>
+				<p class="use"><b>Einsatz</b>Spiele (Atari, Go, mit neuronalen Netzen als Q-Funktion), Robotik, Steuerung</p>
+				<div class="quiz" data-answer="1"
+					data-why="Mit γ nahe 0 zählt nur die sofortige Belohnung. Da jeder Schritt −0,1 kostet und das Ziel weit weg ist, sieht der Agent den Wert des Ziels kaum. Er wird kurzsichtig.">
+					<p class="quiz-q">Was passiert, wenn γ fast 0 ist?</p>
+					<div class="quiz-options">
+						<button type="button">Der Agent plant besonders weit voraus</button>
+						<button type="button">Der Agent wird kurzsichtig und beachtet nur die nächste Belohnung</button>
+						<button type="button">Der Agent erkundet mehr</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Lass den Agenten eine Episode spielen, dann 200. Tippe auf Felder, um Mauern oder Fallen zu
+					bauen.</p>
+				<div class="stage-view">
+					<canvas id="c20" aria-label="Gitterwelt mit Q-Werten"></canvas>
+					<span class="stage-readout left" id="r20"></span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>ε (Erkunden)</span><output id="e20Out"></output></span>
+						<input id="e20" type="range" min="0" max="1" step="0.05" value="0.2" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>γ (Weitblick)</span><output id="g20Out"></output></span>
+						<input id="g20" type="range" min="0" max="0.99" step="0.01" value="0.9" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>α (Lernrate)</span><output id="a20sOut"></output></span>
+						<input id="a20s" type="range" min="0.05" max="1" step="0.05" value="0.5" />
+					</label>
+					<button class="btn primary" id="ep20" type="button">1 Episode zuschauen</button>
+					<button class="btn" id="ep20x" type="button">200 Episoden</button>
+					<button class="btn" id="gr20" type="button">Besten Weg zeigen</button>
+					<button class="btn" id="rs20" type="button">Vergessen</button>
+					<p class="stage-note" id="n20"></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Arena -->
+		<section class="chapter wide" id="arena">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">Arena · alle gegen alle</span>
+				<h2>Gleiche Daten, zehn Klassifizierer</h2>
+				<p>Jetzt kennst du sie alle. Aber welcher ist der beste? Die ehrliche Antwort lautet: <strong>Kommt drauf
+						an.</strong> Das ist sogar ein Satz mit Namen, das <em>No-Free-Lunch-Theorem</em>: Kein Algorithmus
+					ist auf allen Problemen der beste. Probier es aus: Jeder Klassifizierer hat eine eigene Handschrift.</p>
+			</div>
+			<div class="stage reveal">
+				<div class="arena">
+					<div class="stage-view">
+						<canvas id="cA" aria-label="Arena: Entscheidungsgebiet"></canvas>
+						<span class="stage-tag" id="mA"></span>
+						<span class="stage-readout" id="rA"></span>
+					</div>
+					<div class="arena-side">
+						<div class="chips" id="dsA" role="group" aria-label="Datensatz">
+							<button class="btn" type="button" data-v="blobs" aria-pressed="false">Wolken</button>
+							<button class="btn" type="button" data-v="moons" aria-pressed="true">Monde</button>
+							<button class="btn" type="button" data-v="circle" aria-pressed="false">Kreis</button>
+							<button class="btn" type="button" data-v="xor" aria-pressed="false">XOR</button>
+							<button class="btn" type="button" data-v="spiral" aria-pressed="false">Spirale</button>
+						</div>
+						<div class="chips" id="alA" role="group" aria-label="Algorithmus"></div>
+						<button class="btn primary" id="allA" type="button">Alle vergleichen</button>
+						<div class="ranking" id="rkA" aria-live="polite"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Welcher Algorithmus -->
+		<section class="chapter wide" id="welcher">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">Abschlusstest</span>
+				<h2>Welcher Algorithmus passt?</h2>
+				<p>Algorithmen zu kennen ist eins. Den richtigen für ein Problem zu wählen, ist die eigentliche Kunst. Acht
+					Fälle aus der Praxis:</p>
+			</div>
+			<div class="quiz-grid">
+				<div class="quiz" data-answer="2"
+					data-why="Für Tabellendaten mit gemischten Merkmalen sind Ensembles aus Bäumen, vor allem Gradient Boosting, seit Jahren das Maß der Dinge. Neuronale Netze glänzen bei Bildern, Text und Ton.">
+					<p class="quiz-q">Eine Bank will aus 40 Tabellenspalten (Alter, Einkommen, Kontostand …) Kreditausfälle
+						vorhersagen. Höchste Genauigkeit zählt.</p>
+					<div class="quiz-options">
+						<button type="button">k-Means</button>
+						<button type="button">CNN</button>
+						<button type="button">Gradient Boosting</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Ohne Antworten sucht man Gruppen, also Clustering. k-Means ist schnell, skaliert auf Millionen Kunden und liefert eine feste Anzahl von Segmenten, die man benennen kann.">
+					<p class="quiz-q">Ein Shop will seine Kunden in fünf Gruppen einteilen. Es gibt keine vorgegebenen
+						Gruppen.</p>
+					<div class="quiz-options">
+						<button type="button">k-Means</button>
+						<button type="button">Logistische Regression</button>
+						<button type="button">Q-Learning</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Für Bilder sind CNNs gebaut: Filter, die über das Bild gleiten, erkennen Muster unabhängig von ihrer Position.">
+					<p class="quiz-q">Eine Klinik will auf Röntgenbildern Lungenentzündungen erkennen.</p>
+					<div class="quiz-options">
+						<button type="button">Naive Bayes</button>
+						<button type="button">CNN</button>
+						<button type="button">Hierarchisches Clustering</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Ein Entscheidungsbaum ist eine Folge von Ja-Nein-Fragen, die jeder Mensch nachvollziehen kann. Wenn eine Entscheidung begründet werden muss, ist das Gold wert.">
+					<p class="quiz-q">Eine Behörde muss jedem Antragsteller genau erklären, warum er abgelehnt wurde.</p>
+					<div class="quiz-options">
+						<button type="button">Neuronales Netz</button>
+						<button type="button">t-SNE</button>
+						<button type="button">Entscheidungsbaum</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="DBSCAN markiert Punkte in dünn besiedelten Gegenden automatisch als Rauschen. Ungewöhnliche Transaktionen fallen genau dort heraus.">
+					<p class="quiz-q">Unter Millionen Kartenzahlungen sollen auffällige Ausreißer gefunden werden, ohne dass
+						Betrugsfälle markiert sind.</p>
+					<div class="quiz-options">
+						<button type="button">DBSCAN</button>
+						<button type="button">Lineare Regression</button>
+						<button type="button">LDA</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="1"
+					data-why="Ein Roboter lernt Bewegungen durch Ausprobieren und Belohnung. Es gibt keine fertigen richtigen Antworten, also ist das bestärkendes Lernen.">
+					<p class="quiz-q">Ein Roboterarm soll selbst herausfinden, wie er Gegenstände greift. Er bekommt Punkte für
+						jeden Erfolg.</p>
+					<div class="quiz-options">
+						<button type="button">Random Forest</button>
+						<button type="button">Reinforcement Learning</button>
+						<button type="button">PCA</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Lineare Regression ist schnell, gut erklärbar und ein Muss als Vergleichsmaßstab. Jedes komplizierte Modell muss sie erst einmal schlagen.">
+					<p class="quiz-q">Du willst als allererstes Modell grob abschätzen, wie Werbebudget und Umsatz
+						zusammenhängen.</p>
+					<div class="quiz-options">
+						<button type="button">LSTM</button>
+						<button type="button">DBSCAN</button>
+						<button type="button">Lineare Regression</button>
+					</div>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="t-SNE ist zum Anschauen hochdimensionaler Daten gemacht. Es zeigt, welche Punkte Nachbarn sind, und macht so Gruppen sichtbar.">
+					<p class="quiz-q">Du hast Embeddings mit 768 Dimensionen und willst sehen, ob ähnliche Texte
+						Gruppen bilden.</p>
+					<div class="quiz-options">
+						<button type="button">t-SNE</button>
+						<button type="button">Gradient Boosting</button>
+						<button type="button">KNN-Regression</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Spickzettel -->
+		<section class="chapter wide" id="spick">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">Spickzettel</span>
+				<h2>Alle 20 auf einen Blick</h2>
+				<p>Zum Wiederholen: Was ist die Idee, wann nimmt man ihn, und worauf muss man achten?</p>
+			</div>
+			<div class="cheat reveal" id="cheat"></div>
+		</section>
+	</main>
+
+	<footer class="v-next">
+		<p>Weiter in der Reihe Verstehen</p>
+		<a href="../ki/">Wie Sprach-KI funktioniert <span>→</span></a>
+	</footer>
+
+	<script src="../assets/verstehen.js"></script>
+	<script src="./lib.js"></script>
+	<script src="./ml.js"></script>
+	<script src="./ml2.js"></script>
+</body>
+
+</html>
