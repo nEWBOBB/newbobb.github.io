@@ -12,6 +12,12 @@ sich jedes Fach anders anfühlt.
 
 Status: ✅ fertig · 🔨 in Arbeit · ⬜ geplant
 
+> **Dieser Plan ist ein Vorschlag, kein Korsett.** Stil und Lernform unten sind Startideen. Wer ein Fach baut,
+> darf künstlerisch etwas ganz Neues machen: einen anderen Designstil, eine andere Art zu lernen, eine neue
+> Interaktion, die es auf der Seite noch nie gab. Mutig sein ist ausdrücklich erwünscht. Fest bleibt nur der
+> Inhalt: von leicht nach schwer, jede Stufe baut auf der vorigen auf, und jede Visualisierung zeigt den echten
+> Mechanismus. Wenn du vom Plan abweichst, trag hier ein, was du stattdessen gemacht hast.
+
 ---
 
 ## 1. Mathematik ✅ · `/math/`
@@ -39,6 +45,10 @@ Status: ✅ fertig · 🔨 in Arbeit · ⬜ geplant
 | 13 | Ableitung | Sekante wird Tangente, die Steigung als neue Kurve |
 | 14 | Integral | Fläche aus Rechtecken, Hauptsatz |
 | 15 | Vektoren und Matrizen | Basisvektoren ziehen, das ganze Gitter verformt sich |
+
+**Stand:** Alle 15 Stufen sind fertig (Oktober 2026). Ideen zum Ausbauen: ein „Heft 4“ mit komplexen Zahlen,
+Folgen und Reihen, Beweisen und Logik, Kombinatorik und Graphen, Differentialgleichungen; eine Wiederholungs-
+seite mit gemischten Aufgaben aus allen Stufen.
 
 ## 2. Physik ⬜ · `/physics/`
 
@@ -128,3 +138,68 @@ Status: ✅ fertig · 🔨 in Arbeit · ⬜ geplant
 
 Mathe zuerst, weil fast alles darauf aufbaut. Danach im Wechsel ein Leiter-Fach und ein Naval-Fach:
 Spieltheorie → Physik → Mikroökonomie → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
+
+---
+
+## Was schon besteht
+
+Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand Oktober 2026).
+
+### Fächer-Seiten (die zwei Sprüche)
+
+Alle zehn Fächer haben eine Seite. Bis auf Mathe sind es noch **Startseiten mit einem einzigen Experiment** im
+gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
+`assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
+vorhandene Experiment kann dabei als eine Stufe weiterleben.
+
+| Fach | Ordner | Was schon da ist | Status |
+| --- | --- | --- | --- |
+| Mathematik | `math/` | Mathe-Heft, 15 Stufen, eigener Stil | ✅ voller Kurs |
+| Physik | `physics/` | Federpendel + Liste der Physik-Projekte | ⬜ Startseite |
+| Chemie | `chemistry/` | Stoßtheorie (Teilchen-Simulation) | ⬜ Startseite |
+| Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
+| Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
+| Mikroökonomie | `economics/` | Angebot und Nachfrage | ⬜ Startseite |
+| Spieltheorie | `game-theory/` | Gefangenendilemma + Axelrods Turnier | ⬜ Startseite |
+| Überzeugen | `persuasion/` | Die sechs Hebel erkennen | ⬜ Startseite |
+| Ethik | `ethics/` | Sechs Dilemmas, drei Arten zu entscheiden | ⬜ Startseite |
+| Informatik | `computers/` | Acht Schalter, ein Byte | ⬜ Startseite |
+
+### Passende Projekte, die schon existieren
+
+Diese Seiten sind fertig und können von den Kursen aus verlinkt oder als Vertiefung genutzt werden. Die
+Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
+
+- **Reihe „Verstehen“** (17 Teile, gemeinsamer Stil `assets/verstehen.css`): `feuer/`, `schall/`, `auftrieb/`,
+  `licht/`, `schwerkraft/`, `magnet/`, `strom/`, `energie/`, `waerme/`, `telegraf/`, `telefon/`, `radio/`,
+  `atom/`, `fernsehen/`, `internet/`, `ki/`, `agenten/`. Vor allem Physik, Chemie und Informatik.
+- **20 ML-Algorithmen** `ml/`: Vertiefung für Informatik und Mathe (Ableitung, Statistik, Matrizen).
+- **Spielen lernen:** `gitarre/`, `klavier/` (Stil `assets/musik.css`).
+- **Audio und Visuals, Experimente:** `ereignishorizont/`, `visualizer*/`, `audio*/` und andere, ohne Bezug
+  zum Lehrplan.
+
+---
+
+## So baust du weiter
+
+1. **Nächstes Fach wählen:** nach der Reihenfolge oben oder nach Lust. Status hier auf 🔨 setzen.
+2. **Eigenen Stil erfinden:** Der Vorschlag oben ist ein Startpunkt. Ein ganz anderer Look oder eine neue
+   Lernform ist genauso willkommen. Das Fach soll sich anfühlen wie kein anderes auf der Seite.
+3. **Aufbau wie beim Mathe-Heft** (als Vorbild, nicht als Pflicht):
+   - `fach/index.html` mit allen Stufen, eigenes `fach/*.css`, Werkzeuge in `fach/*.js`, in Gruppen aufgeteilt.
+   - Jede Stufe: Einstieg (Frage, Rätsel, Szene), ein interaktives Werkzeug, die Erklärung, eine Prüfaufgabe
+     mit sofortiger Rückmeldung.
+   - Fortschritt in `localStorage` (immer in `try/catch`), ein Lernpfad oder eine Karte, die zeigt, wo man steht.
+   - Jede Stufe benutzt nur, was davor kam. Querverweise auf andere Fächer sind gut („wie in Mathe, Stufe 6“).
+4. **Hub pflegen:** Eintrag in `index.html` (Kachel im Abschnitt Fächer) aktualisieren. Wenn das Fach nicht
+   mehr `assets/fach.js` nutzt, bleibt es trotzdem in `FAECHER`, damit die anderen Fachseiten es verlinken.
+5. **Testen** mit Playwright bei 360 px und Desktop-Breite: keine Konsolenfehler, kein waagerechtes Scrollen,
+   Prüfaufgaben einmal durchspielen, Screenshots ansehen.
+6. **Diesen Plan aktualisieren:** Status, „Was schon besteht“ und was anders gemacht wurde als geplant.
+
+### Bauprotokoll
+
+| Datum | Was | Notiz |
+| --- | --- | --- |
+| Okt. 2026 | Lehrplan angelegt | Zehn Fächer mit Stil, Lernform und Stufen |
+| Okt. 2026 | Mathe-Heft, 15 Stufen | Karopapier-Stil, Dateien `math/heft.css`, `heft.js` (Helfer, Lernpfad, Prüfaufgaben), `stufen-a/b/c.js` |

@@ -19,7 +19,9 @@ die Sache heran: Welche Form passt zu genau diesem Thema?
 ## Lehrplan der Fächer
 
 `LEHRPLAN.md` beschreibt für alle zehn Fächer (die Leiter und Navals Grundlagen) Stil, Lernform und Stufen von
-leicht nach schwer, mit Status. Wer ein Fach ausbaut, hält sich an diesen Plan und aktualisiert den Status.
+leicht nach schwer, mit Status, dazu eine Liste von allem, was schon besteht, und eine Anleitung zum
+Weiterbauen. Der Plan ist ein Vorschlag: Künstlerisch darf jedes Mal etwas Neues entstehen, mit neuem
+Designstil und neuer Lernform. Nach jedem Ausbau Status, Bestand und Bauprotokoll in `LEHRPLAN.md` nachtragen.
 
 ## Was überall gleich bleibt
 
