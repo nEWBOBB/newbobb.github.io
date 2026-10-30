@@ -16,6 +16,11 @@ die Sache heran: Welche Form passt zu genau diesem Thema?
 - **Innerhalb einer Reihe einheitlich bleiben:** Neue Teile einer bestehenden Reihe (z. B. „Verstehen“ mit
   `assets/verstehen.css`) passen sich ihr an. Der neue Stil gilt für neue Themenbereiche.
 
+## Lehrplan der Fächer
+
+`LEHRPLAN.md` beschreibt für alle zehn Fächer (die Leiter und Navals Grundlagen) Stil, Lernform und Stufen von
+leicht nach schwer, mit Status. Wer ein Fach ausbaut, hält sich an diesen Plan und aktualisiert den Status.
+
 ## Was überall gleich bleibt
 
 - Inhalt zuerst: Jede Visualisierung soll den echten Mechanismus zeigen und wirklich etwas erklären.

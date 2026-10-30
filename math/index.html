@@ -4,105 +4,649 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-	<title>Mathematik — Newbobb Lab</title>
+	<title>Mathe-Heft — Newbobb Lab</title>
 	<meta name="description"
-		content="Mathematik interaktiv: Wie aus einem Punkt auf dem Kreis die Sinuswelle entsteht, und warum sie in Physik, Musik und Technik überall auftaucht." />
-	<meta name="theme-color" content="#0b0a09" />
+		content="Mathe von A bis Z in 15 Stufen zum Knobeln: Stellenwert, Brüche, negative Zahlen, Gleichungen, Funktionen, Potenzen, Logarithmus, Pythagoras, Sinus, Wahrscheinlichkeit, Statistik, Ableitung, Integral und Matrizen." />
+	<meta name="theme-color" content="#fbf8ef" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link
-		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;500;700&display=swap"
 		rel="stylesheet" />
-	<link rel="stylesheet" href="../assets/verstehen.css" />
-	<link rel="stylesheet" href="../assets/fach.css" />
-	<style>
-		:root {
-			--fach: #b8a6ff;
-		}
-
-		#circleCanvas {
-			touch-action: none;
-			cursor: grab;
-		}
-	</style>
+	<link rel="stylesheet" href="./heft.css" />
 </head>
 
-<body data-fach="math">
-	<div class="v-progress" aria-hidden="true"></div>
-	<header class="v-top">
-		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
-		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+<body>
+	<a class="skip" href="#pfad">Zum Lernpfad springen</a>
+	<header class="top">
+		<a class="home" href="../#faecher">newbobb <span>/ Mathe-Heft</span></a>
+		<p class="meter" aria-label="Gelöste Stufen"><span>0 / 15</span><i aria-hidden="true"><b></b></i></p>
 	</header>
 
 	<main>
-		<section class="v-hero">
-			<p class="v-kicker">Fach 01 · Stufe 1 der Leiter</p>
-			<h1>Die Sprache<br />der <em>Natur</em></h1>
-			<p class="v-lede">Mathe ist die unterste Stufe der Leiter. Physik, Chemie und Informatik sind in ihr
-				geschrieben. Hier siehst du eine ihrer schönsten Ideen: Ein Kreis, der sich dreht, wird zu einer Welle.</p>
-			<ol class="v-toc">
-				<li><a href="#kreis">Vom Kreis zur Welle</a></li>
-				<li><a href="#projekte">Projekte</a></li>
+		<section class="cover">
+			<div class="label"><small>Fach 01 · Stufe 1 der Leiter</small><b>Mathe-Heft</b></div>
+			<h1>Mathe von A bis Z,<br />zum Selbst-Herausfinden.</h1>
+			<p class="lede">Mathe ist die unterste Stufe der Leiter: Physik, Chemie und Informatik sind in ihr geschrieben.
+				In diesem Heft gehst du in <mark>15 Stufen</mark> vom Zählen bis zu Ableitung, Integral und Matrizen. Jede
+				Stufe benutzt nur, was du davor gelernt hast.</p>
+			<ol class="howto">
+				<li><b>Rätsel lesen.</b> Jede Stufe beginnt mit einer Frage, die du noch nicht beantworten kannst.</li>
+				<li><b>Herumprobieren.</b> Im Werkzeug ziehst, drückst und schiebst du, bis du den Trick siehst.</li>
+				<li><b>Prüf dich.</b> Eine Aufgabe zeigt, ob es sitzt. Dann gibt's den Stempel und der Pfad füllt sich.</li>
 			</ol>
 		</section>
 
-		<div class="f-quotes" data-fach-quote></div>
+		<nav class="path" id="pfad" aria-label="Lernpfad">
+			<h2>Dein Lernpfad</h2>
+			<div class="path-groups" data-path></div>
+		</nav>
 
+		<!-- ================= Heft 1 ================= -->
+		<p class="heft-break"><span>Heft 1 · Zahlen und Rechnen</span></p>
 
-		<section class="chapter" id="kreis">
-			<div class="chapter-text reveal">
-				<span class="chapter-num">01 · Trigonometrie</span>
-				<h2>Vom Kreis zur Welle</h2>
-				<p>Ein Punkt läuft auf einem Kreis mit Radius 1 im Kreis. Schau nur auf seine <strong>Höhe</strong>: Sie geht
-					rauf, runter, rauf, runter. Schreibt man diese Höhe über die Zeit auf, entsteht die
-					<strong>Sinuswelle</strong>.</p>
-				<p>Die waagerechte Position heißt <strong>Kosinus</strong>. Zusammen beschreiben Sinus und Kosinus jeden
-					Punkt auf dem Kreis, und nach Pythagoras gilt immer: sin² + cos² = 1.</p>
-				<p>Jetzt der Trick: Lass zwei Kreise ineinander drehen, den zweiten schneller. Ihre Höhen addieren sich,
-					und die Welle bekommt eine neue Form. Mit genug Kreisen kann man <strong>jede</strong> Form bauen. Das
-					heißt Fourier-Analyse und steckt in jeder MP3-Datei.</p>
-				<p class="merke"><b>Merke</b>Der Sinus ist die Höhe eines Punktes, der im Kreis läuft. Wellen sind
-					drehende Kreise, nur von der Seite gesehen.</p>
-				<div class="formula">y = sin(φ) · x = cos(φ)
-					<small>φ ist der Winkel. Eine volle Runde sind 360° oder 2π ≈ 6,28.</small>
+		<section class="stufe" id="s1" data-n="1" data-group="Heft 1 · Zahlen und Rechnen">
+			<div class="stufe-head"><span class="nr">1</span>
+				<div><small>Stellenwert</small>
+					<h2>Zahlen bauen</h2>
 				</div>
 			</div>
-			<div class="stage reveal">
-				<p class="task">Zieh den Punkt im Kreis herum. Dann schalte den zweiten Kreis dazu und ändere seine
-					Geschwindigkeit.</p>
-				<div class="stage-view">
-					<canvas id="circleCanvas" aria-label="Einheitskreis mit Sinuswelle"></canvas>
-					<span class="stage-tag">Einheitskreis</span>
-					<span class="stage-readout" id="circleOut">φ = 0°</span>
-				</div>
-				<div class="stage-controls">
-					<button class="btn primary" id="btnSpin" type="button" aria-pressed="true">⟳ Drehen</button>
-					<button class="btn" id="btnSecond" type="button" aria-pressed="false">◎ Zweiter Kreis</button>
-					<label class="range">
-						<span class="range-head"><span>Tempo 2. Kreis</span><output id="kOut">3×</output></span>
-						<input type="range" id="k" min="2" max="9" value="3" />
-					</label>
-					<label class="range">
-						<span class="range-head"><span>Größe 2. Kreis</span><output id="rOut">33 %</output></span>
-						<input type="range" id="r2" min="5" max="80" value="33" />
-					</label>
-					<p class="stage-note" id="circleNote">sin(0°) = 0,00 · cos(0°) = 1,00</p>
-				</div>
+			<p class="raetsel">Warum kommst du mit nur zehn Ziffern, 0 bis 9, auf jede beliebig große Zahl?</p>
+			<p>Leg Würfel in die Spalten. Wenn du zehn kleine Würfel hast, kannst du sie zu einer <b>Zehnerstange</b>
+				bündeln, und zehn Stangen zu einer <b>Hunderterplatte</b>. Schau, was dabei mit der Zahl passiert, und was
+				nicht.</p>
+			<div class="werk">
+				<p class="werk-title">Bündel-Werkbank</p>
+				<div class="places" id="places"></div>
+				<p class="bignum" id="placeNum" aria-live="polite">0</p>
+			</div>
+			<p>Die Menge ändert sich beim Bündeln nicht, nur ihre Schreibweise. Weil du immer bündeln kannst, sobald es
+				zehn sind, liegen in jeder Spalte am Ende höchstens neun Teile. Darum reichen zehn Ziffern. Die
+				<b>Position</b> einer Ziffer sagt, was sie wert ist: Die 3 in 347 bedeutet drei Hunderter.</p>
+			<div class="merke">Eine Ziffer ist so viel wert wie ihre Stelle: Einer, Zehner, Hunderter. Jede Stelle ist
+				zehnmal so viel wert wie die rechts daneben.
+				<span class="formel">347 = 3·100 + 4·10 + 7·1</span>
+			</div>
+			<div class="pruef" data-task="1a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Bau die Zahl <b id="placeTarget">347</b> mit möglichst wenigen Teilen, also vollständig
+					gebündelt.</p>
+				<button class="btn" type="button" id="placeNew">Andere Zahl</button>
+				<p class="feedback" aria-live="polite"></p>
 			</div>
 		</section>
 
-		<section class="f-projects" id="projekte">
-			<h2>Projekte in Mathematik</h2>
-			<p>Mathe steckt in allem, was hier rechnet und schwingt. Diese Projekte sind besonders mathematisch.</p>
-			<div class="f-grid" data-fach-projects></div>
+		<section class="stufe" id="s2" data-n="2" data-group="Heft 1 · Zahlen und Rechnen">
+			<div class="stufe-head"><span class="nr">2</span>
+				<div><small>Malnehmen und Ausklammern</small>
+					<h2>Malnehmen ist Fläche</h2>
+				</div>
+			</div>
+			<p class="raetsel">Wie rechnest du 13 · 14 im Kopf, ohne das Einmaleins bis 14 zu kennen?</p>
+			<p>3 · 4 heißt: drei Reihen mit je vier Kästchen. Das ist ein Rechteck, und das Ergebnis ist seine
+				<b>Fläche</b>. Zieh die Ecke des Rechtecks, dann schalte <i>Zerlegen</i> ein.</p>
+			<div class="werk">
+				<p class="werk-title">Kästchen-Rechteck <output id="areaOut">3 · 4 = 12</output></p>
+				<canvas id="areaCv" class="plain" aria-label="Rechteck auf Karopapier. Zieh die rechte untere Ecke, um die Seitenlängen zu ändern."></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" id="areaSplit" aria-pressed="false">Zerlegen in Zehner und Einer</button>
+					<button class="btn" type="button" id="area1314">13 · 14 zeigen</button>
+				</div>
+				<p class="note" id="areaNote">Die Fläche zählt alle Kästchen.</p>
+			</div>
+			<p>Zerlegt man 13 in 10 + 3 und 14 in 10 + 4, fällt das Rechteck in vier Teile, die man einzeln leicht
+				ausrechnet. Zusammen geben sie wieder das Ganze. Das heißt <b>Distributivgesetz</b>, und es steckt hinter
+				jedem schriftlichen Malnehmen.</p>
+			<div class="merke">a · b ist die Fläche eines Rechtecks. Zerlegst du eine Seite, zerfällt die Fläche, aber ihre
+				Summe bleibt gleich.
+				<span class="formel">(10 + 3) · (10 + 4) = 100 + 40 + 30 + 12</span>
+			</div>
+			<div class="pruef" data-task="2a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p>Wie viel ist 13 · 14? Addiere die vier Teilflächen.</p>
+				<form data-answer="182" data-hint="Die vier Teile sind 100, 40, 30 und 12.">
+					<input type="text" inputmode="decimal" aria-label="Antwort" autocomplete="off" />
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s3" data-n="3" data-group="Heft 1 · Zahlen und Rechnen">
+			<div class="stufe-head"><span class="nr">3</span>
+				<div><small>Brüche und Prozent</small>
+					<h2>Teile vom Ganzen</h2>
+				</div>
+			</div>
+			<p class="raetsel">Ist 3/4 mehr oder weniger als 5/8? Und warum darf man 1/2 + 1/3 nicht zu 2/5 zusammenzählen?</p>
+			<p>Ein Bruch ist ein Streifen, der in gleich große Stücke geschnitten ist. Der <b>Nenner</b> (unten) sagt, in
+				wie viele Stücke. Der <b>Zähler</b> (oben) sagt, wie viele davon du nimmst. Stell zwei Brüche ein und
+				vergleich ihre Länge.</p>
+			<div class="werk">
+				<p class="werk-title">Bruchstreifen <output id="fracOut">3/4 &gt; 5/8</output></p>
+				<canvas id="fracCv" aria-label="Zwei Bruchstreifen übereinander zum Vergleichen."></canvas>
+				<div class="ctrls">
+					<label class="slider"><span>Oben: Zähler <output id="fa1o">3</output></span><input type="range" id="fa1" min="0" max="12" value="3" /></label>
+					<label class="slider"><span>Oben: Nenner <output id="fa2o">4</output></span><input type="range" id="fa2" min="1" max="12" value="4" /></label>
+					<label class="slider"><span>Unten: Zähler <output id="fb1o">5</output></span><input type="range" id="fb1" min="0" max="12" value="5" /></label>
+					<label class="slider"><span>Unten: Nenner <output id="fb2o">8</output></span><input type="range" id="fb2" min="1" max="12" value="8" /></label>
+				</div>
+				<p class="note" id="fracNote"></p>
+			</div>
+			<p>Stell oben 1/2 und unten 2/4 ein: gleich lang. Man nennt das <b>Erweitern</b>: Zähler und Nenner mit
+				derselben Zahl malnehmen, die Stücke werden kleiner, aber es sind entsprechend mehr. Zusammenzählen geht nur,
+				wenn die Stücke gleich groß sind. Darum bringt man Brüche erst auf einen <b>gemeinsamen Nenner</b>:
+				1/2 + 1/3 = 3/6 + 2/6 = 5/6. Und <b>Prozent</b> heißt einfach „von Hundert“: 3/4 = 75/100 = 75 %.</p>
+			<div class="merke">Gleich große Stücke kann man zählen, verschieden große nicht. Erst auf denselben Nenner
+				bringen, dann addieren.
+				<span class="formel">a/b = (a·k)/(b·k) · 1 % = 1/100</span>
+			</div>
+			<div class="pruef" data-task="3a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich, Teil 1</h3>
+				<p class="live-task">Stell beide Streifen auf genau dieselbe Länge, aber mit <b>verschiedenen Nennern</b>
+					und nicht auf null.</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+			<div class="pruef" data-task="3b"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich, Teil 2</h3>
+				<p>Wie viel Prozent sind 3/8?</p>
+				<form data-answer="37.5" data-tol="0.01" data-hint="Teile 3 durch 8 und nimm mal 100.">
+					<input type="text" inputmode="decimal" aria-label="Antwort in Prozent" autocomplete="off" /> %
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s4" data-n="4" data-group="Heft 1 · Zahlen und Rechnen">
+			<div class="stufe-head"><span class="nr">4</span>
+				<div><small>Negative Zahlen</small>
+					<h2>Unter null</h2>
+				</div>
+			</div>
+			<p class="raetsel">Warum ist „minus minus“ plus? 5 − (−3) = 8 klingt wie Zauberei.</p>
+			<p>Ein Frosch sitzt auf dem Zahlenstrahl. Eine Zahl ist eine <b>Blickrichtung mit Sprungweite</b>: +3 heißt
+				„schau nach rechts, spring 3“, −3 heißt „schau nach links, spring 3“. Und das Rechenzeichen <b>Minus</b>
+				heißt: <mark>dreh dich vorher um</mark>.</p>
+			<div class="werk">
+				<p class="werk-title">Frosch-Zahlenstrahl <output id="frogOut">2 + 3 = ?</output></p>
+				<canvas id="frogCv" aria-label="Zahlenstrahl von minus 10 bis 10 mit einem springenden Frosch."></canvas>
+				<div class="ctrls">
+					<label class="slider"><span>Start <output id="fsO">2</output></span><input type="range" id="fs" min="-8" max="8" value="2" /></label>
+					<div class="choices" role="group" aria-label="Rechenzeichen">
+						<button class="btn" type="button" id="fopPlus" aria-pressed="true">+ plus</button>
+						<button class="btn" type="button" id="fopMinus" aria-pressed="false">− minus</button>
+					</div>
+					<label class="slider"><span>Zahl <output id="fnO">3</output></span><input type="range" id="fn" min="-8" max="8" value="3" /></label>
+					<button class="btn primary" type="button" id="frogGo">Springen!</button>
+				</div>
+				<p class="note" id="frogNote" aria-live="polite"></p>
+			</div>
+			<p>Probier 5 − (−3): Die −3 lässt den Frosch nach links schauen. Das Minus dreht ihn um, jetzt schaut er nach
+				rechts und springt 3 weiter: Er landet bei 8. Zweimal umdrehen ist wie gar nicht umdrehen. So einfach ist das
+				Geheimnis von „minus mal minus“. Negative Zahlen sind überall: Kontostand, Temperatur, Höhe unter dem
+				Meeresspiegel.</p>
+			<div class="merke">Das Vorzeichen sagt, in welche Richtung die Zahl zeigt. Das Minus-Zeichen dreht die Richtung
+				um. Zweimal umdrehen heißt geradeaus.
+				<span class="formel">a − (−b) = a + b</span>
+			</div>
+			<div class="pruef" data-task="4a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p>Wo landet der Frosch bei −3 − (−5)? Erst denken, dann im Werkzeug nachprüfen.</p>
+				<form data-answer="2" data-hint="Start bei −3, die −5 schaut nach links, das Minus dreht um.">
+					<input type="text" inputmode="text" aria-label="Antwort" autocomplete="off" />
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s5" data-n="5" data-group="Heft 1 · Zahlen und Rechnen">
+			<div class="stufe-head"><span class="nr">5</span>
+				<div><small>Gleichungen</small>
+					<h2>Die Waage</h2>
+				</div>
+			</div>
+			<p class="raetsel">In jeder Kiste liegt gleich viel, aber wie viel? Du darfst nicht hineinschauen.</p>
+			<p>Eine Gleichung ist eine Waage im Gleichgewicht. Links und rechts liegen Kisten <b>x</b> mit unbekanntem
+				Gewicht und kleine Gewichte mit 1. Du darfst alles tun, solange du es <b>auf beiden Seiten</b> tust. Dann
+				bleibt die Waage gerade. Ziel: Links steht nur noch <b>eine</b> Kiste.</p>
+			<div class="werk">
+				<p class="werk-title">Balkenwaage <output id="scaleOut">3x + 2 = 11</output></p>
+				<canvas id="scaleCv" aria-label="Balkenwaage mit Kisten und Gewichten."></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" data-op="sub1">− 1 auf beiden Seiten</button>
+					<button class="btn" type="button" data-op="subx">− x auf beiden Seiten</button>
+					<button class="btn" type="button" data-op="div">÷ auf beiden Seiten</button>
+					<button class="btn" type="button" data-op="cheat">− 1 nur links</button>
+					<button class="btn" type="button" data-op="reset">Neu</button>
+				</div>
+				<p class="note" id="scaleNote" aria-live="polite">Nimm erst die losen Gewichte links weg.</p>
+			</div>
+			<p>Drück einmal „nur links“: Die Waage kippt, die Gleichung ist kaputt. Genau deshalb ist die eine Regel des
+				Gleichungslösens: <b>Was du links tust, tust du auch rechts.</b> Erst räumst du die losen Gewichte weg,
+				dann teilst du durch die Zahl der Kisten.</p>
+			<div class="merke">Eine Gleichung bleibt wahr, wenn du auf beiden Seiten dasselbe tust. Ziel ist immer: x
+				allein auf einer Seite.
+				<span class="formel">3x + 2 = 11 → 3x = 9 → x = 3</span>
+			</div>
+			<div class="pruef" data-task="5a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Löse alle vier Waagen in der Werkbank. <span id="scaleCount">0 von 4 gelöst.</span></p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<!-- ================= Heft 2 ================= -->
+		<p class="heft-break"><span>Heft 2 · Funktionen und Formen</span></p>
+
+		<section class="stufe" id="s6" data-n="6" data-group="Heft 2 · Funktionen und Formen">
+			<div class="stufe-head"><span class="nr">6</span>
+				<div><small>Lineare Funktionen</small>
+					<h2>Geraden</h2>
+				</div>
+			</div>
+			<p class="raetsel">Ein Taxi kostet 3 € Grundgebühr und 2 € pro Kilometer. Wie sieht das als Bild aus?</p>
+			<p>Eine <b>Funktion</b> ist eine Maschine: Du gibst x hinein, sie gibt y heraus. Bei y = m·x + b ist das Bild
+				eine Gerade. <b>b</b> ist, wo sie die y-Achse schneidet (die Grundgebühr), <b>m</b> ist die Steigung: wie
+				viel y pro Schritt nach rechts dazukommt (der Preis pro Kilometer).</p>
+			<div class="werk">
+				<p class="werk-title">Geradenlabor <output id="lineOut">y = 1·x + 0</output></p>
+				<canvas id="lineCv" class="plain" aria-label="Koordinatensystem mit einer Geraden und zwei Zielpunkten."></canvas>
+				<div class="ctrls">
+					<label class="slider"><span>Steigung m <output id="lmO">1</output></span><input type="range" id="lm" min="-3" max="3" step="0.5" value="1" /></label>
+					<label class="slider"><span>Achsenabschnitt b <output id="lbO">0</output></span><input type="range" id="lb" min="-5" max="5" step="0.5" value="0" /></label>
+					<button class="btn" type="button" id="lineNew">Neue Ziele</button>
+				</div>
+				<p class="note" id="lineNote">Das Steigungsdreieck zeigt: 1 nach rechts, m nach oben.</p>
+			</div>
+			<p>Die Steigung bekommst du aus zwei Punkten: <b>Höhenunterschied durch Breitenunterschied</b>. Mit dieser
+				Idee wirst du in Stufe 13 die Steigung jeder beliebigen Kurve finden.</p>
+			<div class="merke">y = m·x + b. Das b ist der Startwert, das m ist „pro Schritt“.
+				<span class="formel">m = (y₂ − y₁) / (x₂ − x₁)</span>
+			</div>
+			<div class="pruef" data-task="6a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Leg die Gerade durch beide roten Kreuze. <span id="lineCount">0 von 3 geschafft.</span></p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s7" data-n="7" data-group="Heft 2 · Funktionen und Formen">
+			<div class="stufe-head"><span class="nr">7</span>
+				<div><small>Potenzen und exponentielles Wachstum</small>
+					<h2>Bis zum Mond falten</h2>
+				</div>
+			</div>
+			<p class="raetsel">Ein Blatt Papier ist 0,1 mm dick. Wie oft müsstest du es falten, damit der Stapel bis zum
+				Mond reicht? Schätz, bevor du schiebst!</p>
+			<p>Jedes Falten <b>verdoppelt</b> die Dicke. Nach n-mal Falten ist das Papier 2·2·…·2 = <b>2ⁿ</b> Lagen dick.
+				Das kleine n heißt <b>Exponent</b>. Die Skala rechts ist besonders: Jeder Strich ist <mark>zehnmal</mark>
+				so viel wie der darunter, sonst passt der Weg vom Blatt zum Mond nicht auf den Bildschirm.</p>
+			<div class="werk">
+				<p class="werk-title">Faltmaschine <output id="foldOut">0 × gefaltet</output></p>
+				<canvas id="foldCv" aria-label="Wachstum durch Falten, links linear gegen exponentiell, rechts eine Zehnerskala bis zur Sonne."></canvas>
+				<div class="ctrls">
+					<label class="slider"><span>Wie oft falten? <output id="foldNO">0</output></span><input type="range" id="foldN" min="0" max="52" value="0" /></label>
+				</div>
+				<p class="note" id="foldNote" aria-live="polite"></p>
+			</div>
+			<p>Links siehst du den Unterschied: Wer jedes Mal ein Blatt <b>dazulegt</b>, wächst linear, eine gerade Linie.
+				Wer <b>verdoppelt</b>, wächst exponentiell. Am Anfang langsamer, dann schießt es davon. So wachsen
+				Zinseszins, Viren und Rechenleistung. Rechenregel dazu: 2³ · 2⁴ = 2⁷, weil sich die Faltungen einfach
+				addieren.</p>
+			<div class="merke">aⁿ heißt: a n-mal mit sich selbst malnehmen. Verdoppeln schlägt Dazulegen, früher oder
+				später immer.
+				<span class="formel">aᵐ · aⁿ = aᵐ⁺ⁿ · 2¹⁰ = 1024</span>
+			</div>
+			<div class="pruef" data-task="7a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Stell den Regler auf die <b>kleinste</b> Faltzahl, bei der das Papier bis zum Mond
+					reicht (384 400 km).</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s8" data-n="8" data-group="Heft 2 · Funktionen und Formen">
+			<div class="stufe-head"><span class="nr">8</span>
+				<div><small>Logarithmus</small>
+					<h2>Der Rechenschieber</h2>
+				</div>
+			</div>
+			<p class="raetsel">Wie haben Ingenieure vor dem Taschenrechner mit zwei Holzlinealen malgenommen, sogar für die
+				Mondlandung?</p>
+			<p>Der <b>Logarithmus</b> ist die Frage von Stufe 7 rückwärts: Wie oft muss ich falten, um 1024 Lagen zu
+				bekommen? log₂(1024) = 10. Zur Basis 10 zählt er ungefähr die Stellen: log₁₀(1000) = 3. Das Besondere:
+				Aus <b>Malnehmen wird Addieren</b>, denn 10² · 10³ = 10⁵. Ein Rechenschieber nutzt genau das: Auf beiden
+				Linealen ist der Abstand zur 1 der Logarithmus der Zahl. Schieb das obere Lineal mit der 1 über eine Zahl
+				a, dann steht unter jeder Zahl b oben das Produkt a · b.</p>
+			<div class="werk">
+				<p class="werk-title">Rechenschieber <output id="slideOut">a = 2</output></p>
+				<canvas id="slideCv" aria-label="Rechenschieber: das obere Lineal lässt sich seitlich verschieben." tabindex="0"></canvas>
+				<div class="ctrls">
+					<label class="slider"><span>b oben ablesen <output id="slBO">3</output></span><input type="range" id="slB" min="1" max="5" step="0.1" value="3" /></label>
+				</div>
+				<p class="note" id="slideNote" aria-live="polite">Zieh das obere Lineal (oder Pfeiltasten).</p>
+			</div>
+			<p>Zwei Längen aneinanderlegen heißt: log(a) + log(b). Und das ist log(a · b). Deshalb liest du unten das
+				Produkt ab. Logarithmen begegnen dir bei Lautstärke (Dezibel), Erdbeben (Richterskala), pH-Wert und überall,
+				wo etwas über viele Zehnerpotenzen reicht.</p>
+			<div class="merke">Der Logarithmus fragt: „Hoch wie viel?“ Er verwandelt Malnehmen in Addieren.
+				<span class="formel">log(a · b) = log(a) + log(b)</span>
+			</div>
+			<div class="pruef" data-task="8a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich, Teil 1</h3>
+				<p class="live-task">Stell den Schieber so ein, dass er <b>2,5 · 3</b> ausrechnet, und lies das Ergebnis mit
+					dem Regler b ab.</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+			<div class="pruef" data-task="8b"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich, Teil 2</h3>
+				<p>Wie viel ist log₂(64)? Also: Wie oft musst du 2 mit sich selbst malnehmen, um 64 zu bekommen?</p>
+				<form data-answer="6" data-hint="2, 4, 8, 16 … zähl die Verdopplungen.">
+					<input type="text" inputmode="decimal" aria-label="Antwort" autocomplete="off" />
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s9" data-n="9" data-group="Heft 2 · Funktionen und Formen">
+			<div class="stufe-head"><span class="nr">9</span>
+				<div><small>Geometrie</small>
+					<h2>Pythagoras</h2>
+				</div>
+			</div>
+			<p class="raetsel">Wie lang ist die Diagonale eines Rechtecks, ohne dass du sie misst?</p>
+			<p>Bau auf jede Seite eines rechtwinkligen Dreiecks ein Quadrat. Zieh die beiden Ecken und beobachte die drei
+				Flächen. Fällt dir etwas auf? Dann drück <i>Beweis</i>: Vier gleiche Dreiecke liegen in einem großen
+				Quadrat. Einmal bleibt in der Mitte c² frei, nach dem Umlegen bleiben a² und b² frei. Das große Quadrat und
+				die Dreiecke haben sich nicht verändert, also muss gleich viel Platz übrig sein.</p>
+			<div class="werk">
+				<p class="werk-title">Quadrate am Dreieck <output id="pyOut">3² + 4² = 5²</output></p>
+				<canvas id="pyCv" aria-label="Rechtwinkliges Dreieck mit Quadraten an allen Seiten. Die Ecken lassen sich ziehen."></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" id="pyProof" aria-pressed="false">Beweis zeigen</button>
+					<button class="btn" type="button" id="pyFlip" disabled>Dreiecke umlegen</button>
+				</div>
+				<p class="note" id="pyNote"></p>
+			</div>
+			<p>Mit Pythagoras kannst du jede Entfernung im Koordinatensystem ausrechnen, auch im 3D-Raum von
+				Computerspielen und GPS. Er ist der Grund, warum es Wurzeln gibt: c = √(a² + b²).</p>
+			<div class="merke">Im rechtwinkligen Dreieck sind die beiden kleinen Quadrate zusammen so groß wie das große.
+				<span class="formel">a² + b² = c²</span>
+			</div>
+			<div class="pruef" data-task="9a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p>Ein Bildschirm ist 16 cm breit und 12 cm hoch. Wie lang ist seine Diagonale?</p>
+				<form data-answer="20" data-tol="0.05" data-hint="16² + 12² = 256 + 144. Welche Zahl mal sich selbst gibt das?">
+					<input type="text" inputmode="decimal" aria-label="Antwort in cm" autocomplete="off" /> cm
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s10" data-n="10" data-group="Heft 2 · Funktionen und Formen">
+			<div class="stufe-head"><span class="nr">10</span>
+				<div><small>Trigonometrie</small>
+					<h2>Kreis und Welle</h2>
+				</div>
+			</div>
+			<p class="raetsel">Was hat ein Riesenrad mit einem Ton aus dem Lautsprecher zu tun?</p>
+			<p>Ein Punkt läuft auf einem Kreis mit Radius 1. Schau nur auf seine <b>Höhe</b>: rauf, runter, rauf, runter.
+				Schreibt man sie über die Zeit auf, entsteht die <b>Sinuswelle</b>. Die waagerechte Position heißt
+				<b>Kosinus</b>. Höhe und Breite bilden mit dem Radius ein rechtwinkliges Dreieck, und nach Pythagoras aus
+				Stufe 9 gilt deshalb immer sin² + cos² = 1.</p>
+			<div class="werk">
+				<p class="werk-title">Einheitskreis <output id="circleOut">φ = 0°</output></p>
+				<canvas id="circleCv" aria-label="Einheitskreis mit Sinuswelle. Zieh den Punkt auf dem Kreis." tabindex="0"></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" id="cSpin" aria-pressed="true">⟳ Drehen</button>
+					<button class="btn" type="button" id="cSecond" aria-pressed="false">◎ Zweiter Kreis</button>
+					<label class="slider"><span>Tempo 2. Kreis <output id="ckO">3×</output></span><input type="range" id="ck" min="2" max="9" value="3" /></label>
+				</div>
+				<p class="note" id="circleNote"></p>
+			</div>
+			<p>Schalte den zweiten Kreis dazu: Er dreht sich auf dem ersten, schneller. Ihre Höhen addieren sich, und die
+				Welle bekommt eine neue Form. Mit genug Kreisen kann man <b>jede</b> Form bauen. Das heißt
+				Fourier-Analyse, und so speichert eine MP3-Datei Musik.</p>
+			<div class="merke">Sinus ist die Höhe, Kosinus die Breite eines Punktes auf dem Einheitskreis. Jede Welle ist ein
+				drehender Kreis von der Seite.
+				<span class="formel">sin²φ + cos²φ = 1</span>
+			</div>
+			<div class="pruef" data-task="10a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Halte das Drehen an und zieh den Punkt auf einen Winkel, bei dem <b>sin φ = 0,5</b>
+					ist. Es gibt zwei Lösungen zwischen 0° und 360°.</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<!-- ================= Heft 3 ================= -->
+		<p class="heft-break"><span>Heft 3 · Zufall und Veränderung</span></p>
+
+		<section class="stufe" id="s11" data-n="11" data-group="Heft 3 · Zufall und Veränderung">
+			<div class="stufe-head"><span class="nr">11</span>
+				<div><small>Wahrscheinlichkeit</small>
+					<h2>Würfelglück</h2>
+				</div>
+			</div>
+			<p class="raetsel">Du wirfst zwei Würfel und zählst die Augen zusammen. Welche Summe kommt am häufigsten?</p>
+			<div class="pruef" data-task="11a"><span class="stamp">Gelöst</span>
+				<h3>Erst tippen</h3>
+				<div class="choices" data-right="5"
+					data-ok="Für die 7 gibt es sechs Wege: 1+6, 2+5, 3+4, 4+3, 5+2, 6+1. Für die 2 nur einen."
+					data-no="Würfle unten ein paar tausend Mal und schau nach.">
+					<button class="btn" type="button">2</button><button class="btn" type="button">3</button><button class="btn" type="button">4</button><button class="btn" type="button">5</button><button class="btn" type="button">6</button><button class="btn" type="button">7</button><button class="btn" type="button">8</button><button class="btn" type="button">9</button><button class="btn" type="button">10</button><button class="btn" type="button">11</button><button class="btn" type="button">12</button>
+				</div>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+			<p>Ein einzelner Wurf ist Zufall. Aber viele Würfe folgen einem Muster. Die <b>Wahrscheinlichkeit</b> ist der
+				Anteil, auf den sich die Häufigkeit einpendelt: günstige Fälle geteilt durch mögliche Fälle. Die gestrichelte
+				Linie ist die Theorie, die Balken sind deine Würfe.</p>
+			<div class="werk">
+				<p class="werk-title">Würfelbecher <output id="diceOut">0 Würfe</output></p>
+				<canvas id="diceCv" aria-label="Säulendiagramm der gewürfelten Häufigkeiten mit der Theorie als gestrichelter Linie."></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" id="dMode" aria-pressed="false">Zwei Würfel</button>
+					<button class="btn" type="button" data-roll="1">1 Wurf</button>
+					<button class="btn" type="button" data-roll="100">100 Würfe</button>
+					<button class="btn primary" type="button" data-roll="5000">5000 Würfe</button>
+					<button class="btn" type="button" id="dReset">Leeren</button>
+				</div>
+				<p class="note" id="diceNote" aria-live="polite"></p>
+				<div class="dice-grid" id="diceGrid" aria-label="Alle 36 Kombinationen zweier Würfel"></div>
+			</div>
+			<p>Mit einem Würfel sind alle Säulen gleich hoch: je 1/6. Mit zwei Würfeln gibt es 6 · 6 = 36 gleich wahrscheinliche
+				Paare. Tippe in der Tabelle auf eine Summe, um ihre Wege zu sehen. Je mehr du würfelst, desto genauer passen
+				Balken und Theorie zusammen: das <b>Gesetz der großen Zahlen</b>. Casinos und Versicherungen verdienen damit
+				ihr Geld.</p>
+			<div class="merke">Wahrscheinlichkeit = günstige Fälle / mögliche Fälle, wenn alle Fälle gleich wahrscheinlich
+				sind. Auf lange Sicht pendelt sich die Häufigkeit dort ein.
+				<span class="formel">P(Summe 7) = 6/36 = 1/6</span>
+			</div>
+			<div class="pruef" data-task="11b"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p>Wie groß ist die Wahrscheinlichkeit für die Summe 10? Als Bruch mit Nenner 36, gib den Zähler ein.</p>
+				<form data-answer="3" data-hint="Zähl in der Tabelle die Felder mit 10.">
+					<input type="text" inputmode="decimal" aria-label="Zähler" autocomplete="off" /> / 36
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s12" data-n="12" data-group="Heft 3 · Zufall und Veränderung">
+			<div class="stufe-head"><span class="nr">12</span>
+				<div><small>Statistik</small>
+					<h2>Mitte und Streuung</h2>
+				</div>
+			</div>
+			<p class="raetsel">In einem Café sitzen sieben Leute. Dann kommt ein Milliardär herein. Wie verändert sich das
+				„durchschnittliche“ Vermögen, und ist das fair beschrieben?</p>
+			<p>Sieben Messwerte liegen auf einem Brett. Der <b>Mittelwert</b> (alle zusammenzählen, durch die Anzahl
+				teilen) ist der <mark>Schwerpunkt</mark>: Stellst du dort die Spitze darunter, bleibt das Brett im
+				Gleichgewicht. Der <b>Median</b> ist der Wert in der Mitte, wenn man sortiert. Zieh die Punkte!</p>
+			<div class="werk">
+				<p class="werk-title">Wippbrett <output id="statOut"></output></p>
+				<canvas id="statCv" aria-label="Sieben Punkte auf einem Zahlenstrahl, darunter eine Wippe am Mittelwert. Die Punkte lassen sich seitlich ziehen."></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" id="statRich">Milliardär kommt rein</button>
+					<button class="btn" type="button" id="statReset">Zurücksetzen</button>
+				</div>
+				<p class="note" id="statNote"></p>
+			</div>
+			<p>Zieh einen Punkt ganz nach rechts: Der Mittelwert läuft hinterher, der Median zuckt kaum. Darum nimmt man für
+				Einkommen meist den Median. Wie weit die Werte um die Mitte verstreut sind, misst die
+				<b>Standardabweichung</b> σ: ungefähr der typische Abstand zum Mittelwert. Das schattierte Band zeigt sie.</p>
+			<div class="merke">Mittelwert = Schwerpunkt, empfindlich für Ausreißer. Median = mittlerer Wert, robust.
+				Standardabweichung = typischer Abstand zur Mitte.
+				<span class="formel">x̄ = (x₁ + … + xₙ) / n</span>
+			</div>
+			<div class="pruef" data-task="12a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Bring den Mittelwert auf genau <b>6</b>, den Median aber auf <b>4</b>.</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s13" data-n="13" data-group="Heft 3 · Zufall und Veränderung">
+			<div class="stufe-head"><span class="nr">13</span>
+				<div><small>Differentialrechnung</small>
+					<h2>Die Ableitung</h2>
+				</div>
+			</div>
+			<p class="raetsel">Ein Tacho zeigt 50 km/h, genau jetzt. Aber Geschwindigkeit ist Weg durch Zeit, und in „genau
+				jetzt“ vergeht keine Zeit. Wie geht das?</p>
+			<p>Bei einer Geraden (Stufe 6) ist die Steigung überall gleich. Eine Kurve ist an jeder Stelle anders steil.
+				Trick: Nimm zwei Punkte auf der Kurve, leg eine Gerade hindurch (die <b>Sekante</b>) und berechne ihre
+				Steigung. Dann schieb den zweiten Punkt immer näher heran. Die Sekante wird zur <b>Tangente</b>, und ihre
+				Steigung ist die <b>Ableitung</b> an dieser Stelle.</p>
+			<div class="werk">
+				<p class="werk-title">Zoom auf die Steigung <output id="derOut"></output></p>
+				<canvas id="derCv" class="plain" aria-label="Oben eine Kurve mit Sekante, unten die Kurve der Steigungen. Den Punkt auf der Kurve kann man ziehen." tabindex="0"></canvas>
+				<div class="ctrls">
+					<div class="choices" role="group" aria-label="Kurve wählen">
+						<button class="btn" type="button" data-fn="0" aria-pressed="true">x²/2</button>
+						<button class="btn" type="button" data-fn="1" aria-pressed="false">x³/3 − x</button>
+						<button class="btn" type="button" data-fn="2" aria-pressed="false">2·sin x</button>
+					</div>
+					<label class="slider"><span>Abstand h <output id="dhO">1,5</output></span><input type="range" id="dh" min="0" max="100" value="0" /></label>
+				</div>
+				<p class="note" id="derNote"></p>
+			</div>
+			<p>Unten entsteht eine neue Kurve: die Steigung an jeder Stelle. Wo die obere Kurve einen Gipfel oder ein Tal
+				hat, ist die Steigung null, die untere Kurve kreuzt die Achse. Genau so findet man Maxima und Minima, zum
+				Beispiel den günstigsten Preis oder die kürzeste Strecke. Und aus dem Weg wird so die Geschwindigkeit.</p>
+			<div class="merke">Die Ableitung ist die Steigung der Tangente: die Sekantensteigung, wenn h gegen null geht.
+				<span class="formel">f′(x) = lim (f(x+h) − f(x)) / h</span>
+			</div>
+			<div class="pruef" data-task="13a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Wähle die Kurve <b>x³/3 − x</b>, schieb h ganz nach rechts und zieh den Punkt auf eine
+					Stelle, an der die Steigung null ist.</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s14" data-n="14" data-group="Heft 3 · Zufall und Veränderung">
+			<div class="stufe-head"><span class="nr">14</span>
+				<div><small>Integralrechnung</small>
+					<h2>Das Integral</h2>
+				</div>
+			</div>
+			<p class="raetsel">Wie groß ist eine Fläche mit krummem Rand, die man nicht in Kästchen aufteilen kann?</p>
+			<p>Zurück zu Stufe 2: Fläche zählt man mit Rechtecken. Unter einer Kurve passen sie nicht genau, aber wenn du
+				sie <b>immer schmaler</b> machst, wird der Fehler immer kleiner. Den Grenzwert nennt man <b>Integral</b>.</p>
+			<div class="werk">
+				<p class="werk-title">Rechteck-Füller <output id="intOut"></output></p>
+				<canvas id="intCv" class="plain" aria-label="Fläche unter der Kurve x Quadrat, gefüllt mit Rechtecken. Darunter die Flächenfunktion."></canvas>
+				<div class="ctrls">
+					<label class="slider"><span>Anzahl Rechtecke <output id="inO">4</output></span><input type="range" id="in" min="1" max="120" value="4" /></label>
+					<label class="slider"><span>Bis x = <output id="ibO">3</output></span><input type="range" id="ib" min="0.2" max="3" step="0.1" value="3" /></label>
+				</div>
+				<p class="note" id="intNote"></p>
+			</div>
+			<p>Unten siehst du, wie die Fläche A wächst, wenn du die rechte Grenze verschiebst. Und jetzt der
+				<b>Hauptsatz</b>, der vielleicht größte Trick der Mathematik: Die Steigung der Flächenkurve ist an jeder
+				Stelle genau so groß wie die Höhe von f dort. Ein schmaler Streifen mehr Fläche ist nämlich f(x) breit mal
+				hoch. Integral und Ableitung sind Gegenspieler, wie Plus und Minus.</p>
+			<div class="merke">Das Integral ist die Fläche unter der Kurve: Summe unendlich schmaler Rechtecke. Ableiten
+				macht Integrieren rückgängig.
+				<span class="formel">∫₀ᵇ x² dx = b³/3</span>
+			</div>
+			<div class="pruef" data-task="14a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p>Wie groß ist die Fläche unter x² von 0 bis 3 genau? Schieb die Rechtecke auf 120 und schau, wohin die Summe
+					strebt.</p>
+				<form data-answer="9" data-tol="0.001" data-hint="Benutze die Formel im Merke-Kasten mit b = 3.">
+					<input type="text" inputmode="decimal" aria-label="Antwort" autocomplete="off" />
+					<button class="btn primary">Prüfen</button>
+				</form>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="stufe" id="s15" data-n="15" data-group="Heft 3 · Zufall und Veränderung">
+			<div class="stufe-head"><span class="nr">15</span>
+				<div><small>Lineare Algebra</small>
+					<h2>Vektoren und Matrizen</h2>
+				</div>
+			</div>
+			<p class="raetsel">Wie dreht ein Computerspiel eine ganze Welt mit nur vier Zahlen? Und warum rechnen KIs fast
+				nur damit?</p>
+			<p>Ein <b>Vektor</b> ist ein Pfeil: so weit nach rechts, so weit nach oben. Jeder Punkt im Gitter ist eine
+				Mischung aus den zwei Grundpfeilen <b style="color:#c8352e">î</b> = (1, 0) und
+				<b style="color:#1d3a86">ĵ</b> = (0, 1). Zieh die Pfeilspitzen: Das ganze Gitter und das Haus folgen,
+				denn jeder Punkt behält seine Mischung. Die vier Zahlen, wo î und ĵ landen, sind die <b>Matrix</b>.</p>
+			<div class="werk">
+				<p class="werk-title">Gitter-Verformer <output id="matOut"></output></p>
+				<canvas id="matCv" class="plain" aria-label="Gitter mit zwei Grundvektoren und einem Haus. Die Pfeilspitzen lassen sich ziehen."></canvas>
+				<div class="ctrls">
+					<button class="btn" type="button" data-preset="id">Normal</button>
+					<button class="btn" type="button" data-preset="scale">Strecken</button>
+					<button class="btn" type="button" data-preset="shear">Scheren</button>
+					<button class="btn" type="button" data-preset="mirror">Spiegeln</button>
+				</div>
+				<p class="note" id="matNote"></p>
+			</div>
+			<p>Die gelbe Fläche ist das Bild des Einheitsquadrats. Wie viel größer sie wird, sagt die
+				<b>Determinante</b> ad − bc. Wird sie negativ, ist die Welt gespiegelt. Wird sie null, wird alles platt auf
+				eine Linie gedrückt. In jedem 3D-Spiel, jeder Bildbearbeitung und jedem neuronalen Netz laufen pro Sekunde
+				Milliarden solcher Matrix-Rechnungen.</p>
+			<div class="merke">Eine Matrix sagt, wohin die Grundpfeile gehen. Dann ist klar, wohin alles geht.
+				<span class="formel">(a b | c d) · (x, y) = x·î′ + y·ĵ′</span>
+			</div>
+			<div class="pruef" data-task="15a"><span class="stamp">Gelöst</span>
+				<h3>Prüf dich</h3>
+				<p class="live-task">Dreh das Haus um <b>90° gegen den Uhrzeigersinn</b>, ohne es zu verzerren.</p>
+				<p class="feedback" aria-live="polite"></p>
+			</div>
+		</section>
+
+		<section class="weiter" id="weiter">
+			<h2>Heft voll. Und jetzt?</h2>
+			<p>Du hast die Werkzeuge, mit denen Physik, Chemie und Informatik arbeiten. Hier kannst du sie gleich
+				einsetzen:</p>
+			<div class="cards">
+				<a href="../physics/"><b>Physik →</b><span>Die nächste Stufe der Leiter.</span></a>
+				<a href="../schwerkraft/"><b>Schwerkraft</b><span>Die Wurfparabel: eine quadratische Funktion, die fliegt.</span></a>
+				<a href="../schall/"><b>Musik und Schall</b><span>Fourier zum Anhören: Obertöne mischen.</span></a>
+				<a href="../ml/"><b>20 ML-Algorithmen</b><span>Ableitung, Statistik und Matrizen bei der Arbeit.</span></a>
+				<a href="../ki/"><b>Sprach-KI</b><span>Wörter als Vektoren: mit Bedeutung rechnen.</span></a>
+			</div>
 		</section>
 	</main>
 
-	<footer class="v-next" data-fach-next></footer>
+	<footer class="footer">
+		<p><a href="../#faecher">← zurück zu allen Fächern</a> · <button type="button" data-reset>Heft radieren (Fortschritt löschen)</button></p>
+	</footer>
 
-	<script src="../assets/verstehen.js"></script>
-	<script src="../assets/fach.js"></script>
-	<script src="./math.js"></script>
+	<script src="./heft.js"></script>
+	<script src="./stufen-a.js"></script>
+	<script src="./stufen-b.js"></script>
+	<script src="./stufen-c.js"></script>
 </body>
 
 </html>
