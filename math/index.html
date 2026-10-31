@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 	<title>Mathematik — Newbobb Lab</title>
 	<meta name="description"
-		content="Mathematik interaktiv: Wie aus einem Punkt auf dem Kreis die Sinuswelle entsteht, und warum sie in Physik, Musik und Technik überall auftaucht." />
+		content="Mathematik interaktiv: Wie aus einem Kreis eine Welle wird, warum Zinseszins explodiert, was eine Ableitung ist und wie aus Zufall eine Glockenkurve entsteht." />
 	<meta name="theme-color" content="#0b0a09" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,9 +20,20 @@
 			--fach: #b8a6ff;
 		}
 
-		#circleCanvas {
+		#circleCanvas,
+		#slopeCanvas {
 			touch-action: none;
 			cursor: grab;
+		}
+
+		#slopeTag {
+			text-transform: none;
+		}
+
+		.seg {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
 		}
 	</style>
 </head>
@@ -39,9 +50,12 @@
 			<p class="v-kicker">Fach 01 · Stufe 1 der Leiter</p>
 			<h1>Die Sprache<br />der <em>Natur</em></h1>
 			<p class="v-lede">Mathe ist die unterste Stufe der Leiter. Physik, Chemie und Informatik sind in ihr
-				geschrieben. Hier siehst du eine ihrer schönsten Ideen: Ein Kreis, der sich dreht, wird zu einer Welle.</p>
+				geschrieben. Hier probierst du vier ihrer großen Ideen aus: Kreise werden zu Wellen, Prozente zu Explosionen, Kurven bekommen eine Steigung, und Zufall ordnet sich zur Glocke.</p>
 			<ol class="v-toc">
 				<li><a href="#kreis">Vom Kreis zur Welle</a></li>
+				<li><a href="#wachstum">Wachstum mit Zinseszins</a></li>
+				<li><a href="#steigung">Steigung im Punkt</a></li>
+				<li><a href="#zufall">Ordnung im Zufall</a></li>
 				<li><a href="#projekte">Projekte</a></li>
 			</ol>
 		</section>
@@ -87,6 +101,158 @@
 						<input type="range" id="r2" min="5" max="80" value="33" />
 					</label>
 					<p class="stage-note" id="circleNote">sin(0°) = 0,00 · cos(0°) = 1,00</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="wachstum">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">02 · Exponentialfunktion</span>
+				<h2>Wachstum mit Zinseszins</h2>
+				<p>Leg 1&nbsp;000&nbsp;€ zu 7&nbsp;% an. Bei <strong>einfachen Zinsen</strong> bekommst du jedes Jahr dieselben
+					70&nbsp;€. Das Geld wächst wie eine Treppe: immer gleich hohe Stufen. Das heißt <strong>linear</strong>.</p>
+				<p>Bei <strong>Zinseszins</strong> landen die Zinsen auf dem Konto und bringen im nächsten Jahr selbst Zinsen.
+					Jede Stufe ist 7&nbsp;% höher als die davor. Am Anfang merkt man fast nichts, dann biegt die Kurve steil nach
+					oben. Das heißt <strong>exponentiell</strong>.</p>
+				<p>Die Faustregel: Teile 72 durch den Zinssatz, dann hast du ungefähr die Jahre, bis sich das Geld
+					<strong>verdoppelt</strong>. Bei 7&nbsp;% sind das rund 10 Jahre. Nach 30 Jahren hat es sich dreimal
+					verdoppelt: achtmal so viel. Dasselbe Muster steckt in Viren, Kettenreaktionen und in Wissen, das auf
+					Wissen aufbaut.</p>
+				<div class="formula">K(n) = K₀ · (1 + p)ⁿ
+					<small>K₀ ist das Startkapital, p der Zinssatz (7 % = 0,07), n die Zahl der Jahre.</small>
+				</div>
+				<div class="quiz" data-answer="2"
+					data-why="Jedes Falten verdoppelt die Dicke. 0,1 mm · 2⁴² sind etwa 440 000 km. Der Mond ist im Schnitt 384 000 km entfernt. Zweiundvierzig Verdopplungen sind ein Faktor von über vier Billionen.">
+					<p class="quiz-q">Ein Blatt Papier ist 0,1 mm dick. Wie dick wäre es, wenn du es 42-mal falten könntest?</p>
+					<div class="quiz-options">
+						<button type="button">Etwa 4 Meter</button>
+						<button type="button">Etwa 4 Kilometer</button>
+						<button type="button">Dicker als der Weg zum Mond</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Dreh am Zinssatz und an der Laufzeit. Achte darauf, wann die Zinseszins-Kurve davonzieht. Mit
+					der Log-Skala wird aus der Kurve eine Gerade.</p>
+				<div class="stage-view">
+					<canvas id="growCanvas" aria-label="Linear und exponentiell wachsendes Geld im Vergleich"></canvas>
+					<span class="stage-tag">1 000 € Start</span>
+					<span class="stage-readout" id="growOut">×2 alle 10 Jahre</span>
+				</div>
+				<div class="stage-controls">
+					<label class="range">
+						<span class="range-head"><span>Zinssatz</span><output id="rateOut">7 %</output></span>
+						<input type="range" id="rate" min="1" max="15" value="7" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Laufzeit</span><output id="yearsOut">40 Jahre</output></span>
+						<input type="range" id="years" min="5" max="60" value="40" />
+					</label>
+					<button class="btn" id="btnLog" type="button" aria-pressed="false">Log-Skala</button>
+					<p class="stage-note" id="growNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter" id="steigung">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">03 · Analysis</span>
+				<h2>Steigung in einem Punkt</h2>
+				<p>Wie steil ist eine Gerade? Geh ein Stück nach rechts und miss, wie weit es nach oben geht:
+					<strong>Steigung = Höhe ÷ Breite</strong>. Bei einer Kurve klappt das nicht, denn sie ist an jeder Stelle
+					anders steil.</p>
+				<p>Der Trick der Analysis: Nimm zwei Punkte auf der Kurve, verbinde sie mit einer Geraden (der
+					<strong>Sekante</strong>) und schieb den zweiten Punkt immer näher an den ersten. Der Abstand h schrumpft
+					gegen null, und die Sekante wird zur <strong>Tangente</strong>. Ihre Steigung ist die
+					<strong>Ableitung</strong> an dieser Stelle.</p>
+				<p>So rechnet ein Tacho: Er teilt ein winziges Wegstück durch eine winzige Zeit. Die Ableitung des Wegs ist
+					die Geschwindigkeit, die Ableitung der Geschwindigkeit die Beschleunigung. Und jede KI lernt, indem sie
+					Ableitungen ausrechnet und bergab geht.</p>
+				<p class="merke"><b>Merke</b>Die Ableitung ist die Steigung der Kurve in einem einzigen Punkt. Man bekommt sie,
+					indem man eine Sekante immer kürzer macht.</p>
+				<div class="formula">f′(x) = lim (h → 0) [f(x + h) − f(x)] / h
+					<small>Für f(x) = x² kommt f′(x) = 2x heraus. An der Stelle x = 1,5 ist die Kurve also 3 steil.</small>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Zieh den Punkt über die Kurve. Dann lass h gegen null laufen. Schalte die Spur ein: Sie zeichnet
+					die Steigung an jeder Stelle auf, und es entsteht die Ableitung als neue Kurve.</p>
+				<div class="stage-view">
+					<canvas id="slopeCanvas" aria-label="Kurve mit Sekante und Tangente"></canvas>
+					<span class="stage-tag" id="slopeTag">f(x) = x²</span>
+					<span class="stage-readout" id="slopeOut">Steigung 3,00</span>
+				</div>
+				<div class="stage-controls">
+					<div class="seg" role="group" aria-label="Funktion wählen">
+						<button class="btn" type="button" data-fn="0" aria-pressed="true">x²</button>
+						<button class="btn" type="button" data-fn="1" aria-pressed="false">x³/3 − x</button>
+						<button class="btn" type="button" data-fn="2" aria-pressed="false">sin x</button>
+					</div>
+					<label class="range">
+						<span class="range-head"><span>Abstand h</span><output id="hOut">1,50</output></span>
+						<input type="range" id="h" min="0" max="200" value="150" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Stelle x</span><output id="xOut">1,50</output></span>
+						<input type="range" id="xPos" min="-300" max="300" value="150" />
+					</label>
+					<button class="btn primary" id="btnLimit" type="button">h → 0</button>
+					<button class="btn" id="btnTrace" type="button" aria-pressed="false">Spur der Steigung</button>
+					<p class="stage-note" id="slopeNote"></p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chapter flip" id="zufall">
+			<div class="chapter-text reveal">
+				<span class="chapter-num">04 · Wahrscheinlichkeit</span>
+				<h2>Ordnung im Zufall</h2>
+				<p>Eine Kugel fällt durch ein Brett voller Nägel. An jedem Nagel springt sie zufällig nach links oder rechts.
+					Wo sie landet, kann niemand vorhersagen.</p>
+				<p>Lass aber tausend Kugeln fallen, und es entsteht jedes Mal dieselbe Form: eine <strong>Glockenkurve</strong>.
+					Der Grund ist Zählen. Ganz außen landet eine Kugel nur, wenn sie <em>jedes</em> Mal in dieselbe Richtung
+					springt. Für die Mitte gibt es dagegen sehr viele Wege mit halb links, halb rechts.</p>
+				<p>Je mehr Kugeln, desto genauer passt das Ergebnis zur Rechnung. Das ist das <strong>Gesetz der großen
+					Zahlen</strong>. Darauf bauen Versicherungen, Umfragen und Casinos: Der einzelne Fall ist Zufall, die Summe
+					ist fast sicher.</p>
+				<div class="fact">
+					<b>Warum überall Glocken?</b>
+					<p>Körpergröße, Messfehler, Testergebnisse: Wenn viele kleine, zufällige Einflüsse zusammenkommen, entsteht
+						fast immer diese Form. Mathematiker nennen sie Normalverteilung.</p>
+				</div>
+				<div class="quiz" data-answer="0"
+					data-why="Für ganz links muss die Kugel 6-mal hintereinander nach links: (½)⁶ = 1/64. Für die Mitte gibt es 20 verschiedene Wege mit 3-mal links und 3-mal rechts, also 20/64. Die Mitte ist zwanzigmal wahrscheinlicher.">
+					<p class="quiz-q">Bei 6 Reihen: Wie viel wahrscheinlicher landet eine Kugel im mittleren Fach als im Fach ganz
+						links?</p>
+					<div class="quiz-options">
+						<button type="button">20-mal</button>
+						<button type="button">6-mal</button>
+						<button type="button">Gleich wahrscheinlich</button>
+					</div>
+				</div>
+			</div>
+			<div class="stage reveal">
+				<p class="task">Wirf zuerst einzelne Kugeln, dann hunderte. Kipp das Brett mit dem Regler, und sieh zu, wie die
+					Glocke wandert.</p>
+				<div class="stage-view">
+					<canvas id="galtonCanvas" aria-label="Galton-Brett mit Fächern und Häufigkeiten"></canvas>
+					<span class="stage-tag">Galton-Brett</span>
+					<span class="stage-readout" id="galtonOut">0 Kugeln</span>
+				</div>
+				<div class="stage-controls">
+					<button class="btn primary" id="btnOne" type="button">1 Kugel</button>
+					<button class="btn" id="btnMany" type="button">+ 200 Kugeln</button>
+					<button class="btn" id="btnClear" type="button">Leeren</button>
+					<label class="range">
+						<span class="range-head"><span>Reihen</span><output id="rowsOut">10</output></span>
+						<input type="range" id="rows" min="3" max="14" value="10" />
+					</label>
+					<label class="range">
+						<span class="range-head"><span>Chance nach rechts</span><output id="pOut">50 %</output></span>
+						<input type="range" id="pRight" min="10" max="90" value="50" />
+					</label>
+					<button class="btn" id="btnCurve" type="button" aria-pressed="true">Erwartung zeigen</button>
+					<p class="stage-note" id="galtonNote"></p>
 				</div>
 			</div>
 		</section>
