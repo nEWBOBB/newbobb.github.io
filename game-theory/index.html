@@ -4,249 +4,810 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-	<title>Spieltheorie — Newbobb Lab</title>
+	<title>Spieltheorie: die Spielhalle · Newbobb Lab</title>
 	<meta name="description"
-		content="Spieltheorie interaktiv: Spiel das Gefangenendilemma gegen einen unbekannten Gegner und lass sieben Strategien in Axelrods Turnier gegeneinander antreten. Warum Kooperation am Ende gewinnt." />
-	<meta name="theme-color" content="#0b0a09" />
+		content="Spieltheorie als Spielhalle: 15 Level gegen Bots, von Schere-Stein-Papier über Nash-Gleichgewicht und Gefangenendilemma bis zu Auktionen, Evolution der Kooperation und langen Spielen." />
+	<meta name="theme-color" content="#0a0716" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;500;600;700&display=swap"
 		rel="stylesheet" />
-	<link rel="stylesheet" href="../assets/verstehen.css" />
-	<link rel="stylesheet" href="../assets/fach.css" />
-	<style>
-		:root {
-			--fach: #ff8a5c;
-		}
-
-		.pd-score {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 10px;
-			padding: 22px 18px 6px;
-			text-align: center;
-		}
-
-		.pd-score b {
-			display: block;
-			font-family: "Syne", sans-serif;
-			font-size: 2.4rem;
-			line-height: 1;
-		}
-
-		.pd-score span {
-			color: var(--faint);
-			font-size: 0.8rem;
-			text-transform: uppercase;
-			letter-spacing: 0.12em;
-		}
-
-		.pd-rows {
-			display: grid;
-			gap: 6px;
-			padding: 14px 18px 22px;
-		}
-
-		.pd-row {
-			display: grid;
-			grid-template-columns: 5.5em repeat(10, minmax(0, 1fr));
-			gap: 4px;
-			align-items: center;
-			font-size: 0.78rem;
-			color: var(--faint);
-		}
-
-		.pd-row i {
-			aspect-ratio: 1;
-			border-radius: 6px;
-			background: rgba(255, 255, 255, 0.05);
-			display: grid;
-			place-items: center;
-			font-style: normal;
-			font-size: 0.9rem;
-		}
-
-		.pd-row i.c {
-			background: rgba(123, 220, 154, 0.25);
-		}
-
-		.pd-row i.d {
-			background: rgba(255, 106, 138, 0.3);
-		}
-
-		.payoff {
-			width: 100%;
-			border-collapse: collapse;
-			margin: 0 0 14px;
-			font-size: 0.9rem;
-			color: var(--muted);
-		}
-
-		.payoff th,
-		.payoff td {
-			border: 1px solid var(--line);
-			padding: 8px 10px;
-			text-align: center;
-		}
-
-		.payoff td b {
-			color: var(--ink);
-		}
-
-		.ranking {
-			list-style: none;
-			margin: 0;
-			padding: 18px;
-			display: grid;
-			gap: 8px;
-		}
-
-		.ranking li {
-			display: grid;
-			grid-template-columns: 1.4em 10em 1fr 3.4em;
-			gap: 10px;
-			align-items: center;
-			font-size: 0.86rem;
-		}
-
-		.ranking li span:first-child {
-			color: var(--faint);
-			font-family: "JetBrains Mono", monospace;
-		}
-
-		.ranking li i {
-			display: block;
-			height: 12px;
-			border-radius: 6px;
-			background: var(--accent);
-			transition: width 0.6s;
-		}
-
-		.ranking li b {
-			text-align: right;
-			font-variant-numeric: tabular-nums;
-		}
-
-		@media (max-width: 520px) {
-			.ranking li {
-				grid-template-columns: 1.2em 7.5em 1fr 3em;
-			}
-		}
-	</style>
+	<link rel="stylesheet" href="./arcade.css" />
+	<script defer src="./arcade.js"></script>
+	<script defer src="./levels-a.js"></script>
+	<script defer src="./levels-b.js"></script>
+	<script defer src="./levels-c.js"></script>
 </head>
 
-<body data-fach="game-theory">
-	<div class="v-progress" aria-hidden="true"></div>
-	<header class="v-top">
-		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
-		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+<body>
+	<header class="hud">
+		<a class="home" href="../#faecher">◀ newbobb</a>
+		<span class="hud-mid">Spielhalle</span>
+		<span class="hud-stars" aria-label="Gesammelte Sterne">★ 0/45</span>
 	</header>
 
 	<main>
-		<section class="v-hero">
-			<p class="v-kicker">Fach 07 · Naval: Grundlage 2</p>
-			<h1>Vertrauen<br />oder <em>Verrat?</em></h1>
-			<p class="v-lede">Spieltheorie ist die Mathematik von Entscheidungen, bei denen dein Ergebnis davon abhängt,
-				was andere tun. Ihr berühmtestes Rätsel: Lohnt es sich, nett zu sein?</p>
-			<ol class="v-toc">
-				<li><a href="#dilemma">Das Gefangenendilemma</a></li>
-				<li><a href="#turnier">Axelrods Turnier</a></li>
-				<li><a href="#projekte">Projekte</a></li>
-			</ol>
+		<!-- ================= Startbildschirm ================= -->
+		<div id="select">
+			<section class="marquee" id="start">
+				<p class="px">Fach 07 · Naval Ravikant · Spieltheorie</p>
+				<h1>Die <span>Spiel</span>halle</h1>
+				<p class="lede">Spieltheorie ist die Mathematik von Entscheidungen, wenn andere mitentscheiden. Hier lernst du sie
+					so, wie man Spiele lernt: Du spielst gegen Bots, und erst danach wird aufgedeckt, welche Strategie dahinter
+					steckt. 15 Level, jedes mit Mission und Boss-Frage, von leicht nach schwer.</p>
+				<p class="px insert">Wähle ein Level</p>
+			</section>
+
+			<div class="select" id="cabs"></div>
+
+			<section class="scores" id="highscore" aria-labelledby="hsTitle">
+				<h2 id="hsTitle">Highscore</h2>
+				<ol id="scoreList"></ol>
+				<div class="initials">
+					<label for="initials">Deine Initialen</label>
+					<input id="initials" maxlength="3" autocomplete="off" placeholder="ABC" />
+					<button class="btn" id="resetAll" type="button">Neu anfangen</button>
+				</div>
+				<p style="text-align:center;color:var(--faint);font-size:.9rem;margin:14px 0 0">Jeder Stern zählt 100 Punkte.
+					Pro Level gibt es drei: einen für die Mission, zwei für die Boss-Frage beim ersten Versuch.</p>
+			</section>
+		</div>
+
+		<!-- ================= Welt 1 ================= -->
+
+		<section class="level" id="l1" data-n="1" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Dein erster Gegner heißt <b>Rocky</b>. Er spielt Schere, Stein, Papier und behauptet, unschlagbar zu sein.
+					Spiel zehn Runden gegen ihn. Achte auf seine Züge: Vielleicht verrät er sich.</p>
+			</div>
+			<div class="arena">
+				<div class="row" role="group" aria-label="Dein Zug">
+					<button class="btn big you" type="button" data-move="0">✊<small>Stein</small></button>
+					<button class="btn big you" type="button" data-move="1">✋<small>Papier</small></button>
+					<button class="btn big you" type="button" data-move="2">✌️<small>Schere</small></button>
+				</div>
+				<div class="screen" id="rpsScreen" aria-live="polite">Wähl deinen Zug.</div>
+				<div class="score-row"><span class="you">Du <b id="rpsYou">0</b></span><span class="opp">Rocky <b
+							id="rpsOpp">0</b></span><span>Runde <b id="rpsRound">0</b>/10</span></div>
+				<p class="px" style="color:var(--faint);margin:6px 0">Rockys Züge bisher</p>
+				<div class="strip" id="rpsStrip" aria-label="Rockys bisherige Züge"></div>
+				<div class="row" style="margin-top:12px"><button class="btn" type="button" id="rpsReset">Neue Partie</button></div>
+			</div>
+			<p class="mission">Gewinne in einer Partie mindestens 6 von 10 Runden. Wer blind rät, schafft im Schnitt nur 3.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Rocky zählt einfach durch: <strong>Stein, Papier, Schere, Stein, …</strong> Wer das merkt, gewinnt jede
+						Runde. Genau darum geht es in der Spieltheorie: Was ist der beste Zug, wenn mein Ergebnis auch davon
+						abhängt, was ein anderer tut?</p>
+					<p>Jedes Spiel in diesem Sinne hat vier Zutaten:</p>
+					<ul>
+						<li><strong>Spieler:</strong> wer entscheidet (du und Rocky).</li>
+						<li><strong>Strategien:</strong> was jeder tun kann (Stein, Papier, Schere).</li>
+						<li><strong>Auszahlungen:</strong> was jeder am Ende bekommt (Sieg, Remis, Niederlage).</li>
+						<li><strong>Information:</strong> wer was weiß, wenn er zieht (hier: niemand sieht den Zug des anderen).</li>
+					</ul>
+					<p>Das passt auf Schach, auf Preiskämpfe zwischen Firmen und auf die Frage, wer in der WG abwäscht.</p>
+					<p class="merke">Wer berechenbar spielt, wird ausgenutzt. Gegen einen klugen Gegner ist bei Schere, Stein,
+						Papier nur eines sicher: jeden Zug mit genau einem Drittel Wahrscheinlichkeit, rein zufällig. Das kommt in
+						Level 9 wieder.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="2" data-why="Schach hat keinen Zufall und ist trotzdem ein Spiel. Es braucht Spieler, Strategien, Auszahlungen und eine Regel, wer was weiß."
+				data-hint="Denk an Schach: Was fehlt dort, und es ist trotzdem ein Spiel?">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Was braucht ein Spiel in der Spieltheorie NICHT unbedingt?</p>
+				<div class="opts">
+					<button type="button">Mehrere Spieler, die entscheiden</button>
+					<button type="button">Auszahlungen für jeden Ausgang</button>
+					<button type="button">Zufall, zum Beispiel Würfel</button>
+				</div>
+			</div>
 		</section>
 
-		<div class="f-quotes" data-fach-quote></div>
+		<section class="level" id="l2" data-n="2" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Am Strand sind die Badegäste gleichmäßig verteilt. Jeder kauft sein Eis am <b>nächsten</b> Kiosk. Du und ein
+					Konkurrenz-Bot stellt jeden Morgen euren Wagen auf: links, in der Mitte oder rechts. Wer bekommt wie viele
+					Kunden?</p>
+			</div>
+			<div class="arena">
+				<canvas id="beachCv" aria-label="Strand mit Badegästen, gefärbt nach dem Kiosk, zu dem sie gehen"></canvas>
+				<h3 style="margin-top:16px">Auszahlungsmatrix · Kunden in Prozent</h3>
+				<div id="beachMx"></div>
+				<div class="screen" id="beachScreen" aria-live="polite">Tippe links auf eine Zeile, um deinen Platz zu wählen.</div>
+				<div class="score-row"><span class="you">Deine Kunden <b id="beachSum">0</b> %</span><span>Tag <b
+							id="beachDay">0</b>/5</span></div>
+				<div class="row"><button class="btn" type="button" id="beachReset">Neue Woche</button></div>
+			</div>
+			<p class="mission">Sammle in einer Woche (5 Tage) zusammen mindestens 280 % Kunden.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Die Tabelle heißt <strong>Auszahlungsmatrix</strong>. Du wählst eine Zeile, der Bot eine Spalte. In der
+						Zelle, wo sich beide treffen, steht das Ergebnis: <strong>links deine Zahl, rechts seine</strong>. Ein
+						ganzes Spiel passt so auf eine Postkarte.</p>
+					<p>Schau die Zeile „Mitte“ an: 67, 50, 67. Egal wo der Bot steht, in der Mitte bekommst du nie weniger als die
+						Hälfte. Deshalb stehen Kioske, Tankstellen und Handyläden so oft direkt nebeneinander, und Parteien
+						rücken vor Wahlen in die Mitte. Ökonomen nennen das <strong>Hotellings Gesetz</strong>.</p>
+					<p class="merke">Eine Auszahlungsmatrix zeigt alle Kombinationen von Zügen und was jeder dafür bekommt. Lies
+						immer: Zeile = du, Spalte = der andere, linke Zahl = deine.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="0" data-why="Zeile „Links“, Spalte „Mitte“: Die Grenze liegt dann bei einem Drittel des Strandes. Du bekommst 33 %, der Bot 67 %."
+				data-hint="Such die Zeile „Links“ und darin die Spalte „Mitte“. Die linke Zahl gehört dir.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Du stehst links, der Bot in der Mitte. Wie viel Prozent der Kunden bekommst du?</p>
+				<div class="opts">
+					<button type="button">33 %</button>
+					<button type="button">50 %</button>
+					<button type="button">67 %</button>
+				</div>
+			</div>
+		</section>
 
-
-		<section class="chapter" id="dilemma">
-			<div class="chapter-text reveal">
-				<span class="chapter-num">01 · Ein Spiel, zwei Spieler</span>
-				<h2>Das Gefangenendilemma</h2>
-				<p>Zwei Spieler entscheiden gleichzeitig: <strong>kooperieren</strong> oder <strong>betrügen</strong>.
-					Die Punkte:</p>
-				<table class="payoff">
-					<tr><th></th><th>Gegner kooperiert</th><th>Gegner betrügt</th></tr>
-					<tr><th>Du kooperierst</th><td><b>3</b> : 3</td><td><b>0</b> : 5</td></tr>
-					<tr><th>Du betrügst</th><td><b>5</b> : 0</td><td><b>1</b> : 1</td></tr>
+		<section class="level" id="l3" data-n="3" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Dein Frachter muss durch den Sektor. Ein Pirat lauert auf einer der drei Routen, aber du weißt nicht, auf
+					welcher. Die Zahlen sagen, wie viel Ladung du heil durchbringst. Gibt es einen Kurs, der <b>immer</b> der
+					beste ist?</p>
+			</div>
+			<div class="arena">
+				<h3>Die Wenn-dann-Lupe</h3>
+				<p style="margin:0 0 10px;color:var(--muted);font-size:.95rem">Tippe auf einen Piraten-Ort oben. Dann zeigt ein
+					Stern, welcher Kurs <b>in diesem Fall</b> am meisten bringt.</p>
+				<div id="pirMx"></div>
+				<div class="screen" id="pirScreen" aria-live="polite">Wähle links einen Kurs, um loszufliegen.</div>
+				<div class="score-row"><span class="you">Ladung <b id="pirSum">0</b></span><span>Flüge <b
+							id="pirN">0</b></span></div>
+			</div>
+			<p class="mission">Prüf mit der Lupe alle drei Piraten-Orte und flieg dann dreimal hintereinander den Kurs, der überall
+				gewinnt.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Der <strong>Hyperraum</strong> bringt in jeder Spalte am meisten: 5 statt 2 oder 4, 6 statt 5 oder 3, 6
+						statt 4 oder 5. Er ist eine <strong>dominante Strategie</strong>. Du musst gar nicht wissen, wo der Pirat
+						lauert. Egal, was er tut: Hyperraum ist besser.</p>
+					<p>Das ist das einfachste Werkzeug der Spieltheorie: Geh die Spalten einzeln durch („<strong>wenn</strong> er
+						das tut, <strong>dann</strong> ist mein bester Zug …“). Kommt jedes Mal derselbe Zug heraus, ist er
+						dominant. Gegenteil: Ein Zug, der in jeder Spalte schlechter ist als ein anderer, ist
+						<strong>dominiert</strong>. Den spielt kein vernünftiger Mensch.</p>
+					<p class="merke">Dominante Strategie: in jeder Lage mindestens so gut wie jede andere. Wenn du eine hast, spiel
+						sie. Aber Vorsicht, die meisten Spiele haben keine.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="2" data-why="Oben ist besser, wenn der andere links spielt (3 &gt; 2), unten ist besser, wenn er rechts spielt (4 &gt; 1). Kein Zug gewinnt in beiden Spalten, also gibt es keine dominante Strategie."
+				data-hint="Vergleiche Spalte für Spalte nur deine Zahlen. Gewinnt eine Zeile in beiden Spalten?">
+				<span class="tag">Boss-Frage</span>
+				<table class="mini" aria-label="Deine Auszahlungen">
+					<tr><th></th><th>Er: links</th><th>Er: rechts</th></tr>
+					<tr><th>Oben</th><td>3</td><td>1</td></tr>
+					<tr><th>Unten</th><td>2</td><td>4</td></tr>
 				</table>
-				<p>Das Dilemma: Egal was der andere tut, Betrügen bringt dir <em>in dieser einen Runde</em> mehr. Aber wenn
-					beide so denken, bekommen beide nur 1 statt 3.</p>
-				<p>Alles ändert sich, wenn man sich <strong>wiederbegegnet</strong>. Dann merkt sich der andere, was du
-					getan hast. Spiel 10 Runden gegen einen unbekannten Gegner und finde heraus, wie er tickt.</p>
-				<p class="merke"><b>Merke</b>Was in einem einzelnen Spiel klug ist, kann in einer langen Beziehung dumm
-					sein. Naval nennt das: „Play long-term games with long-term people.“</p>
-			</div>
-			<div class="stage reveal">
-				<p class="task">10 Runden gegen einen Gegner mit einer geheimen Strategie. Holst du mehr Punkte als er?</p>
-				<div class="stage-view">
-					<div class="pd-score">
-						<div><span>Du</span><b id="pdMe">0</b></div>
-						<div><span>Gegner</span><b id="pdThem">0</b></div>
-					</div>
-					<div class="pd-rows">
-						<div class="pd-row" id="rowMe"><span>Du</span></div>
-						<div class="pd-row" id="rowThem"><span>Gegner</span></div>
-					</div>
-					<span class="stage-tag" id="pdRound">Runde 1 / 10</span>
-				</div>
-				<div class="stage-controls">
-					<button class="btn primary" id="btnC" type="button">🤝 Kooperieren</button>
-					<button class="btn" id="btnD" type="button">🗡 Betrügen</button>
-					<button class="btn" id="btnNew" type="button">↺ Neuer Gegner</button>
-					<p class="stage-note" id="pdNote">Wer ist dein Gegner? Das verrate ich nach Runde 10.</p>
+				<p class="q">Die Tabelle zeigt nur deine Punkte. Welche Zeile ist dominant?</p>
+				<div class="opts">
+					<button type="button">Oben</button>
+					<button type="button">Unten</button>
+					<button type="button">Keine von beiden</button>
 				</div>
 			</div>
 		</section>
 
-		<section class="chapter flip" id="turnier">
-			<div class="chapter-text reveal">
-				<span class="chapter-num">02 · Evolution der Kooperation</span>
-				<h2>Axelrods Turnier</h2>
-				<p>1980 lud der Politologe Robert Axelrod Forscher ein, Programme für das wiederholte Gefangenendilemma
-					zu schreiben. Jedes spielte gegen jedes, 200 Runden lang. Gewonnen hat das kürzeste Programm von
-					allen: <strong>Tit for Tat</strong> („Wie du mir, so ich dir“).</p>
-				<ul>
-					<li><strong>Freundlich:</strong> Es fängt nie mit Betrug an.</li>
-					<li><strong>Wehrhaft:</strong> Betrug wird sofort bestraft.</li>
-					<li><strong>Versöhnlich:</strong> Wer wieder kooperiert, dem wird verziehen.</li>
-					<li><strong>Durchschaubar:</strong> Der Gegner merkt schnell, dass sich Kooperation lohnt.</li>
-				</ul>
-				<p>Aber wer gewinnt, hängt davon ab, <strong>wer sonst noch mitspielt</strong>. Sind viele naive Spieler
-					dabei, lohnt sich Ausbeuten. Und wenn Züge aus Versehen falsch ankommen, schaukeln sich strenge
-					Strategien in endlose <strong>Racheketten</strong> hoch.</p>
-				<p class="merke"><b>Merke</b>Nett, aber nicht naiv. Und vergeben können, weil Fehler passieren.</p>
+		<section class="level" id="l4" data-n="4" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Zwei Bands planen ihr Konzert in derselben Stadt: Freitag, Samstag oder Sonntag. Samstag ist der beste Abend,
+					aber wenn beide am selben Tag spielen, teilen sie sich das Publikum. Keiner hat eine dominante Strategie. Wo
+					landet das Spiel trotzdem?</p>
 			</div>
-			<div class="stage reveal">
-				<p class="task">Starte das Turnier. Dreh dann die Fehlerquote hoch und starte nochmal. Wer gewinnt jetzt?</p>
-				<div class="stage-view">
-					<ol class="ranking" id="ranking"></ol>
-					<span class="stage-tag">Punkte pro Runde</span>
+			<div class="arena">
+				<h3 id="nashStep">Schritt 1 · Deine besten Antworten</h3>
+				<p id="nashTask" style="margin:0 0 10px;color:var(--muted);font-size:.95rem">Geh die Spalten durch: Tippe in
+					jeder Spalte die Zelle mit der höchsten <b style="color:var(--you)">linken</b> Zahl.</p>
+				<div id="nashMx"></div>
+				<div class="screen" id="nashScreen" aria-live="polite"></div>
+				<div class="row"><button class="btn" type="button" id="nashReset">Von vorn</button></div>
+			</div>
+			<p class="mission">Markiere alle besten Antworten beider Bands und finde die Zellen, in denen beide Sterne
+				zusammenkommen.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Eine Zelle mit <strong>zwei Sternen</strong> ist ein <strong>Nash-Gleichgewicht</strong>: Jede Band spielt
+						dort schon die beste Antwort auf die andere. Keine kann sich verbessern, indem sie <em>allein</em> den
+						Tag wechselt. Also bleibt es dabei.</p>
+					<p>Hier gibt es zwei davon: Du Samstag und die andere Band Freitag, oder umgekehrt. Welches eintritt, sagt die
+						Theorie nicht. Das entscheidet, wer zuerst ankündigt (Level 8 und 11). Ein Gleichgewicht muss auch
+						nicht gerecht oder gut für alle sein. Es ist nur stabil.</p>
+					<p>John Nash hat 1950 bewiesen, dass jedes Spiel mit endlich vielen Zügen mindestens ein solches
+						Gleichgewicht hat, wenn man auch zufälliges Mischen erlaubt. Dafür bekam er den Nobelpreis.</p>
+					<p class="merke">Nash-Gleichgewicht: Jeder spielt die beste Antwort auf die anderen. Keiner bereut seinen Zug,
+						wenn er sieht, was die anderen getan haben.</p>
 				</div>
-				<div class="stage-controls">
-					<label class="range">
-						<span class="range-head"><span>Missverständnisse</span><output id="noiseOut">0 %</output></span>
-						<input type="range" id="noise" min="0" max="15" value="0" />
-					</label>
-					<button class="btn primary" id="btnTour" type="button">🏆 Turnier starten</button>
-					<p class="stage-note" id="tourNote">Jede Strategie spielt 200 Runden gegen jede andere und gegen sich
-						selbst.</p>
+			</details>
+			<div class="boss" data-answer="1" data-why="Im Nash-Gleichgewicht kann sich niemand allein verbessern. Es muss nicht das beste Ergebnis für alle sein, und es kann mehrere geben, wie bei den Bands."
+				data-hint="Bei den Bands gab es zwei Gleichgewichte, und keins war für beide gleich gut.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Was gilt in einem Nash-Gleichgewicht immer?</p>
+				<div class="opts">
+					<button type="button">Beide bekommen das beste Ergebnis, das möglich ist.</button>
+					<button type="button">Keiner kann sich verbessern, wenn nur er seinen Zug ändert.</button>
+					<button type="button">Es gibt genau ein solches Feld.</button>
 				</div>
 			</div>
 		</section>
 
-		<section class="f-projects" id="projekte">
-			<h2>Projekte in Spieltheorie</h2>
-			<p>Projekte, in denen Strategie, Vertrauen und Entscheidungen eine Rolle spielen.</p>
-			<div class="f-grid" data-fach-projects></div>
+		<!-- ================= Welt 2 ================= -->
+
+		<section class="level" id="l5" data-n="5" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Die Polizei hat dich und einen Komplizen geschnappt und verhört euch getrennt. Schweigt ihr beide, gibt es
+					nur eine kleine Strafe. Verpfeifst du ihn und er schweigt, kommst du frei. Die Punkte unten sind Jahre in
+					Freiheit statt im Gefängnis: mehr ist besser. Du triffst fünf verschiedene Komplizen, jeden nur ein
+					einziges Mal.</p>
+			</div>
+			<div class="arena">
+				<div id="pdMx"></div>
+				<div class="screen" id="pdScreen" aria-live="polite">Wähle links: Schweigen oder Verraten. Tipp oben auf eine
+					Spalte, um mit der Lupe aus Level 3 nachzusehen.</div>
+				<div class="score-row"><span class="you">Du <b id="pdYou">0</b></span><span class="opp">Komplizen <b
+							id="pdOpp">0</b></span><span>Verhör <b id="pdN">0</b>/5</span></div>
+				<div class="row"><button class="btn" type="button" id="pdReset">Neue Verhöre</button></div>
+			</div>
+			<p class="mission">Nimm die Lupe für beide Spalten, dann spiel alle fünf Verhöre.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Die Lupe zeigt: <strong>Verraten ist dominant</strong>. Schweigt der andere, bekommst du 5 statt 3. Verrät
+						er, bekommst du 1 statt 0. Für ihn gilt genau dasselbe. Also verraten beide, und jeder bekommt 1.</p>
+					<p>Das ist das <strong>Gefangenendilemma</strong>: Hätten beide geschwiegen, hätte jeder 3 bekommen. Zwei
+						vernünftige Einzelne landen gemeinsam bei einem Ergebnis, das für beide schlechter ist. Das
+						Nash-Gleichgewicht (Verraten, Verraten) ist stabil und trotzdem schlecht.</p>
+					<p>Das Muster ist überall: Zwei Firmen senken die Preise, bis keine mehr verdient. Länder rüsten auf, obwohl
+						Abrüsten für beide besser wäre. Jeder fischt mehr, bis das Meer leer ist.</p>
+					<p class="merke">Im Gefangenendilemma ist Verraten für jeden Einzelnen klug und für beide zusammen dumm. Wie
+						man trotzdem zur Kooperation kommt, zeigen die nächsten Level.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="0" data-why="Verraten bringt in jeder Spalte mehr (5 &gt; 3 und 1 &gt; 0). Also verrät jeder, auch wenn beide zusammen mit Schweigen besser fahren würden."
+				data-hint="Benutz die Lupe: Was bringt mehr, egal was der andere tut?">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Warum landen zwei kluge Spieler bei 1 und 1, obwohl 3 und 3 für beide besser wäre?</p>
+				<div class="opts">
+					<button type="button">Weil Verraten für jeden in jeder Lage mehr bringt.</button>
+					<button type="button">Weil sie sich nicht leiden können.</button>
+					<button type="button">Weil sie die Matrix falsch lesen.</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l6" data-n="6" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Jetzt spielst du das Gefangenendilemma <b>zehnmal hintereinander gegen denselben Bot</b>. Kooperieren bringt
+					3 für beide, Verraten gegen Kooperieren 5 zu 0, gegenseitiges Verraten 1 und 1. Am Ende musst du raten,
+					welcher der fünf Bots dir gegenübersaß.</p>
+			</div>
+			<div class="arena">
+				<div class="row" role="group" aria-label="Dein Zug">
+					<button class="btn big you" type="button" data-pd="c">🤝<small>Kooperieren</small></button>
+					<button class="btn big you" type="button" data-pd="d">🗡️<small>Verraten</small></button>
+				</div>
+				<div class="screen" id="rpScreen" aria-live="polite">Runde 1: Was spielst du?</div>
+				<div class="score-row"><span class="you">Du <b id="rpYou">0</b></span><span class="opp">Bot <b
+							id="rpOpp">0</b></span><span>Runde <b id="rpN">0</b>/10</span></div>
+				<p class="px" style="color:var(--faint);margin:6px 0">Du</p>
+				<div class="strip" id="rpStripYou"></div>
+				<p class="px" style="color:var(--faint);margin:10px 0 6px">Bot</p>
+				<div class="strip" id="rpStripBot"></div>
+				<div id="rpGuess" hidden>
+					<h3 style="margin-top:16px">Wer war es?</h3>
+					<div class="row" id="rpGuessBtns"></div>
+				</div>
+				<div class="row" style="margin-top:12px"><button class="btn" type="button" id="rpReset">Neuer Bot</button></div>
+			</div>
+			<p class="mission">Errate nach zehn Runden, welcher Bot es war.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Die fünf Bots:</p>
+					<ul>
+						<li><strong>Spiegel</strong> (Tit for Tat): fängt freundlich an und macht dann immer, was du in der Runde
+							davor gemacht hast.</li>
+						<li><strong>Elefant</strong>: kooperiert, bis du einmal verrätst. Danach verrät er für immer.</li>
+						<li><strong>Hai</strong>: verrät immer.</li>
+						<li><strong>Lamm</strong>: kooperiert immer, egal was du tust.</li>
+						<li><strong>Würfel</strong>: entscheidet jedes Mal per Münzwurf.</li>
+					</ul>
+					<p>Sobald sich zwei <strong>wiedersehen</strong>, ändert sich alles: Verrat von heute wird morgen bestraft. Der
+						Politologe Robert Axelrod ließ 1980 Programme von Forschern in einem Turnier gegeneinander antreten. Es
+						gewann das kürzeste: Tit for Tat. Es gewinnt kein einziges Duell (es kann höchstens gleichziehen), sammelt
+						aber in der Summe die meisten Punkte, weil es mit allen Netten lange kooperiert und sich nicht ausnutzen
+						lässt.</p>
+					<p class="merke">Gute Strategien in wiederholten Spielen sind <strong>freundlich</strong> (fangen nett an),
+						<strong>wehrhaft</strong> (schlagen zurück), <strong>verzeihend</strong> (kehren zur Kooperation zurück) und
+						<strong>durchschaubar</strong>.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="1" data-why="Tit for Tat kann ein Duell nie gewinnen, weil es nur zurückschlägt. Aber gegen alle Netten holt es 3 Punkte pro Runde, und gegen Haie verliert es nur die erste Runde. In der Summe reicht das für Platz 1."
+				data-hint="Es geht um die Summe über viele Gegner, nicht um einzelne Duelle.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Tit for Tat gewinnt kein einziges Duell und trotzdem das Turnier. Wie geht das?</p>
+				<div class="opts">
+					<button type="button">Es hatte Glück bei der Auslosung.</button>
+					<button type="button">Es sammelt mit allen, die kooperieren, viele Punkte und lässt sich nicht ausnutzen.</button>
+					<button type="button">Es verrät heimlich in der letzten Runde.</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l7" data-n="7" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Du und ein Mitjäger zieht in den Wald. Einen <b>Hirsch</b> schafft ihr nur zu zweit, er bringt jedem 4. Einen
+					<b>Hasen</b> fängst du allein sicher, er bringt 2. Wer auf den Hirsch wartet, während der andere Hasen jagt,
+					geht leer aus. Dein Mitjäger beobachtet genau, was du tust.</p>
+			</div>
+			<div class="arena">
+				<div id="stagMx"></div>
+				<div class="screen" id="stagScreen" aria-live="polite">Wähle links: Hirsch oder Hase.</div>
+				<div class="score-row"><span class="you">Du <b id="stagYou">0</b></span><span class="opp">Mitjäger <b
+							id="stagOpp">0</b></span><span>Hirsche in Folge <b id="stagRun">0</b></span><span>Vertrauen <b
+							id="stagTrust">50</b> %</span></div>
+				<div class="strip" id="stagStrip"></div>
+				<div class="row" style="margin-top:12px"><button class="btn" type="button" id="stagReset">Neuer Mitjäger</button></div>
+			</div>
+			<p class="mission">Erlegt dreimal hintereinander gemeinsam einen Hirsch.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Die Hirschjagd hat <strong>zwei Nash-Gleichgewichte</strong>: Beide jagen den Hirsch (4 und 4), oder beide
+						jagen Hasen (2 und 2). In beiden will keiner allein wechseln. Das Hirsch-Gleichgewicht ist besser, aber
+						riskanter: Wer dem anderen nicht traut, nimmt lieber den sicheren Hasen.</p>
+					<p>Dein Mitjäger hat sein <strong>Vertrauen</strong> an dein Verhalten geknüpft. Jeder Hase von dir senkt es,
+						jeder Hirsch hebt es. Hier ist das Problem nicht Gier wie im Gefangenendilemma, sondern
+						<strong>Koordination</strong>: Beide wollen dasselbe, sie müssen sich nur darauf verlassen können.</p>
+					<p>Solche Spiele lösen Menschen mit Absprachen, Gewohnheiten und Signalen. Der Ökonom Thomas Schelling
+						fragte Studenten, wo sie jemanden in New York ohne Absprache treffen würden. Die meisten sagten: mittags an
+						der Grand Central Station. Solche naheliegenden Treffpunkte heißen <strong>Schelling-Punkte</strong>.</p>
+					<p class="merke">Bei Koordinationsspielen gibt es mehrere Gleichgewichte. Welches eintritt, hängt von Vertrauen,
+						Erwartungen und Signalen ab, nicht von Gier.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="2" data-why="(Hirsch, Hirsch) und (Hase, Hase) sind beide stabil. Bei einem gemischten Feld will der, der leer ausgeht, sofort wechseln."
+				data-hint="Prüf jedes Feld: Will einer der beiden allein wechseln?">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Wie viele Nash-Gleichgewichte (mit festen Zügen) hat die Hirschjagd?</p>
+				<div class="opts">
+					<button type="button">Keins</button>
+					<button type="button">Eins</button>
+					<button type="button">Zwei</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l8" data-n="8" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Zwei Autos rasen aufeinander zu. Wer ausweicht, ist der Feigling (−1), der andere gewinnt (+1). Weichen beide
+					aus, passiert nichts (0). Weicht keiner aus, krachen sie zusammen (−10). Manchmal wirft der <b>Hitzkopf</b>
+					sein Lenkrad sichtbar aus dem Fenster. Und du kannst das auch.</p>
+			</div>
+			<div class="arena">
+				<canvas id="chickenCv" aria-label="Zwei Autos fahren aufeinander zu"></canvas>
+				<div class="screen" id="chickenScreen" aria-live="polite"></div>
+				<div class="row" role="group" aria-label="Dein Zug">
+					<button class="btn you" type="button" id="chSwerve">↪ Ausweichen</button>
+					<button class="btn you" type="button" id="chStraight">⬆ Geradeaus</button>
+					<button class="btn hot" type="button" id="chWheel">🛞 Lenkrad rauswerfen</button>
+				</div>
+				<div class="score-row"><span class="you">Du <b id="chYou">0</b></span><span class="opp">Hitzkopf <b
+							id="chOpp">0</b></span><span>Siege ohne Crash <b id="chWins">0</b>/3</span></div>
+			</div>
+			<p class="mission">Gewinne dreimal (+1), ohne dass es zwischendurch kracht.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Der Hitzkopf fährt ohne Lenkrad natürlich geradeaus. Mit Lenkrad ist er ein Feigling wie alle: Er weicht aus,
+						sobald er sicher weiß, dass <em>du</em> nicht mehr ausweichen kannst. Wer sich als Erster
+						<strong>sichtbar festlegt</strong>, gewinnt.</p>
+					<p>Das ist paradox: Du bist besser dran, weil du <strong>weniger Möglichkeiten</strong> hast. Ökonomen nennen das
+						<strong>Selbstbindung</strong> (Commitment). Wenn beide gleichzeitig ihr Lenkrad rauswerfen, gibt es den
+						Crash. Deshalb ist das Feigling-Spiel so gefährlich: Es hat zwei Gleichgewichte (einer weicht aus, der
+						andere nicht), und jeder will das, in dem er gewinnt.</p>
+					<p>Beispiele: Eine Firma baut eine riesige Fabrik, bevor die Konkurrenz kommt. Eine Gewerkschaft stimmt öffentlich
+						für Streik. Odysseus lässt sich an den Mast binden, damit er den Sirenen nicht folgen kann.</p>
+					<p class="merke">Wer sich glaubwürdig festlegt, zwingt den anderen, sich anzupassen. Aber Selbstbindung muss
+						sichtbar sein, und sie muss rechtzeitig kommen.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="0" data-why="Weil der andere sieht, dass du nicht mehr zurückkannst. Für ihn ist Ausweichen (−1) dann besser als der Crash (−10)."
+				data-hint="Überleg, was der andere denkt, wenn er dein Lenkrad aus dem Fenster fliegen sieht.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Warum kann es helfen, sich selbst die Hände zu binden?</p>
+				<div class="opts">
+					<button type="button">Weil der andere dann weiß, dass du nicht mehr ausweichst, und selbst ausweicht.</button>
+					<button type="button">Weil es Punkte für Mut gibt.</button>
+					<button type="button">Weil der andere dann auch sein Lenkrad rauswirft.</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- ================= Welt 3 ================= -->
+
+		<section class="level" id="l9" data-n="9" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Elfmeter! Du schießt, der Bot hält. Deine starke Seite ist links: Rät der Torwart dort richtig, triffst du
+					immer noch in 50 % der Fälle, rechts nur in 20 %. Rät er falsch, triffst du in 90 %. Der Torwart
+					<b>merkt sich</b>, wohin du schießt.</p>
+			</div>
+			<div class="arena">
+				<canvas id="penCv" aria-label="Tor mit Torwart und Ball"></canvas>
+				<div class="row" role="group" aria-label="Dein Schuss" style="margin-top:12px">
+					<button class="btn big you" type="button" data-shot="0">⬅<small>Links</small></button>
+					<button class="btn big you" type="button" data-shot="1">➡<small>Rechts</small></button>
+				</div>
+				<div class="screen" id="penScreen" aria-live="polite">Wohin schießt du?</div>
+				<div class="score-row"><span class="you">Tore <b id="penGoals">0</b></span><span>Schüsse <b
+							id="penShots">0</b></span><span>Links geschossen <b id="penLeft">0</b> %</span></div>
+			</div>
+			<div class="arena">
+				<h3>Die Mischmaschine</h3>
+				<p style="margin:0 0 10px;color:var(--muted);font-size:.95rem">Stell ein, wie oft du links schießt. Die beiden
+					Linien zeigen deine Trefferquote, je nachdem, wohin der Torwart springt. Ein kluger Torwart springt immer
+					dorthin, wo du schlechter bist. Für dich zählt also die <b>untere</b> Linie.</p>
+				<canvas id="mixCv" aria-label="Trefferquote abhängig von deiner Mischung"></canvas>
+				<div class="row" style="margin-top:10px">
+					<label class="slider"><span>Links schießen <output id="mixOut">50 %</output></span><input type="range"
+							id="mixP" min="0" max="100" value="50" /></label>
+				</div>
+				<div class="screen" id="mixScreen" aria-live="polite"></div>
+			</div>
+			<p class="mission">Finde mit der Mischmaschine die Mischung, bei der dir der klügste Torwart am wenigsten anhaben
+				kann (auf 3 Prozentpunkte genau).</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Jede feste Seite wird bestraft: Schießt du immer links, springt der Torwart immer links, und du triffst nur
+						noch in 50 %. Mischt du, muss er raten. Am besten ist die Mischung, bei der ihm <strong>beide Ecken gleich
+							viel</strong> nützen. Dann kann er dich nicht mehr ausrechnen.</p>
+					<p>Hier ist das bei etwa <strong>64 % links</strong>: Deine Quote liegt dann bei rund 65 %, egal wohin er
+						springt. Das ist ein <strong>gemischtes Gleichgewicht</strong>. Bei Schere, Stein, Papier aus Level 1 ist
+						es genau ein Drittel für jeden Zug.</p>
+					<p>Forscher haben tausende echte Elfmeter ausgewertet: Profis mischen fast genau so, wie die Theorie es
+						vorhersagt. Wichtig ist dabei echter Zufall. Menschen sind schlechte Zufallsgeneratoren: Nach zweimal links
+						schießen viele „zum Ausgleich“ rechts, und genau das lernt ein guter Torwart. Wie Wahrscheinlichkeiten
+						funktionieren, steht im Mathe-Heft in Stufe 11.</p>
+					<p class="merke">Im gemischten Gleichgewicht mischst du so, dass der Gegner zwischen seinen Zügen gleichgültig
+						ist. Dann gibt es nichts mehr, was er ausnutzen kann.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="1" data-why="Wenn beide Ecken dem Torwart gleich viel bringen, kann er dich nicht mehr ausrechnen. Jede Abweichung von dir würde er ausnutzen."
+				data-hint="Schau in der Mischmaschine, wo die beste Stelle der unteren Linie liegt.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Die beste Mischung ist die, bei der …</p>
+				<div class="opts">
+					<button type="button">… du am häufigsten auf deine starke Seite schießt.</button>
+					<button type="button">… es für den Torwart egal ist, in welche Ecke er springt.</button>
+					<button type="button">… du genau abwechselst: links, rechts, links, rechts.</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l10" data-n="10" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Auf dem Tisch liegen 21 Münzen. Ihr nehmt abwechselnd 1, 2 oder 3. <b>Wer die letzte Münze nimmt,
+						gewinnt.</b> Du fängst an. Der Bot verliert nie, wenn man ihm eine Chance lässt.</p>
+			</div>
+			<div class="arena">
+				<canvas id="nimCv" aria-label="Münzen auf dem Tisch"></canvas>
+				<div class="screen" id="nimScreen" aria-live="polite">Du bist dran. Wie viele Münzen nimmst du?</div>
+				<div class="row" role="group" aria-label="Münzen nehmen">
+					<button class="btn you" type="button" data-take="1">1 nehmen</button>
+					<button class="btn you" type="button" data-take="2">2 nehmen</button>
+					<button class="btn you" type="button" data-take="3">3 nehmen</button>
+				</div>
+				<div class="row" style="margin-top:12px">
+					<button class="btn" type="button" id="nimHelp" aria-pressed="false">Rückwärts-Brille</button>
+					<button class="btn" type="button" id="nimReset">Neues Spiel</button>
+				</div>
+				<div class="score-row"><span class="you">Siege <b id="nimW">0</b></span><span class="opp">Bot <b
+							id="nimL">0</b></span></div>
+			</div>
+			<p class="mission">Besiege den Bot.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Der Trick ist, <strong>vom Ende her</strong> zu denken. Liegen 1, 2 oder 3 Münzen da, nimmst du alle und
+						gewinnst. Liegen aber genau <strong>4</strong> da, hast du verloren: Egal ob du 1, 2 oder 3 nimmst, der
+						andere nimmt den Rest. Also willst du dem anderen 4 hinterlassen. Das schaffst du von 5, 6 und 7 aus. Von 8
+						aus nicht, also ist 8 wieder eine Verliererzahl. Und so weiter: 4, 8, 12, 16, 20.</p>
+					<p>Bei 21 nimmst du also 1 und lässt 20 liegen. Danach nimmst du immer so viele, dass ihr zusammen 4 genommen
+						habt. Die Rückwärts-Brille färbt die Verliererzahlen rot.</p>
+					<p>Diese Methode heißt <strong>Rückwärtsinduktion</strong>. Sie funktioniert bei jedem Spiel, in dem man
+						nacheinander zieht und alles sieht: bei Tic-Tac-Toe, beim Endspiel im Schach und bei Verhandlungen mit
+						festem Ende. Computer lösen Spiele genau so, nur mit Milliarden Stellungen.</p>
+					<p class="merke">Wer nacheinander zieht, denkt von hinten nach vorn: Was tut der andere im letzten Zug? Und was
+						heißt das für meinen Zug davor?</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="1" data-why="Du willst dem Bot eine Vielfache von 4 hinterlassen. Von 10 aus nimmst du 2, dann liegen 8 da."
+				data-hint="Welche Zahlen sind Verliererzahlen für den, der dran ist?">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Es liegen 10 Münzen da, du bist dran. Wie viele nimmst du, um sicher zu gewinnen?</p>
+				<div class="opts">
+					<button type="button">1</button>
+					<button type="button">2</button>
+					<button type="button">3</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l11" data-n="11" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Du willst mit einem Café in einen Ort, in dem der <b>Platzhirsch</b> bisher allein verkauft. Er droht: „Wenn
+					du kommst, mache ich die Preise kaputt, und wir verlieren beide!“ Sollst du ihm glauben? Zieh durch den
+					Spielbaum: erst du, dann er.</p>
+			</div>
+			<div class="arena">
+				<svg id="treeSvg" viewBox="0 0 600 380" role="img" aria-label="Spielbaum: Neuling entscheidet, dann Platzhirsch"
+					style="width:100%;height:auto;display:block"></svg>
+				<div class="row" style="margin-top:10px">
+					<button class="btn you" type="button" id="trIn">☕ Eröffnen</button>
+					<button class="btn you" type="button" id="trOut">🚶 Draußen bleiben</button>
+					<button class="btn" type="button" id="trSolve">Rückwärts lösen</button>
+					<button class="btn" type="button" id="trContract" aria-pressed="false">📜 Vertrag: Preiskampf garantiert</button>
+				</div>
+				<div class="screen" id="trScreen" aria-live="polite"></div>
+			</div>
+			<p class="mission">Triff in beiden Welten die richtige Wahl: einmal ohne und einmal mit Vertrag.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Rechne rückwärts wie in Level 10: Wenn du schon da bist, hat der Platzhirsch die Wahl zwischen Preiskampf
+						(−1) und Teilen (5). Er teilt. Seine Drohung ist <strong>leer</strong>, weil er sie im Ernstfall selbst
+						nicht ausführen würde. Also eröffnest du und bekommst 4.</p>
+					<p>Mit dem Vertrag ändert sich alles: Er hat sich verpflichtet, bei einem Neuling Preise zu senken, sonst zahlt
+						er 8 Strafe. Teilen bringt ihm dann nur noch −3, Preiskampf −1. Jetzt ist die Drohung
+						<strong>glaubwürdig</strong>, und du bleibst besser draußen (0 statt −3).</p>
+					<p>Das ist die Lehre von Level 8 in anderer Form: Drohungen und Versprechen zählen nur, wenn es sich lohnt, sie
+						einzulösen. Deshalb gibt es Verträge, Pfand, Bürgschaften und Ruf: Sie machen Worte glaubwürdig, indem sie
+						die eigenen Auszahlungen ändern.</p>
+					<p class="merke">Eine Drohung ist nur so viel wert wie die Antwort auf die Frage: Würde er es im Ernstfall
+						wirklich tun? Wenn nicht, ignorier sie.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="2" data-why="Glaubwürdig heißt: Wenn es so weit ist, ist das Ausführen der Drohung die beste Wahl des Drohenden. Lautstärke oder Wiederholung ändern daran nichts."
+				data-hint="Rechne rückwärts: Was tut der Drohende, wenn der Ernstfall eingetreten ist?">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Eine Drohung ist glaubwürdig, wenn …</p>
+				<div class="opts">
+					<button type="button">… sie laut und oft wiederholt wird.</button>
+					<button type="button">… der Drohende mächtiger ist.</button>
+					<button type="button">… es sich für den Drohenden im Ernstfall lohnt, sie wirklich auszuführen.</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l12" data-n="12" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Versteigert wird ein goldener Joystick. Jeder Bieter schreibt sein Gebot geheim auf. <b>Das höchste Gebot
+						gewinnt, zahlt aber nur das zweithöchste.</b> Der Joystick ist dir einen bestimmten Betrag wert. Wie viel
+					bietest du?</p>
+			</div>
+			<div class="arena">
+				<div class="screen" id="aucValue"></div>
+				<div class="row">
+					<label class="slider"><span>Dein Gebot <output id="aucBidOut">50</output></span><input type="range"
+							id="aucBid" min="0" max="120" value="50" /></label>
+					<button class="btn hot" type="button" id="aucGo">Gebot abgeben</button>
+				</div>
+				<div class="screen" id="aucScreen" aria-live="polite"></div>
+				<div class="score-row"><span class="you">Gewinn bisher <b id="aucSum">0</b></span><span>Auktionen <b
+							id="aucN">0</b></span></div>
+			</div>
+			<div class="arena">
+				<h3>Der Simulator · 4 000 Auktionen</h3>
+				<p style="margin:0 0 10px;color:var(--muted);font-size:.95rem">Stell ein, wie viel du im Verhältnis zu deinem Wert
+					bietest. Die Kurve zeigt deinen durchschnittlichen Gewinn, wenn du das immer so machst.</p>
+				<canvas id="aucCv" aria-label="Durchschnittlicher Gewinn abhängig vom Gebotsfaktor"></canvas>
+				<div class="row" style="margin-top:10px">
+					<label class="slider"><span>Gebot = Wert × <output id="aucFOut">0,8</output></span><input type="range"
+							id="aucF" min="40" max="160" value="80" /></label>
+				</div>
+				<div class="screen" id="aucSim" aria-live="polite"></div>
+			</div>
+			<p class="mission">Finde im Simulator den Faktor mit dem höchsten Durchschnittsgewinn.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>In dieser <strong>Zweitpreisauktion</strong> (nach William Vickrey) ist es am besten, <strong>genau deinen
+							Wert</strong> zu bieten. Dein Gebot entscheidet nur, <em>ob</em> du gewinnst, nicht, was du zahlst.</p>
+					<ul>
+						<li><strong>Bietest du weniger</strong>, verlierst du manchmal Auktionen, bei denen der Preis unter deinem Wert
+							gelegen hätte. Entgangener Gewinn.</li>
+						<li><strong>Bietest du mehr</strong>, gewinnst du zusätzlich genau die Auktionen, bei denen der zweite Preis
+							über deinem Wert liegt. Dann zahlst du drauf.</li>
+					</ul>
+					<p>Ehrlich bieten ist hier eine dominante Strategie wie in Level 3. eBay funktioniert ähnlich: Man gibt ein
+						Höchstgebot an, und das System bietet nur so viel, wie nötig ist, um den Zweitbesten zu schlagen. Bei
+						Erstpreisauktionen (das Höchstgebot zahlt sein eigenes Gebot) lohnt es sich dagegen, unter dem eigenen Wert
+						zu bieten.</p>
+					<p class="merke">Gute Regeln machen Ehrlichkeit zur besten Strategie. Das ist die Idee des
+						<strong>Mechanismus-Designs</strong>: Man baut das Spiel so, dass alle die Wahrheit sagen wollen.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="0" data-why="Mehr bieten ändert nichts am Preis, wenn du sowieso gewonnen hättest. Es lässt dich nur zusätzlich Auktionen gewinnen, bei denen der Preis über deinem Wert liegt."
+				data-hint="Schau im Simulator, was rechts vom Faktor 1 passiert, und überleg, welche Auktionen du dort zusätzlich gewinnst.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Warum lohnt es sich in der Zweitpreisauktion nicht, mehr als deinen Wert zu bieten?</p>
+				<div class="opts">
+					<button type="button">Weil du dann zusätzlich Auktionen gewinnst, bei denen du mehr zahlst, als dir das Ding wert ist.</button>
+					<button type="button">Weil du dann immer dein eigenes Gebot zahlen musst.</button>
+					<button type="button">Weil höhere Gebote verboten sind.</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- ================= Welt 4 ================= -->
+
+		<section class="level" id="l13" data-n="13" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Du bekommst 10 Münzen und musst sie mit jemandem teilen. Du machst ein Angebot. Nimmt die andere Person an,
+					wird so geteilt. Lehnt sie ab, bekommen <b>beide gar nichts</b>. Du triffst fünf verschiedene Personen,
+					jede nur einmal.</p>
+			</div>
+			<div class="arena">
+				<p class="px" id="ultWho" style="color:var(--opp);margin:0 0 10px">Person 1 von 5</p>
+				<div class="row">
+					<label class="slider"><span>Du bietest <output id="ultOut">3 Münzen</output></span><input type="range" id="ultOffer"
+							min="0" max="10" value="3" /></label>
+					<button class="btn hot" type="button" id="ultGo">Anbieten</button>
+				</div>
+				<div class="screen" id="ultScreen" aria-live="polite">Stell dein Angebot ein. Du behältst den Rest.</div>
+				<div class="strip" id="ultStrip"></div>
+				<div class="score-row"><span class="you">Deine Münzen <b id="ultSum">0</b></span></div>
+				<div class="row"><button class="btn" type="button" id="ultReset">Neue Runde</button></div>
+			</div>
+			<div class="arena">
+				<h3>Rollentausch · jetzt bekommst du ein Angebot</h3>
+				<div class="screen" id="ultRole" aria-live="polite"></div>
+				<div class="row">
+					<button class="btn you" type="button" id="ultAcc">Annehmen</button>
+					<button class="btn" type="button" id="ultRej">Ablehnen</button>
+					<button class="btn" type="button" id="ultNext">Nächstes Angebot</button>
+				</div>
+			</div>
+			<p class="mission">Verdiene in einer Runde mit fünf Personen mindestens 24 Münzen.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Ein rein rechnender Spieler nimmt jedes Angebot über 0 an, denn 1 Münze ist mehr als keine. Rückwärts gedacht
+						(Level 10) solltest du also nur 1 Münze bieten. Die Bots hier sind aber gebaut wie echte Menschen: Jeder hat
+						eine <strong>Schmerzgrenze</strong> zwischen 1 und 5 Münzen und lehnt alles darunter ab.</p>
+					<p>Das <strong>Ultimatumspiel</strong> wurde in Dutzenden Ländern mit echtem Geld gespielt. Ergebnis: Die meisten
+						bieten 40 bis 50 %, und Angebote unter 20 bis 30 % werden etwa in der Hälfte der Fälle abgelehnt. Menschen
+						zahlen also dafür, Unfairness zu bestrafen. Das ist nicht dumm: In einer Welt, in der man sich wiedersieht,
+						schützt der Ruf, sich nichts gefallen zu lassen.</p>
+					<p>Wenn du im Rollentausch ein kleines Angebot abgelehnt hast, kennst du das Gefühl. Mehr zu solchen
+						Bauchentscheidungen gibt es im Fach Psychologie.</p>
+					<p class="merke">Echte Menschen haben Fairness in ihrer Auszahlung. Wer das ignoriert, rechnet richtig und
+						verliert trotzdem.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="1" data-why="Wer ablehnt, verzichtet auf Geld, um den anderen für ein unfaires Angebot zu bestrafen. Fairness ist Menschen etwas wert."
+				data-hint="Denk an den Rollentausch: Warum fühlt sich Ablehnen manchmal richtig an?">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Warum lehnen viele Menschen 1 von 10 Münzen ab, obwohl 1 mehr ist als 0?</p>
+				<div class="opts">
+					<button type="button">Weil sie nicht rechnen können.</button>
+					<button type="button">Weil sie Unfairness bestrafen wollen und dafür auf etwas verzichten.</button>
+					<button type="button">Weil 1 Münze nichts wert ist.</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l14" data-n="14" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Ein Ozean voller Spieler. <b>Lämmer</b> kooperieren immer, <b>Haie</b> verraten immer, <b>Spiegel</b> spielen
+					Tit for Tat. Jeder trifft jeden für zehn Runden Gefangenendilemma. Wer viele Punkte macht, bekommt mehr
+					Nachwuchs. Was setzt sich durch?</p>
+			</div>
+			<div class="arena">
+				<canvas id="evoCv" aria-label="Anteile der drei Strategien über die Generationen"></canvas>
+				<div class="row" style="margin-top:12px">
+					<label class="slider"><span>🐑 Lämmer <output id="evoAO">60</output></span><input type="range" id="evoA" min="0"
+							max="100" value="60" /></label>
+					<label class="slider"><span>🦈 Haie <output id="evoBO">20</output></span><input type="range" id="evoB" min="0"
+							max="100" value="20" /></label>
+					<label class="slider"><span>🪞 Spiegel <output id="evoCO">20</output></span><input type="range" id="evoC"
+							min="0" max="100" value="20" /></label>
+				</div>
+				<div class="row" style="margin-top:8px">
+					<button class="btn hot" type="button" id="evoGo">▶ Evolution starten</button>
+					<button class="btn" type="button" data-preset="34,33,33">Ausgeglichen</button>
+					<button class="btn" type="button" data-preset="85,10,5">Lämmerparadies</button>
+					<button class="btn" type="button" data-preset="0,97,3">Fast nur Haie</button>
+				</div>
+				<div class="screen" id="evoScreen" aria-live="polite">Stell die Startmischung ein und starte die Evolution.</div>
+			</div>
+			<p class="mission">Finde eine Startmischung mit höchstens 10 % Spiegeln, in der die Spiegel am Ende trotzdem die
+				Mehrheit sind.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Mit vielen Lämmern blühen zuerst die <strong>Haie</strong>: Sie leben davon, Gutmütige auszunutzen. Dabei
+						fressen sie ihre eigene Nahrung auf. Sobald die Lämmer weg sind, treffen Haie fast nur noch Haie (1 Punkt pro
+						Runde) und Spiegel, die sich nach der ersten Runde wehren. Die Spiegel dagegen bekommen untereinander 3 Punkte
+						pro Runde. Sie wachsen, bis sie die Mehrheit sind.</p>
+					<p>Aber: Wenn die Spiegel anfangs zu selten sind, treffen sie fast nur Haie und gehen unter. Kooperation braucht
+						eine kleine <strong>Insel</strong>, auf der sich Kooperierende oft genug begegnen. Das ist Robert Axelrods
+						Ergebnis aus „Die Evolution der Kooperation“. So erklären Biologen, warum es in der Natur Zusammenarbeit
+						gibt, ganz ohne Moral: Sie ist in wiederholten Begegnungen schlicht erfolgreicher. Wie Populationen wachsen
+						und schrumpfen, siehst du auch bei Räuber und Beute im Fach Biologie.</p>
+					<p class="merke">Ausbeuter brauchen Gutmütige. Kooperation setzt sich durch, wenn Kooperierende sich oft genug
+						treffen und sich gegen Ausbeuter wehren.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="0" data-why="Haie leben davon, Lämmer auszunutzen (5 Punkte pro Runde). Untereinander und gegen Spiegel bekommen sie fast nur 1 Punkt pro Runde."
+				data-hint="Schau, wann in der Simulation die Haie wachsen und wann sie schrumpfen.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Warum schrumpfen die Haie, sobald die Lämmer verschwunden sind?</p>
+				<div class="opts">
+					<button type="button">Weil sie nur von Gutmütigen leben und untereinander kaum Punkte machen.</button>
+					<button type="button">Weil Spiegel Haie sofort erkennen und meiden.</button>
+					<button type="button">Weil die Simulation Haie bestraft.</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="level" id="l15" data-n="15" hidden>
+			<div class="brief"><b class="tag">Briefing</b>
+				<p>Naval Ravikant sagt: <i lang="en">„Play long-term games with long-term people.“</i> Spiel lange Spiele mit
+					Menschen, die lange bleiben. Hier rechnest du nach, warum. Nach jeder Runde Gefangenendilemma gibt es mit
+					einer bestimmten Wahrscheinlichkeit noch eine Runde. Dein Partner ist ein Elefant: Er kooperiert, bis du ihn
+					einmal betrügst.</p>
+			</div>
+			<div class="arena">
+				<canvas id="longCv" aria-label="Punkte für ehrliches Spiel und für einmaliges Betrügen"></canvas>
+				<div class="row" style="margin-top:10px">
+					<label class="slider"><span>Chance auf eine weitere Runde <output id="longOut">30 %</output></span><input
+							type="range" id="longD" min="0" max="95" value="30" /></label>
+				</div>
+				<div class="screen" id="longScreen" aria-live="polite"></div>
+			</div>
+			<p class="mission">Finde die Grenze: Stell die kleinste Chance ein, ab der sich ehrliches Spiel lohnt.</p>
+			<details class="reveal-box">
+				<summary>Strategie aufdecken</summary>
+				<div class="rb-body">
+					<p>Wer ehrlich bleibt, bekommt 3 in jeder Runde. Wer betrügt, bekommt einmal 5 und danach nur noch 1 pro Runde,
+						weil der Elefant nie vergisst. Mit der Chance d auf eine weitere Runde dauert das Spiel im Schnitt 1 ÷ (1 −
+						d) Runden. Rechnet man das aus, lohnt sich Ehrlichkeit genau dann, wenn <strong>d mindestens 50 %</strong>
+						ist.</p>
+					<p>Das ist der <strong>Schatten der Zukunft</strong>: Je wahrscheinlicher ihr euch wiederseht, desto teurer wird
+						Betrug. Kurze Spiele belohnen Abzocke, lange Spiele belohnen Vertrauen. Deshalb ist Naval so streng:
+						Such dir Partner, Freunde und Projekte, bei denen d groß ist. Dann lohnt sich Ehrlichkeit nicht nur
+						moralisch, sondern auch rechnerisch, und Vertrauen wächst wie ein Zinseszins (Mathe-Heft, Stufe 7).</p>
+					<p>Damit schließt sich der Kreis der Spielhalle: Dominanz und Gleichgewicht erklären, warum Kooperation
+						scheitert. Wiederholung, Ruf, Selbstbindung und die Evolution zeigen, wie sie trotzdem gelingt.</p>
+					<p class="merke">Kooperation lohnt sich, wenn die Zukunft lang genug ist. Wähle Spiele und Menschen, bei denen
+						sie es ist.</p>
+				</div>
+			</details>
+			<div class="boss" data-answer="2" data-why="Je wahrscheinlicher weitere Runden sind, desto mehr kostet der Vertrauensverlust nach einem Betrug. Ab 50 % ist er teurer als der einmalige Gewinn."
+				data-hint="Schieb den Regler nach rechts und schau, welche Linie wächst.">
+				<span class="tag">Boss-Frage</span>
+				<p class="q">Was macht Ehrlichkeit in wiederholten Spielen lohnend?</p>
+				<div class="opts">
+					<button type="button">Ein hoher Gewinn beim ersten Betrug.</button>
+					<button type="button">Ein Partner, der jeden Betrug sofort vergisst.</button>
+					<button type="button">Eine hohe Chance, dass ihr noch lange weiterspielt.</button>
+				</div>
+			</div>
 		</section>
 	</main>
 
-	<footer class="v-next" data-fach-next></footer>
-
-	<script src="../assets/verstehen.js"></script>
-	<script src="../assets/fach.js"></script>
-	<script src="./game-theory.js"></script>
+	<footer class="next">
+		<span>Fach 07 von 10 · Naval Ravikants Grundlagen</span>
+		<span><a href="../economics/">◀ Mikroökonomie</a> · <a href="../persuasion/">Nächstes Fach: Überzeugen ▶</a></span>
+	</footer>
 </body>
 
 </html>

@@ -95,7 +95,7 @@ seite mit gemischten Aufgaben aus allen Stufen.
   Gleichgewicht · Elastizität · Steuern und Preisdeckel · Kosten und Grenzkosten · Wettbewerb und Monopol ·
   Externalitäten · Öffentliche Güter · Information und Anreize · Zinseszins · Hebel und Spezialwissen (Naval).
 
-## 7. Spieltheorie ⬜ · `/game-theory/`
+## 7. Spieltheorie ✅ · `/game-theory/`
 
 - **Stil:** Arcade-Spielhalle. Pixel-Schrift, Neon, Highscore-Tafel, Gegner mit Persönlichkeit.
 - **Lernform:** *Spielen gegen Bots.* Jede Stufe ist ein Level gegen Gegner. Erst spielst du, dann wird die
@@ -104,6 +104,12 @@ seite mit gemischten Aufgaben aus allen Stufen.
   Gefangenendilemma · Wiederholte Spiele · Koordination · Feigling-Spiel · Gemischte Strategien (Elfmeter) ·
   Züge nacheinander und Rückwärtsdenken · Drohungen und Versprechen · Auktionen · Ultimatum und Fairness ·
   Evolution der Kooperation · Lange Spiele mit langen Partnern (Naval).
+
+**Stand:** Alle 15 Stufen sind fertig (Oktober 2026), als Level in vier Welten. Jedes Level: Briefing, Spiel gegen
+einen Bot mit Mission, „Strategie aufdecken“, Boss-Frage. Bis zu 3 Sterne pro Level, Fortschritt und Initialen für
+die Highscore-Tafel im Browser. Abweichung vom Plan: statt eines Turniers am Ende eine Evolutions-Simulation (Level
+14) und der Schatten der Zukunft zum Nachrechnen (Level 15). Ideen zum Ausbauen: eigenes Turnier, in dem man eine
+Strategie aus Bausteinen zusammensetzt; Verhandeln mit Angeboten in Runden (Rubinstein); Wahlverfahren.
 
 ## 8. Überzeugen ⬜ · `/persuasion/`
 
@@ -147,7 +153,7 @@ Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand Oktober 202
 
 ### Fächer-Seiten (die zwei Sprüche)
 
-Alle zehn Fächer haben eine Seite. Bis auf Mathe sind es noch **Startseiten mit einem einzigen Experiment** im
+Alle zehn Fächer haben eine Seite. Bis auf Mathe und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
 gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
 `assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
 vorhandene Experiment kann dabei als eine Stufe weiterleben.
@@ -160,7 +166,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
 | Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
 | Mikroökonomie | `economics/` | Angebot und Nachfrage | ⬜ Startseite |
-| Spieltheorie | `game-theory/` | Gefangenendilemma + Axelrods Turnier | ⬜ Startseite |
+| Spieltheorie | `game-theory/` | Die Spielhalle, 15 Level, eigener Stil | ✅ voller Kurs |
 | Überzeugen | `persuasion/` | Die sechs Hebel erkennen | ⬜ Startseite |
 | Ethik | `ethics/` | Sechs Dilemmas, drei Arten zu entscheiden | ⬜ Startseite |
 | Informatik | `computers/` | Acht Schalter, ein Byte | ⬜ Startseite |
@@ -203,3 +209,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | --- | --- | --- |
 | Okt. 2026 | Lehrplan angelegt | Zehn Fächer mit Stil, Lernform und Stufen |
 | Okt. 2026 | Mathe-Heft, 15 Stufen | Karopapier-Stil, Dateien `math/heft.css`, `heft.js` (Helfer, Lernpfad, Prüfaufgaben), `stufen-a/b/c.js` |
+| Okt. 2026 | Spielhalle Spieltheorie, 15 Level | Arcade-Stil, Dateien `game-theory/arcade.css`, `arcade.js` (Levelauswahl, Sterne, Boss-Fragen, Auszahlungsmatrix), `levels-a/b/c.js`. Altes `game-theory.js` (Turnier) ersetzt: Wiederholtes Dilemma lebt in Level 6, Axelrods Ergebnis in Level 6 und 14 |
