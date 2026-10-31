@@ -1,7 +1,7 @@
 // Level 1 bis 5: Schere-Stein-Papier, Auszahlungsmatrix, Dominanz, Nash-Gleichgewicht, Gefangenendilemma.
 
 (() => {
-	const { register, mission, matrix, fit, $, $$ } = window.Arcade;
+	const { register, mission, matrix, fit, foe, pick, $, $$ } = window.Arcade;
 	const SYM = ["✊", "✋", "✌️"];
 	const NAME = ["Stein", "Papier", "Schere"];
 
@@ -37,7 +37,11 @@
 				screen.innerHTML = `Du: <b class="you">${SYM[me]} ${NAME[me]}</b> · Rocky: <b class="opp">${SYM[rocky]} ${NAME[rocky]}</b> → ${
 					res > 0 ? "Gewonnen!" : res < 0 ? "Verloren." : "Unentschieden."
 				}`;
+				if (res > 0) foe(n).say(pick(["Grrr! Wie hast du das gewusst?", "Zufall! Reiner Zufall!", "Hey, nicht spicken!"]), "angry");
+				else if (res < 0) foe(n).say(pick(["Ha! Unschlagbar, sag ich doch.", "Rocky gewinnt!"]), "happy");
+				else foe(n).say("Unentschieden. Noch mal!", "wow");
 				if (round === 10) {
+					if (you >= 6) foe(n).say("Okay … vielleicht bin ich doch ein bisschen berechenbar.", "sad");
 					screen.innerHTML += ` <br>Partie vorbei: ${you} Siege.${you >= 6 ? " Rocky ist geschlagen!" : " Schau dir Rockys Züge unten noch mal an."}`;
 					if (you >= 6) mission(n);
 				}
@@ -70,20 +74,20 @@
 		const st = fit(cv, (w) => (w < 520 ? 150 : 170), (ctx, w, h) => {
 			ctx.clearRect(0, 0, w, h);
 			// Wasser und Sand
-			ctx.fillStyle = "#123a6b";
+			ctx.fillStyle = "#8fdcff";
 			ctx.fillRect(0, 0, w, h * 0.3);
-			ctx.fillStyle = "#3b2f1a";
+			ctx.fillStyle = "#ffe6a8";
 			ctx.fillRect(0, h * 0.3, w, h * 0.7);
 			const N = 36;
 			for (let i = 0; i < N; i++) {
 				const x = ((i + 0.5) / N) * w;
 				const y = h * 0.42 + ((i * 37) % 5) * (h * 0.07);
-				let col = "#c8bfa6";
+				let col = "#cfc3a8";
 				if (last) {
 					const t = (i + 0.5) / N;
 					const dy = Math.abs(t - POS[last[0]]);
 					const db = Math.abs(t - POS[last[1]]);
-					col = dy < db ? "#3ef0ff" : db < dy ? "#ff5cae" : i % 2 ? "#3ef0ff" : "#ff5cae";
+					col = dy < db ? "#2f7cf6" : db < dy ? "#ff5d73" : i % 2 ? "#2f7cf6" : "#ff5d73";
 				}
 				ctx.fillStyle = col;
 				ctx.beginPath();
@@ -95,19 +99,19 @@
 				const x = p * w;
 				ctx.fillStyle = color;
 				ctx.fillRect(x - 14, h * 0.82 + dy, 28, 18);
-				ctx.fillStyle = "#07050f";
-				ctx.font = "bold 11px 'Chakra Petch', sans-serif";
+				ctx.fillStyle = "#ffffff";
+				ctx.font = "bold 11px 'Nunito', sans-serif";
 				ctx.textAlign = "center";
 				ctx.fillText(label, x, h * 0.82 + dy + 13);
 			};
-			ctx.fillStyle = "rgba(255,255,255,0.5)";
-			ctx.font = "11px 'Chakra Petch', sans-serif";
+			ctx.fillStyle = "rgba(43,35,80,0.6)";
+			ctx.font = "11px 'Nunito', sans-serif";
 			ctx.textAlign = "center";
 			POS.forEach((p, i) => ctx.fillText(ROWS[i], p * w, h * 0.36));
 			if (last) {
 				const same = last[0] === last[1];
-				kiosk(POS[last[0]], "#3ef0ff", "DU", same ? -10 : 0);
-				kiosk(POS[last[1]], "#ff5cae", "BOT", same ? 10 : 0);
+				kiosk(POS[last[0]], "#2f7cf6", "DU", same ? -10 : 0);
+				kiosk(POS[last[1]], "#ff5d73", "BOT", same ? 10 : 0);
 			}
 		});
 		const mx = matrix($("#beachMx", sec), {
@@ -125,6 +129,7 @@
 				last = [r, c];
 				mx.hit(r, c);
 				st.redraw();
+				foe(n).say(a > b ? "Hey, das waren meine Kunden!" : a < b ? "Mehr Eis für mich!" : "Halbe-halbe. Auch gut.", a > b ? "angry" : a < b ? "happy" : "neutral");
 				screen.innerHTML = `Tag ${day}: Du stehst <b class="you">${ROWS[r]}</b>, der Bot <b class="opp">${ROWS[c]}</b>. Du bekommst ${a} %, er ${b} %.`;
 				if (day === 5) {
 					screen.innerHTML += ` Woche vorbei: ${sum} %.${sum >= 280 ? " Starke Woche!" : " Welche Zeile ist nie schlecht?"}`;
@@ -182,6 +187,7 @@
 				flights++;
 				streak = r === 2 ? streak + 1 : 0;
 				mx.hit(r, c);
+				foe(n).say(v >= 5 ? pick(["Arrr, entwischt!", "Verflixt, schon wieder!"]) : "Hab dich fast erwischt!", v >= 5 ? "angry" : "smug");
 				screen.innerHTML = `Kurs <b class="you">${ROWS[r].replace("&shy;", "")}</b>, der Pirat ${COLS[c]} → ${v} Ladung gerettet.`;
 				if (lensDone && streak >= 3) {
 					screen.innerHTML += " Dreimal Hyperraum, und zwar mit Plan!";
@@ -247,6 +253,7 @@
 			void el.offsetWidth;
 			el.classList.add("shake");
 			screen.textContent = msg;
+			foe(n).say("Nee, da geht noch mehr!", "smug");
 		}
 		function finish() {
 			step = 3;
@@ -261,6 +268,7 @@
 				}
 			stepEl.textContent = "Geschafft · Zwei Sterne in einer Zelle";
 			task.textContent = "Die grünen Zellen sind stabil: Dort spielt jede Band schon die beste Antwort auf die andere.";
+			foe(n).say("Abgemacht: Einer nimmt Freitag, der andere Samstag. Aber wer?", "wow");
 			screen.innerHTML = `Gleichgewichte gefunden: <b>${found.join("</b> und <b>")}</b>.`;
 			mission(n);
 		}
@@ -308,6 +316,10 @@
 				you += a;
 				opp += b;
 				mx.hit(r, c);
+				foe(n).say(
+					r === 0 && c === 1 ? "Sorry, Kumpel. Ich bin frei!" : r === 1 && c === 0 ? "Du hast mich verpfiffen?!" : r === 1 ? "Tja. Jetzt sitzen wir beide." : "Kleine Strafe für beide. Puh!",
+					r === 0 && c === 1 ? "happy" : r === 1 && c === 0 ? "angry" : r === 1 ? "sad" : "happy"
+				);
 				screen.innerHTML = `${NAMES[k]} ${c ? "<b class='opp'>verrät</b>" : "<b class='opp'>schweigt</b>"}, du <b class="you">${
 					r ? "verrätst" : "schweigst"
 				}</b>: ${a} für dich, ${b} für ${NAMES[k]}.`;

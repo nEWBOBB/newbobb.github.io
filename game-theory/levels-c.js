@@ -1,7 +1,7 @@
 // Level 11 bis 15: Spielbaum mit Drohung, Zweitpreisauktion, Ultimatum, Evolution, Schatten der Zukunft.
 
 (() => {
-	const { register, mission, fit, animate, $, $$, fmt, reduced } = window.Arcade;
+	const { register, mission, fit, animate, foe, $, $$, fmt, reduced } = window.Arcade;
 
 	// ---------- Level 11: Der Platzhirsch, Spielbaum und Rückwärtsinduktion ----------
 	register(11, (sec, n) => {
@@ -24,29 +24,29 @@
 			const sol = (k) => solved && ((k === "share" || k === "fight") ? b === k : k === "in" ? p[b][0] > 0 : p[b][0] <= 0);
 			const edge = (x1, y1, x2, y2, key, label, lx, ly) => {
 				const active = on(key) || (key === "in" && (path === "fight" || path === "share"));
-				const stroke = active ? "#ffe14d" : sol(key) ? "#5dff95" : "#34295f";
+				const stroke = active ? "#ffb020" : sol(key) ? "#1fbf7a" : "#ddd3f0";
 				return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${active || sol(key) ? 5 : 3}" />
-					<text x="${lx}" y="${ly}" fill="#c0b8e0" font-size="22" text-anchor="middle" font-family="Chakra Petch, sans-serif">${label}</text>`;
+					<text x="${lx}" y="${ly}" fill="#5c5580" font-size="22" text-anchor="middle" font-family="Nunito, sans-serif">${label}</text>`;
 			};
 			const leaf = (x, y, pay, key) =>
-				`<rect x="${x - 70}" y="${y}" width="140" height="54" rx="8" fill="${path === key ? "rgba(255,225,77,0.18)" : "#0a0718"}" stroke="${path === key ? "#ffe14d" : "#34295f"}" stroke-width="2" />
-				<text x="${x - 34}" y="${y + 35}" fill="#3ef0ff" font-size="20" text-anchor="middle" font-family="Press Start 2P, monospace">${fmtN(pay[0])}</text>
-				<text x="${x}" y="${y + 35}" fill="#8d84b4" font-size="20" text-anchor="middle">|</text>
-				<text x="${x + 34}" y="${y + 35}" fill="#ff5cae" font-size="20" text-anchor="middle" font-family="Press Start 2P, monospace">${fmtN(pay[1])}</text>`;
+				`<rect x="${x - 70}" y="${y}" width="140" height="54" rx="8" fill="${path === key ? "rgba(255,176,32,0.18)" : "#ffffff"}" stroke="${path === key ? "#ffb020" : "#ddd3f0"}" stroke-width="2" />
+				<text x="${x - 34}" y="${y + 35}" fill="#2f7cf6" font-size="20" text-anchor="middle" font-family="Fredoka, sans-serif">${fmtN(pay[0])}</text>
+				<text x="${x}" y="${y + 35}" fill="#8a84a8" font-size="20" text-anchor="middle">|</text>
+				<text x="${x + 34}" y="${y + 35}" fill="#ff5d73" font-size="20" text-anchor="middle" font-family="Fredoka, sans-serif">${fmtN(pay[1])}</text>`;
 			const node = (x, y, color, label) =>
-				`<circle cx="${x}" cy="${y}" r="26" fill="${color}" /><text x="${x}" y="${y + 7}" font-size="18" text-anchor="middle" fill="#07050f" font-weight="700" font-family="Chakra Petch, sans-serif">${label}</text>`;
+				`<circle cx="${x}" cy="${y}" r="26" fill="${color}" /><text x="${x}" y="${y + 7}" font-size="18" text-anchor="middle" fill="#ffffff" font-weight="700" font-family="Nunito, sans-serif">${label}</text>`;
 			svg.innerHTML = `
 				${edge(260, 40, 110, 150, "out", "draußen", 135, 85)}
 				${edge(260, 40, 420, 150, "in", "eröffnen", 395, 80)}
 				${edge(420, 150, 300, 260, "fight", "Preiskampf", 300, 205)}
 				${edge(420, 150, 525, 260, "share", "teilen", 528, 205)}
-				${node(260, 40, "#3ef0ff", "Du")}
-				${node(420, 150, "#ff5cae", "PH")}
+				${node(260, 40, "#2f7cf6", "Du")}
+				${node(420, 150, "#ff5d73", "PH")}
 				${leaf(110, 165, p.out, "out")}
 				${leaf(290, 272, p.fight, "fight")}
 				${leaf(520, 272, p.share, "share")}
-				${contract ? `<text x="560" y="140" fill="#ffe14d" font-size="20" text-anchor="end" font-family="Chakra Petch, sans-serif">📜 Strafe 8</text>` : ""}
-				<text x="8" y="365" fill="#c0b8e0" font-size="19" font-family="Chakra Petch, sans-serif">links: du · rechts: Platzhirsch (PH)</text>`;
+				${contract ? `<text x="560" y="140" fill="#ffb020" font-size="20" text-anchor="end" font-family="Nunito, sans-serif">📜 Strafe 8</text>` : ""}
+				<text x="8" y="365" fill="#5c5580" font-size="19" font-family="Nunito, sans-serif">links: du · rechts: Platzhirsch (PH)</text>`;
 		}
 		const fmtN = (v) => (v < 0 ? `−${-v}` : String(v));
 
@@ -57,6 +57,7 @@
 			screen.innerHTML = `Du eröffnest. Der Platzhirsch wählt <b class="opp">${b === "share" ? "Teilen" : "Preiskampf"}</b>, weil ${
 				b === "share" ? `5 für ihn mehr ist als −1` : `−1 für ihn besser ist als −3 mit Vertragsstrafe`
 			}. Ergebnis: ${fmtN(p[b][0])} für dich.`;
+			foe(n).say(b === "share" ? "Na gut … dann teilen wir eben." : "Preiskampf! Ich hab's ja gesagt.", b === "share" ? "sad" : "angry");
 			check(p[b][0] > 0);
 			draw();
 		}
@@ -65,6 +66,7 @@
 			screen.innerHTML = `Du bleibst draußen: 0 für dich, 10 für den Platzhirsch. ${
 				contract ? "Mit dem Vertrag war das klug." : "Hättest du ihm die Drohung wirklich glauben sollen?"
 			}`;
+			foe(n).say("Mein Markt bleibt meiner!", "happy");
 			check(P()[best()][0] <= 0);
 			draw();
 		}
@@ -93,6 +95,7 @@
 		btnC.addEventListener("click", () => {
 			contract = !contract;
 			btnC.setAttribute("aria-pressed", String(contract));
+			foe(n).say(contract ? "Unterschrieben! Jetzt muss ich kämpfen." : "Kein Vertrag. Aber ich meine es ernst!", "smug");
 			path = null;
 			solved = false;
 			screen.textContent = contract
@@ -129,6 +132,7 @@
 					? `Du gewinnst mit ${bid} und zahlst das zweithöchste Gebot: ${top}. Gewinn: dein Wert ${value} − ${top} = <b class="${gain >= 0 ? "you" : "opp"}">${fmtN(gain)}</b>.${gain < 0 ? " Autsch, mehr bezahlt, als er dir wert ist." : ""}`
 					: `Ein Bot gewinnt mit ${top}. Dein Wert war ${value}.${top < value ? ` Schade: Mit einem Gebot von ${value} hättest du für ${top} gewonnen und ${value - top} verdient.` : " Gut so, das wäre zu teuer gewesen."}`
 			}`;
+			foe(n).say(...(win ? (gain < 0 ? ["Hehe, zu teuer bezahlt!", "smug"] : ["Glückwunsch zum Joystick.", "sad"]) : ["Unser Joystick!", "happy"]));
 			$("#aucSum", sec).textContent = fmtN(sum);
 			$("#aucN", sec).textContent = count;
 			newValue();
@@ -153,35 +157,35 @@
 			const minP = -1;
 			const X = (f) => pad.l + ((f - 0.4) / 1.2) * (w - pad.l - pad.r);
 			const Y = (p) => pad.t + ((maxP - p) / (maxP - minP)) * (h - pad.t - pad.b);
-			ctx.font = "11px 'Chakra Petch', sans-serif";
+			ctx.font = "11px 'Nunito', sans-serif";
 			ctx.textAlign = "right";
 			for (let p = -1; p <= 6; p++) {
-				ctx.strokeStyle = p === 0 ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.07)";
+				ctx.strokeStyle = p === 0 ? "rgba(43,35,80,0.25)" : "rgba(43,35,80,0.08)";
 				ctx.beginPath();
 				ctx.moveTo(pad.l, Y(p));
 				ctx.lineTo(w - pad.r, Y(p));
 				ctx.stroke();
 				if (p % 2 === 0) {
-					ctx.fillStyle = "rgba(255,255,255,0.55)";
+					ctx.fillStyle = "rgba(43,35,80,0.6)";
 					ctx.fillText(String(p), pad.l - 6, Y(p) + 4);
 				}
 			}
 			ctx.textAlign = "center";
 			[0.5, 1, 1.5].forEach((f) => ctx.fillText(`× ${fmt(f, 1)}`, X(f), h - 8));
-			ctx.strokeStyle = "rgba(255,225,77,0.5)";
+			ctx.strokeStyle = "rgba(255,176,32,0.5)";
 			ctx.setLineDash([4, 4]);
 			ctx.beginPath();
 			ctx.moveTo(X(1), pad.t);
 			ctx.lineTo(X(1), h - pad.b);
 			ctx.stroke();
 			ctx.setLineDash([]);
-			ctx.strokeStyle = "#3ef0ff";
+			ctx.strokeStyle = "#2f7cf6";
 			ctx.lineWidth = 3;
 			ctx.beginPath();
 			fs.forEach(([f, p], i) => (i ? ctx.lineTo(X(f), Y(p)) : ctx.moveTo(X(f), Y(p))));
 			ctx.stroke();
 			const f = Number(fIn.value) / 100;
-			ctx.fillStyle = "#fff";
+			ctx.fillStyle = "#2b2350";
 			ctx.beginPath();
 			ctx.arc(X(f), Y(profit(f)), 7, 0, Math.PI * 2);
 			ctx.fill();
@@ -236,6 +240,7 @@
 			screen.innerHTML = ok
 				? `Person ${k + 1} nimmt an: ${v} für sie, <b class="you">${10 - v} für dich</b>.`
 				: `Person ${k + 1} lehnt ab: „${v === 0 ? "Gar nichts? Vergiss es." : "So wenig? Dann bekommst du auch nichts."}“ Beide gehen leer aus.`;
+			foe(n).say(ok ? "Das ist fair, abgemacht!" : "So wenig? Nein danke!", ok ? "happy" : "angry");
 			k++;
 			$("#ultSum", sec).textContent = sum;
 			if (k === 5) {
@@ -284,7 +289,7 @@
 			[50, 10, 14],
 			[30, 9, 30],
 		];
-		const COL = ["#c0b8e0", "#ff5cae", "#3ef0ff"];
+		const COL = ["#b49ce8", "#ff5d73", "#2f7cf6"];
 		const NAMES = ["Lämmer", "Haie", "Spiegel"];
 		const G = 60;
 		const ins = ["#evoA", "#evoB", "#evoC"].map((s) => $(s, sec));
@@ -314,15 +319,15 @@
 			const pad = { l: 38, r: 12, t: 30, b: 26 };
 			const X = (g) => pad.l + (g / G) * (w - pad.l - pad.r);
 			const Y = (v) => pad.t + (1 - v) * (h - pad.t - pad.b);
-			ctx.font = "11px 'Chakra Petch', sans-serif";
+			ctx.font = "11px 'Nunito', sans-serif";
 			ctx.textAlign = "right";
 			for (let v = 0; v <= 1.001; v += 0.25) {
-				ctx.strokeStyle = "rgba(255,255,255,0.08)";
+				ctx.strokeStyle = "rgba(43,35,80,0.08)";
 				ctx.beginPath();
 				ctx.moveTo(pad.l, Y(v));
 				ctx.lineTo(w - pad.r, Y(v));
 				ctx.stroke();
-				ctx.fillStyle = "rgba(255,255,255,0.55)";
+				ctx.fillStyle = "rgba(43,35,80,0.6)";
 				ctx.fillText(`${Math.round(v * 100)} %`, pad.l - 6, Y(v) + 4);
 			}
 			ctx.textAlign = "center";
@@ -355,6 +360,7 @@
 			screen.innerHTML = `Nach ${G} Generationen: Lämmer ${pct(e[0])}, Haie ${pct(e[1])}, Spiegel ${pct(e[2])}. ${
 				peakHai > s[1] + 0.05 && peakHai > e[1] + 0.05 ? `Die Haie wuchsen zuerst bis auf ${pct(peakHai)}. ` : ""
 			}Es setzen sich die <b style="color:${COL[win]}">${NAMES[win]}</b> durch.`;
+			foe(n).say(...(win === 2 ? ["Faszinierend: Die Spiegel übernehmen!", "wow"] : win === 1 ? ["Die Haie fressen alles leer …", "sad"] : ["Hm, interessant.", "neutral"]));
 			if (s[2] <= 0.1 + 1e-9 && e[2] > 0.5) {
 				screen.innerHTML += " Aus einer kleinen Insel ist eine Mehrheit geworden!";
 				mission(n);
@@ -415,21 +421,21 @@
 			const maxV = 40;
 			const X = (d) => pad.l + (d / maxD) * (w - pad.l - pad.r);
 			const Y = (v) => pad.t + (1 - Math.min(v, maxV) / maxV) * (h - pad.t - pad.b);
-			ctx.font = "11px 'Chakra Petch', sans-serif";
+			ctx.font = "11px 'Nunito', sans-serif";
 			ctx.textAlign = "right";
 			for (let v = 0; v <= maxV; v += 10) {
-				ctx.strokeStyle = "rgba(255,255,255,0.08)";
+				ctx.strokeStyle = "rgba(43,35,80,0.08)";
 				ctx.beginPath();
 				ctx.moveTo(pad.l, Y(v));
 				ctx.lineTo(w - pad.r, Y(v));
 				ctx.stroke();
-				ctx.fillStyle = "rgba(255,255,255,0.55)";
+				ctx.fillStyle = "rgba(43,35,80,0.6)";
 				ctx.fillText(String(v), pad.l - 6, Y(v) + 4);
 			}
 			ctx.textAlign = "center";
 			[0, 0.25, 0.5, 0.75].forEach((d) => ctx.fillText(`${d * 100} %`, X(d), h - 8));
 			// Bereich, in dem Ehrlichkeit gewinnt
-			ctx.fillStyle = "rgba(93,255,149,0.07)";
+			ctx.fillStyle = "rgba(31,191,122,0.1)";
 			ctx.fillRect(X(0.5), pad.t, X(maxD) - X(0.5), h - pad.t - pad.b);
 			const line = (f, color) => {
 				ctx.strokeStyle = color;
@@ -441,12 +447,12 @@
 				}
 				ctx.stroke();
 			};
-			line(honest, "#5dff95");
-			line(cheat, "#ff5cae");
+			line(honest, "#1fbf7a");
+			line(cheat, "#ff5d73");
 			const d = Number(dIn.value) / 100;
 			[
-				[honest(d), "#5dff95"],
-				[cheat(d), "#ff5cae"],
+				[honest(d), "#1fbf7a"],
+				[cheat(d), "#ff5d73"],
 			].forEach(([v, c]) => {
 				ctx.fillStyle = c;
 				ctx.beginPath();
@@ -454,9 +460,9 @@
 				ctx.fill();
 			});
 			ctx.textAlign = "left";
-			ctx.fillStyle = "#5dff95";
+			ctx.fillStyle = "#1fbf7a";
 			ctx.fillText("● immer ehrlich", pad.l + 8, pad.t + 12);
-			ctx.fillStyle = "#ff5cae";
+			ctx.fillStyle = "#ff5d73";
 			ctx.fillText("● einmal betrügen", pad.l + 120, pad.t + 12);
 		});
 		const upd = () => {
@@ -469,6 +475,7 @@
 				c,
 				1
 			)}</b> Punkte. ${h > c + 1e-9 ? "Ehrlichkeit lohnt sich." : h + 1e-9 >= c ? "Genau gleich: die Grenze!" : "Hier lohnt sich Betrug."}`;
+			foe(n).say(...(h > c + 1e-9 ? ["Bleib ehrlich, dann bleib ich auch.", "happy"] : h + 1e-9 >= c ? ["Genau auf der Kippe!", "wow"] : ["Kurze Spiele locken Betrüger …", "sad"]));
 			if (Math.abs(d - 0.5) < 1e-9) mission(n, "Grenze gefunden: 50 %! +1 ★");
 			cv.redraw();
 		};

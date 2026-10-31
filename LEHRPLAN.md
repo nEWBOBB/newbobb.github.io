@@ -97,7 +97,8 @@ seite mit gemischten Aufgaben aus allen Stufen.
 
 ## 7. Spieltheorie ✅ · `/game-theory/`
 
-- **Stil:** Arcade-Spielhalle. Pixel-Schrift, Neon, Highscore-Tafel, Gegner mit Persönlichkeit.
+- **Stil:** ~~Arcade-Spielhalle~~ → umgesetzt als fröhliche **Spielinsel**: helle Farben, runde Schrift (Fredoka,
+  Nunito), Knet-Knöpfe, eine Inselkarte mit Pfad, Konfetti und Gegner-Figuren mit Gesicht, die reagieren.
 - **Lernform:** *Spielen gegen Bots.* Jede Stufe ist ein Level gegen Gegner. Erst spielst du, dann wird die
   Strategie dahinter aufgedeckt, am Ende stehen Turniere.
 - **Stufen:** Was ist ein Spiel · Auszahlungsmatrix · Dominante Strategie · Nash-Gleichgewicht ·
@@ -105,8 +106,8 @@ seite mit gemischten Aufgaben aus allen Stufen.
   Züge nacheinander und Rückwärtsdenken · Drohungen und Versprechen · Auktionen · Ultimatum und Fairness ·
   Evolution der Kooperation · Lange Spiele mit langen Partnern (Naval).
 
-**Stand:** Alle 15 Stufen sind fertig (Oktober 2026), als Level in vier Welten. Jedes Level: Briefing, Spiel gegen
-einen Bot mit Mission, „Strategie aufdecken“, Boss-Frage. Bis zu 3 Sterne pro Level, Fortschritt und Initialen für
+**Stand:** Alle 15 Stufen sind fertig (Oktober 2026), als Level in vier Welten. Jedes Level: Gegner-Figur mit Sprechblase, Briefing,
+Spiel mit Mission, „Aha-Moment“ zum Aufdecken, Endgegner-Frage. Bis zu 3 Sterne pro Level, Fortschritt und Initialen für
 die Highscore-Tafel im Browser. Abweichung vom Plan: statt eines Turniers am Ende eine Evolutions-Simulation (Level
 14) und der Schatten der Zukunft zum Nachrechnen (Level 15). Ideen zum Ausbauen: eigenes Turnier, in dem man eine
 Strategie aus Bausteinen zusammensetzt; Verhandeln mit Angeboten in Runden (Rubinstein); Wahlverfahren.
@@ -166,7 +167,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
 | Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
 | Mikroökonomie | `economics/` | Angebot und Nachfrage | ⬜ Startseite |
-| Spieltheorie | `game-theory/` | Die Spielhalle, 15 Level, eigener Stil | ✅ voller Kurs |
+| Spieltheorie | `game-theory/` | Die Spielinsel, 15 Level, eigener Stil | ✅ voller Kurs |
 | Überzeugen | `persuasion/` | Die sechs Hebel erkennen | ⬜ Startseite |
 | Ethik | `ethics/` | Sechs Dilemmas, drei Arten zu entscheiden | ⬜ Startseite |
 | Informatik | `computers/` | Acht Schalter, ein Byte | ⬜ Startseite |
@@ -209,4 +210,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | --- | --- | --- |
 | Okt. 2026 | Lehrplan angelegt | Zehn Fächer mit Stil, Lernform und Stufen |
 | Okt. 2026 | Mathe-Heft, 15 Stufen | Karopapier-Stil, Dateien `math/heft.css`, `heft.js` (Helfer, Lernpfad, Prüfaufgaben), `stufen-a/b/c.js` |
-| Okt. 2026 | Spielhalle Spieltheorie, 15 Level | Arcade-Stil, Dateien `game-theory/arcade.css`, `arcade.js` (Levelauswahl, Sterne, Boss-Fragen, Auszahlungsmatrix), `levels-a/b/c.js`. Altes `game-theory.js` (Turnier) ersetzt: Wiederholtes Dilemma lebt in Level 6, Axelrods Ergebnis in Level 6 und 14 |
+| Okt. 2026 | Spielinsel Spieltheorie, 15 Level | Erst als dunkle Neon-Spielhalle gebaut, dann auf Wunsch hell und fröhlich neu gestaltet. Dateien `game-theory/insel.css`, `insel.js` (Inselkarte, Gegner-Figuren als SVG mit Stimmungen, Sterne, Endgegner-Fragen, Konfetti, Auszahlungsmatrix), `levels-a/b/c.js`. Altes `game-theory.js` (Turnier) ersetzt: Wiederholtes Dilemma lebt in Level 6, Axelrods Ergebnis in Level 6 und 14 |
