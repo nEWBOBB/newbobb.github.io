@@ -92,7 +92,7 @@
 			spyLinks.forEach((a) => a.classList.toggle("is-active", a.dataset.spy === en.target.id));
 		}
 	}, { rootMargin: "-45% 0px -50% 0px" });
-	["faecher", "verstehen", "spielen", "neu", "archiv"].forEach((id) => spy.observe(document.getElementById(id)));
+	["faecher", "verstehen", "spielen", "ailab", "neu", "archiv"].forEach((id) => spy.observe(document.getElementById(id)));
 
 	// ---------- Wechselndes Wort im Titel ----------
 	const rot = $(".rotator");

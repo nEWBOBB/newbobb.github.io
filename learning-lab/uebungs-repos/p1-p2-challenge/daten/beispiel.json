@@ -1,0 +1,8 @@
+{
+	"positionen": [
+		{ "artikel": "Wanderkarte", "menge": 2, "einzelpreis": 9.5 },
+		{ "artikel": "Kompass", "menge": 1, "einzelpreis": 24.0 }
+	],
+	"gewicht_kg": 1.2,
+	"versandart": "standard"
+}

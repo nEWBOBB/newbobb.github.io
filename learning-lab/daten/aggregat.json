@@ -1,0 +1,35 @@
+{
+	"hinweis": "Diese Zahlen sind erfunden und zeigen nur, wie die Übersicht aussieht. Die statische Seite hat kein Backend und sammelt nichts ein. Im Betrieb erzeugt ein kleiner Dienst diese Datei aus anonymen, aggregierten Ereignissen.",
+	"stand": "2026-11-10",
+	"zeitraum": "letzte 30 Tage",
+	"lernende": 412,
+	"mindestgroesse": 5,
+	"verteilung": {
+		"gesamt": [236, 121, 43, 12],
+		"gruppen": [
+			{ "name": "Produktgruppe A", "werte": [48, 31, 14, 5] },
+			{ "name": "Produktgruppe B", "werte": [71, 22, 6, 1] },
+			{ "name": "Produktgruppe C", "werte": [39, 35, 12, 4] },
+			{ "name": "Produktgruppe D", "werte": [54, 19, 7, 2] },
+			{ "name": "Produktgruppe E", "werte": [22, 13, 4, 0] },
+			{ "name": "Produktgruppe F", "werte": [2, 1, 0, 0] }
+		]
+	},
+	"aufstieg": [
+		{ "von": 1, "gestartet": 236, "aufgestiegen": 58, "tage_median": 16 },
+		{ "von": 2, "gestartet": 121, "aufgestiegen": 17, "tage_median": 27 },
+		{ "von": 3, "gestartet": 43, "aufgestiegen": 4, "tage_median": 41 }
+	],
+	"abbruch": [
+		{ "modul": "p1-was-ein-agent-ist", "gestartet": 301, "abgeschlossen": 262, "fehlversuche": 0.4 },
+		{ "modul": "p1-tool-und-schutzklasse", "gestartet": 255, "abgeschlossen": 201, "fehlversuche": 0.9 },
+		{ "modul": "p1-fremden-code-verstehen", "gestartet": 198, "abgeschlossen": 170, "fehlversuche": 0.6 },
+		{ "modul": "p1-erste-aufgabe-delegieren", "gestartet": 176, "abgeschlossen": 118, "fehlversuche": 1.8 },
+		{ "modul": "p2-gut-und-schlecht", "gestartet": 164, "abgeschlossen": 97, "fehlversuche": 2.3 },
+		{ "modul": "p2-erst-planen", "gestartet": 120, "abgeschlossen": 92, "fehlversuche": 1.1 },
+		{ "modul": "p2-dauerhafter-kontext", "gestartet": 101, "abgeschlossen": 49, "fehlversuche": 2.7 },
+		{ "modul": "p2-marketplace-skills-mcp", "gestartet": 74, "abgeschlossen": 58, "fehlversuche": 0.8 },
+		{ "modul": "p2-model-literacy", "gestartet": 66, "abgeschlossen": 55, "fehlversuche": 0.7 },
+		{ "modul": "p2-pruefen-statt-glauben", "gestartet": 61, "abgeschlossen": 44, "fehlversuche": 1.4 }
+	]
+}

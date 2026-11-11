@@ -1,0 +1,17 @@
+{
+	"titel": "Bestellung",
+	"beschreibung": "Gepflegt vom Team Auftragsannahme. Änderungen nur über dieses Team.",
+	"felder": {
+		"positionen": {
+			"typ": "liste",
+			"pflicht": true,
+			"elemente": {
+				"artikel": { "typ": "text", "pflicht": true },
+				"menge": { "typ": "ganzzahl", "pflicht": true, "minimum": 1 },
+				"einzelpreis": { "typ": "zahl", "pflicht": true, "minimum": 0 }
+			}
+		},
+		"gewicht_kg": { "typ": "zahl", "pflicht": true },
+		"versandart": { "typ": "text", "pflicht": false, "werte": ["standard", "express"], "standard": "standard" }
+	}
+}

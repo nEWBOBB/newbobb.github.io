@@ -1,0 +1,237 @@
+{
+	"titel": "AI Learning Lab",
+	"veraltet_nach_tagen": 90,
+	"quellen": {
+		"basis": "https://github.com/nEWBOBB/newbobb.github.io/blob/main/learning-lab/"
+	},
+	"tools": [
+		{ "id": "cursor", "name": "Cursor" },
+		{ "id": "copilot", "name": "GitHub Copilot" },
+		{ "id": "opencode", "name": "OpenCode" }
+	],
+	"schutzklassen": [
+		{ "id": "cloud", "name": "Cloud", "kurz": "bis Company Confidential", "tools": ["cursor", "copilot", "opencode"] },
+		{ "id": "ec", "name": "Export Controlled", "kurz": "eigene Cluster, selbst gehostete Modelle", "tools": ["opencode"] },
+		{ "id": "vsnfd", "name": "VS-NfD", "kurz": "eigene Cluster, selbst gehostete Modelle", "tools": ["opencode"] }
+	],
+	"communities": {
+		"opencode": { "name": "Teams-Community OpenCode", "url": "" },
+		"cursor": { "name": "Teams-Community Cursor", "url": "" },
+		"copilot": { "name": "Teams-Community GitHub Copilot", "url": "" },
+		"llms": { "name": "Teams-Community LLMs (all)", "url": "" },
+		"llms-entwickler": { "name": "Teams-Community LLMs (Entwickler)", "url": "" }
+	},
+	"stufen": [
+		{
+			"nr": 1,
+			"name": "Delegieren",
+			"ort": "Basislager",
+			"kernfrage": "Was soll der Agent tun?",
+			"verhalten": "Kurze Anweisungen, kleine Aufgaben. Jedes Ergebnis wird von Hand nachgebessert.",
+			"grenze": "Bei längeren Aufgaben liefert der Agent nicht, weil „gut“ nie definiert wurde.",
+			"lernziele": [
+				"Den Agent-Modus deines Tools sicher bedienen: Cursor, GitHub Copilot oder OpenCode.",
+				"Verstehen, was ein Agent ist: Modell, Tools, Kontext und Schleife. Den Unterschied zu Autocomplete und Chat kennen.",
+				"Wissen, welche Schutzklasse für dein Projekt gilt und welches Tool und Modell dort erlaubt ist.",
+				"Erste Aufgaben vollständig delegieren: Code erklären lassen, fremden Code verstehen, kleine Änderungen, Tests schreiben.",
+				"Ergebnisse nicht blind übernehmen: Diff lesen, Tests laufen lassen."
+			],
+			"module": ["p1-was-ein-agent-ist", "p1-tool-und-schutzklasse", "p1-fremden-code-verstehen", "p1-erste-aufgabe-delegieren"],
+			"geplant": [],
+			"plugins": [
+				{ "name": "GitLab-MCP", "quelle": "intern-official", "wozu": "Der Agent liest Issues, MRs und Pipelines direkt, statt dass du sie in den Chat kopierst.", "url": "", "vorbehalt": "OpenCode: unter Vorbehalt" }
+			],
+			"challenge": {
+				"id": "p1-p2",
+				"kennung": "P1P2",
+				"von": "P1 → P2",
+				"verfuegbar": true,
+				"titel": "Expressversand: erst Kriterien und Plan, dann Code",
+				"kurz": "Eine Aufgabe über mehrere Dateien, die nur mit vorab formulierten Kriterien und einem Plan sauber gelingt. Plan und Kriterien sind Teil der Abgabe.",
+				"repo": "https://github.com/nEWBOBB/newbobb.github.io/tree/main/learning-lab/uebungs-repos/p1-p2-challenge",
+				"repo_hinweis": "Im Unternehmen liegt dieses Repo auf GitLab und wird dort geforkt. Hier steht es als Ordner bereit: Kopiere ihn in ein eigenes GitLab-Projekt, die Datei `.gitlab-ci.yml` ist dabei. Lokal prüfst du mit `python3 pruefung/pruefe.py`.",
+				"aufgabe": [
+					"Ein kleiner Bestell-Dienst in Python berechnet Versandkosten, Lieferzeit und Rechnung. Du sollst die Versandart **Express** einführen. Die Fachregeln stehen in `AUFGABE.md`, sie betreffen drei Quelldateien und die Tests.",
+					"",
+					"Der Haken: Wer nur „bau Expressversand ein“ schreibt, bekommt meistens etwas, das eine Regel übersieht oder das Datenschema anfasst. Deshalb verlangt die Challenge das Verhalten von P2:",
+					"",
+					"- **Vor dem Code** schreibst du in `abgabe/KRITERIEN.md`, woran ein gutes Ergebnis zu erkennen ist, samt Negativfällen.",
+					"- **Vor dem Code** lässt du den Agent einen Plan erstellen, korrigierst ihn und legst ihn in `abgabe/PLAN.md` ab.",
+					"- Erst dann setzt der Agent um. Du prüfst gegen deine Kriterien."
+				],
+				"schritte": [
+					"Übungs-Repo forken oder in ein eigenes GitLab-Projekt kopieren und in deinem Tool öffnen.",
+					"`AUFGABE.md` lesen. Kriterien und Negativfälle in `abgabe/KRITERIEN.md` schreiben.",
+					"Den Agent im Plan-Modus einen Plan erstellen lassen, prüfen, korrigieren, in `abgabe/PLAN.md` speichern.",
+					"Umsetzen lassen. Diff lesen, Tests laufen lassen, gegen deine Kriterien prüfen.",
+					"Pushen. Der Job `lab-pruefung` prüft die Abgabe und gibt am Ende einen Nachweis-Code aus.",
+					"Den Code unten eintragen. Nicht bestanden? Die Auswertung zeigt, welches Kriterium fehlt. Du kannst beliebig oft neu abgeben."
+				],
+				"tooltipps": {
+					"cursor": [
+						"Öffne den Ordner in Cursor und wechsle im Agent-Fenster in den **Plan-Modus**. Gib dem Agent `AUFGABE.md` und deine `abgabe/KRITERIEN.md` als Kontext (mit `@` referenzieren).",
+						"",
+						"Lass den Plan als `abgabe/PLAN.md` speichern, bevor du in den Agent-Modus wechselst. Nach der Umsetzung: Diff im Review-Fenster lesen, dann `python3 pruefung/pruefe.py` im Terminal."
+					],
+					"copilot": [
+						"Öffne den Ordner in VS Code, öffne den Chat und wähle den **Plan**-Modus (in älteren Versionen: im Agent-Modus ausdrücklich „erstelle nur einen Plan, ändere noch nichts“ verlangen).",
+						"",
+						"Hänge `AUFGABE.md` und `abgabe/KRITERIEN.md` als Kontext an. Plan nach `abgabe/PLAN.md` schreiben lassen, dann im Agent-Modus umsetzen. Danach `python3 pruefung/pruefe.py` im Terminal."
+					],
+					"opencode": [
+						"Starte `opencode` im Repo und wechsle mit **Tab** auf den Plan-Agent. Referenziere `@AUFGABE.md` und `@abgabe/KRITERIEN.md`.",
+						"",
+						"Wechsle mit Tab zurück auf Build, lass zuerst den Plan nach `abgabe/PLAN.md` schreiben und dann umsetzen. Mit selbst gehosteten Modellen: Lass Schritt für Schritt umsetzen und nach jedem Schritt die Tests laufen."
+					]
+				},
+				"kriterien": [
+					{ "name": "Express funktioniert", "pruefung": "Abnahmetests für Kosten, Gewichtsgrenze, Lieferzeit und Rechnung bestehen.", "hinweis": "Mindestens eine Fachregel aus AUFGABE.md ist nicht umgesetzt. Genau solche Lücken schließen Akzeptanzkriterien, die du vorher aufschreibst.", "modul": "p2-gut-und-schlecht" },
+					{ "name": "Bestehendes bleibt heil", "pruefung": "Alle vorhandenen Tests laufen weiter, keiner wurde entfernt oder umbenannt.", "hinweis": "Vorhandene Tests schlagen fehl oder fehlen. Lies den Diff, bevor du übernimmst, und lass die Tests laufen.", "modul": "p1-erste-aufgabe-delegieren" },
+					{ "name": "Negativfall eingehalten", "pruefung": "`daten/schema.json` ist unverändert.", "hinweis": "Das Schema wurde verändert. Ein Negativfall wie „ändere nichts am Schema“ gehört ausdrücklich in den Auftrag.", "modul": "p2-gut-und-schlecht" },
+					{ "name": "Kriterien liegen vor", "pruefung": "`abgabe/KRITERIEN.md` enthält mindestens drei prüfbare Akzeptanzkriterien und einen Negativfall.", "hinweis": "In KRITERIEN.md fehlen prüfbare Akzeptanzkriterien oder ein Negativfall. Prüfbar heißt: mit Zahl, Befehl oder Testname.", "modul": "p2-gut-und-schlecht" },
+					{ "name": "Plan liegt vor", "pruefung": "`abgabe/PLAN.md` enthält mindestens drei Schritte, nennt die betroffenen Dateien und einen Prüfschritt.", "hinweis": "In PLAN.md fehlen Schritte, Dateinamen oder ein Prüfschritt. Lass den Agent erst planen und korrigiere den Plan.", "modul": "p2-erst-planen" },
+					{ "name": "Eigene Tests ergänzt", "pruefung": "Im Ordner `tests/` gibt es neue Tests für Express.", "hinweis": "Es gibt keine neuen Tests für Express. Tests sind der Beleg, dass deine Kriterien erfüllt sind.", "modul": "p2-pruefen-statt-glauben" }
+				]
+			}
+		},
+		{
+			"nr": 2,
+			"name": "Spezifizieren und planen",
+			"ort": "Hochlager",
+			"kernfrage": "Wie sieht gut aus, und wie prüfe ich das?",
+			"verhalten": "Kontext, Gut- und Schlecht-Kriterien und ein Plan vor der Ausführung. Ergebnisse werden gegen Kriterien geprüft.",
+			"grenze": "Der Mensch bleibt der Engpass, weil alles nacheinander und interaktiv läuft.",
+			"lernziele": [
+				"Gut und Schlecht ausdrücklich formulieren: Akzeptanzkriterien, Negativfälle, Randbedingungen.",
+				"Vor der Ausführung einen Plan erstellen lassen, prüfen und korrigieren (Plan-Modus).",
+				"Dauerhaften Kontext pflegen: Projekt-Rules, `AGENTS.md` und die Instructions deines Tools.",
+				"Vorhandene Plugins, Skills und MCP-Server aus dem Marketplace nutzen, etwa für Jira, Confluence und GitLab.",
+				"Ergebnisse validieren statt glauben: den Agent Belege liefern lassen statt einer Selbstbewertung.",
+				"Model Literacy: Modelle nach Länge und Komplexität der Aufgabe und nach Kosten wählen."
+			],
+			"module": ["p2-gut-und-schlecht", "p2-erst-planen", "p2-dauerhafter-kontext", "p2-marketplace-skills-mcp", "p2-model-literacy", "p2-pruefen-statt-glauben"],
+			"geplant": [],
+			"plugins": [
+				{ "name": "Jira-MCP", "quelle": "intern-official", "wozu": "Akzeptanzkriterien direkt aus dem Ticket holen, statt sie abzutippen.", "url": "", "vorbehalt": "OpenCode: unter Vorbehalt" },
+				{ "name": "Confluence-MCP", "quelle": "intern-official", "wozu": "Architektur- und Fachdoku als Kontext für Plan und Kriterien.", "url": "", "vorbehalt": "OpenCode: unter Vorbehalt" },
+				{ "name": "GitLab-MCP", "quelle": "intern-official", "wozu": "MRs, Pipelines und Issues als Belege im Agent-Lauf.", "url": "", "vorbehalt": "OpenCode: unter Vorbehalt" }
+			],
+			"challenge": {
+				"id": "p2-p3",
+				"von": "P2 → P3",
+				"verfuegbar": false,
+				"titel": "Ein Paket, mehrere Agents, ein eigener Skill",
+				"kurz": "Ein größeres Paket wird parallel in Worktrees oder mit Sub-Agents bearbeitet. Zusätzlich entsteht ein eigener Skill."
+			}
+		},
+		{
+			"nr": 3,
+			"name": "Orchestrieren",
+			"ort": "Grat",
+			"kernfrage": "Wie lasse ich mehrere Agents parallel arbeiten?",
+			"verhalten": "Große Arbeitspakete, Zerlegung durch den Harness, Sub-Agents, Worktrees, eigene Skills und Plugins.",
+			"grenze": "Arbeit startet immer noch, weil ein Mensch sie anstößt.",
+			"lernziele": [
+				"Größere Arbeitspakete übergeben und die Zerlegung dem Agent oder Harness überlassen. Aufgaben von wenigen Minuten bleiben interaktiv.",
+				"Sub-Agents und parallele Agents einsetzen, mit Git-Worktrees isolieren und die Ergebnisse zusammenführen.",
+				"Eigene Skills und Plugins bauen und über den Marketplace teilen (intern-community, dann intern-experimental).",
+				"In unbekannten Repos arbeiten: einlesen, Schnittstellen finden, einen sauberen MR liefern.",
+				"Kosten und Token-Verbrauch bei paralleler Arbeit im Blick behalten."
+			],
+			"module": ["p3-parallel-arbeiten"],
+			"geplant": [
+				{ "titel": "Große Pakete, kleine Schritte", "kern": "Arbeitspakete schneiden, Zerlegung dem Agent überlassen" },
+				{ "titel": "Eigene Skills und Plugins bauen", "kern": "Struktur, Qualität, Veröffentlichung im Marketplace" },
+				{ "titel": "Unbekannte Repos", "kern": "Einlesen, Schnittstellen finden, sauberer MR" }
+			],
+			"plugins": [
+				{ "name": "Vorlage für eigene Skills", "quelle": "intern-experimental", "wozu": "Startpunkt für einen eigenen Skill mit Struktur und Qualitätscheck.", "url": "", "vorbehalt": "Platzhalter" }
+			],
+			"challenge": {
+				"id": "p3-p4",
+				"von": "P3 → P4",
+				"verfuegbar": false,
+				"titel": "Vom Issue zum MR, ohne dich",
+				"kurz": "Eine Pipeline, in der ein Agent ein Issue selbstständig zum MR macht, inklusive Evidenz-Matrix."
+			}
+		},
+		{
+			"nr": 4,
+			"name": "Automatisieren",
+			"ort": "Gipfel",
+			"kernfrage": "Welche Arbeit erledigen Agents ohne mich?",
+			"verhalten": "Agents laufen ereignisgesteuert im SDLC (Issue zu MR, CI-Fix, Review, Incident-Analyse) und belegen ihre Arbeit mit Nachweisen.",
+			"grenze": "",
+			"lernziele": [
+				"Agents ereignisgesteuert laufen lassen: GitLab-Pipeline mit headless OpenCode, Auslöser sind Issue, fehlgeschlagener Test, MR oder Incident.",
+				"Typische Automationen aufsetzen: Issue zu MR, CI-Fix, Review-Agent, Doku-Update, Incident-Analyse mit Root Cause und zuständigem Team.",
+				"Proof of Work einfordern: objektive Kriterien, Negativtests und eine Evidenz-Matrix als Teil jedes Agent-Ergebnisses.",
+				"Guardrails setzen: Rechte und Secrets, Review-Pflicht vor dem Merge, Schutzklassen.",
+				"Automationen messen und verbessern: Erfolgsquote, Kosten, Nacharbeit."
+			],
+			"module": ["p4-agents-in-der-pipeline"],
+			"geplant": [
+				{ "titel": "Issue zu MR", "kern": "Automation von Issue bis Merge Request" },
+				{ "titel": "CI-Fix und Review-Agent", "kern": "Fehlgeschlagene Tests automatisch beheben, Reviews vorbereiten" },
+				{ "titel": "Proof of Work", "kern": "Objektive Kriterien, Negativtests, Evidenz-Matrix" },
+				{ "titel": "Guardrails und Messung", "kern": "Rechte, Review-Pflicht, Erfolgsquote, Kosten" }
+			],
+			"plugins": [],
+			"challenge": {
+				"id": "p4",
+				"von": "P4 abgeschlossen",
+				"verfuegbar": false,
+				"titel": "Eine eigene Automation im echten Projekt",
+				"kurz": "Eine eigene Automation läuft im echten Projekt. Nachweis über den Link zur Pipeline."
+			}
+		}
+	],
+	"galerie_hinweis": "Die drei Beiträge unten sind Beispiele, die das Format zeigen. Sie stammen nicht von echten Kollegen und werden durch echte Beiträge ersetzt, sobald die ersten per MR eingehen.",
+	"galerie": [
+		{
+			"stufe": 1,
+			"tool": "copilot",
+			"titel": "Fremdes Modul in zwanzig Minuten statt in zwei Meetings",
+			"wer": "Beispielbeitrag · Backend-Entwicklerin",
+			"text": [
+				"Ich musste einen Fehler in der Abrechnung eines Nachbarteams finden. Früher: Termin suchen, eine Stunde Einführung.",
+				"",
+				"Jetzt frage ich im Agent-Modus zuerst: „Welche Dateien sind am Weg einer Bestellung bis zur Rechnung beteiligt? Nenne Datei und Funktion.“ Danach lasse ich mir genau diesen Weg an einem Beispiel durchspielen.",
+				"",
+				"Was ich gelernt habe: Ich lasse mir immer Dateipfade nennen und öffne zwei davon selbst. Einmal stimmte die Erklärung nicht, und das habe ich nur so gemerkt."
+			]
+		},
+		{
+			"stufe": 2,
+			"tool": "cursor",
+			"titel": "Mein Prompt hat jetzt vier Überschriften",
+			"wer": "Beispielbeitrag · Entwickler, Embedded-Tooling",
+			"text": [
+				"Ziel, Akzeptanzkriterien, Nicht anfassen, Prüfung. Mehr ist es nicht.",
+				"",
+				"Unter „Nicht anfassen“ steht bei uns fast immer dasselbe: öffentliche Schnittstellen, Schema-Dateien, generierter Code. Das liegt inzwischen in den Projekt-Rules, im Prompt bleibt nur das Besondere.",
+				"",
+				"Den Plan lese ich wie einen MR. Wenn ein Schritt „diverse Anpassungen“ heißt, schicke ich ihn zurück."
+			]
+		},
+		{
+			"stufe": 4,
+			"tool": "opencode",
+			"titel": "Der Agent, der nachts die roten Pipelines aufräumt",
+			"wer": "Beispielbeitrag · Plattform-Team",
+			"text": [
+				"Bei uns startet ein fehlgeschlagener Nightly-Job einen zweiten Job mit headless OpenCode. Der Agent bekommt das Log, sucht die Ursache und stellt einen MR.",
+				"",
+				"Wichtig waren drei Dinge: ein eigener Bot-Account ohne Merge-Rechte, ein hartes Zeitlimit und eine Evidenz-Tabelle im MR. Ohne Tabelle wird der MR bei uns nicht angeschaut.",
+				"",
+				"Nicht alles klappt. Wir zählen mit, wie viele MRs ohne Nacharbeit gemergt werden."
+			]
+		}
+	],
+	"usecases": [
+		{ "stufe": 1, "titel": "Fremden Code verstehen", "text": "Den Weg einer Anfrage durch ein unbekanntes Repo erklären lassen, mit Dateipfaden.", "modul": "p1-fremden-code-verstehen" },
+		{ "stufe": 1, "titel": "Tests ergänzen", "text": "Für eine vorhandene Funktion Tests schreiben lassen und den Diff lesen.", "modul": "p1-erste-aufgabe-delegieren" },
+		{ "stufe": 2, "titel": "Doku aktualisieren", "text": "README und Confluence-Seite nach einer Änderung abgleichen, mit Kriterien dafür, was stimmen muss.", "modul": "p2-gut-und-schlecht" },
+		{ "stufe": 4, "titel": "Incident-Analyse", "text": "Ein Agent wertet Logs aus, nennt die wahrscheinliche Ursache und das zuständige Team.", "modul": "p4-agents-in-der-pipeline" }
+	]
+}

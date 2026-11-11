@@ -1,0 +1,15 @@
+# Prüfung der Level-Up-Challenge P1 -> P2. Diese Datei wird nicht verändert.
+# Das Image kommt im Unternehmen aus der internen Registry.
+stages:
+  - pruefen
+
+lab-pruefung:
+  stage: pruefen
+  image: python:3.12-slim
+  script:
+    - python3 pruefung/pruefe.py
+  artifacts:
+    when: always
+    paths:
+      - lab-ergebnis.json
+    expire_in: 30 days
