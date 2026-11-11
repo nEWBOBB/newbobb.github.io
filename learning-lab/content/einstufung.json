@@ -1,0 +1,118 @@
+{
+	"rollen": [
+		{ "id": "entwickler", "name": "Entwickler" },
+		{ "id": "pg-admin", "name": "PG-Admin", "kurz": "AI-Admin einer Produktgruppe" },
+		{ "id": "autor", "name": "Content-Autor oder Service-Team" },
+		{ "id": "andere", "name": "Management oder andere Rolle" }
+	],
+	"begruendung": {
+		"1": "Du gibst dem Agent kurze Aufträge und besserst das Ergebnis von Hand nach. Das ist der richtige Start.",
+		"2": "Du delegierst sicher und prüfst Ergebnisse, bevor du sie übernimmst.",
+		"3": "Du arbeitest mit Kriterien und Plan und prüfst gegen Belege. Der Engpass bist jetzt du selbst, weil alles nacheinander läuft.",
+		"4": "Du lässt mehrere Agents parallel arbeiten und teilst eigene Skills. Als Nächstes startet Arbeit ohne dich."
+	},
+	"fragen": [
+		{
+			"thema": "vorab planen",
+			"frage": "Du sollst ein Feature über drei Dateien umsetzen. Was tust du zuerst?",
+			"optionen": [
+				{ "stufe": 0, "text": "Ich schreibe es selbst. Der Agent hilft mir höchstens bei einzelnen Zeilen." },
+				{ "stufe": 1, "text": "Ich beschreibe das Feature in ein, zwei Sätzen und lasse den Agent loslegen." },
+				{ "stufe": 2, "text": "Ich schreibe auf, woran ich ein gutes Ergebnis erkenne, lasse mir einen Plan geben und korrigiere ihn, bevor Code entsteht." },
+				{ "stufe": 3, "text": "Ich übergebe das Paket mit Kriterien und lasse den Agent die Teile selbst schneiden und parallel bearbeiten." },
+				{ "stufe": 4, "text": "Ich lege ein Issue mit Kriterien an. Unsere Pipeline lässt einen Agent daraus einen MR bauen." }
+			]
+		},
+		{
+			"thema": "Ergebnisse prüfen",
+			"frage": "Der Agent meldet „fertig“, und das Ergebnis sieht plausibel aus. Was passiert als Nächstes?",
+			"optionen": [
+				{ "stufe": 0, "text": "Ich übernehme es und merke später, ob etwas nicht stimmt." },
+				{ "stufe": 1, "text": "Ich lese den Diff und lasse die Tests laufen." },
+				{ "stufe": 2, "text": "Ich prüfe gegen die Kriterien, die ich vorher festgelegt habe, und lasse mir Belege zeigen: Testausgabe, betroffene Dateien." },
+				{ "stufe": 4, "text": "Das Ergebnis kommt schon mit einer Evidenz-Matrix. Im Review prüfe ich nur noch die Nachweise." }
+			]
+		},
+		{
+			"thema": "dauerhafter Kontext",
+			"frage": "Der Agent benutzt zum dritten Mal den falschen Test-Befehl für euer Projekt. Wie reagierst du?",
+			"optionen": [
+				{ "stufe": 0, "text": "Für solche Aufgaben lasse ich den Agent lieber weg." },
+				{ "stufe": 1, "text": "Ich korrigiere ihn wieder im Chat." },
+				{ "stufe": 2, "text": "Ich trage den Befehl in die `AGENTS.md` oder die Projekt-Rules ein." },
+				{ "stufe": 3, "text": "Ich baue daraus einen Skill oder ein Plugin und teile es im Marketplace, damit das ganze Team es hat." }
+			]
+		},
+		{
+			"thema": "große Aufgaben schneiden",
+			"frage": "Ein Refactoring betrifft rund zwanzig Dateien in vier Modulen. Wie gehst du vor?",
+			"optionen": [
+				{ "stufe": 1, "text": "Schritt für Schritt im Chat. Ich warte jede Antwort ab und sage dann, was als Nächstes kommt." },
+				{ "stufe": 2, "text": "Ein Plan mit Etappen. Dann lasse ich eine Etappe nach der anderen ausführen und prüfe jede." },
+				{ "stufe": 3, "text": "Ich zerlege in unabhängige Teile, lasse mehrere Agents in eigenen Worktrees arbeiten und führe zusammen." },
+				{ "stufe": 4, "text": "Ich gebe es als Auftrag an die Pipeline. Das Ergebnis kommt als MR mit Nachweisen." }
+			]
+		},
+		{
+			"thema": "Kriterien formulieren",
+			"frage": "Du schreibst einen Auftrag an den Agent. Was steht drin?",
+			"optionen": [
+				{ "stufe": 1, "text": "Was getan werden soll, so kurz wie möglich." },
+				{ "stufe": 1, "text": "Möglichst viel Kontext. Der Agent sucht sich das Wichtige selbst heraus." },
+				{ "stufe": 2, "text": "Was getan werden soll, woran ich Erfolg messe, was nicht angefasst werden darf und wie geprüft wird." },
+				{ "stufe": 3, "text": "Ziel, Kriterien und Grenzen, dazu welche Teile voneinander unabhängig sind." }
+			]
+		},
+		{
+			"thema": "in fremdem Code arbeiten",
+			"frage": "Du sollst einen Bug in einem Repo beheben, das du nicht kennst. Wie fängst du an?",
+			"optionen": [
+				{ "stufe": 0, "text": "Ich frage das zuständige Team nach einem Termin für eine Einführung." },
+				{ "stufe": 1, "text": "Ich lasse mir vom Agent den Aufbau und die relevanten Stellen erklären und dann den Fix machen." },
+				{ "stufe": 2, "text": "Erst erklären lassen, dann ein Plan mit Kriterien, zum Beispiel „bestehende Tests bleiben grün“, dann der Fix." },
+				{ "stufe": 3, "text": "Der Agent liest sich ein, Sub-Agents untersuchen die Schnittstellen parallel, und ich bekomme einen fertigen MR mit Belegen." }
+			]
+		},
+		{
+			"thema": "Modellwahl",
+			"frage": "Welches Modell nimmst du für eine Aufgabe?",
+			"optionen": [
+				{ "stufe": 1, "text": "Das, was voreingestellt ist." },
+				{ "stufe": 1, "text": "Immer das größte, das verfügbar ist." },
+				{ "stufe": 2, "text": "Je nach Aufgabe: ein starkes Modell für Planung und Schwieriges, ein schnelles für Routine. Die Kosten habe ich im Blick." },
+				{ "stufe": 3, "text": "Ich verteile Modelle auf Rollen und achte bei parallelen Agents auf das Token-Budget." }
+			]
+		},
+		{
+			"thema": "Wissen im Team teilen",
+			"frage": "Euer Team erstellt bei jedem Release die Release Notes aus den gemergten MRs. Wie machst du das?",
+			"optionen": [
+				{ "stufe": 1, "text": "Ich schreibe den Prompt jedes Mal neu." },
+				{ "stufe": 2, "text": "Ich nutze ein vorhandenes Plugin oder einen Skill aus dem Marketplace." },
+				{ "stufe": 3, "text": "Ich habe dafür einen eigenen Skill gebaut und in intern-community veröffentlicht." },
+				{ "stufe": 4, "text": "Das läuft bei jedem Release automatisch in der Pipeline." }
+			]
+		},
+		{
+			"thema": "Arbeit automatisch starten lassen",
+			"frage": "Über Nacht schlägt ein Test in der Pipeline fehl. Was passiert?",
+			"optionen": [
+				{ "stufe": 0, "text": "Ich suche den Fehler morgens selbst." },
+				{ "stufe": 1, "text": "Ich kopiere morgens das Log in den Chat und frage, was los ist." },
+				{ "stufe": 2, "text": "Ich gebe dem Agent Log und Kriterien: Test wieder grün, kein Test wird abgeschwächt. Erst Plan, dann Fix." },
+				{ "stufe": 4, "text": "Die fehlgeschlagene Pipeline startet einen Agent. Morgens liegt ein MR mit Ursache, Fix und Nachweis im Review." }
+			]
+		},
+		{
+			"thema": "mehrere Agents gleichzeitig",
+			"frage": "Was beschreibt deine letzte Arbeitswoche am besten?",
+			"optionen": [
+				{ "stufe": 0, "text": "Autocomplete und ab und zu eine Frage im Chat." },
+				{ "stufe": 1, "text": "Mehrmals kleine Aufgaben an den Agent gegeben und nachgebessert." },
+				{ "stufe": 2, "text": "Die meisten Aufgaben mit Kriterien und Plan gestartet, eine nach der anderen." },
+				{ "stufe": 3, "text": "Meistens liefen mehrere Agents gleichzeitig an verschiedenen Teilaufgaben." },
+				{ "stufe": 4, "text": "Ein Teil meiner Arbeit kam als fertige MRs von Agents, die niemand von Hand gestartet hat." }
+			]
+		}
+	]
+}

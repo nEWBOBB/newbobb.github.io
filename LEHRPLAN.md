@@ -175,6 +175,11 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
   `atom/`, `fernsehen/`, `internet/`, `ki/`, `agenten/`. Vor allem Physik, Chemie und Informatik.
 - **20 ML-Algorithmen** `ml/`: Vertiefung für Informatik und Mathe (Ableitung, Statistik, Matrizen).
 - **Spielen lernen:** `gitarre/`, `klavier/` (Stil `assets/musik.css`).
+- **AI Learning Lab** `learning-lab/`: eigener Bereich außerhalb der zehn Fächer, Lernpfad für agentische
+  Entwicklung von P1 bis P4. Stil Wanderkarte mit Tourenbuch (`lab.css`). Die Plattform (`js/`) enthält keinen
+  Lernstoff: Module, Einstufung und Katalog liegen als Text in `content/` (Format in `content/README.md`),
+  das Hands-on-Repo mit CI-Prüfung in `uebungs-repos/`. Neue Module brauchen nur eine Datei in
+  `content/module/` und einen Eintrag in `content/katalog.json`.
 - **Audio und Visuals, Experimente:** `ereignishorizont/`, `visualizer*/`, `audio*/` und andere, ohne Bezug
   zum Lehrplan.
 
@@ -203,3 +208,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | --- | --- | --- |
 | Okt. 2026 | Lehrplan angelegt | Zehn Fächer mit Stil, Lernform und Stufen |
 | Okt. 2026 | Mathe-Heft, 15 Stufen | Karopapier-Stil, Dateien `math/heft.css`, `heft.js` (Helfer, Lernpfad, Prüfaufgaben), `stufen-a/b/c.js` |
+| Nov. 2026 | AI Learning Lab `learning-lab/` | MVP nach Spezifikation: Einstufung, 12 Module (P1 und P2 vollständig, je ein Mustermodul P3 und P4), fünf Übungsformate, Challenge P1 → P2 mit GitLab-CI-Prüfung, Tourenbuch, Leitstelle mit Beispieldaten. Eigener Abschnitt im Hub. |

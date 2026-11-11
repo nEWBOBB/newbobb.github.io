@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>AI Learning Lab · Von P1 nach P4</title>
+	<meta name="description"
+		content="AI Learning Lab: Einstufung, Module, automatisch geprüfte Übungen und Level-Up-Challenges für agentische Entwicklung, von P1 Delegieren bis P4 Automatisieren." />
+	<meta name="theme-color" content="#f2eee1" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="./lab.css" />
+</head>
+
+<body>
+	<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+	<header class="kopf">
+		<a class="kopf-hub" href="../" aria-label="Zurück zum Newbobb Lab">← Hub</a>
+		<a class="kopf-marke" href="#/">
+			<svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+				<path d="M2 22 10 8l4 6 3-4 7 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+				<path d="M10 8v-5l4 1.6-4 1.6" fill="currentColor" />
+			</svg>
+			<span>AI Learning Lab</span>
+		</a>
+		<nav class="kopf-nav" aria-label="Bereiche">
+			<a href="#/" data-nav="start">Karte</a>
+			<a href="#/einstufung" data-nav="einstufung">Einstufung</a>
+			<a href="#/tourenbuch" data-nav="tourenbuch">Tourenbuch</a>
+			<a href="#/galerie" data-nav="galerie">So arbeite ich</a>
+			<a href="#/mitmachen" data-nav="mitmachen">Mitmachen</a>
+			<a href="#/leitstelle" data-nav="leitstelle">Leitstelle</a>
+		</nav>
+		<span class="kopf-stand" id="kopfStand" aria-live="polite"></span>
+	</header>
+
+	<main id="inhalt" tabindex="-1">
+		<p class="laden">Die Karte wird entfaltet …</p>
+	</main>
+
+	<footer class="fuss">
+		<p>AI Learning Lab · Arbeitstitel · Die Plattform ruft zur Laufzeit kein Sprachmodell auf. Dein Fortschritt
+			liegt nur in diesem Browser.</p>
+		<p><a href="#/mitmachen">Inhalte als Code</a> · <a href="../">Newbobb Lab</a></p>
+	</footer>
+
+	<noscript>
+		<p class="laden">Das Learning Lab braucht JavaScript, um Module und Übungen zu laden.</p>
+	</noscript>
+
+	<script src="./js/md.js"></script>
+	<script src="./js/pruefer.js"></script>
+	<script src="./js/lab.js"></script>
+</body>
+
+</html>
