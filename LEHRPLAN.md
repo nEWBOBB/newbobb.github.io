@@ -95,15 +95,36 @@ seite mit gemischten Aufgaben aus allen Stufen.
   Gleichgewicht · Elastizität · Steuern und Preisdeckel · Kosten und Grenzkosten · Wettbewerb und Monopol ·
   Externalitäten · Öffentliche Güter · Information und Anreize · Zinseszins · Hebel und Spezialwissen (Naval).
 
-## 7. Spieltheorie ⬜ · `/game-theory/`
+## 7. Spieltheorie ✅ · `/game-theory/`
 
-- **Stil:** Arcade-Spielhalle. Pixel-Schrift, Neon, Highscore-Tafel, Gegner mit Persönlichkeit.
-- **Lernform:** *Spielen gegen Bots.* Jede Stufe ist ein Level gegen Gegner. Erst spielst du, dann wird die
-  Strategie dahinter aufgedeckt, am Ende stehen Turniere.
-- **Stufen:** Was ist ein Spiel · Auszahlungsmatrix · Dominante Strategie · Nash-Gleichgewicht ·
-  Gefangenendilemma · Wiederholte Spiele · Koordination · Feigling-Spiel · Gemischte Strategien (Elfmeter) ·
-  Züge nacheinander und Rückwärtsdenken · Drohungen und Versprechen · Auktionen · Ultimatum und Fairness ·
-  Evolution der Kooperation · Lange Spiele mit langen Partnern (Naval).
+- **Stil:** Arcade-Spielhalle. Pixel-Schrift (Press Start 2P), Neonfarben auf Nachtblau, jedes Spiel läuft in
+  einem Röhrenbildschirm mit Scanlines, Level-Auswahl als Reihe von Automaten, Highscore-Tafel.
+- **Lernform:** *Spielen gegen Bots.* Jedes Level ist ein Spiel gegen Bots mit eigenem Charakter und
+  Pixel-Gesicht (Logo, Echo, Engel, Hai, Groll, Würfel, Pawlow, Gönner, Kumpel). Erst nach dem Spielen wird
+  „Strategie aufgedeckt“ freigeschaltet, dann folgt eine Prüffrage („Bosskampf“). Punkte pro Level und
+  Gesamtrang bleiben gespeichert.
+
+| Nr. | Level | Spiel |
+| --- | --- | --- |
+| 1 | Was ist ein Spiel | Zahlenduell: zwei Drittel des Durchschnitts gegen drei Bots, die verschieden tief denken |
+| 2 | Auszahlungsmatrix | Matrix-Blitz: beste Antwort für dich und für den Gegner finden |
+| 3 | Dominante Strategie | Der Rotstift: dominierte Zeilen und Spalten streichen, bis ein Feld bleibt |
+| 4 | Nash-Gleichgewicht | Nash-Jagd: alle Gleichgewichte markieren (eins, zwei, keins) |
+| 5 | Gefangenendilemma | Fünf Fremde, jeder nur einmal |
+| 6 | Wiederholte Spiele | Zehn Runden gegen einen maskierten Bot, am Ende erraten, wer es war |
+| 7 | Koordination | Der Treffpunkt: ohne Absprache dasselbe wählen (Fokuspunkte nach Schelling) |
+| 8 | Feigling-Spiel | Kollisionskurs mit dem Knopf „Lenkrad rauswerfen“ (Selbstbindung) |
+| 9 | Gemischte Strategien | 20 Elfmeter gegen einen Torwart, der Muster lernt, dazu ein Misch-Labor |
+| 10 | Rückwärtsdenken | Die letzte Münze (Nim) gegen einen fehlerfreien Gegner |
+| 11 | Drohungen und Versprechen | Vier Spielbäume: leere Drohung oder glaubwürdig? |
+| 12 | Auktionen | Vier Erstpreis- und vier Zweitpreis-Auktionen gegen drei Bieter |
+| 13 | Ultimatum und Fairness | Angebote machen und Angebote beantworten |
+| 14 | Evolution der Kooperation | Eigenen Bot aus vier Schaltern bauen, Turnier und 60 Generationen Evolution |
+| 15 | Lange Spiele (Naval) | Labor zur Wiedersehens-Wahrscheinlichkeit, drei Partner, Treue oder Abzocken |
+
+**Stand:** Alle 15 Level sind fertig (November 2026). Anders als geplant: „Was ist ein Spiel“ ist das
+Zahlenduell geworden, und das Turnier am Ende steckt in Level 14 (eigener Bot gegen alle). Ideen zum Ausbauen:
+Verhandlungsspiele, Abstimmungen und Wahlverfahren, Signalspiele, ein freier Turnier-Modus mit mehr Schaltern.
 
 ## 8. Überzeugen ⬜ · `/persuasion/`
 
@@ -137,7 +158,7 @@ seite mit gemischten Aufgaben aus allen Stufen.
 ## Reihenfolge
 
 Mathe zuerst, weil fast alles darauf aufbaut. Danach im Wechsel ein Leiter-Fach und ein Naval-Fach:
-Spieltheorie → Physik → Mikroökonomie → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
+Spieltheorie (fertig) → Physik → Mikroökonomie → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
 
 ---
 
@@ -147,7 +168,7 @@ Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand Oktober 202
 
 ### Fächer-Seiten (die zwei Sprüche)
 
-Alle zehn Fächer haben eine Seite. Bis auf Mathe sind es noch **Startseiten mit einem einzigen Experiment** im
+Alle zehn Fächer haben eine Seite. Bis auf Mathe und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
 gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
 `assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
 vorhandene Experiment kann dabei als eine Stufe weiterleben.
@@ -160,7 +181,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
 | Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
 | Mikroökonomie | `economics/` | Angebot und Nachfrage | ⬜ Startseite |
-| Spieltheorie | `game-theory/` | Gefangenendilemma + Axelrods Turnier | ⬜ Startseite |
+| Spieltheorie | `game-theory/` | Spielhalle, 15 Level gegen Bots, eigener Stil | ✅ voller Kurs |
 | Überzeugen | `persuasion/` | Die sechs Hebel erkennen | ⬜ Startseite |
 | Ethik | `ethics/` | Sechs Dilemmas, drei Arten zu entscheiden | ⬜ Startseite |
 | Informatik | `computers/` | Acht Schalter, ein Byte | ⬜ Startseite |
@@ -210,3 +231,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | Okt. 2026 | Mathe-Heft, 15 Stufen | Karopapier-Stil, Dateien `math/heft.css`, `heft.js` (Helfer, Lernpfad, Prüfaufgaben), `stufen-a/b/c.js` |
 | Nov. 2026 | AI Learning Lab `learning-lab/` | MVP nach Spezifikation: Einstufung, 12 Module (P1 und P2 vollständig, je ein Mustermodul P3 und P4), fünf Übungsformate, Challenge P1 → P2 mit GitLab-CI-Prüfung, Tourenbuch, Leitstelle mit Beispieldaten. Eigener Abschnitt im Hub. |
 | Nov. 2026 | Handy-Reparatur | Rund 25 Seiten waren bei 360 px zu breit (Reihen-Navigation ohne `min-width: 0`, lange Wörter in Überschriften, `.chapter.wide`, Kopfzeile der Audio-Seiten). `ts/` läuft jetzt ohne Vite als reines JS. |
+| Nov. 2026 | Spielhalle Spieltheorie, 15 Level | Arcade-Stil, Dateien `game-theory/arcade.css`, `arcade.js` (Spielstand, Bots mit Pixel-Gesichtern, Matrix, Level-Ablauf), `level-a/b/c.js`. Ein Level ist ein Objekt mit `intro`, `play(ctx)`, `reveal` und `quiz`; `ctx.finish(punkte, text)` schaltet Auflösung und Prüffrage frei. Die Seite nutzt `assets/fach.js` nicht mehr. |
