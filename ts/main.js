@@ -16,10 +16,10 @@ app.innerHTML = `
     </header>
     <section class="hero">
       <div>
-        <h1>TypeScript. Klarer Code. Mehr Kontrolle.</h1>
+        <h1>Ein Feld voller Teilchen.</h1>
         <p>
-          Dieses Feld reagiert auf deine Mausbewegung. Vite liefert Hot Reload, TypeScript schützt
-          vor Fehlern.
+          Dieses Feld folgt deiner Maus. Auf dem Handy tippst du einfach hinein. Jedes Teilchen wird zu dir hingezogen,
+          bremst ab und prallt am Rand zurück.
         </p>
         <div class="controls">
           <button type="button" data-action="boost">Boost</button>
@@ -28,21 +28,21 @@ app.innerHTML = `
       </div>
       <div class="panel">
         <canvas id="field" width="640" height="380"></canvas>
-        <div class="badge">TS + Vite</div>
+        <div class="badge">Reines JavaScript</div>
       </div>
     </section>
     <section class="cards">
       <article>
-        <h3>Typed Motion</h3>
-        <p>Das Partikel-System ist komplett typisiert und gut wartbar.</p>
+        <h3>Anziehung</h3>
+        <p>Je näher ein Teilchen an deinem Zeiger ist, desto stärker zieht es zu dir hin.</p>
       </article>
       <article>
-        <h3>Fast Refresh</h3>
-        <p>Vite beschleunigt die Entwicklung mit Live Reload.</p>
+        <h3>Reibung</h3>
+        <p>In jedem Bild verliert jedes Teilchen 2 % Tempo. Darum kreisen sie, statt davonzufliegen.</p>
       </article>
       <article>
-        <h3>Saubere Struktur</h3>
-        <p>Dateien, Assets, Styles — alles klar getrennt.</p>
+        <h3>Kein Build</h3>
+        <p>Ein HTML, ein Skript, ein Stylesheet. Läuft direkt im Browser.</p>
       </article>
     </section>
   </div>
@@ -126,11 +126,14 @@ function setEnergy(value) {
   energy = value;
 }
 
-document.addEventListener("pointermove", (event) => {
+function follow(event) {
   const rect = canvasEl.getBoundingClientRect();
   mouseX = event.clientX - rect.left;
   mouseY = event.clientY - rect.top;
-});
+}
+
+document.addEventListener("pointermove", follow);
+document.addEventListener("pointerdown", follow);
 
 document.querySelectorAll("[data-action]").forEach((button) => {
   button.addEventListener("click", () => {
