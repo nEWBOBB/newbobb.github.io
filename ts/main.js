@@ -1,15 +1,4 @@
-import "./style.css";
-
-type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  hue: number;
-};
-
-const app = document.querySelector<HTMLDivElement>("#app");
+const app = document.querySelector("#app");
 
 if (!app) {
   throw new Error("App container missing");
@@ -20,9 +9,9 @@ app.innerHTML = `
     <header>
       <div class="logo">Signal Field</div>
       <nav class="nav">
-        <a href="/">Start</a>
-        <a href="/audio">Audio</a>
-        <a href="/vierte">Vierte</a>
+        <a href="../">Start</a>
+        <a href="../audio/">Audio</a>
+        <a href="../vierte/">Vierte</a>
       </nav>
     </header>
     <section class="hero">
@@ -59,7 +48,7 @@ app.innerHTML = `
   </div>
 `;
 
-const canvas = document.querySelector<HTMLCanvasElement>("#field");
+const canvas = document.querySelector("#field");
 if (!canvas) {
   throw new Error("Canvas missing");
 }
@@ -72,7 +61,7 @@ if (!ctx) {
 const canvasEl = canvas;
 const ctxEl = ctx;
 
-const particles: Particle[] = [];
+const particles = [];
 const total = 80;
 let energy = 1;
 let mouseX = 0;
@@ -133,7 +122,7 @@ function step() {
   requestAnimationFrame(step);
 }
 
-function setEnergy(value: number) {
+function setEnergy(value) {
   energy = value;
 }
 
@@ -143,7 +132,7 @@ document.addEventListener("pointermove", (event) => {
   mouseY = event.clientY - rect.top;
 });
 
-document.querySelectorAll<HTMLButtonElement>("[data-action]").forEach((button) => {
+document.querySelectorAll("[data-action]").forEach((button) => {
   button.addEventListener("click", () => {
     const action = button.dataset.action;
     if (action === "boost") {

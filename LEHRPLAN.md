@@ -209,3 +209,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | Okt. 2026 | Lehrplan angelegt | Zehn Fächer mit Stil, Lernform und Stufen |
 | Okt. 2026 | Mathe-Heft, 15 Stufen | Karopapier-Stil, Dateien `math/heft.css`, `heft.js` (Helfer, Lernpfad, Prüfaufgaben), `stufen-a/b/c.js` |
 | Nov. 2026 | AI Learning Lab `learning-lab/` | MVP nach Spezifikation: Einstufung, 12 Module (P1 und P2 vollständig, je ein Mustermodul P3 und P4), fünf Übungsformate, Challenge P1 → P2 mit GitLab-CI-Prüfung, Tourenbuch, Leitstelle mit Beispieldaten. Eigener Abschnitt im Hub. |
+| Nov. 2026 | Handy-Reparatur | Rund 25 Seiten waren bei 360 px zu breit (Reihen-Navigation ohne `min-width: 0`, lange Wörter in Überschriften, `.chapter.wide`, Kopfzeile der Audio-Seiten). `ts/` läuft jetzt ohne Vite als reines JS. |
