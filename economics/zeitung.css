@@ -1,0 +1,907 @@
+/* Der Marktbote: Wirtschaftszeitung auf lachsfarbenem Papier. */
+:root {
+	--papier: #f6dfcb;
+	--papier-hell: #fbeee1;
+	--papier-dunkel: #ecd0b8;
+	--tinte: #211c17;
+	--grau: #5d5248;
+	--linie: rgba(33, 28, 23, .28);
+	--rot: #a3271c;
+	--gruen: #1d5c57;
+	--serif: "Newsreader", Georgia, "Times New Roman", serif;
+	--schmal: "Barlow Condensed", "Arial Narrow", sans-serif;
+	--fraktur: "UnifrakturCook", "Old English Text MT", Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--papier);
+	background-image:
+		repeating-linear-gradient(0deg, rgba(120, 80, 40, .035) 0 1px, transparent 1px 3px),
+		radial-gradient(120% 80% at 50% 0%, var(--papier-hell), transparent 70%);
+	color: var(--tinte);
+	font-family: var(--serif);
+	font-size: 1.0625rem;
+	line-height: 1.55;
+	font-optical-sizing: auto;
+}
+
+.blatt {
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 0 clamp(16px, 4vw, 40px) 48px;
+}
+
+a {
+	color: inherit;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+}
+
+a:hover {
+	color: var(--rot);
+}
+
+:focus-visible {
+	outline: 3px solid var(--rot);
+	outline-offset: 2px;
+}
+
+.skip {
+	position: absolute;
+	left: -999px;
+	top: 8px;
+	background: var(--tinte);
+	color: var(--papier);
+	padding: 8px 12px;
+	z-index: 5;
+}
+
+.skip:focus {
+	left: 8px;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: 700;
+	line-height: 1.08;
+	margin: 0;
+	text-wrap: balance;
+	overflow-wrap: break-word;
+	hyphens: auto;
+}
+
+p {
+	margin: 0 0 .8em;
+}
+
+/* ---------- Zeitungskopf ---------- */
+.kopf {
+	padding-top: 12px;
+	text-align: center;
+}
+
+.kopfzeile,
+.unterzeile {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 4px 16px;
+	margin: 0;
+	font-family: var(--schmal);
+	font-weight: 600;
+	font-size: .875rem;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.kopfzeile {
+	padding-bottom: 6px;
+	border-bottom: 1px solid var(--tinte);
+}
+
+.kopfzeile a {
+	text-decoration: none;
+}
+
+.titel {
+	display: block;
+	font-family: var(--fraktur);
+	font-size: clamp(2.6rem, 11.5vw, 6.5rem);
+	line-height: 1.05;
+	padding: .12em 0 .06em;
+	text-decoration: none;
+	color: var(--tinte);
+}
+
+.titel:hover {
+	color: var(--tinte);
+}
+
+.unterzeile {
+	padding: 6px 0;
+	border-top: 3px double var(--tinte);
+	border-bottom: 3px double var(--tinte);
+}
+
+.kasse b {
+	color: var(--rot);
+}
+
+/* ---------- Titelseite ---------- */
+.rubrik {
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: .875rem;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	color: var(--rot);
+	margin: 0 0 8px;
+}
+
+.aufmacher {
+	display: grid;
+	gap: 24px clamp(24px, 4vw, 48px);
+	padding: clamp(24px, 4vw, 44px) 0;
+	border-bottom: 1px solid var(--tinte);
+}
+
+.aufmacher h1 {
+	font-size: clamp(2.1rem, 6.4vw, 4.2rem);
+	letter-spacing: -.015em;
+}
+
+.vorspann {
+	font-size: 1.1875rem;
+	line-height: 1.45;
+	max-width: 62ch;
+	margin-top: 14px;
+}
+
+.hinweis {
+	font-style: italic;
+	color: var(--grau);
+}
+
+.eilkasten {
+	min-width: 0;
+}
+
+.stich {
+	border: 1.5px solid var(--tinte);
+	background: var(--papier-hell);
+	line-height: 0;
+	margin-bottom: 12px;
+}
+
+.stich canvas {
+	display: block;
+	width: 100%;
+}
+
+.eil {
+	border-top: 3px solid var(--tinte);
+	border-bottom: 1px solid var(--tinte);
+	padding: 10px 0 12px;
+	margin: 12px 0;
+	min-height: 5.5em;
+}
+
+.eil span {
+	display: inline-block;
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: .8125rem;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	background: var(--rot);
+	color: #fff;
+	padding: 1px 7px;
+	margin-bottom: 6px;
+}
+
+.eil b {
+	display: block;
+	font-size: clamp(1.25rem, 3.6vw, 1.6rem);
+	line-height: 1.15;
+	text-wrap: balance;
+}
+
+.eil i {
+	display: block;
+	margin-top: 4px;
+	color: var(--grau);
+}
+
+/* ---------- Inhaltsverzeichnis ---------- */
+.inhalt {
+	padding: 28px 0 8px;
+}
+
+.inhalt>h2,
+.ausgabe section>h3 {
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: 1rem;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	border-top: 3px solid var(--tinte);
+	padding-top: 8px;
+}
+
+.buchteil {
+	margin-top: 26px;
+}
+
+.buchteil h3 {
+	font-style: italic;
+	font-weight: 600;
+	font-size: 1.5rem;
+	margin-bottom: 4px;
+}
+
+.buchteil ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+	column-gap: 28px;
+}
+
+.buchteil li {
+	border-top: 1px solid var(--linie);
+}
+
+.buchteil a {
+	display: grid;
+	grid-template-columns: 2.4rem 1fr auto;
+	gap: 10px;
+	align-items: start;
+	padding: 12px 0 13px;
+	text-decoration: none;
+	height: 100%;
+}
+
+.buchteil .nr {
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: 1.75rem;
+	line-height: 1;
+	color: var(--rot);
+}
+
+.buchteil b {
+	display: block;
+	font-size: 1.1875rem;
+	line-height: 1.2;
+}
+
+.buchteil small {
+	display: block;
+	font-size: .9375rem;
+	color: var(--grau);
+	line-height: 1.3;
+	margin-top: 3px;
+}
+
+.buchteil a:hover b {
+	text-decoration: underline;
+}
+
+.muenzen {
+	display: flex;
+	gap: 3px;
+	padding-top: 4px;
+}
+
+.muenzen i {
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	border: 1.5px solid var(--tinte);
+}
+
+.muenzen i.da {
+	background: var(--tinte);
+}
+
+.muenzen.gelesen::after {
+	content: "✓";
+	font-family: var(--schmal);
+	font-weight: 700;
+	line-height: 13px;
+	color: var(--gruen);
+	margin-left: 2px;
+}
+
+/* ---------- Eine Ausgabe ---------- */
+.ausgabe {
+	padding: 18px 0 0;
+}
+
+.ausnav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 6px 18px;
+	font-family: var(--schmal);
+	font-weight: 600;
+	font-size: .9375rem;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--linie);
+}
+
+.ausnav a {
+	padding: 6px 0;
+}
+
+.auskopf {
+	padding: 24px 0 8px;
+	max-width: 860px;
+}
+
+.auskopf h2 {
+	font-size: clamp(1.9rem, 5.6vw, 3.4rem);
+	letter-spacing: -.01em;
+}
+
+.szene {
+	max-width: 66ch;
+	margin: 6px 0 22px;
+}
+
+.szene table,
+.leit table {
+	border-collapse: collapse;
+	font-family: var(--schmal);
+	font-size: 1rem;
+	margin: 10px 0 14px;
+}
+
+.szene th,
+.szene td,
+.leit th,
+.leit td {
+	border-bottom: 1px solid var(--linie);
+	padding: 4px 14px 4px 0;
+	text-align: left;
+}
+
+.ausgabe section {
+	margin-top: 30px;
+}
+
+.ausgabe section>h3 {
+	margin-bottom: 12px;
+}
+
+.feld {
+	display: grid;
+	gap: 14px;
+	max-width: 760px;
+}
+
+.feld>p {
+	margin: 0;
+}
+
+.feld .klein {
+	font-size: .9375rem;
+	color: var(--grau);
+}
+
+/* Regler */
+.regler {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 2px 12px;
+	align-items: baseline;
+	min-width: 0;
+}
+
+.regler label {
+	font-family: var(--schmal);
+	font-weight: 600;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	font-size: .9375rem;
+}
+
+.regler output {
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: 1.125rem;
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+}
+
+.regler input {
+	grid-column: 1 / -1;
+	width: 100%;
+	margin: 0;
+	height: 36px;
+	background: transparent;
+	accent-color: var(--tinte);
+	-webkit-appearance: none;
+	appearance: none;
+	cursor: pointer;
+}
+
+.regler input::-webkit-slider-runnable-track {
+	height: 3px;
+	background: var(--tinte);
+}
+
+.regler input::-moz-range-track {
+	height: 3px;
+	background: var(--tinte);
+}
+
+.regler input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 22px;
+	height: 22px;
+	margin-top: -10px;
+	border-radius: 50%;
+	background: var(--rot);
+	border: 2px solid var(--tinte);
+}
+
+.regler input::-moz-range-thumb {
+	width: 19px;
+	height: 19px;
+	border-radius: 50%;
+	background: var(--rot);
+	border: 2px solid var(--tinte);
+}
+
+.regler input:disabled {
+	opacity: .4;
+	cursor: default;
+}
+
+/* Knöpfe */
+button {
+	font: inherit;
+	color: inherit;
+}
+
+.haupt,
+.neben,
+.wahl button {
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: 1.0625rem;
+	letter-spacing: .07em;
+	text-transform: uppercase;
+	min-height: 46px;
+	padding: 9px 18px;
+	border: 2px solid var(--tinte);
+	border-radius: 0;
+	cursor: pointer;
+	transition: background .15s, color .15s, transform .1s;
+}
+
+.haupt {
+	background: var(--tinte);
+	color: var(--papier-hell);
+	justify-self: start;
+}
+
+.haupt:hover:not(:disabled) {
+	background: var(--rot);
+	border-color: var(--rot);
+}
+
+.neben,
+.wahl button {
+	background: transparent;
+}
+
+.neben:hover:not(:disabled),
+.wahl button:hover:not(:disabled) {
+	background: var(--papier-dunkel);
+}
+
+button:active:not(:disabled) {
+	transform: translateY(1px);
+}
+
+button:disabled {
+	opacity: .38;
+	cursor: default;
+}
+
+.reihe,
+.wahl {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.wahl button {
+	text-transform: none;
+	letter-spacing: .02em;
+	text-align: left;
+	line-height: 1.2;
+}
+
+.wahl button.an {
+	background: var(--tinte);
+	color: var(--papier-hell);
+}
+
+.wahl button.gut {
+	background: var(--gruen);
+	border-color: var(--gruen);
+	color: #fff;
+	opacity: 1;
+}
+
+.wahl button.schlecht {
+	border-color: var(--rot);
+	color: var(--rot);
+	text-decoration: line-through;
+}
+
+.wahl.spalte {
+	flex-direction: column;
+	align-items: stretch;
+}
+
+/* Kasten mit Zahlen */
+.kasten {
+	border: 1.5px solid var(--tinte);
+	background: var(--papier-hell);
+	padding: 10px 14px;
+}
+
+.kasten p {
+	margin: 0 0 4px;
+}
+
+.kasten p:last-child {
+	margin: 0;
+}
+
+.werte {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: 10px 18px;
+	margin: 0;
+}
+
+.werte div {
+	border-top: 1px solid var(--linie);
+	padding-top: 5px;
+}
+
+.werte dt {
+	font-family: var(--schmal);
+	font-weight: 600;
+	font-size: .8125rem;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	color: var(--grau);
+}
+
+.werte dd {
+	margin: 0;
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: 1.5rem;
+	line-height: 1.15;
+	font-variant-numeric: tabular-nums;
+}
+
+.werte dd.rot {
+	color: var(--rot);
+}
+
+.werte dd.gruen {
+	color: var(--gruen);
+}
+
+/* Menge aus Punkten: jeder Punkt ein Mensch */
+.leute {
+	display: grid;
+	grid-template-columns: repeat(20, 1fr);
+	gap: 3px;
+	max-width: 420px;
+}
+
+.leute i {
+	aspect-ratio: 1;
+	border-radius: 50%;
+	border: 1.5px solid var(--linie);
+}
+
+.leute i.kauft {
+	background: var(--tinte);
+	border-color: var(--tinte);
+}
+
+/* Kassenbuch */
+.buchrahmen {
+	overflow-x: auto;
+}
+
+.buch {
+	width: 100%;
+	border-collapse: collapse;
+	font-family: var(--schmal);
+	font-size: 1.0625rem;
+	font-variant-numeric: tabular-nums;
+}
+
+.buch caption {
+	text-align: left;
+	font-weight: 700;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	font-size: .8125rem;
+	color: var(--grau);
+	padding-bottom: 4px;
+}
+
+.buch th {
+	text-align: left;
+	font-weight: 600;
+	font-size: .8125rem;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	border-top: 2px solid var(--tinte);
+	border-bottom: 1px solid var(--tinte);
+	padding: 4px 10px 4px 0;
+}
+
+.buch td {
+	border-bottom: 1px solid var(--linie);
+	padding: 5px 10px 5px 0;
+	vertical-align: top;
+}
+
+.buch tr.best td {
+	font-weight: 700;
+}
+
+.buch td.rot {
+	color: var(--rot);
+}
+
+.abrechnung {
+	border: 2px solid var(--tinte);
+	padding: 12px 16px;
+	max-width: 760px;
+	margin-top: 16px;
+	background: var(--papier-hell);
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 4px 16px;
+	align-items: center;
+}
+
+.abrechnung .muenzen i {
+	width: 20px;
+	height: 20px;
+	border-width: 2px;
+}
+
+.abrechnung p {
+	margin: 0;
+}
+
+.abrechnung .neben {
+	grid-column: 1 / -1;
+	justify-self: start;
+	margin-top: 6px;
+	min-height: 40px;
+	font-size: .9375rem;
+}
+
+/* Leitartikel */
+.gesperrt {
+	font-style: italic;
+	color: var(--grau);
+	border: 1px dashed var(--grau);
+	padding: 14px 16px;
+	max-width: 760px;
+}
+
+.leit h4 {
+	font-size: clamp(1.6rem, 4.4vw, 2.4rem);
+	font-weight: 700;
+	line-height: 1.1;
+	margin: 0 0 14px;
+	max-width: 22ch;
+	text-wrap: balance;
+	hyphens: auto;
+}
+
+.spalten {
+	columns: 2 300px;
+	column-gap: 36px;
+	column-rule: 1px solid var(--linie);
+	max-width: 900px;
+}
+
+.spalten p {
+	margin: 0 0 .75em;
+	hyphens: auto;
+}
+
+.spalten>p:first-child::first-letter {
+	font-size: 3.3em;
+	font-weight: 700;
+	float: left;
+	line-height: .82;
+	padding: .06em .08em 0 0;
+	color: var(--rot);
+}
+
+.merke {
+	break-inside: avoid;
+	border-top: 3px solid var(--tinte);
+	border-bottom: 1px solid var(--tinte);
+	padding: 8px 0 10px;
+	margin: 14px 0;
+	font-size: 1.125rem;
+	font-weight: 600;
+	line-height: 1.35;
+}
+
+.merke span {
+	display: block;
+	font-family: var(--schmal);
+	font-size: .8125rem;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	color: var(--rot);
+}
+
+.formel {
+	break-inside: avoid;
+	font-family: var(--schmal);
+	font-weight: 600;
+	font-size: 1.1875rem;
+	background: var(--papier-dunkel);
+	padding: 8px 12px;
+	margin: 0 0 .75em;
+}
+
+/* Leserfrage */
+.leserfrage .f {
+	font-size: 1.25rem;
+	font-weight: 600;
+	line-height: 1.3;
+	max-width: 60ch;
+}
+
+.leserfrage .wahl {
+	max-width: 640px;
+}
+
+.urteil {
+	min-height: 1.6em;
+	margin-top: 12px;
+	max-width: 62ch;
+}
+
+.stempel {
+	display: inline-block;
+	font-family: var(--schmal);
+	font-weight: 700;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+	color: var(--gruen);
+	border: 2.5px solid var(--gruen);
+	padding: 2px 10px;
+	transform: rotate(-3deg);
+	margin-right: 10px;
+}
+
+.weiter {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 36px;
+	padding-top: 14px;
+	border-top: 3px double var(--tinte);
+	font-family: var(--schmal);
+	font-weight: 700;
+	font-size: 1.125rem;
+	letter-spacing: .05em;
+	text-transform: uppercase;
+}
+
+.fuss {
+	margin-top: 48px;
+	padding-top: 12px;
+	border-top: 1px solid var(--tinte);
+	font-size: .9375rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 6px 24px;
+}
+
+.fuss p {
+	margin: 0;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+@media (min-width: 860px) {
+	.aufmacher {
+		grid-template-columns: 1.05fr 1fr;
+		align-items: start;
+	}
+
+	.aufmacher .eilkasten {
+		border-left: 1px solid var(--linie);
+		padding-left: clamp(24px, 3vw, 40px);
+	}
+}
+
+@media (max-width: 480px) {
+	body {
+		font-size: 1rem;
+	}
+
+	.kopfzeile span,
+	.unterzeile span:first-child {
+		display: none;
+	}
+
+	.kopfzeile,
+	.unterzeile {
+		justify-content: center;
+	}
+
+	.buchteil a {
+		grid-template-columns: 2rem 1fr auto;
+	}
+
+	.leute {
+		gap: 2px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	* {
+		transition: none !important;
+	}
+}
+
+.wahl button small {
+	font-weight: 500;
+	font-size: .9375rem;
+	letter-spacing: 0;
+}
+
+.wahl button.gut:disabled,
+.wahl button.an:disabled {
+	opacity: 1;
+}

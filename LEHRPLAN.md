@@ -110,14 +110,38 @@ Kernphysik; ein Abschlussblatt mit gemischten Vorhersagen aus allen Themen.
   Konditionierung · Gewohnheiten · Denkfehler und Heuristiken · Emotionen · Motivation · Persönlichkeit ·
   Entwicklung · Gruppen und Konformität · Stress · Glück.
 
-## 6. Mikroökonomie ⬜ · `/economics/`
+## 6. Mikroökonomie ✅ · `/economics/`
 
-- **Stil:** Wirtschaftszeitung. Lachsfarbenes Papier, Schlagzeilen, Kurstabellen, Holzschnitt-Grafiken.
-- **Lernform:** *Rollenspiel über Runden.* Du führst einen Stand auf dem Markt, setzt Preise, kaufst ein und
-  erlebst jede Regel als Folge deiner eigenen Entscheidungen.
-- **Stufen:** Knappheit und Opportunitätskosten · Tausch und komparativer Vorteil · Nachfrage · Angebot ·
-  Gleichgewicht · Elastizität · Steuern und Preisdeckel · Kosten und Grenzkosten · Wettbewerb und Monopol ·
-  Externalitäten · Öffentliche Güter · Information und Anreize · Zinseszins · Hebel und Spezialwissen (Naval).
+- **Stil:** Wirtschaftszeitung „Der Marktbote“. Lachsfarbenes Papier, Zeitungskopf in Fraktur (UnifrakturCook),
+  Schlagzeilen und Fließtext in Newsreader, Tabellen und Beschriftung in Barlow Condensed. Schaubilder als
+  Holzschnitt: schwarze Tinte, Schraffuren, Rot und Flaschengrün als Schmuckfarben. Leitartikel in Spalten mit
+  Initial.
+- **Lernform:** *Rollenspiel über Runden, die Zeitung schreibt mit.* Du führst einen Brezelstand, später sitzt du
+  im Marktrat. Jede Ausgabe ist ein Spiel über mehrere Markttage mit Kassenbuch. Nach jeder Entscheidung erscheint
+  eine Eilmeldung, die aus deinen Zahlen entsteht. Erst nach der Abrechnung (1 bis 3 Taler) öffnet sich der
+  Leitartikel mit dem Fachbegriff, dann die Leserfrage. Gespeichert werden Taler und gelöste Leserfragen.
+
+| Nr. | Ausgabe | Rollenspiel |
+| --- | --- | --- |
+| 1 | Knappheit und Opportunitätskosten | Acht Stunden auf Stand und Botengänge verteilen, vier Samstage |
+| 2 | Tausch und komparativer Vorteil | Brezeln und Saft mit Hanne: erst jeder für sich, dann mit Tausch |
+| 3 | Nachfrage | Fünf Markttage, fünf Preise: aus den Punkten wird die Kurve |
+| 4 | Angebot | Der Großhändler nennt den Preis, du wählst die Bleche (Kostentreppe) |
+| 5 | Gleichgewicht | Als Ausrufer den Preis finden, dann noch einmal nach dem Stadtfest |
+| 6 | Elastizität | Vier Waren, je einmal 20 % rauf oder runter für mehr Umsatz |
+| 7 | Steuern und Preisdeckel | Im Marktrat: 80 Taler für den Brunnen holen, dann ein Höchstpreis |
+| 8 | Kosten und Grenzkosten | Sonne, Regen, Sturm: aufmachen trotz Verlust? (versunkene Kosten) |
+| 9 | Wettbewerb und Monopol | Drei Tage allein, dann sechs Tage Preiskampf gegen Kunz |
+| 10 | Externalitäten | Erst räuchern ohne Regel, dann als Rat die Rauchabgabe festlegen |
+| 11 | Öffentliche Güter | Fünf Abende Laternentopf mit drei Nachbarn, dann Abstimmung |
+| 12 | Information und Anreize | Sechs gebrauchte Öfen blind kaufen, dann zwei mit und ohne Garantie |
+| 13 | Zinseszins | Schätzfrage, dann zwölf Jahre hineinstecken oder herausnehmen gegen Kunz |
+| 14 | Hebel und Spezialwissen (Naval) | Zehn Jahre, fünf Schwerpunkte: Stunden, Rezept, Gehilfen, Stand, Buch |
+
+**Stand:** Alle 14 Ausgaben sind fertig (November 2026). Anders als geplant: Das alte Eismarkt-Experiment ist
+entfallen, sein Inhalt steckt in den Ausgaben 5 und 7. Ideen zum Ausbauen: Konsumenten- und Produzentenrente,
+Mindestlohn, Oligopol und Kartell, Arbeitsmarkt, Risiko und Versicherung, Verhaltensökonomie; eine
+Sonderausgabe mit gemischten Leserfragen.
 
 ## 7. Spieltheorie ✅ · `/game-theory/`
 
@@ -182,17 +206,17 @@ Verhandlungsspiele, Abstimmungen und Wahlverfahren, Signalspiele, ein freier Tur
 ## Reihenfolge
 
 Mathe zuerst, weil fast alles darauf aufbaut. Danach im Wechsel ein Leiter-Fach und ein Naval-Fach:
-Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
+Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie (fertig) → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
 
 ---
 
 ## Was schon besteht
 
-Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand Oktober 2026).
+Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand November 2026).
 
 ### Fächer-Seiten (die zwei Sprüche)
 
-Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
+Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik, Mikroökonomie und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
 gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
 `assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
 vorhandene Experiment kann dabei als eine Stufe weiterleben.
@@ -204,7 +228,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | Chemie | `chemistry/` | Stoßtheorie (Teilchen-Simulation) | ⬜ Startseite |
 | Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
 | Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
-| Mikroökonomie | `economics/` | Angebot und Nachfrage | ⬜ Startseite |
+| Mikroökonomie | `economics/` | Der Marktbote, 14 Ausgaben als Rollenspiel, eigener Stil | ✅ voller Kurs |
 | Spieltheorie | `game-theory/` | Spielhalle, 15 Level gegen Bots, eigener Stil | ✅ voller Kurs |
 | Überzeugen | `persuasion/` | Die sechs Hebel erkennen | ⬜ Startseite |
 | Ethik | `ethics/` | Sechs Dilemmas, drei Arten zu entscheiden | ⬜ Startseite |
@@ -257,3 +281,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | Nov. 2026 | Handy-Reparatur | Rund 25 Seiten waren bei 360 px zu breit (Reihen-Navigation ohne `min-width: 0`, lange Wörter in Überschriften, `.chapter.wide`, Kopfzeile der Audio-Seiten). `ts/` läuft jetzt ohne Vite als reines JS. |
 | Nov. 2026 | Spielhalle Spieltheorie, 15 Level | Arcade-Stil, Dateien `game-theory/arcade.css`, `arcade.js` (Spielstand, Bots mit Pixel-Gesichtern, Matrix, Level-Ablauf), `level-a/b/c.js`. Ein Level ist ein Objekt mit `intro`, `play(ctx)`, `reveal` und `quiz`; `ctx.finish(punkte, text)` schaltet Auflösung und Prüffrage frei. Die Seite nutzt `assets/fach.js` nicht mehr. |
 | Nov. 2026 | Prüfstand Physik, 16 Blätter | Blaupausen-Stil, Dateien `physics/pruefstand.css`, `pruefstand.js` (Zeichenwerkzeug `PS.Z`, Vorhersage, Regler, Schriftfeld, Auftakt-Versuch), `versuche-a/b/c.js`. Ein Versuch ist ein Objekt mit `frage`, `vorhersage` (Wahl oder Regler mit Toleranz), `baue(api)`, `warum`, `formel` und `quiz`; `baue` liefert `zeichne`, `schritt`, `start` und optional `frei`, `api.fertig(wert, text)` wertet den Tipp aus. Die Seite nutzt `assets/fach.js` nicht mehr. Skills `impeccable` und `unslop` liegen unter `.claude/skills/`. |
+| Nov. 2026 | Der Marktbote Mikroökonomie, 14 Ausgaben | Zeitungs-Stil, Dateien `economics/zeitung.css`, `zeitung.js` (Spielstand, Zeichenhelfer `Z` mit Schraffur, `achsen`, Bausteine für Regler, Kassenbuch, Auswahl, Eilmeldung), `ausgaben-a/b/c.js`. Eine Ausgabe ist ein Objekt mit `rubrik`, `titel`, `kurz`, `frage`, `szene`, `spiel(api)`, `schlagzeile`, `artikel`, `merke`, `formel` und `quiz`; `api.eil(titel, text)` setzt die Eilmeldung, `api.fertig(taler, text)` rechnet ab und öffnet den Leitartikel. Die Seite nutzt `assets/fach.js` nicht mehr. |
