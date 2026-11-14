@@ -43,6 +43,8 @@ a {
 h1,
 h2,
 h3 {
+	overflow-wrap: break-word;
+	hyphens: auto;
 	font-family: "Syne", sans-serif;
 	letter-spacing: -0.02em;
 	line-height: 1.05;
@@ -85,6 +87,7 @@ h3 {
 
 .v-series {
 	display: flex;
+	min-width: 0;
 	gap: 4px;
 	overflow-x: auto;
 	scrollbar-width: none;
@@ -219,7 +222,7 @@ h3 {
 }
 
 .chapter.wide {
-	grid-template-columns: 1fr;
+	grid-template-columns: minmax(0, 1fr);
 }
 
 .chapter-text {
