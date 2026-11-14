@@ -4,107 +4,68 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-	<title>Physik — Newbobb Lab</title>
+	<title>Prüfstand Physik — Newbobb Lab</title>
 	<meta name="description"
-		content="Physik interaktiv: ein Federpendel, das die Sinuswelle aus der Mathematik in echte Bewegung verwandelt, dazu alle Physik-Projekte des Newbobb Lab von Schall bis Schwarzes Loch." />
-	<meta name="theme-color" content="#0b0a09" />
+		content="Physik in 16 Versuchen: erst vorhersagen, dann messen. Von Messen und Tempo über Kraft, Energie, Wellen, Strom und Licht bis Relativität und Quanten, alles zum Anfassen." />
+	<meta name="theme-color" content="#123f86" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link
-		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Sofia+Sans:wght@400;500;700&family=Sofia+Sans+Condensed:wght@500;700&family=Sofia+Sans+Extra+Condensed:wght@700;800&display=swap"
 		rel="stylesheet" />
-	<link rel="stylesheet" href="../assets/verstehen.css" />
-	<link rel="stylesheet" href="../assets/fach.css" />
-	<style>
-		:root {
-			--fach: #8fb8ff;
-		}
-
-		#springCanvas {
-			touch-action: none;
-			cursor: grab;
-		}
-	</style>
+	<link rel="stylesheet" href="./pruefstand.css" />
 </head>
 
-<body data-fach="physics">
-	<div class="v-progress" aria-hidden="true"></div>
-	<header class="v-top">
-		<a class="v-home" href="../#faecher">newbobb <span>/ fächer</span></a>
-		<nav class="v-series" aria-label="Alle Fächer" data-fach-nav></nav>
+<body>
+	<a class="skip" href="#verzeichnis">Zum Blattverzeichnis springen</a>
+	<header class="top">
+		<a class="home" href="../#faecher">newbobb <span>/ Prüfstand Physik</span></a>
+		<p class="meter" aria-label="Fortschritt"></p>
 	</header>
 
 	<main>
-		<section class="v-hero">
-			<p class="v-kicker">Fach 02 · Stufe 2 der Leiter</p>
-			<h1>Mathe, die<br /><em>sich bewegt</em></h1>
-			<p class="v-lede">Physik ist Mathematik, angewendet auf die Welt. Die Sinuswelle von der Mathe-Seite
-				taucht hier wieder auf: als Gewicht, das an einer Feder auf und ab schwingt.</p>
-			<ol class="v-toc">
-				<li><a href="#feder">Das Federpendel</a></li>
-				<li><a href="#projekte">Projekte</a></li>
-			</ol>
-		</section>
-
-		<div class="f-quotes" data-fach-quote></div>
-
-
-		<section class="chapter" id="feder">
-			<div class="chapter-text reveal">
-				<span class="chapter-num">01 · Schwingungen</span>
-				<h2>Das Federpendel</h2>
-				<p>Zieh ein Gewicht an einer Feder nach unten und lass los. Die Feder zieht es zurück, aber es schießt über
-					die Mitte hinaus. Dann zieht die Feder in die andere Richtung. So geht es immer weiter.</p>
-				<p>Die Regel dahinter ist eine einzige Zeile: <strong>Die Kraft ist proportional zur Auslenkung</strong>
-					(Hookesches Gesetz). Löst man diese Gleichung, kommt exakt die <strong>Sinusfunktion</strong> heraus.
-					Die Natur rechnet mit Mathe.</p>
-				<p>Eine härtere Feder schwingt schneller, ein schwereres Gewicht langsamer. Mit Reibung (Dämpfung) wird
-					die Welle immer kleiner, bis das Gewicht stillsteht.</p>
-				<p class="merke"><b>Merke</b>Alles, was zurück in die Mitte gezogen wird, schwingt: Federn, Pendel,
-					Gitarrensaiten, Brücken im Wind und Atome in einem Kristall.</p>
-				<div class="formula">F = −D · x · T = 2π · √(m / D)
-					<small>D ist die Federhärte, m die Masse, T die Zeit für eine Schwingung.</small>
-				</div>
+		<section class="auftakt">
+			<div class="worte">
+				<h1>Erst wetten.<br />Dann messen.</h1>
+				<p class="lede">Physik in 16 Versuchen. Vor jedem zeichnest du mit Rotstift ein, was du erwartest. Dann
+					läuft der Versuch, und die Messung liegt neben deinem Tipp.</p>
 			</div>
-			<div class="stage reveal">
-				<p class="task">Zieh das Gewicht nach unten und lass los. Mach dann die Feder härter oder das Gewicht
-					schwerer.</p>
-				<div class="stage-view">
-					<canvas id="springCanvas" aria-label="Federpendel mit Zeitdiagramm"></canvas>
-					<span class="stage-tag">Federpendel</span>
-					<span class="stage-readout" id="springOut">T = 1,26 s</span>
+			<div class="probe">
+				<div class="rahmen"><canvas id="auftakt" role="img"
+						aria-label="Eine Kugel rollt von einem 1,25 Meter hohen Tisch. Auf dem Boden markierst du, wo sie landet."></canvas>
 				</div>
-				<div class="stage-controls">
-					<label class="range">
-						<span class="range-head"><span>Federhärte D</span><output id="dOut">25 N/m</output></span>
-						<input type="range" id="stiff" min="5" max="80" value="25" />
-					</label>
-					<label class="range">
-						<span class="range-head"><span>Masse m</span><output id="mOut">1,0 kg</output></span>
-						<input type="range" id="mass" min="2" max="40" value="10" />
-					</label>
-					<label class="range">
-						<span class="range-head"><span>Dämpfung</span><output id="bOut">0,2</output></span>
-						<input type="range" id="damp" min="0" max="30" value="2" />
-					</label>
-					<button class="btn primary" id="btnPull" type="button">↓ Auslenken</button>
-					<p class="stage-note" id="springNote">Je härter die Feder, desto schneller die Schwingung.</p>
+				<div class="probezeile">
+					<div class="regler rot">
+						<label for="auftakt-tipp">Deine Marke</label>
+						<output id="auftakt-aus" for="auftakt-tipp">noch kein Tipp</output>
+						<input type="range" id="auftakt-tipp" min="0.2" max="3" step="0.05" value="1" />
+					</div>
+					<button class="haupt" id="auftakt-los" type="button" disabled>Kugel los</button>
 				</div>
+				<p class="urteil" id="auftakt-sagt" role="status" aria-live="polite"></p>
 			</div>
 		</section>
 
-		<section class="f-projects" id="projekte">
-			<h2>Projekte in Physik</h2>
-			<p>Die meisten Projekte im Lab sind Physik. Von der Schallwelle bis zum Schwarzen Loch.</p>
-			<div class="f-grid" data-fach-projects></div>
+		<section class="verzeichnis" id="verzeichnis" aria-labelledby="h-verz">
+			<h2 id="h-verz">Blattverzeichnis</h2>
+			<p class="lede">Von leicht nach schwer. Jedes Blatt benutzt nur, was davor kam. Du kannst trotzdem überall
+				einsteigen.</p>
+			<div id="liste"></div>
 		</section>
+
+		<section id="blatt" class="blatt" hidden></section>
 	</main>
 
-	<footer class="v-next" data-fach-next></footer>
+	<footer class="fuss">
+		<p>Rechnen üben im <a href="../math/">Mathe-Heft</a>. Als Nächstes auf der Leiter: <a
+				href="../chemistry/">Chemie</a>.</p>
+		<p><a href="../#faecher">Zurück zum Hub</a></p>
+	</footer>
 
-	<script src="../assets/verstehen.js"></script>
-	<script src="../assets/fach.js"></script>
-	<script src="./physics.js"></script>
+	<script defer src="./pruefstand.js"></script>
+	<script defer src="./versuche-a.js"></script>
+	<script defer src="./versuche-b.js"></script>
+	<script defer src="./versuche-c.js"></script>
 </body>
 
 </html>

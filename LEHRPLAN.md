@@ -50,14 +50,38 @@ Status: ✅ fertig · 🔨 in Arbeit · ⬜ geplant
 Folgen und Reihen, Beweisen und Logik, Kombinatorik und Graphen, Differentialgleichungen; eine Wiederholungs-
 seite mit gemischten Aufgaben aus allen Stufen.
 
-## 2. Physik ⬜ · `/physics/`
+## 2. Physik ✅ · `/physics/`
 
-- **Stil:** Ingenieurs-Blaupause. Tiefblaues Papier, weiße technische Linien, Bemaßungspfeile, Stempelfeld.
-- **Lernform:** *Vorhersagen, beobachten, erklären.* Bevor ein Experiment läuft, tippst du, was passieren
-  wird. Dann läuft die Simulation, und deine Vorhersage wird neben das Ergebnis gelegt.
-- **Stufen:** Messen und Einheiten · Geschwindigkeit · Beschleunigung · Kraft und Newton · Impuls und Stöße ·
-  Arbeit und Energie · Kreisbahn und Gravitation · Schwingungen · Wellen · Druck und Auftrieb · Wärme und
-  Entropie · Ladung und Strom · Magnetismus und Induktion · Licht und Optik · Relativität · Quanten.
+- **Stil:** Prüfstand als Blaupause. Preußischblaues Papier mit Raster, weiße Tusche für die Zeichnung, Rotstift
+  (Handschrift Kalam) für deinen Tipp, Gelb für das Gemessene. Schrift Sofia Sans in drei Breiten, angelehnt an
+  DIN-Beschriftung. Jedes Blatt hat unten ein Schriftfeld mit Blattnummer, Maßstab und Prüfstempel.
+- **Lernform:** *Erst wetten, dann messen.* Vor jedem Versuch zeichnest du deine Vorhersage mit Rotstift in die
+  Zeichnung (Marke ziehen) oder wählst eine Antwort. Dann läuft der Versuch, und die Messung liegt neben deinem
+  Tipp. Erst danach öffnen sich freies Experimentieren, Erklärung mit Formel und eine Prüffrage. Gespeichert
+  werden der erste Tipp (Treffer oder daneben) und der Prüfstempel.
+
+| Nr. | Blatt | Vorhersage | Zum Anfassen |
+| --- | --- | --- | --- |
+| 1 | Messen und Einheiten | Länge eines Bolzens schätzen | Drei Messgeräte, Messpunkte streuen, Mittelwert |
+| 2 | Geschwindigkeit | Wo holt Wagen B Wagen A ein? | Tempo und Vorsprung, Ort-Zeit-Bild |
+| 3 | Beschleunigung | Tiefe nach 2 s, wenn es nach 1 s 4,9 m sind | Kugel und Feder, mit und ohne Luft |
+| 4 | Kraft und Newton | Triebwerk aus auf reibungsfreiem Eis | Kraft, Masse, Reibung, Tempo-Zeit-Bild |
+| 5 | Impuls und Stöße | Gleich schwere Wagen stoßen | Massen, federnd oder klebrig, Impulsbalken |
+| 6 | Arbeit und Energie | Wie hoch kommt die Kugel drüben? | Bahn mit dem Finger verformen, Energiebalken |
+| 7 | Kreisbahn und Gravitation | Newtons Kanone bei 7,9 km/s | Abschusstempo von Absturz bis Flucht |
+| 8 | Schwingungen | Schweres gegen leichtes Pendel | Kugel ziehen und loslassen, Länge, Masse, Winkel |
+| 9 | Wellen | Berg trifft Tal am Punkt P | Wellenwanne: Quellen und Korken verschieben |
+| 10 | Druck und Auftrieb | Wasserlinie am Holzklotz | Klotz untertauchen, Dichte, vier Flüssigkeiten |
+| 11 | Wärme und Entropie | Sammeln sich 40 Teilchen wieder links? | Teilchenzahl 2 bis 200, Zeitraffer, Häufigkeiten |
+| 12 | Ladung und Strom | Zweite Lampe in Reihe | Reihe oder parallel, 1 bis 3 Lampen, Spannung |
+| 13 | Magnetismus und Induktion | Magnet ruht in der Spule | Magnet durch die Spule ziehen, Zeiger und Schreiber |
+| 14 | Licht und Optik | Strahl im Wasser einzeichnen | Laser drehen, drei Stoffe, Totalreflexion |
+| 15 | Relativität | Lichtuhr in der Rakete bei 87 % von c | Tempo der Rakete, Zeitdehnung |
+| 16 | Quanten | Muster am Doppelspalt | Detektor an den Spalten, Rate, Spaltabstand |
+
+**Stand:** Alle 16 Blätter sind fertig (November 2026). Anders als geplant: Das alte Federpendel ist entfallen,
+Blatt 8 nutzt ein Fadenpendel. Ideen zum Ausbauen: schiefer Wurf, Drehimpuls, Hebel, Gasgesetze, Linsen,
+Kernphysik; ein Abschlussblatt mit gemischten Vorhersagen aus allen Themen.
 
 ## 3. Chemie ⬜ · `/chemistry/`
 
@@ -158,7 +182,7 @@ Verhandlungsspiele, Abstimmungen und Wahlverfahren, Signalspiele, ein freier Tur
 ## Reihenfolge
 
 Mathe zuerst, weil fast alles darauf aufbaut. Danach im Wechsel ein Leiter-Fach und ein Naval-Fach:
-Spieltheorie (fertig) → Physik → Mikroökonomie → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
+Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
 
 ---
 
@@ -168,7 +192,7 @@ Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand Oktober 202
 
 ### Fächer-Seiten (die zwei Sprüche)
 
-Alle zehn Fächer haben eine Seite. Bis auf Mathe und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
+Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
 gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
 `assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
 vorhandene Experiment kann dabei als eine Stufe weiterleben.
@@ -176,7 +200,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | Fach | Ordner | Was schon da ist | Status |
 | --- | --- | --- | --- |
 | Mathematik | `math/` | Mathe-Heft, 15 Stufen, eigener Stil | ✅ voller Kurs |
-| Physik | `physics/` | Federpendel + Liste der Physik-Projekte | ⬜ Startseite |
+| Physik | `physics/` | Prüfstand, 16 Blätter mit Vorhersage, eigener Stil | ✅ voller Kurs |
 | Chemie | `chemistry/` | Stoßtheorie (Teilchen-Simulation) | ⬜ Startseite |
 | Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
 | Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
@@ -232,3 +256,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | Nov. 2026 | AI Learning Lab `learning-lab/` | MVP nach Spezifikation: Einstufung, 12 Module (P1 und P2 vollständig, je ein Mustermodul P3 und P4), fünf Übungsformate, Challenge P1 → P2 mit GitLab-CI-Prüfung, Tourenbuch, Leitstelle mit Beispieldaten. Eigener Abschnitt im Hub. |
 | Nov. 2026 | Handy-Reparatur | Rund 25 Seiten waren bei 360 px zu breit (Reihen-Navigation ohne `min-width: 0`, lange Wörter in Überschriften, `.chapter.wide`, Kopfzeile der Audio-Seiten). `ts/` läuft jetzt ohne Vite als reines JS. |
 | Nov. 2026 | Spielhalle Spieltheorie, 15 Level | Arcade-Stil, Dateien `game-theory/arcade.css`, `arcade.js` (Spielstand, Bots mit Pixel-Gesichtern, Matrix, Level-Ablauf), `level-a/b/c.js`. Ein Level ist ein Objekt mit `intro`, `play(ctx)`, `reveal` und `quiz`; `ctx.finish(punkte, text)` schaltet Auflösung und Prüffrage frei. Die Seite nutzt `assets/fach.js` nicht mehr. |
+| Nov. 2026 | Prüfstand Physik, 16 Blätter | Blaupausen-Stil, Dateien `physics/pruefstand.css`, `pruefstand.js` (Zeichenwerkzeug `PS.Z`, Vorhersage, Regler, Schriftfeld, Auftakt-Versuch), `versuche-a/b/c.js`. Ein Versuch ist ein Objekt mit `frage`, `vorhersage` (Wahl oder Regler mit Toleranz), `baue(api)`, `warum`, `formel` und `quiz`; `baue` liefert `zeichne`, `schritt`, `start` und optional `frei`, `api.fertig(wert, text)` wertet den Tipp aus. Die Seite nutzt `assets/fach.js` nicht mehr. Skills `impeccable` und `unslop` liegen unter `.claude/skills/`. |
