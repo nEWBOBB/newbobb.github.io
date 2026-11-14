@@ -1,0 +1,1158 @@
+/* Die Platine: Informatik als Leiterplatte.
+   Lötstopplack-Grün, Kupferbahnen, Gold-Pads, weißer Bestückungsdruck. Erklärungen stehen auf einem Datenblatt. */
+
+:root {
+	--maske: #0f3d2e;
+	--maske-tief: #0a2c21;
+	--maske-hell: #17533f;
+	--bahn: #1f6e53;
+	--kupfer: #b8742c;
+	--gold: #ecc060;
+	--gold-tief: #b98a2b;
+	--druck: #f2f4e6;
+	--leise: #a8c6b5;
+	--chip: #14171a;
+	--rot: #ff6152;
+	--gruen: #62f59a;
+	--gelb: #ffc54a;
+	--blatt: #f3efe2;
+	--tinte: #17231d;
+	--tinte-leise: #4c5a52;
+	--mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+	--text: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	background-color: var(--maske);
+	background-image:
+		radial-gradient(circle at 12px 12px, rgba(236, 192, 96, 0.16) 1.4px, transparent 2px),
+		linear-gradient(135deg, transparent 49.4%, rgba(31, 110, 83, 0.45) 49.6%, rgba(31, 110, 83, 0.45) 50.4%, transparent 50.6%);
+	background-size: 48px 48px, 192px 192px;
+	color: var(--druck);
+	font: 400 1.02rem/1.6 var(--text);
+	-webkit-text-size-adjust: 100%;
+	overflow-x: hidden;
+}
+
+a {
+	color: var(--gold);
+	text-underline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--mono);
+	font-weight: 800;
+	line-height: 1.15;
+	letter-spacing: -0.02em;
+	margin: 0;
+	overflow-wrap: anywhere;
+	hyphens: auto;
+}
+
+p {
+	margin: 0 0 0.8em;
+}
+
+:focus-visible {
+	outline: 3px solid var(--gold);
+	outline-offset: 3px;
+}
+
+.skip {
+	position: absolute;
+	left: -999px;
+	top: 0;
+	background: var(--gold);
+	color: var(--tinte);
+	padding: 8px 12px;
+	z-index: 10;
+}
+
+.skip:focus {
+	left: 8px;
+	top: 8px;
+}
+
+.druck {
+	font: 600 0.68rem/1.4 var(--mono);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--leise);
+	margin: 0 0 0.7em;
+}
+
+.vorspann {
+	color: var(--druck);
+	max-width: 62ch;
+}
+
+/* Kopfleiste */
+.leiste {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 16px;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 16px;
+	border-bottom: 1px dashed rgba(242, 244, 230, 0.35);
+	background: var(--maske-tief);
+	font: 600 0.72rem/1.4 var(--mono);
+}
+
+.leiste a {
+	color: var(--druck);
+	text-decoration: none;
+	padding: 6px 0;
+}
+
+.leiste .marke {
+	color: var(--gold);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.zaehler {
+	color: var(--leise);
+}
+
+main {
+	max-width: 1080px;
+	margin: 0 auto;
+	padding: 0 16px 48px;
+}
+
+/* Auftakt */
+.auftakt {
+	display: grid;
+	gap: 24px;
+	padding: 36px 0 28px;
+}
+
+.auftakt h1 {
+	font-size: clamp(1.55rem, 6.2vw, 3rem);
+	margin-bottom: 0.5em;
+}
+
+.probe {
+	border: 1.5px solid var(--druck);
+	border-radius: 4px;
+	padding: 16px;
+	background: var(--maske-tief);
+	align-self: start;
+}
+
+.probe-reihe {
+	display: flex;
+	align-items: center;
+	gap: 0;
+	margin: 6px 0 12px;
+}
+
+.probe-bahn {
+	flex: 1;
+	min-width: 0;
+	height: 40px;
+}
+
+.probe-bahn path {
+	fill: none;
+	stroke: var(--kupfer);
+	stroke-width: 5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transition: stroke 0.15s;
+}
+
+.probe.an .probe-bahn path {
+	stroke: var(--gelb);
+}
+
+.probe p:last-child {
+	margin: 0;
+	font: 400 0.8rem/1.5 var(--mono);
+}
+
+@media (min-width: 820px) {
+	.auftakt {
+		grid-template-columns: 1.5fr 1fr;
+		align-items: center;
+		padding-top: 56px;
+	}
+}
+
+/* Bauteile: LED, DIP-Schalter, Pads */
+.led {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #33443b;
+	border: 2px solid #0006;
+	flex: none;
+	vertical-align: middle;
+	transition: background 0.12s, box-shadow 0.12s;
+}
+
+.led.gross {
+	width: 30px;
+	height: 30px;
+}
+
+.led.an.gruen {
+	background: var(--gruen);
+	box-shadow: 0 0 12px 3px rgba(98, 245, 154, 0.6);
+}
+
+.led.an.gelb {
+	background: var(--gelb);
+	box-shadow: 0 0 12px 3px rgba(255, 197, 74, 0.6);
+}
+
+.led.an.rot {
+	background: var(--rot);
+	box-shadow: 0 0 12px 3px rgba(255, 97, 82, 0.6);
+}
+
+.dip {
+	display: inline-grid;
+	justify-items: center;
+	gap: 4px;
+	background: none;
+	border: 0;
+	padding: 4px 2px;
+	color: var(--druck);
+	font: 600 0.66rem/1.2 var(--mono);
+	cursor: pointer;
+	min-width: 34px;
+	touch-action: manipulation;
+}
+
+.dip i {
+	display: block;
+	width: 26px;
+	height: 44px;
+	border-radius: 4px;
+	background: #c33a2e;
+	border: 2px solid #0007;
+	position: relative;
+}
+
+.dip i::after {
+	content: "";
+	position: absolute;
+	left: 3px;
+	right: 3px;
+	height: 16px;
+	bottom: 3px;
+	border-radius: 2px;
+	background: var(--druck);
+	transition: bottom 0.12s;
+}
+
+.dip[aria-pressed="true"] i::after {
+	bottom: 21px;
+	background: var(--gelb);
+	box-shadow: 0 0 10px rgba(255, 197, 74, 0.8);
+}
+
+.dip.gross i {
+	width: 40px;
+	height: 64px;
+}
+
+.dip.gross i::after {
+	height: 24px;
+}
+
+.dip.gross[aria-pressed="true"] i::after {
+	bottom: 33px;
+}
+
+.dip span {
+	overflow-wrap: anywhere;
+	text-align: center;
+}
+
+.pad {
+	font: 600 0.78rem/1.2 var(--mono);
+	color: var(--tinte);
+	background: linear-gradient(180deg, var(--gold), var(--gold-tief));
+	border: 0;
+	border-radius: 6px;
+	padding: 11px 14px;
+	min-height: 44px;
+	cursor: pointer;
+	box-shadow: 0 2px 0 #0006;
+	touch-action: manipulation;
+}
+
+.pad:active {
+	transform: translateY(1px);
+	box-shadow: 0 1px 0 #0006;
+}
+
+.pad.hell {
+	background: var(--druck);
+}
+
+.pad.leer {
+	background: transparent;
+	color: var(--druck);
+	box-shadow: inset 0 0 0 1.5px var(--leise);
+}
+
+.pad[disabled] {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.pad[aria-pressed="true"] {
+	background: var(--gruen);
+}
+
+.reihe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	margin: 10px 0;
+}
+
+.reihe.mitte {
+	justify-content: center;
+}
+
+.regler {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 2px 10px;
+	margin: 10px 0;
+	font: 600 0.74rem/1.3 var(--mono);
+}
+
+.regler input {
+	grid-column: 1 / -1;
+	width: 100%;
+	accent-color: var(--gold);
+	min-height: 32px;
+}
+
+.regler output {
+	color: var(--gelb);
+}
+
+/* Hauptplatine: Übersicht */
+.brett {
+	padding: 20px 0 8px;
+}
+
+.brett h2 {
+	font-size: clamp(1.2rem, 4.4vw, 1.8rem);
+	margin-bottom: 0.5em;
+}
+
+.gruppe {
+	border: 1.5px solid var(--druck);
+	border-radius: 4px;
+	padding: 28px 12px 12px;
+	margin-top: 26px;
+	position: relative;
+	background: rgba(10, 44, 33, 0.72);
+}
+
+.gruppe > h3 {
+	position: absolute;
+	top: -0.75em;
+	left: 10px;
+	max-width: calc(100% - 20px);
+	background: var(--maske);
+	padding: 0 8px;
+	font-size: 0.74rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.chips {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(146px, 1fr));
+	gap: 12px 22px;
+	padding: 0 6px;
+	list-style: none;
+	margin: 0;
+}
+
+.chip {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 4px 8px;
+	align-content: start;
+	height: 100%;
+	min-height: 104px;
+	background: var(--chip);
+	color: var(--druck);
+	text-decoration: none;
+	padding: 10px 10px 12px;
+	border-radius: 3px;
+	position: relative;
+	box-shadow: 0 3px 0 #0007;
+}
+
+.chip::before,
+.chip::after {
+	content: "";
+	position: absolute;
+	top: 10px;
+	bottom: 10px;
+	width: 7px;
+	background: repeating-linear-gradient(180deg, var(--gold) 0 6px, transparent 6px 14px);
+}
+
+.chip::before {
+	left: -7px;
+}
+
+.chip::after {
+	right: -7px;
+}
+
+.chip .nr {
+	font: 600 0.66rem/1.3 var(--mono);
+	color: var(--leise);
+}
+
+.chip b {
+	grid-column: 1 / -1;
+	font: 600 0.82rem/1.25 var(--mono);
+	overflow-wrap: anywhere;
+	hyphens: auto;
+}
+
+.chip small {
+	grid-column: 1 / -1;
+	font-size: 0.8rem;
+	line-height: 1.35;
+	color: var(--leise);
+}
+
+.chip:hover,
+.chip:focus-visible {
+	background: #1f2428;
+}
+
+/* Baugruppe */
+.stufe {
+	padding: 24px 0 0;
+}
+
+.stufe-kopf {
+	display: grid;
+	gap: 6px;
+	margin-bottom: 18px;
+}
+
+.stufe-kopf h1 {
+	font-size: clamp(1.4rem, 5.6vw, 2.5rem);
+}
+
+.stufe-kopf .druck {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+	align-items: center;
+	margin: 0;
+}
+
+.auftrag {
+	border-left: 4px solid var(--gold);
+	padding: 2px 0 2px 14px;
+	margin: 0 0 18px;
+	max-width: 68ch;
+}
+
+.auftrag p:last-child {
+	margin-bottom: 0;
+}
+
+.werkbank {
+	border: 1.5px solid var(--druck);
+	border-radius: 4px;
+	background: var(--maske-tief);
+	padding: 14px 12px 16px;
+	position: relative;
+}
+
+.ziel {
+	background: var(--maske-hell);
+	border-radius: 3px;
+	padding: 10px 12px;
+	margin-bottom: 12px;
+}
+
+.ziel .druck {
+	color: var(--gelb);
+	margin-bottom: 0.3em;
+}
+
+.ziel p {
+	margin: 0;
+}
+
+.feld {
+	min-height: 60px;
+}
+
+.status {
+	margin: 12px 0 0;
+	padding: 10px 12px;
+	border-radius: 3px;
+	font-weight: 500;
+	min-height: 1.6em;
+}
+
+.status:empty {
+	display: none;
+}
+
+.status.ok {
+	background: rgba(98, 245, 154, 0.14);
+	box-shadow: inset 3px 0 0 var(--gruen);
+}
+
+.status.fehler {
+	background: rgba(255, 97, 82, 0.16);
+	box-shadow: inset 3px 0 0 var(--rot);
+}
+
+.status.info {
+	background: rgba(242, 244, 230, 0.09);
+	box-shadow: inset 3px 0 0 var(--leise);
+}
+
+.weiter:empty {
+	display: none;
+}
+
+.weiter {
+	margin-top: 12px;
+}
+
+/* Schaltung */
+.schaltung {
+	display: block;
+	width: 100%;
+	max-width: 520px;
+	margin: 0 auto;
+	height: auto;
+	font-family: var(--mono);
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.schaltung .bahn {
+	fill: none;
+	stroke: var(--kupfer);
+	stroke-width: 4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transition: stroke 0.1s;
+}
+
+.schaltung .bahn.an {
+	stroke: var(--gelb);
+	filter: drop-shadow(0 0 3px rgba(255, 197, 74, 0.8));
+}
+
+.schaltung .via {
+	fill: var(--gold);
+}
+
+.schaltung text {
+	fill: var(--druck);
+	font-size: 10.5px;
+	font-weight: 600;
+}
+
+.schaltung .klein {
+	font-size: 8.5px;
+	fill: var(--leise);
+}
+
+.schaltung .ic rect {
+	fill: var(--chip);
+	stroke: var(--gold);
+	stroke-width: 1.5;
+}
+
+.schaltung .ic.leer rect {
+	fill: rgba(10, 44, 33, 0.9);
+	stroke: var(--druck);
+	stroke-dasharray: 4 3;
+}
+
+.schaltung .ic.wahl {
+	cursor: pointer;
+}
+
+.schaltung .ic.gewaehlt rect {
+	stroke: var(--gruen);
+	stroke-width: 2.5;
+	stroke-dasharray: none;
+}
+
+.schaltung .ein {
+	cursor: pointer;
+}
+
+.schaltung .ein rect {
+	fill: #c33a2e;
+	stroke: #0008;
+	stroke-width: 1.5;
+}
+
+.schaltung .ein .knauf {
+	fill: var(--druck);
+	stroke: none;
+	transition: x 0.1s;
+}
+
+.schaltung .ein.an .knauf {
+	fill: var(--gelb);
+}
+
+.schaltung .lampe {
+	fill: #33443b;
+	stroke: #0008;
+	stroke-width: 2;
+}
+
+.schaltung .lampe.an {
+	fill: var(--gruen);
+	filter: drop-shadow(0 0 6px rgba(98, 245, 154, 0.9));
+}
+
+.schaltung .lampe.an.rot {
+	fill: var(--rot);
+	filter: drop-shadow(0 0 6px rgba(255, 97, 82, 0.9));
+}
+
+.schaltung [tabindex]:focus-visible {
+	outline: 2px solid var(--gold);
+	outline-offset: 2px;
+}
+
+.sortiment {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: center;
+	align-items: center;
+	margin: 8px 0 4px;
+}
+
+.sortiment .druck {
+	margin: 0;
+	flex-basis: 100%;
+	text-align: center;
+}
+
+.sortiment .pad {
+	background: var(--chip);
+	color: var(--druck);
+	box-shadow: inset 0 0 0 1.5px var(--gold), 0 2px 0 #0006;
+	min-width: 64px;
+}
+
+.tabelle {
+	border-collapse: collapse;
+	margin: 12px auto 4px;
+	font: 600 0.74rem/1.2 var(--mono);
+}
+
+.tabelle th,
+.tabelle td {
+	padding: 6px 9px;
+	text-align: center;
+	border-bottom: 1px dashed rgba(242, 244, 230, 0.25);
+}
+
+.tabelle th {
+	color: var(--leise);
+	font-weight: 600;
+}
+
+.tabelle td.gut {
+	color: var(--gruen);
+}
+
+.tabelle td.schlecht {
+	color: var(--rot);
+}
+
+.tabelle tr.jetzt td {
+	background: rgba(255, 197, 74, 0.16);
+}
+
+/* allgemeine Anzeigen */
+.anzeige {
+	font: 800 clamp(1.5rem, 8vw, 2.4rem)/1.1 var(--mono);
+	color: var(--gelb);
+	text-align: center;
+	margin: 8px 0;
+	overflow-wrap: anywhere;
+}
+
+.anzeige small {
+	display: block;
+	font: 600 0.7rem/1.5 var(--mono);
+	color: var(--leise);
+}
+
+.bitreihe {
+	display: flex;
+	justify-content: center;
+	gap: 2px;
+	flex-wrap: nowrap;
+}
+
+.bitreihe .zelle {
+	display: grid;
+	justify-items: center;
+	gap: 4px;
+	min-width: 34px;
+	font: 600 0.66rem/1.2 var(--mono);
+	color: var(--leise);
+}
+
+.raster {
+	display: grid;
+	gap: 6px;
+	margin: 12px 0;
+}
+
+.fach {
+	font: 600 0.74rem/1 var(--mono);
+	min-height: 40px;
+	border-radius: 3px;
+	border: 1.5px solid var(--gold);
+	background: var(--chip);
+	color: var(--druck);
+	cursor: pointer;
+	padding: 0;
+	touch-action: manipulation;
+}
+
+.fach.offen {
+	background: var(--maske-hell);
+	border-color: var(--leise);
+}
+
+.fach.raus {
+	opacity: 0.32;
+}
+
+.fach.treffer {
+	background: var(--gruen);
+	color: var(--tinte);
+	border-color: var(--gruen);
+}
+
+.fach.jetzt {
+	border-color: var(--gelb);
+	box-shadow: 0 0 0 2px var(--gelb);
+}
+
+.kasten {
+	border: 1.5px dashed var(--leise);
+	border-radius: 4px;
+	padding: 10px;
+	margin: 10px 0;
+}
+
+.kasten > .druck {
+	margin-bottom: 0.5em;
+}
+
+.spalten {
+	display: grid;
+	gap: 12px;
+}
+
+@media (min-width: 720px) {
+	.spalten {
+		grid-template-columns: 1fr 1fr;
+		align-items: start;
+	}
+}
+
+.teile {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	min-height: 38px;
+	align-items: center;
+}
+
+.teil {
+	display: inline-grid;
+	place-items: center;
+	min-width: 34px;
+	height: 34px;
+	padding: 0 6px;
+	background: var(--chip);
+	border: 1.5px solid var(--gold);
+	border-radius: 3px;
+	font: 600 0.78rem/1 var(--mono);
+}
+
+.teil.hell {
+	background: var(--gelb);
+	color: var(--tinte);
+}
+
+canvas.bild {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 3px;
+	background: var(--maske);
+}
+
+/* Programmspeicher (Prozessor) */
+.programm {
+	display: grid;
+	gap: 4px;
+}
+
+.zeile {
+	display: grid;
+	grid-template-columns: 26px minmax(0, 1fr) 62px;
+	gap: 6px;
+	align-items: center;
+	padding: 3px 4px;
+	border-radius: 3px;
+	font: 600 0.74rem/1 var(--mono);
+}
+
+.zeile.jetzt {
+	background: rgba(255, 197, 74, 0.22);
+	box-shadow: inset 3px 0 0 var(--gelb);
+}
+
+.zeile select,
+.zeile input {
+	font: 600 0.78rem/1 var(--mono);
+	background: var(--chip);
+	color: var(--druck);
+	border: 1.5px solid var(--gold-tief);
+	border-radius: 3px;
+	min-height: 40px;
+	padding: 0 6px;
+	width: 100%;
+	min-width: 0;
+}
+
+.zeile input:disabled {
+	opacity: 0.25;
+}
+
+.register {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+}
+
+.register div {
+	background: var(--chip);
+	border: 1.5px solid var(--gold-tief);
+	border-radius: 3px;
+	padding: 8px;
+	font: 600 0.66rem/1.3 var(--mono);
+	color: var(--leise);
+}
+
+.register b {
+	display: block;
+	font-size: 1.5rem;
+	color: var(--gelb);
+}
+
+/* Türme */
+.tuerme {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 6px;
+	margin: 12px 0;
+}
+
+.turm {
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: center;
+	gap: 3px;
+	min-height: 150px;
+	padding: 8px 2px 6px;
+	background: linear-gradient(90deg, transparent calc(50% - 2px), var(--kupfer) calc(50% - 2px), var(--kupfer) calc(50% + 2px), transparent calc(50% + 2px));
+	border: 0;
+	border-bottom: 5px solid var(--gold);
+	cursor: pointer;
+	touch-action: manipulation;
+}
+
+.turm.hoch {
+	box-shadow: inset 0 0 0 2px var(--gelb);
+	border-radius: 3px 3px 0 0;
+}
+
+.scheibe {
+	height: 18px;
+	border-radius: 4px;
+	background: var(--chip);
+	border: 1.5px solid var(--gold);
+	color: var(--druck);
+	font: 600 0.64rem/15px var(--mono);
+	text-align: center;
+}
+
+.turm.hoch .scheibe:last-child {
+	background: var(--gelb);
+	color: var(--tinte);
+	transform: translateY(-8px);
+}
+
+.stapel {
+	font: 400 0.74rem/1.5 var(--mono);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	min-height: 6em;
+}
+
+.stapel li {
+	padding: 2px 6px;
+	border-left: 3px solid var(--kupfer);
+	margin-bottom: 2px;
+}
+
+.stapel li:last-child {
+	border-color: var(--gelb);
+	color: var(--gelb);
+}
+
+/* Datenblatt */
+.datenblatt {
+	background: var(--blatt);
+	color: var(--tinte);
+	border-radius: 3px;
+	padding: 20px 16px;
+	margin-top: 22px;
+	box-shadow: 0 6px 0 #0005;
+	position: relative;
+}
+
+.datenblatt .druck {
+	color: var(--tinte-leise);
+	border-bottom: 2px solid var(--tinte);
+	padding-bottom: 6px;
+}
+
+.datenblatt h2 {
+	font-size: clamp(1.05rem, 4vw, 1.4rem);
+	margin: 0.4em 0 0.6em;
+}
+
+.datenblatt .inhalt {
+	max-width: 68ch;
+}
+
+.datenblatt a {
+	color: #7a4a00;
+}
+
+.datenblatt .merke {
+	border: 2px solid var(--tinte);
+	padding: 10px 12px;
+	margin: 14px 0 0;
+	font-weight: 600;
+	max-width: 68ch;
+}
+
+.datenblatt .merke::before {
+	content: "MERKE";
+	display: block;
+	font: 600 0.66rem/1.4 var(--mono);
+	letter-spacing: 0.1em;
+}
+
+.datenblatt .formel {
+	font: 600 0.86rem/1.5 var(--mono);
+	background: #e4dfcc;
+	padding: 8px 10px;
+	margin: 12px 0 0;
+	overflow-wrap: anywhere;
+	max-width: 68ch;
+}
+
+.datenblatt.zu {
+	background: repeating-linear-gradient(135deg, rgba(243, 239, 226, 0.1) 0 10px, transparent 10px 20px);
+	color: var(--leise);
+	box-shadow: inset 0 0 0 1.5px var(--leise);
+	font: 600 0.76rem/1.5 var(--mono);
+}
+
+.pruefung {
+	border: 1.5px solid var(--druck);
+	border-radius: 4px;
+	padding: 16px 12px;
+	margin-top: 22px;
+	background: var(--maske-tief);
+}
+
+.pruefung h2 {
+	font-size: clamp(1rem, 3.8vw, 1.25rem);
+	margin: 0.3em 0 0.8em;
+	font-weight: 600;
+	line-height: 1.35;
+	letter-spacing: 0;
+}
+
+.optionen {
+	display: grid;
+	gap: 8px;
+}
+
+.optionen button {
+	font: 500 1rem/1.4 var(--text);
+	text-align: left;
+	color: var(--druck);
+	background: var(--maske-hell);
+	border: 1.5px solid transparent;
+	border-radius: 4px;
+	padding: 11px 12px;
+	min-height: 44px;
+	cursor: pointer;
+}
+
+.optionen button.falsch {
+	border-color: var(--rot);
+	opacity: 0.7;
+}
+
+.optionen button.richtig {
+	border-color: var(--gruen);
+	background: rgba(98, 245, 154, 0.2);
+}
+
+.blaettern {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: space-between;
+	margin-top: 26px;
+}
+
+.blaettern a {
+	font: 600 0.74rem/1.3 var(--mono);
+	color: var(--druck);
+	text-decoration: none;
+	border: 1.5px solid var(--leise);
+	border-radius: 4px;
+	padding: 12px 12px;
+	max-width: 100%;
+}
+
+.blaettern a.haupt {
+	background: var(--gold);
+	color: var(--tinte);
+	border-color: var(--gold);
+}
+
+.fuss {
+	border-top: 1px dashed rgba(242, 244, 230, 0.35);
+	padding: 18px 16px 28px;
+	text-align: center;
+	background: var(--maske-tief);
+}
+
+.fuss .druck {
+	margin: 0;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	* {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+.bitreihe .zelle.breit {
+	width: 66px;
+	min-width: 66px;
+	align-content: center;
+	justify-items: end;
+	padding-right: 6px;
+	text-align: right;
+}
+
+.bitreihe .dip,
+.bitreihe .zelle:not(.breit) {
+	width: 34px;
+}
+
+.schaltung .taster.an rect {
+	fill: var(--gelb);
+}
+
+.schaltung .taster.an text:not(.klein) {
+	fill: var(--tinte);
+}
+
+.spalten > * {
+	min-width: 0;
+}
+
+.tabelle {
+	max-width: 100%;
+}
+
+@media (max-width: 420px) {
+	.tabelle th,
+	.tabelle td {
+		padding: 5px 6px;
+		font-size: 0.68rem;
+	}
+}
+
+.nur-vorlesen {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.pruefung h2 {
+	hyphens: manual;
+}
