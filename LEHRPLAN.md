@@ -83,14 +83,43 @@ seite mit gemischten Aufgaben aus allen Stufen.
 Blatt 8 nutzt ein Fadenpendel. Ideen zum Ausbauen: schiefer Wurf, Drehimpuls, Hebel, Gasgesetze, Linsen,
 Kernphysik; ein Abschlussblatt mit gemischten Vorhersagen aus allen Themen.
 
-## 3. Chemie ⬜ · `/chemistry/`
+## 3. Chemie ✅ · `/chemistry/`
 
-- **Stil:** Periodensystem-Baukasten. Kräftige Kacheln wie ein Retro-Poster, Atome als bunte Kugeln.
-- **Lernform:** *Bauen.* Atome aus Teilchen zusammensetzen, Moleküle stecken, Gleichungen ausgleichen, bis
-  die Waage stimmt.
-- **Stufen:** Stoffe und Gemische · Atommodell · Periodensystem · Ionenbindung · Elektronenpaarbindung ·
-  Molekülformen · Reaktionsgleichungen · Mol und Stoffmenge · Energie bei Reaktionen · Reaktionstempo ·
-  Gleichgewicht · Säuren, Basen, pH · Redox und Batterie · Kohlenstoffchemie · Polymere · Moleküle des Lebens.
+- **Stil:** Der Baukasten. Laborgrauer Grund, weiße Flächen mit dicker schwarzer Kontur und hartem Schlagschatten
+  wie ein Siebdruck-Plakat, dazu vier satte Farben für die vier Abschnitte (Rot, Blau, Gelb, Grün). Atome sind
+  glänzende Kugeln in den Farben der Molekülbaukästen (C schwarz, O rot, N blau, H weiß). Schrift Bricolage
+  Grotesque für Überschriften, Atkinson Hyperlegible Next für Text, Martian Mono für Beschriftung. Die Übersicht
+  ist ein kleines Periodensystem: Stufe 1 ist Wasserstoff, Stufe 16 ist Schwefel.
+- **Lernform:** *Stecken, bis es hält, und dabei Elemente sammeln.* Am Stecktisch gibt es Aufträge zum Abhaken.
+  Ob etwas stimmt, entscheidet die Regel selbst: freie Hände, offene Ladungen, eine schiefe Waage. Erst wenn
+  alles hält, öffnen sich „Das Etikett“ (Erklärung, Formel, Merksatz) und „Die Probe“. Für jede bestandene Probe
+  kommt das Element der Stufe in die Sammlung. Neu auf der Seite ist der Stecker: Kugeln antippen, sie geben
+  sich die Hand, auch doppelt und dreifach. Vier Stufen beginnen mit einem Tipp vor dem Versuch.
+
+| Nr. | Element | Stufe | Am Stecktisch |
+| --- | --- | --- | --- |
+| 1 | H | Stoffe und Gemische | Sand, Eisen, Salz und Wasser mit Magnet, Filter, Eindampfen und Destillieren trennen |
+| 2 | He | Das Atom | Protonen, Neutronen, Elektronen zählen: Helium-4, Kohlenstoff-14, Natrium-Ion |
+| 3 | Li | Das Periodensystem | Drei Lücken aus Steckbriefen füllen, Ansichten Außenelektronen, Größe, Art |
+| 4 | Be | Die Ionenbindung | Metall gibt, Nichtmetall nimmt: Atome nachlegen, bis die Ladung aufgeht (NaCl, MgCl₂, Al₂O₃) |
+| 5 | B | Die Elektronenpaarbindung | Stecker mit H, O, N, C, Cl: Wasser, CO₂, N₂ und ein eigenes Molekül |
+| 6 | C | Molekülformen | Elektronenpaare stoßen sich im Raum ab, fünf Moleküle zum Drehen, freie Paare als Wolken |
+| 7 | N | Reaktionsgleichungen | Vier Gleichungen ausgleichen, Waage und Atombilanz prüfen mit |
+| 8 | O | Das Mol | Ein Mol von drei Stoffen abwiegen, dann Knallgas nach Rezept ohne Rest |
+| 9 | F | Energie bei Reaktionen | Tippen, Bindungen aufbrechen, neu knüpfen: Energiebild für vier Reaktionen |
+| 10 | Ne | Reaktionstempo | Stoßsimulation mit Temperatur, Teilchenzahl, Katalysator und Protokoll der Halbzeiten |
+| 11 | Na | Das chemische Gleichgewicht | A ⇌ B aus 240 Teilchen, A zugeben, Temperatur ändern, Hin- und Rückrate ablesen |
+| 12 | Mg | Säuren, Basen, pH | Säure verdünnen (Faktor zehn je Stufe), dann titrieren bis zum Neutralpunkt |
+| 13 | Al | Redox und die Batterie | Zelle aus zwei von fünf Metallen, Spannung, Elektronenrichtung, Halbreaktionen |
+| 14 | Si | Kohlenstoffchemie | Stecker mit C, H, O: Methan, Propan, Butan und Isobutan, Ethanol, mit Siedepunkten |
+| 15 | P | Polymere | Kettenlänge, Brücken und Temperatur: Wachs, Thermoplast, Gummi, Duroplast |
+| 16 | S | Moleküle des Lebens | Stärke verknüpfen und spalten, Eiweiß in Reihenfolge bauen, DNA-Gegenstrang ergänzen |
+
+**Stand:** Alle 16 Stufen sind fertig (November 2026). Anders als geplant: Die Lernform „Bauen“ gab es schon
+bei der Platine, deshalb hier Stecken mit Sammlung, und das Periodensystem ist die Übersicht statt einer
+Kachelwand. Die alte Stoßtheorie lebt in Stufe 10 weiter. Ideen zum Ausbauen: Stufen 17 und 18 (Chlor, Argon)
+sind auf der Tafel schon als freie Plätze gezeichnet, zum Beispiel Elektrolyse und Metallbindung; dazu
+Löslichkeit, Gasgesetze, Puffer, Ester und Seifen, ein freier Stecktisch ohne Auftrag.
 
 ## 4. Biologie ⬜ · `/biology/`
 
@@ -235,7 +264,7 @@ Hashtabelle und Baum zum Anfassen, Kompression, Betriebssystem, ein freies Steck
 ## Reihenfolge
 
 Mathe zuerst, weil fast alles darauf aufbaut. Danach im Wechsel ein Leiter-Fach und ein Naval-Fach:
-Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie (fertig) → Informatik (fertig) → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
+Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie (fertig) → Informatik (fertig) → Chemie (fertig) → Psychologie → Überzeugen → Biologie → Ethik.
 
 ---
 
@@ -245,7 +274,7 @@ Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand November 20
 
 ### Fächer-Seiten (die zwei Sprüche)
 
-Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik, Mikroökonomie, Spieltheorie und Informatik sind es noch **Startseiten mit einem einzigen Experiment** im
+Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik, Chemie, Mikroökonomie, Spieltheorie und Informatik sind es noch **Startseiten mit einem einzigen Experiment** im
 gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
 `assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
 vorhandene Experiment kann dabei als eine Stufe weiterleben.
@@ -254,7 +283,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | --- | --- | --- | --- |
 | Mathematik | `math/` | Mathe-Heft, 15 Stufen, eigener Stil | ✅ voller Kurs |
 | Physik | `physics/` | Prüfstand, 16 Blätter mit Vorhersage, eigener Stil | ✅ voller Kurs |
-| Chemie | `chemistry/` | Stoßtheorie (Teilchen-Simulation) | ⬜ Startseite |
+| Chemie | `chemistry/` | Der Baukasten, 16 Stufen zum Stecken, eigener Stil | ✅ voller Kurs |
 | Biologie | `biology/` | Räuber und Beute (Hasen und Füchse) | ⬜ Startseite |
 | Psychologie | `psychology/` | Stroop-Test | ⬜ Startseite |
 | Mikroökonomie | `economics/` | Der Marktbote, 14 Ausgaben als Rollenspiel, eigener Stil | ✅ voller Kurs |
@@ -312,3 +341,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | Nov. 2026 | Prüfstand Physik, 16 Blätter | Blaupausen-Stil, Dateien `physics/pruefstand.css`, `pruefstand.js` (Zeichenwerkzeug `PS.Z`, Vorhersage, Regler, Schriftfeld, Auftakt-Versuch), `versuche-a/b/c.js`. Ein Versuch ist ein Objekt mit `frage`, `vorhersage` (Wahl oder Regler mit Toleranz), `baue(api)`, `warum`, `formel` und `quiz`; `baue` liefert `zeichne`, `schritt`, `start` und optional `frei`, `api.fertig(wert, text)` wertet den Tipp aus. Die Seite nutzt `assets/fach.js` nicht mehr. Skills `impeccable` und `unslop` liegen unter `.claude/skills/`. |
 | Nov. 2026 | Der Marktbote Mikroökonomie, 14 Ausgaben | Zeitungs-Stil, Dateien `economics/zeitung.css`, `zeitung.js` (Spielstand, Zeichenhelfer `Z` mit Schraffur, `achsen`, Bausteine für Regler, Kassenbuch, Auswahl, Eilmeldung), `ausgaben-a/b/c.js`. Eine Ausgabe ist ein Objekt mit `rubrik`, `titel`, `kurz`, `frage`, `szene`, `spiel(api)`, `schlagzeile`, `artikel`, `merke`, `formel` und `quiz`; `api.eil(titel, text)` setzt die Eilmeldung, `api.fertig(taler, text)` rechnet ab und öffnet den Leitartikel. Die Seite nutzt `assets/fach.js` nicht mehr. |
 | Nov. 2026 | Die Platine Informatik, 17 Bausteine | Platinen-Stil, Dateien `computers/platine.css`, `platine.js` (Spielstand, Schalter, Regler, Aufträge, `steckbrett` mit Drähten und `tafel` als Wahrheitstafel), `stufen-a/b/c.js`. Ein Baustein ist ein Objekt mit `id`, `zone`, `name`, `kurz`, `frage`, `bau(api)`, `warum`, `merke`, `quiz` und optional `blatt`, `mehr`; `api.fertig(text)` öffnet Datenblatt und Prüfung, `api.spaeter`, `api.takt` und `api.raeume` räumen Zeitgeber beim Seitenwechsel auf. Die Seite nutzt `assets/fach.js` nicht mehr. Der kaputte Deploy-Workflow `pages.yml` ist gelöscht. |
+| Nov. 2026 | Der Baukasten Chemie, 16 Stufen | Plakat-Stil, Dateien `chemistry/baukasten.css`, `baukasten.js` (Spielstand, Kugeln `kugel`, `mol`, `ball`, Bedienteile `regler`, `wahl`, `zaehler`, `leinwand` und der `stecker` für Moleküle), `stufen-a/b/c.js`. Eine Stufe ist ein Objekt mit `g` (Abschnitt 1 bis 4), `titel`, `kachel`, `frage`, `bau(api)`, `warum`, `merke`, `quiz` und optional `formel`, `mehr`; `api.auftraege(texte, schluss)` liefert `ab(n)` zum Abhaken und ruft am Ende `api.fertig`, `api.tipp` stellt eine Vorhersage, `api.sag` schreibt die Rückmeldung, `api.takt` und `api.spaeter` räumen beim Seitenwechsel auf. Die Seite nutzt `assets/fach.js` nicht mehr, `chemistry.js` ist gelöscht. |
