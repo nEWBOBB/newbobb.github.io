@@ -192,21 +192,50 @@ Verhandlungsspiele, Abstimmungen und Wahlverfahren, Signalspiele, ein freier Tur
   Schleier des Nichtwissens (Rawls) · Rechte · Gerechtigkeit · Trolley-Varianten · Moralisches Glück ·
   Effektiv helfen · Maschinen und Moral · Ehrlichkeit und Integrität (Naval).
 
-## 10. Informatik ⬜ · `/computers/`
+## 10. Informatik ✅ · `/computers/`
 
-- **Stil:** Retro-Terminal. Grüner Phosphor, Scanlines, Befehlszeile.
-- **Lernform:** *Selbst bauen und programmieren.* Logikgatter verdrahten, bis ein Rechner entsteht, dann
-  Code-Puzzles, die immer mehr können.
-- **Stufen:** Bits · Binärzahlen · Logikgatter · Addierer · Speicher · Ein Prozessor · Algorithmen ·
-  Sortieren · Suchen und O-Notation · Datenstrukturen · Rekursion · Graphen und Wege · Netzwerke ·
-  Verschlüsselung · Lernende Maschinen (→ `/ml/`).
+- **Stil:** Die Platine. Dunkelgrüner Lötstopplack mit feinem Bohrraster, goldene Lötpunkte, weißer
+  Bestückungsdruck, schwarze Chips. Schrift Saira Condensed für Überschriften und Beschriftung, Instrument Sans
+  für Text, Sometype Mono für Bits und Code. Erklärungen liegen als „Datenblatt“ auf cremefarbenem Papier. Die
+  Übersicht ist die Platine selbst: Ein leerer Rahmen ist ein freier Steckplatz, ein schwarzer Chip ist gebaut,
+  eine leuchtende Lampe heißt geprüft.
+- **Lernform:** *Erst bauen, dann das Datenblatt.* Jeder Baustein beginnt mit einem Auftrag an der Werkbank.
+  Erst wenn dein Aufbau funktioniert, öffnen sich Datenblatt (Erklärung, Formel, Merksatz) und Prüfung. Neu auf
+  der Seite ist das Steckbrett: Drähte von Ausgang zu Eingang ziehen, die Wahrheitstafel prüft live mit.
+  Gespeichert werden gebaute und geprüfte Bausteine.
+
+| Nr. | Baustein | Werkbank |
+| --- | --- | --- |
+| 1 | Das Bit | Alle Muster von 1, 2 und 3 Schaltern sammeln |
+| 2 | Zahlen aus Bits | Acht Schalter mit Stellenwerten, vier Zielzahlen, Hochzählen |
+| 3 | Text und Bild aus Zahlen | Ein Byte als Zahl, Zeichen und Grauton; ein Pfeil aus fünf Zahlen |
+| 4 | Logikgatter | UND, ODER, NICHT erkunden, dann vier unbeschriftete Chips bestimmen |
+| 5 | Schaltungen stecken | Steckbrett: NICHT und UND aus NAND, XOR aus drei Gattern |
+| 6 | Der Addierer | Halbaddierer verdrahten, dann Addierwerk mit vier Bits und wanderndem Übertrag |
+| 7 | Der Speicher | Speicherzelle aus zwei NOR mit Tastern, Register mit Schreibknopf |
+| 8 | Der Prozessor | Sieben Befehle, Ausgabe vorhersagen, Takt geben, Programm umschreiben |
+| 9 | Programmieren | Lötkäfer mit Bausteinen steuern: Folge, Schleife, Bedingung |
+| 10 | Suchen | Zahl von 1 bis 100 in sieben Fragen, Schritte im Vergleich bis eine Milliarde |
+| 11 | Sortieren | Verdeckte Chips mit Nachbarvergleichen sortieren, Rennen Bubblesort gegen Mergesort |
+| 12 | Datenstrukturen | Stapel und Schlange nebeneinander, vier Alltagsfälle zuordnen |
+| 13 | Rekursion | Türme von Hanoi spielen, Maschine führt vier Scheiben vor |
+| 14 | Graphen und Wege | Kürzesten Weg antippen, Dijkstra Schritt für Schritt |
+| 15 | Netzwerke | Pakete senden, Router ausschalten, Engstelle finden |
+| 16 | Verschlüsselung | Caesar knacken, Schlüsseltausch nach Diffie und Hellman, als Lauscher b suchen |
+| 17 | Lernende Maschinen | Trennlinie von Hand, dann Perzeptron lernen lassen (→ `/ml/`) |
+
+**Stand:** Alle 17 Bausteine sind fertig (November 2026). Anders als geplant: Platine statt Retro-Terminal,
+weil die Spielhalle schon Röhrenbildschirme hat. „Algorithmen“ steckt in Suchen und Sortieren, neu dazu kamen
+„Text und Bild aus Zahlen“ und „Schaltungen stecken“. Das alte Experiment „Acht Schalter, ein Byte“ lebt in
+Baustein 2 und 3 weiter. Ideen zum Ausbauen: Volladdierer selbst stecken, Zähler und Takt, Unterprogramme,
+Hashtabelle und Baum zum Anfassen, Kompression, Betriebssystem, ein freies Steckbrett ohne Auftrag.
 
 ---
 
 ## Reihenfolge
 
 Mathe zuerst, weil fast alles darauf aufbaut. Danach im Wechsel ein Leiter-Fach und ein Naval-Fach:
-Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie (fertig) → Informatik → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
+Spieltheorie (fertig) → Physik (fertig) → Mikroökonomie (fertig) → Informatik (fertig) → Chemie → Psychologie → Überzeugen → Biologie → Ethik.
 
 ---
 
@@ -216,7 +245,7 @@ Damit niemand doppelt baut: Das gibt es bereits auf der Seite (Stand November 20
 
 ### Fächer-Seiten (die zwei Sprüche)
 
-Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik, Mikroökonomie und Spieltheorie sind es noch **Startseiten mit einem einzigen Experiment** im
+Alle zehn Fächer haben eine Seite. Bis auf Mathe, Physik, Mikroökonomie, Spieltheorie und Informatik sind es noch **Startseiten mit einem einzigen Experiment** im
 gemeinsamen Fächer-Stil (`assets/verstehen.css` + `assets/fach.css`, Navigation und Projektliste aus
 `assets/fach.js`). Beim Ausbau zu einem vollen Kurs bekommt das Fach seinen eigenen Stil, so wie Mathe. Das
 vorhandene Experiment kann dabei als eine Stufe weiterleben.
@@ -232,7 +261,7 @@ vorhandene Experiment kann dabei als eine Stufe weiterleben.
 | Spieltheorie | `game-theory/` | Spielhalle, 15 Level gegen Bots, eigener Stil | ✅ voller Kurs |
 | Überzeugen | `persuasion/` | Die sechs Hebel erkennen | ⬜ Startseite |
 | Ethik | `ethics/` | Sechs Dilemmas, drei Arten zu entscheiden | ⬜ Startseite |
-| Informatik | `computers/` | Acht Schalter, ein Byte | ⬜ Startseite |
+| Informatik | `computers/` | Die Platine, 17 Bausteine, eigener Stil | ✅ voller Kurs |
 
 ### Passende Projekte, die schon existieren
 
@@ -282,3 +311,4 @@ Zuordnung zu den Fächern steht in `assets/fach.js` (`FACH_PROJEKTE`).
 | Nov. 2026 | Spielhalle Spieltheorie, 15 Level | Arcade-Stil, Dateien `game-theory/arcade.css`, `arcade.js` (Spielstand, Bots mit Pixel-Gesichtern, Matrix, Level-Ablauf), `level-a/b/c.js`. Ein Level ist ein Objekt mit `intro`, `play(ctx)`, `reveal` und `quiz`; `ctx.finish(punkte, text)` schaltet Auflösung und Prüffrage frei. Die Seite nutzt `assets/fach.js` nicht mehr. |
 | Nov. 2026 | Prüfstand Physik, 16 Blätter | Blaupausen-Stil, Dateien `physics/pruefstand.css`, `pruefstand.js` (Zeichenwerkzeug `PS.Z`, Vorhersage, Regler, Schriftfeld, Auftakt-Versuch), `versuche-a/b/c.js`. Ein Versuch ist ein Objekt mit `frage`, `vorhersage` (Wahl oder Regler mit Toleranz), `baue(api)`, `warum`, `formel` und `quiz`; `baue` liefert `zeichne`, `schritt`, `start` und optional `frei`, `api.fertig(wert, text)` wertet den Tipp aus. Die Seite nutzt `assets/fach.js` nicht mehr. Skills `impeccable` und `unslop` liegen unter `.claude/skills/`. |
 | Nov. 2026 | Der Marktbote Mikroökonomie, 14 Ausgaben | Zeitungs-Stil, Dateien `economics/zeitung.css`, `zeitung.js` (Spielstand, Zeichenhelfer `Z` mit Schraffur, `achsen`, Bausteine für Regler, Kassenbuch, Auswahl, Eilmeldung), `ausgaben-a/b/c.js`. Eine Ausgabe ist ein Objekt mit `rubrik`, `titel`, `kurz`, `frage`, `szene`, `spiel(api)`, `schlagzeile`, `artikel`, `merke`, `formel` und `quiz`; `api.eil(titel, text)` setzt die Eilmeldung, `api.fertig(taler, text)` rechnet ab und öffnet den Leitartikel. Die Seite nutzt `assets/fach.js` nicht mehr. |
+| Nov. 2026 | Die Platine Informatik, 17 Bausteine | Platinen-Stil, Dateien `computers/platine.css`, `platine.js` (Spielstand, Schalter, Regler, Aufträge, `steckbrett` mit Drähten und `tafel` als Wahrheitstafel), `stufen-a/b/c.js`. Ein Baustein ist ein Objekt mit `id`, `zone`, `name`, `kurz`, `frage`, `bau(api)`, `warum`, `merke`, `quiz` und optional `blatt`, `mehr`; `api.fertig(text)` öffnet Datenblatt und Prüfung, `api.spaeter`, `api.takt` und `api.raeume` räumen Zeitgeber beim Seitenwechsel auf. Die Seite nutzt `assets/fach.js` nicht mehr. Der kaputte Deploy-Workflow `pages.yml` ist gelöscht. |
