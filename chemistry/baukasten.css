@@ -575,7 +575,7 @@ a.kachel:hover {
 .ablese {
 	margin: 0.7rem 0;
 	padding: 0.55rem 0.7rem;
-	border-left: 6px solid var(--f);
+	border: 2px solid var(--tinte);
 	background: var(--grund);
 	min-height: 2.6rem;
 }
